@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ui.uiData.addData">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Nama Produk -->
+        <TextView
+            android:id="@+id/label_nama_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Produk"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/input_nama_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan nama produk"
+            android:inputType="text" />
+
+        <!-- Kode Produk -->
+        <TextView
+            android:id="@+id/label_kode_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kode Produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/input_kode_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan kode produk"
+            android:inputType="text" />
+
+        <!-- Kategori Produk -->
+        <TextView
+            android:id="@+id/label_kategori_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kategori Produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+       <!-- <Spinner
+            android:id="@+id/input_kategori_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/kategori_produk" />
+-->
+        <!-- Harga Produk -->
+        <TextView
+            android:id="@+id/label_harga_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Harga Produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/input_harga_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan harga produk"
+            android:inputType="numberDecimal" />
+
+        <!-- Stok Produk -->
+        <TextView
+            android:id="@+id/label_stok_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stok Produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/input_stok_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan jumlah stok"
+            android:inputType="number" />
+
+        <!-- Deskripsi Produk -->
+        <TextView
+            android:id="@+id/label_deskripsi_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deskripsi Produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <EditText
+            android:id="@+id/input_deskripsi_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Masukkan deskripsi produk"
+            android:inputType="textMultiLine"
+            android:minLines="3" />
+
+        <!-- Gambar Produk -->
+        <TextView
+            android:id="@+id/label_gambar_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gambar Produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <ImageView
+            android:id="@+id/image_preview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background" />
+
+        <Button
+            android:id="@+id/btn_pilih_gambar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pilih Gambar"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btn_simpan_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Simpan Produk"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</ScrollView>
