@@ -32,4 +32,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/nav_header_subtitle" />
+
+    <Button
+        android:id="@+id/button_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Admin"
+        android:textSize="21sp"
+        android:padding="16dp"/>
 </LinearLayout>

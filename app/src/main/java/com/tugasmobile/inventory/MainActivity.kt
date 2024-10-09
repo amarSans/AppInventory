@@ -3,6 +3,7 @@ package com.tugasmobile.inventory
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Button
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -14,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.tugasmobile.inventory.ui.uiData.addData
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
+import com.tugasmobile.inventory.ui.admin.AdminActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,6 +46,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val adminButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_admin)
+        adminButton.setOnClickListener {
+            val intent = Intent(this, AdminActivity::class.java) // Intent untuk AdminActivity
+            startActivity(intent) // Memulai AdminActivity
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

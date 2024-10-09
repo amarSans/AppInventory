@@ -13,6 +13,12 @@
         android:theme="@style/Theme.Inventory"
         tools:targetApi="31">
         <activity
+            android:name=".ui.admin.AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.uiData.addData"
             android:exported="false"
             android:theme="@style/Theme.Inventory" />
