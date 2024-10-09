@@ -17,7 +17,7 @@
             android:id="@+id/label_nama_produk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nama Produk"
+            android:text="@string/nama_produk"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -25,10 +25,10 @@
             android:id="@+id/input_nama_produk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Masukkan nama produk"
+            android:hint="@string/masukkan_nama_produk"
             android:inputType="text" />
 
-        <!-- Kode Produk -->
+        <!--&lt;!&ndash; Kode Produk &ndash;&gt;
         <TextView
             android:id="@+id/label_kode_produk"
             android:layout_width="wrap_content"
@@ -45,7 +45,7 @@
             android:hint="Masukkan kode produk"
             android:inputType="text" />
 
-        <!-- Kategori Produk -->
+        &lt;!&ndash; Kategori Produk &ndash;&gt;
         <TextView
             android:id="@+id/label_kategori_produk"
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
             android:text="Kategori Produk"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp" />-->
 
        <!-- <Spinner
             android:id="@+id/input_kategori_produk"
@@ -61,29 +61,13 @@
             android:layout_height="wrap_content"
             android:entries="@array/kategori_produk" />
 -->
-        <!-- Harga Produk -->
-        <TextView
-            android:id="@+id/label_harga_produk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Harga Produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/input_harga_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Masukkan harga produk"
-            android:inputType="numberDecimal" />
 
         <!-- Stok Produk -->
         <TextView
             android:id="@+id/label_stok_produk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Stok Produk"
+            android:text="@string/stok_produk"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp" />
@@ -92,10 +76,25 @@
             android:id="@+id/input_stok_produk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Masukkan jumlah stok"
+            android:hint="@string/masukkan_jumlah_stok"
             android:inputType="number" />
+        <TextView
+            android:id="@+id/label_harga_produk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/harga_produk"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
 
-        <!-- Deskripsi Produk -->
+        <EditText
+            android:id="@+id/input_harga_produk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/masukkan_harga_produk"
+            android:inputType="numberDecimal" />
+
+       <!-- &lt;!&ndash; Deskripsi Produk &ndash;&gt;
         <TextView
             android:id="@+id/label_deskripsi_produk"
             android:layout_width="wrap_content"
@@ -113,7 +112,7 @@
             android:inputType="textMultiLine"
             android:minLines="3" />
 
-        <!-- Gambar Produk -->
+        &lt;!&ndash; Gambar Produk &ndash;&gt;
         <TextView
             android:id="@+id/label_gambar_produk"
             android:layout_width="wrap_content"
@@ -138,13 +137,13 @@
             android:text="Pilih Gambar"
             android:layout_gravity="center"
             android:layout_marginTop="8dp" />
-
+-->
         <!-- Submit Button -->
         <Button
             android:id="@+id/btn_simpan_produk"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Simpan Produk"
+            android:text="@string/simpan_produk"
             android:layout_marginTop="16dp" />
 
     </LinearLayout>
