@@ -4,16 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import com.tugasmobile.inventory.ui.uiData.addData
+import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.admin.AdminActivity
 
@@ -30,10 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener {
-            val intent= Intent(this, addData::class.java)
-            startActivity(intent)
-        }
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -46,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        val adminButton = navView.getHeaderView(0).findViewById<Button>(R.id.button_admin)
+        val adminButton = navView.getHeaderView(0).findViewById<ImageView>(R.id.imageView)
         adminButton.setOnClickListener {
             val intent = Intent(this, AdminActivity::class.java) // Intent untuk AdminActivity
             startActivity(intent) // Memulai AdminActivity

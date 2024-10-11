@@ -2,7 +2,7 @@
     <string name="app_name">inventory</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_title">Mode User</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
@@ -59,4 +59,6 @@
     <string name="harga_produk">Harga Produk</string>
     <string name="masukkan_harga_produk">Masukkan harga produk</string>
     <string name="simpan_produk">Simpan Produk</string>
+    <string name="mode_user">Mode User</string>
+    <string name="mode_admin">Mode Admin</string>
 </resources>
