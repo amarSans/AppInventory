@@ -45,7 +45,6 @@ class LaporanDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         return id
     }
 
-    // Metode untuk mendapatkan semua laporan
     fun getAllLaporan(): List<Laporan> {
         val laporanList = mutableListOf<Laporan>()
         val db = this.readableDatabase
