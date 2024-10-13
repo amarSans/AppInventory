@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.Laporan
 
-class BarangAdapter(private val listBarang:ArrayList<Laporan>):RecyclerView.Adapter<BarangAdapter.ListViewHolder>() {
+class BarangAdapter(private var listBarang: List<Laporan>):
+    RecyclerView.Adapter<BarangAdapter.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -17,9 +18,10 @@ class BarangAdapter(private val listBarang:ArrayList<Laporan>):RecyclerView.Adap
         return ListViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: BarangAdapter.ListViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val laporan=listBarang[position]
-        holder.name.text=laporan.namaProduk
+        holder.name.text= laporan.namaProduk
         holder.stok.text = laporan.stok.toString()
         holder.price.text = laporan.harga.toString()
     }
@@ -29,5 +31,9 @@ class BarangAdapter(private val listBarang:ArrayList<Laporan>):RecyclerView.Adap
         val name:TextView=itemView.findViewById(R.id.TVkodebarang)
         val stok:TextView=itemView.findViewById(R.id.TVstok)
         val price:TextView=itemView.findViewById(R.id.TVPrice)
+    }
+    fun updateLaporanList(newLaporanList: List<Laporan>) {
+        this.listBarang = newLaporanList
+        notifyDataSetChanged()
     }
 }
