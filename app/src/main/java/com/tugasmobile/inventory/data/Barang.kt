@@ -1,6 +1,6 @@
 package com.tugasmobile.inventory.data
 
-data class Laporan(
+data class Barang(
     val id:Long,
     val namaProduk: String,
     val stok: Int,

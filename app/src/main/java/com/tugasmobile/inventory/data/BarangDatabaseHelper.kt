@@ -6,7 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class LaporanDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "inventory.db"
@@ -32,21 +32,21 @@ class LaporanDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
         onCreate(db)
     }
 
-    // Metode untuk menambahkan laporan
-    fun insertLaporan(laporan: Laporan): Long {
+    // Metode untuk menambahkan barang
+    fun insertLaporan(barang: Barang): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_NAMA_PRODUK, laporan.namaProduk)
-            put(COLUMN_STOK, laporan.stok)
-            put(COLUMN_HARGA, laporan.harga)
+            put(COLUMN_NAMA_PRODUK, barang.namaProduk)
+            put(COLUMN_STOK, barang.stok)
+            put(COLUMN_HARGA, barang.harga)
         }
         val id = db.insert(TABLE_LAPORAN, null, values)
         db.close()
         return id
     }
 
-    fun getAllLaporan(): List<Laporan> {
-        val laporanList = mutableListOf<Laporan>()
+    fun getAllLaporan(): List<Barang> {
+        val barangList = mutableListOf<Barang>()
         val db = this.readableDatabase
         val cursor: Cursor? = db.query(
             TABLE_LAPORAN,
@@ -73,13 +73,13 @@ class LaporanDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABA
                         val namaProduk = it.getString(namaProdukIndex)
                         val stok = it.getInt(stokIndex)
                         val harga = it.getDouble(hargaIndex)
-                        laporanList.add(Laporan(id, namaProduk, stok, harga))
+                        barangList.add(Barang(id, namaProduk, stok, harga))
                     }
                 } while (it.moveToNext())
             }
         }
         cursor?.close()
         db.close()
-        return laporanList
+        return barangList
     }
 }

@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.laporan
+package com.tugasmobile.inventory.ui.Barang
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tugasmobile.inventory.data.Barang
 import com.tugasmobile.inventory.data.BarangDatabaseHelper
 
-class LaporanViewModel(application: Application) : AndroidViewModel(application) {
+class BarangViewModel (application: Application) : AndroidViewModel(application) {
     private val databaseHelper= BarangDatabaseHelper(application)
     private val _barangList=MutableLiveData<List<Barang>>()
 
@@ -20,8 +20,5 @@ class LaporanViewModel(application: Application) : AndroidViewModel(application)
     private fun loadLaporan(){
         _barangList.value=databaseHelper.getAllLaporan()
     }
-    /*fun insertLaporan(laporan: Barang){
-        databaseHelper.insertLaporan(laporan)
-        loadLaporan()
-    }*/
+
 }

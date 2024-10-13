@@ -33,7 +33,7 @@ class LaporanFragment : Fragment() {
         binding.recyclerViewLaporan.adapter = laporanAdapter
 
         // Observasi LiveData dari ViewModel untuk memperbarui UI ketika data berubah
-        laporanViewModel.laporanList.observe(viewLifecycleOwner) { laporanList ->
+        laporanViewModel.barangList.observe(viewLifecycleOwner) { laporanList ->
             laporanAdapter.updateLaporanList(laporanList)
         }
 

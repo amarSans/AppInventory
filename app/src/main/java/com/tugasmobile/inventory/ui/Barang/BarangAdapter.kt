@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.gallery
+package com.tugasmobile.inventory.ui.Barang
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.data.Laporan
+import com.tugasmobile.inventory.data.Barang
 
-class BarangAdapter(private var listBarang: List<Laporan>):
+class BarangAdapter(private var listBarang: List<Barang>):
     RecyclerView.Adapter<BarangAdapter.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -32,8 +32,8 @@ class BarangAdapter(private var listBarang: List<Laporan>):
         val stok:TextView=itemView.findViewById(R.id.TVstok)
         val price:TextView=itemView.findViewById(R.id.TVPrice)
     }
-    fun updateLaporanList(newLaporanList: List<Laporan>) {
-        this.listBarang = newLaporanList
+    fun updateLaporanList(newBarangList: List<Barang>) {
+        this.listBarang = newBarangList
         notifyDataSetChanged()
     }
 }

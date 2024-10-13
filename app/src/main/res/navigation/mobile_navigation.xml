@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.tugasmobile.inventory.ui.gallery.BarangFragment"
+        android:id="@+id/nav_barang"
+        android:name="com.tugasmobile.inventory.ui.Barang.BarangFragment"
         android:label="@string/menu_gallery"
         tools:layout="@layout/fragment_barang" />
 

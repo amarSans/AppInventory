@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.gallery
+package com.tugasmobile.inventory.ui.Barang
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tugasmobile.inventory.data.Laporan
-import com.tugasmobile.inventory.data.LaporanDatabaseHelper
 import com.tugasmobile.inventory.databinding.FragmentBarangBinding
 
 class BarangFragment : Fragment() {
@@ -37,7 +35,7 @@ class BarangFragment : Fragment() {
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager = GridLayoutManager(requireContext(), 2) // 2 kolom
         // Observasi LiveData dari ViewModel untuk memperbarui UI ketika data berubah
-        barangViewModel.laporanList.observe(viewLifecycleOwner) { listBarang ->
+        barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
         return binding.root

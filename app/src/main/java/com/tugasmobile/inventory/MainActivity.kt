@@ -1,9 +1,7 @@
 package com.tugasmobile.inventory
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,7 +12,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
-import com.tugasmobile.inventory.ui.admin.AdminActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,16 +34,13 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_barang, R.id.nav_slideshow
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         val adminButton = navView.getHeaderView(0).findViewById<ImageView>(R.id.imageView)
-        adminButton.setOnClickListener {
-            val intent = Intent(this, AdminActivity::class.java) // Intent untuk AdminActivity
-            startActivity(intent) // Memulai AdminActivity
-        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

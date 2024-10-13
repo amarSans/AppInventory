@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.data.Laporan
+import com.tugasmobile.inventory.data.Barang
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 
 class addData : AppCompatActivity() {
@@ -30,8 +30,8 @@ class addData : AppCompatActivity() {
             val namaProduk=binding.inputNamaProduk.text.toString()
             val stokProduk=binding.inputStokProduk.text.toString().toInt()
             val hargaProduk=binding.inputHargaProduk.text.toString().toDouble()
-            val laporan = Laporan(id = 0, namaProduk = namaProduk, stok = stokProduk, harga = hargaProduk)
-            viewModel.insertLaporan(laporan)
+            val barang = Barang(id = 0, namaProduk = namaProduk, stok = stokProduk, harga = hargaProduk)
+            viewModel.insertLaporan(barang)
             Toast.makeText(this,"data berhasil ditambahkan",Toast.LENGTH_SHORT).show()
             val intent=Intent(this,MainActivity::class.java)
             startActivity(intent)
