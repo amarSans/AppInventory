@@ -61,4 +61,6 @@
     <string name="simpan_produk">Simpan Produk</string>
     <string name="mode_user">Mode User</string>
     <string name="mode_admin">Mode Admin</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

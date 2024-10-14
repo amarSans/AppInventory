@@ -15,7 +15,6 @@ class BarangFragment : Fragment() {
 
     private var _binding: FragmentBarangBinding? = null
     private val binding get() = _binding!!
-    private lateinit var rvBarang:RecyclerView
     private lateinit var barangAdapter: BarangAdapter
     private lateinit var barangViewModel: BarangViewModel
     override fun onCreateView(
@@ -40,11 +39,6 @@ class BarangFragment : Fragment() {
         }
         return binding.root
     }
-
-
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
