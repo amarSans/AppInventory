@@ -34,7 +34,6 @@ class EditFragment : Fragment() {
             val intent= Intent(requireContext(), addData::class.java)
             startActivity(intent)
         }
-
         return root
     }
 

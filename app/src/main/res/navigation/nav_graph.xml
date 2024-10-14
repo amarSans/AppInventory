@@ -3,9 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
-
+    app:startDestination="@id/barangFragment">
     <fragment
+        android:id="@+id/barangFragment"
+        android:name="com.tugasmobile.inventory.ui.Barang.BarangFragment"
+        android:label="Barang"
+        tools:layout="@layout/fragment_barang">
+        <action
+            android:id="@+id/action_barangFragment_to_rincianFragment"
+            app:destination="@+id/rincianFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/rincianFragment"
+        android:name="com.tugasmobile.inventory.ui.Barang.RincianFragment"
+        android:label="Rincian"
+        tools:layout="@layout/fragment_rincian">
+        <action
+            android:id="@+id/action_rincianFragment_to_barangFragment"
+            app:destination="@+id/barangFragment"/>
+    </fragment>
+    <!--<fragment
         android:id="@+id/FirstFragment"
         android:name="com.tugasmobile.inventory.data.uiData.FirstFragment"
         android:label="@string/first_fragment_label"
@@ -25,4 +42,5 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+-->
 </navigation>

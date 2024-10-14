@@ -1,22 +1,22 @@
 package com.tugasmobile.inventory.ui.Barang
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.FragmentBarangBinding
+import com.tugasmobile.inventory.databinding.FragmentRincianBinding
 import com.tugasmobile.inventory.ui.ViewModel
 
-class BarangFragment : Fragment() {
 
-    private var _binding: FragmentBarangBinding? = null
+class RincianFragment : Fragment() {
+
+    private var _binding: FragmentRincianBinding? = null
     private val binding get() = _binding!!
     private lateinit var barangAdapter: BarangAdapter
     private lateinit var barangViewModel: ViewModel
@@ -26,25 +26,19 @@ class BarangFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentBarangBinding.inflate(inflater, container, false)
+        _binding = FragmentRincianBinding.inflate(inflater, container, false)
 
         // Inisialisasi ViewModel
         barangViewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
-        // Inisialisasi RecyclerView dan Adapter
-        binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
-        barangAdapter = BarangAdapter(emptyList()){
-            barang->
-            val bundle = Bundle().apply {
-                putString("namaBarang", barang.namaProduk)
-                putInt("stokBarang", barang.stok)
-                putDouble("hargaBarang", barang.harga)
-            }
-            findNavController().navigate(R.id.action_barangFragment_to_rincianFragment, bundle)
+        val namaBarang = arguments?.getString("namaBarang")?:"barang tidak ada"
+        val stokBarang = arguments?.getInt("stokBarang")?:0
+        val hargaBarang = arguments?.getDouble("hargaBarang")?:0.0
 
-        }
-        binding.recyclerViewLaporan.adapter = barangAdapter
-        binding.recyclerViewLaporan.layoutManager = GridLayoutManager(requireContext(), 2) // 2 kolom
+        // Tampilkan data di UI
+        binding.NamaBarang.text = namaBarang
+        binding.StokBarang.text = stokBarang.toString()
+        binding.HargaBarang.text = hargaBarang.toString()
         // Observasi LiveData dari ViewModel untuk memperbarui UI ketika data berubah
         barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)

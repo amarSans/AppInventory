@@ -21,4 +21,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         databaseHelper.insertLaporan(barang)
         loadLaporan()
     }
+    fun deleteLaporan(id: Long) {
+        databaseHelper.deleteLaporan(id)
+        loadLaporan()
+    }
 }
