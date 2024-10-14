@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.databinding.FragmentLaporanBinding
+import com.tugasmobile.inventory.ui.ViewModel
 
 class LaporanFragment : Fragment() {
 
@@ -15,7 +16,7 @@ class LaporanFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var laporanAdapter: LaporanAdapter
-    private lateinit var laporanViewModel: LaporanViewModel
+    private lateinit var laporanViewModel: ViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +26,7 @@ class LaporanFragment : Fragment() {
         _binding = FragmentLaporanBinding.inflate(inflater, container, false)
 
         // Inisialisasi ViewModel
-        laporanViewModel = ViewModelProvider(this).get(LaporanViewModel::class.java)
+        laporanViewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())

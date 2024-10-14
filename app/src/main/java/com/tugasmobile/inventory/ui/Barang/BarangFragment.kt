@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.databinding.FragmentBarangBinding
+import com.tugasmobile.inventory.ui.ViewModel
 
 class BarangFragment : Fragment() {
 
     private var _binding: FragmentBarangBinding? = null
     private val binding get() = _binding!!
     private lateinit var barangAdapter: BarangAdapter
-    private lateinit var barangViewModel: BarangViewModel
+    private lateinit var barangViewModel: ViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +27,7 @@ class BarangFragment : Fragment() {
         _binding = FragmentBarangBinding.inflate(inflater, container, false)
 
         // Inisialisasi ViewModel
-        barangViewModel = ViewModelProvider(this).get(BarangViewModel::class.java)
+        barangViewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())

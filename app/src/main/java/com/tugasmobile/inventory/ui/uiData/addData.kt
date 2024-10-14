@@ -12,9 +12,10 @@ import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.Barang
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
+import com.tugasmobile.inventory.ui.ViewModel
 
 class addData : AppCompatActivity() {
-    private val viewModel:addDataViewModel by viewModels()
+    private val viewModel: ViewModel by viewModels()
     private lateinit var binding: ActivityAddDataBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

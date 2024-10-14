@@ -82,4 +82,13 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
         return barangList
     }
+    // Metode untuk menghapus barang berdasarkan ID
+    fun deleteLaporan(id: Long): Int {
+        val db = this.writableDatabase
+        // Menghapus barang berdasarkan ID
+        val result = db.delete(TABLE_LAPORAN, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
+        return result
+    }
+
 }
