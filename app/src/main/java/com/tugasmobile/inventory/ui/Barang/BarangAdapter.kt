@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.Barang
 
-class BarangAdapter(private var listBarang: List<Barang>,private val onClick:(Barang)->Unit):
+class BarangAdapter(private var listBarang: List<Barang>, private val itemClickListener: (Barang) -> Unit):
     RecyclerView.Adapter<BarangAdapter.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -24,9 +24,10 @@ class BarangAdapter(private var listBarang: List<Barang>,private val onClick:(Ba
         holder.name.text= laporan.namaProduk
         holder.stok.text = laporan.stok.toString()
         holder.price.text = laporan.harga.toString()
-        holder.itemView.setOnClickListener{
-            onClick(laporan)
+        holder.itemView.setOnClickListener {
+            itemClickListener(laporan)  // Panggil listener dengan data barang
         }
+
     }
 
     override fun getItemCount(): Int =listBarang.size

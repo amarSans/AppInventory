@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Inventory"
         tools:targetApi="31">
         <activity
+            android:name=".ui.editdata.DetailBarang"
+            android:exported="false" />
+        <activity
             android:name=".ui.uiData.addData"
             android:exported="false"
             android:theme="@style/Theme.Inventory" />

@@ -1,5 +1,6 @@
 package com.tugasmobile.inventory.ui.Barang
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.FragmentBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.editdata.DetailBarang
 
 class BarangFragment : Fragment() {
 
@@ -33,15 +35,13 @@ class BarangFragment : Fragment() {
 
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
-        barangAdapter = BarangAdapter(emptyList()){
-            barang->
-            val bundle = Bundle().apply {
-                putString("namaBarang", barang.namaProduk)
-                putInt("stokBarang", barang.stok)
-                putDouble("hargaBarang", barang.harga)
+        barangAdapter = BarangAdapter(emptyList()) { barang ->
+            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
+                putExtra("NAMA_BARANG", barang.namaProduk)
+                putExtra("STOK_BARANG", barang.stok)
+                putExtra("HARGA_BARANG", barang.harga)
             }
-            findNavController().navigate(R.id.action_barangFragment_to_rincianFragment, bundle)
-
+            startActivity(intent)  // Mulai Activity dengan data
         }
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager = GridLayoutManager(requireContext(), 2) // 2 kolom

@@ -2,8 +2,9 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
-    app:startDestination="@id/barangFragment">
+    app:startDestination="@id/barangFragment"
+    android:id="@+id/nav_graph">
+
     <fragment
         android:id="@+id/barangFragment"
         android:name="com.tugasmobile.inventory.ui.Barang.BarangFragment"
@@ -11,8 +12,9 @@
         tools:layout="@layout/fragment_barang">
         <action
             android:id="@+id/action_barangFragment_to_rincianFragment"
-            app:destination="@+id/rincianFragment"/>
+            app:destination="@id/rincianFragment"/>
     </fragment>
+
     <fragment
         android:id="@+id/rincianFragment"
         android:name="com.tugasmobile.inventory.ui.Barang.RincianFragment"
@@ -20,27 +22,27 @@
         tools:layout="@layout/fragment_rincian">
         <action
             android:id="@+id/action_rincianFragment_to_barangFragment"
-            app:destination="@+id/barangFragment"/>
+            app:destination="@id/barangFragment"/>
     </fragment>
+
     <!--<fragment
         android:id="@+id/FirstFragment"
         android:name="com.tugasmobile.inventory.data.uiData.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first" >
-
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.tugasmobile.inventory.data.uiData.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second" >
-
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
-    </fragment>
--->
+    </fragment>-->
+
 </navigation>
