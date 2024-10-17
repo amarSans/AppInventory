@@ -14,7 +14,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     init {
         loadLaporan()
     }
-    private fun loadLaporan(){
+    fun loadLaporan(){
         _barangList.value=databaseHelper.getAllLaporan()
     }
     fun insertLaporan(barang: Barang){
@@ -23,6 +23,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun deleteLaporan(id: Long) {
         databaseHelper.deleteLaporan(id)
+        loadLaporan()
+    }
+    fun updateLaporan(barang: Barang){
+        databaseHelper.updateLaporan(barang)
         loadLaporan()
     }
 }

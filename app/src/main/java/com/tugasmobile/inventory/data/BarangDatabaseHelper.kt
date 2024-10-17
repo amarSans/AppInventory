@@ -90,5 +90,24 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
         return result
     }
+    fun updateLaporan(barang: Barang): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_NAMA_PRODUK, barang.namaProduk)
+            put(COLUMN_STOK, barang.stok)
+            put(COLUMN_HARGA, barang.harga)
+        }
+
+        // Mengupdate barang berdasarkan ID
+        val result = db.update(
+            TABLE_LAPORAN,
+            values,
+            "$COLUMN_ID = ?",
+            arrayOf(barang.id.toString())
+        )
+
+        db.close()
+        return result
+    }
 
 }

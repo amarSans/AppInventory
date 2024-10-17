@@ -24,6 +24,7 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         holder.name.text= laporan.namaProduk
         holder.stok.text = laporan.stok.toString()
         holder.price.text = laporan.harga.toString()
+        holder.itemId
         holder.itemView.setOnClickListener {
             itemClickListener(laporan)  // Panggil listener dengan data barang
         }
@@ -40,4 +41,5 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         this.listBarang = newBarangList
         notifyDataSetChanged()
     }
+
 }

@@ -40,6 +40,7 @@ class BarangFragment : Fragment() {
                 putExtra("NAMA_BARANG", barang.namaProduk)
                 putExtra("STOK_BARANG", barang.stok)
                 putExtra("HARGA_BARANG", barang.harga)
+                putExtra("ID_BARANG",barang.id)
             }
             startActivity(intent)  // Mulai Activity dengan data
         }
@@ -50,6 +51,11 @@ class BarangFragment : Fragment() {
             barangAdapter.updateLaporanList(listBarang)
         }
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        barangViewModel.loadLaporan()
     }
     override fun onDestroyView() {
         super.onDestroyView()
