@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarDetail"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,66 +23,18 @@
             app:menu="@menu/menu_detail" >
     </com.google.android.material.appbar.MaterialToolbar>
 
+
 </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Konten Detail Barang -->
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbarDetail"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:orientation="vertical">
 
-            <!-- Nama Barang -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nama barang: " />
-                <TextView
-                    android:id="@+id/NamaBarang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Barang 1" />
-            </LinearLayout>
-
-            <!-- Stok Barang -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stok barang: " />
-                <TextView
-                    android:id="@+id/StokBarang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Stok 1" />
-            </LinearLayout>
-
-            <!-- Harga Barang -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Harga barang: " />
-                <TextView
-                    android:id="@+id/HargaBarang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Harga 1" />
-            </LinearLayout>
-
-            </LinearLayout>
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/appbarDetail"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,6 +11,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val databaseHelper= BarangDatabaseHelper(application)
     private val _barangList= MutableLiveData<List<Barang>>()
     val barangList: LiveData<List<Barang>> = _barangList
+    private val _currentBarang = MutableLiveData<Barang?>()
+    val currentBarang: LiveData<Barang?> = _currentBarang
     init {
         loadLaporan()
     }
@@ -28,5 +30,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun updateLaporan(barang: Barang){
         databaseHelper.updateLaporan(barang)
         loadLaporan()
+    }
+    fun setCurrentBarang(id: Long) {
+        _currentBarang.value = databaseHelper.getLaporanById(id)
     }
 }

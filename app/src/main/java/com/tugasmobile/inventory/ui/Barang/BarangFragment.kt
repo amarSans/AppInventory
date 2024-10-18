@@ -15,6 +15,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.FragmentBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
+import com.tugasmobile.inventory.ui.uiData.addData
 
 class BarangFragment : Fragment() {
 
@@ -43,6 +44,10 @@ class BarangFragment : Fragment() {
                 putExtra("ID_BARANG",barang.id)
             }
             startActivity(intent)  // Mulai Activity dengan data
+        }
+        binding.fabAddData.setOnClickListener {
+            val intent = Intent(requireContext(), addData::class.java)
+            startActivity(intent)
         }
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager = GridLayoutManager(requireContext(), 2) // 2 kolom

@@ -23,9 +23,5 @@
         android:label="@string/menu_laporan"
         tools:layout="@layout/fragment_laporan" />
 
-    <fragment
-        android:id="@+id/nav_edit"
-        android:name="com.tugasmobile.inventory.ui.editdata.EditFragment"
-        android:label="Edit Data"
-        tools:layout="@layout/fragment_edit"/>
+
 </navigation>

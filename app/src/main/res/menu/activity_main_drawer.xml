@@ -16,9 +16,5 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/baseline_add_chart_24"
             android:title="@string/menu_laporan" />
-        <item
-            android:id="@+id/nav_edit"
-            android:icon="@drawable/baseline_edit_24"
-            android:title="Edit Data"/>
     </group>
 </menu>

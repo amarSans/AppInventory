@@ -109,5 +109,41 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
         return result
     }
+    fun getLaporanById(id: Long): Barang? {
+        val db = this.readableDatabase
+        var barang: Barang? = null
+        val cursor: Cursor? = db.query(
+            TABLE_LAPORAN,
+            null,
+            "$COLUMN_ID = ?",
+            arrayOf(id.toString()),
+            null,
+            null,
+            null
+        )
+
+        // Memeriksa apakah cursor tidak null dan memiliki data
+        cursor?.let {
+            if (it.moveToFirst()) {
+                val idIndex = it.getColumnIndex(COLUMN_ID)
+                val namaProdukIndex = it.getColumnIndex(COLUMN_NAMA_PRODUK)
+                val stokIndex = it.getColumnIndex(COLUMN_STOK)
+                val hargaIndex = it.getColumnIndex(COLUMN_HARGA)
+
+                // Pastikan kolom tidak -1
+                if (idIndex != -1 && namaProdukIndex != -1 && stokIndex != -1 && hargaIndex != -1) {
+                    val idBarang = it.getLong(idIndex)
+                    val namaProduk = it.getString(namaProdukIndex)
+                    val stok = it.getInt(stokIndex)
+                    val harga = it.getDouble(hargaIndex)
+                    barang = Barang(idBarang, namaProduk, stok, harga)
+                }
+            }
+        }
+        cursor?.close()
+        db.close()
+        return barang
+    }
+
 
 }

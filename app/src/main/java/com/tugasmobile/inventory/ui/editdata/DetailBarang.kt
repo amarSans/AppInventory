@@ -9,8 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import java.lang.reflect.Array.getDouble
-import java.lang.reflect.Array.getInt
 
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding
@@ -23,15 +21,28 @@ class DetailBarang : AppCompatActivity() {
         binding = ActivityDetailBarangBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+
         detailBarangViewModel=  ViewModelProvider(this).get(ViewModel::class.java)
-        val namaBarang = intent.getStringExtra("NAMA_BARANG") ?: "barang tidak ada"
-        val stokBarang = intent.getIntExtra("STOK_BARANG", 0)
-        val hargaBarang = intent.getDoubleExtra("HARGA_BARANG", 0.0)
-        barangId=intent.getLongExtra("ID_BARANG",0L)
-        // Tampilkan data di UI
-        binding.NamaBarang.text = namaBarang
-        binding.StokBarang.text = stokBarang.toString()
-        binding.HargaBarang.text = hargaBarang.toString()
+        barangId = intent.getLongExtra("ID_BARANG", 0L)
+        detailBarangViewModel.setCurrentBarang(barangId)
+
+        detailBarangViewModel.currentBarang.observe(this) { barang ->
+            barang?.let {
+                binding.toolbar.title = it.namaProduk
+            }
+        }
+        if (savedInstanceState == null) {
+            val rincianFragment = RincianFragment().apply {
+                arguments = Bundle().apply {
+                    putLong("ID_BARANG", barangId)
+                }
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, rincianFragment)  // Gunakan ID container dari layout
+                .commit()
+        }
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -42,8 +53,13 @@ class DetailBarang : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_edit -> {
-                // Aksi untuk Edit
-                // Tambahkan logika edit di sini
+                val editFragment = EditFragment().apply {
+                    arguments = Bundle().apply { putLong("ID_BARANG", barangId) }
+                }
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, editFragment) // Pastikan `fragment_container` ada di layout activity
+                    .addToBackStack(null)
+                    .commit()
                 true
             }
             R.id.action_delete -> {
