@@ -14,7 +14,8 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.editdata.DetailBarang"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Inventory.NoActionBar"/>
         <activity
             android:name=".ui.uiData.addData"
             android:exported="false"
