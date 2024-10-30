@@ -30,9 +30,11 @@ class RincianFragment : Fragment() {
         rincianViewModel.setCurrentBarang(BarangId)
         rincianViewModel.currentBarang.observe(viewLifecycleOwner){barang->
             barang?.let{
-                binding.NamaBarang.text = it.namaProduk
-                binding.StokBarang.text = it.stok.toString()
-                binding.HargaBarang.text = it.harga.toString()
+                binding.tvNamaBarang.text = it.namaBarang
+                binding.tvKodeBarang.text = it.kodeBarang
+                binding.tvHarga.text = it.harga.toString()
+                binding.tvStok.text = it.stok.toString()
+                //binding.tvKategori.text = it.kategori
             }
         }
 

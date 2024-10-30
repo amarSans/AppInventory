@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Definisikan style khusus untuk TextView -->
+    <style name="CustomTextStyle">
+        <item name="android:textStyle">bold</item>    <!-- Gaya teks -->
+        <item name="android:fontFamily">@font/poppins_semibold</item> <!-- Custom font -->
+    </style>
+</resources>

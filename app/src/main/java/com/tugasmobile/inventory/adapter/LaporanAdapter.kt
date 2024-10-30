@@ -1,3 +1,5 @@
+package com.tugasmobile.inventory.adapter
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ class LaporanAdapter(private var barangList: List<Barang>) :
 
     class LaporanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val namaProdukTextView: TextView = itemView.findViewById(R.id.namaProdukTextView)
+        val kodeprodukTextView:TextView=itemView.findViewById(R.id.kodeProdukTextView)
         val stokTextView: TextView = itemView.findViewById(R.id.stokTextView)
         val hargaTextView: TextView = itemView.findViewById(R.id.hargaTextView)
     }
@@ -23,7 +26,8 @@ class LaporanAdapter(private var barangList: List<Barang>) :
 
     override fun onBindViewHolder(holder: LaporanViewHolder, position: Int) {
         val currentLaporan = barangList[position]
-        holder.namaProdukTextView.text = currentLaporan.namaProduk
+        holder.namaProdukTextView.text = currentLaporan.namaBarang
+        holder.kodeprodukTextView.text = currentLaporan.kodeBarang
         holder.stokTextView.text = currentLaporan.stok.toString()
         holder.hargaTextView.text = currentLaporan.harga.toString()
     }

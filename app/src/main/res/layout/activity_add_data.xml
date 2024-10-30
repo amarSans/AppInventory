@@ -5,147 +5,261 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="#F5F5F5"
+    android:fillViewport="true"
+
     tools:context=".ui.uiData.addData">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingTop="37dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="37dp"
         android:orientation="vertical">
 
-        <!-- Nama Produk -->
-        <TextView
-            android:id="@+id/label_nama_produk"
+        <ImageView
+            android:id="@+id/iamgeViewBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/nama_produk"
-            android:textSize="16sp"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/baseline_arrow_back_ios_new_24" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="9dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Nama Barang" />
+
+                <EditText
+                    android:id="@+id/editTextNamaBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/edit_text_bacground"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:hint="masukkan nama barang"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Kode Barang" />
+
+                <EditText
+                    android:id="@+id/editTextKodeBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/edit_text_bacground"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:hint="masukkan kode barang"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Harga Barang" />
+
+                <EditText
+                    android:id="@+id/editTextHargaBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_bacground"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:hint="masukkan harga barang"
+                    android:inputType="number"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="9dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageViewBarang"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1"
+                    android:background="@color/coklat_abu_abu"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baseline_image_24" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonCamera"
+                        style="@style/CustomButtonStyle"
+                        android:layout_marginEnd="4dp"
+                        android:text="camera" />
+
+
+                    <Button
+                        android:id="@+id/buttonGallery"
+                        style="@style/CustomButtonStyle"
+                        android:layout_marginStart="4dp"
+                        android:text="gallery" />
+                    />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Stok Barang" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button_add_stok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/coklat_abu_abu"
+                app:icon="@drawable/baseline_add_24" />
+
+            <EditText
+                android:id="@+id/edit_stok_barang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/material_motion_duration_long_1"
+                android:background="@drawable/bacgorund_kotak"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="stok"
+                android:textAlignment="center"
+                android:textSize="31sp"
+
+                />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/button_remove_stok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:backgroundTint="@color/coklat_abu_abu"
+                app:icon="@drawable/baseline_remove_24" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Warna" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewColors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Waktu" />
+
+        <EditText
+            android:id="@+id/edit_text_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_bacground"
+            android:clickable="false"
+            android:focusable="false"
+            android:fontFamily="@font/poppins_semibold"
+            android:hint="masukkan tanggal"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Kategori" />
+
+        <Spinner
+            android:id="@+id/Spinner_kategori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_bacground"
+            android:entries="@array/daftar_pilihan"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Ukuran" />
+
+        <EditText
+            android:id="@+id/edt_ukuran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_bacground"
+            android:fontFamily="@font/poppins_semibold"
+            android:hint="masukkan ukuran"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/bottom_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Save"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/input_nama_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/masukkan_nama_produk"
-            android:inputType="text" />
-
-        <!--&lt;!&ndash; Kode Produk &ndash;&gt;
-        <TextView
-            android:id="@+id/label_kode_produk"
+        <FrameLayout
+            android:id="@+id/standard_bottom_sheet"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Kode Produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <EditText
-            android:id="@+id/input_kode_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Masukkan kode produk"
-            android:inputType="text" />
-
-        &lt;!&ndash; Kategori Produk &ndash;&gt;
-        <TextView
-            android:id="@+id/label_kategori_produk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Kategori Produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />-->
-
-       <!-- <Spinner
-            android:id="@+id/input_kategori_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/kategori_produk" />
--->
-
-        <!-- Stok Produk -->
-        <TextView
-            android:id="@+id/label_stok_produk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stok_produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/input_stok_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/masukkan_jumlah_stok"
-            android:inputType="number" />
-        <TextView
-            android:id="@+id/label_harga_produk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/harga_produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/input_harga_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/masukkan_harga_produk"
-            android:inputType="numberDecimal" />
-
-       <!-- &lt;!&ndash; Deskripsi Produk &ndash;&gt;
-        <TextView
-            android:id="@+id/label_deskripsi_produk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Deskripsi Produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <EditText
-            android:id="@+id/input_deskripsi_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Masukkan deskripsi produk"
-            android:inputType="textMultiLine"
-            android:minLines="3" />
-
-        &lt;!&ndash; Gambar Produk &ndash;&gt;
-        <TextView
-            android:id="@+id/label_gambar_produk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gambar Produk"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <ImageView
-            android:id="@+id/image_preview"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
-
-        <Button
-            android:id="@+id/btn_pilih_gambar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pilih Gambar"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp" />
--->
-        <!-- Submit Button -->
-        <Button
-            android:id="@+id/btn_simpan_produk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/simpan_produk"
-            android:layout_marginTop="16dp" />
-
+        </FrameLayout>
     </LinearLayout>
 
 </ScrollView>
+

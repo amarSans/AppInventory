@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.Barang
+package com.tugasmobile.inventory.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -21,9 +21,12 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val laporan=listBarang[position]
-        holder.name.text= laporan.namaProduk
+        holder.name.text= laporan.namaBarang
         holder.stok.text = laporan.stok.toString()
         holder.price.text = laporan.harga.toString()
+        laporan.kodeBarang
+        laporan.harga
+        //laporan.warna
         holder.itemId
         holder.itemView.setOnClickListener {
             itemClickListener(laporan)  // Panggil listener dengan data barang

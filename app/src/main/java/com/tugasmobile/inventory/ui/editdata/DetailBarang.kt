@@ -26,11 +26,11 @@ class DetailBarang : AppCompatActivity() {
         barangId = intent.getLongExtra("ID_BARANG", 0L)
         detailBarangViewModel.setCurrentBarang(barangId)
 
-        detailBarangViewModel.currentBarang.observe(this) { barang ->
+        /*detailBarangViewModel.currentBarang.observe(this) { barang ->
             barang?.let {
-                binding.toolbar.title = it.namaProduk
+                binding.toolbar.title = it.namaBarang
             }
-        }
+        }*/
         if (savedInstanceState == null) {
             val rincianFragment = RincianFragment().apply {
                 arguments = Bundle().apply {
@@ -40,6 +40,17 @@ class DetailBarang : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, rincianFragment)  // Gunakan ID container dari layout
                 .commit()
+        }
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+
+// Menambahkan ikon back
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_ios_new_24) // Gunakan icon yang diinginkan
+
+// Aksi klik pada tombol back
+        toolbar.setNavigationOnClickListener {
+            onBackPressed() // Kembali ke activity sebelumnya
         }
 
 

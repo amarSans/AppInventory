@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ukuran"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/poppins_semibold"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Bayi"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14sp" />
+
+        <!-- Kategori ukuran seperti bayi, anak-anak, dll. -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="19" />
+
+            <CheckBox
+                android:id="@+id/checkbox_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20" />
+
+            <CheckBox
+                android:id="@+id/checkbox_21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21" />
+
+            <CheckBox
+                android:id="@+id/checkbox_22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="22" />
+
+            <CheckBox
+                android:id="@+id/checkbox_23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23" />
+
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Anak-anak"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24" />
+
+            <CheckBox
+                android:id="@+id/checkbox_25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25" />
+
+            <CheckBox
+                android:id="@+id/checkbox_26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26" />
+
+            <CheckBox
+                android:id="@+id/checkbox_27"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="27" />
+
+            <CheckBox
+                android:id="@+id/checkbox_28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="28" />
+
+            <CheckBox
+                android:id="@+id/checkbox_29"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="29" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30" />
+
+            <CheckBox
+                android:id="@+id/checkbox_31"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="31" />
+
+            <CheckBox
+                android:id="@+id/checkbox_32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="32" />
+
+            <CheckBox
+                android:id="@+id/checkbox_33"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="33" />
+
+            <CheckBox
+                android:id="@+id/checkbox_34"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="34" />
+
+            <CheckBox
+                android:id="@+id/checkbox_35"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="35" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Dewasa"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_36"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="36" />
+
+            <CheckBox
+                android:id="@+id/checkbox_37"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="37" />
+
+            <CheckBox
+                android:id="@+id/checkbox_38"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="38" />
+
+            <CheckBox
+                android:id="@+id/checkbox_39"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="39" />
+
+            <CheckBox
+                android:id="@+id/checkbox_40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="40" />
+
+            <CheckBox
+                android:id="@+id/checkbox_41"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="41" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_42"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="42" />
+
+            <CheckBox
+                android:id="@+id/checkbox_43"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="43" />
+
+            <CheckBox
+                android:id="@+id/checkbox_44"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="44" />
+
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="8dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="Standar US"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6" />
+
+            <CheckBox
+                android:id="@+id/checkbox_6.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6.5" />
+
+            <CheckBox
+                android:id="@+id/checkbox_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7" />
+
+            <CheckBox
+                android:id="@+id/checkbox_7.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7.5" />
+
+            <CheckBox
+                android:id="@+id/checkbox_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8" />
+
+            <CheckBox
+                android:id="@+id/checkbox_8.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8.5" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp">
+
+
+
+            <!-- CheckBoxes untuk pilihan ukuran bayi -->
+            <CheckBox
+                android:id="@+id/checkbox_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9" />
+
+            <CheckBox
+                android:id="@+id/checkbox_9.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9.5" />
+
+            <CheckBox
+                android:id="@+id/checkbox_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10" />
+
+            <CheckBox
+                android:id="@+id/checkbox_10.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10.5" />
+
+            <CheckBox
+                android:id="@+id/checkbox_11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11" />
+
+            <CheckBox
+                android:id="@+id/checkbox_11.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11.5" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC"
+            android:layout_marginVertical="8dp" />
+
+        <Button
+            android:id="@+id/buttonSimpanUkuran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/bottom_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Simpan"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</ScrollView>

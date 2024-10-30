@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomButtonStyle" parent="Widget.Material3.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/bottom_color</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+</resources>

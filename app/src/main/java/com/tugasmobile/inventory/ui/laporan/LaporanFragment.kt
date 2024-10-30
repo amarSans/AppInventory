@@ -1,5 +1,5 @@
 package com.tugasmobile.inventory.ui.laporan
-import LaporanAdapter
+import com.tugasmobile.inventory.adapter.LaporanAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

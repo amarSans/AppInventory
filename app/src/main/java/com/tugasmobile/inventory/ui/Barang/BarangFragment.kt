@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.tugasmobile.inventory.R
+import com.tugasmobile.inventory.adapter.BarangAdapter
 import com.tugasmobile.inventory.databinding.FragmentBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
@@ -38,7 +36,7 @@ class BarangFragment : Fragment() {
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
         barangAdapter = BarangAdapter(emptyList()) { barang ->
             val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
-                putExtra("NAMA_BARANG", barang.namaProduk)
+                putExtra("NAMA_BARANG", barang.namaBarang)
                 putExtra("STOK_BARANG", barang.stok)
                 putExtra("HARGA_BARANG", barang.harga)
                 putExtra("ID_BARANG",barang.id)
@@ -51,7 +49,6 @@ class BarangFragment : Fragment() {
         }
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager = GridLayoutManager(requireContext(), 2) // 2 kolom
-        // Observasi LiveData dari ViewModel untuk memperbarui UI ketika data berubah
         barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }

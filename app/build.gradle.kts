@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.tugasmobile.inventory"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.tugasmobile.inventory"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -49,7 +49,19 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
+    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.runner)
+    implementation(libs.androidx.fragment.testing)
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
+    androidTestImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.inline)
+    androidTestImplementation(libs.mockito.kotlin)
+
 }
