@@ -24,6 +24,7 @@ class addData : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
     private lateinit var binding: ActivityAddDataBinding
     private var stokBarang = 0
+    private lateinit var recyclerView: RecyclerView
     private var selectedColor: String? = null
     private var selectedSizesList: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ class addData : AppCompatActivity() {
         val colorValues = resources.getStringArray(R.array.daftar_warna)
 
         // Inisialisasi RecyclerView dan Adapter
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewColors)
+        recyclerView = findViewById(R.id.recyclerViewColors)
         val colorAdapter = AdapterColorIn(this, colorNames, colorValues)
 
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -75,7 +76,7 @@ class addData : AppCompatActivity() {
         val namaProduk = binding.editTextNamaBarang.text.toString()
         val kodeProduk = binding.editTextKodeBarang.text.toString()
         val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
-        //val selectedColor = getBoxColor()
+        val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors() // Ambil warna yang dipilih
         val selectedCategory = binding.SpinnerKategori.selectedItem.toString()
         val barang = Barang(
             id = 0,
@@ -83,7 +84,7 @@ class addData : AppCompatActivity() {
             kodeBarang = kodeProduk,
             harga = hargaProduk,
             stok = stokBarang,
-            //warna = selectedColor,
+            warna = selectedColors
             /*waktu = getCurrentDate(),
             kategori = selectedCategory,
             ukuran = selectedSizesList*/
@@ -104,18 +105,7 @@ class addData : AppCompatActivity() {
         return dateFormat.format(calendar.time)
     }
 
-    /*private fun getBoxColor(): MutableList<String> {
-        val selectedItems = mutableListOf<String>()
-        val checkboxes =
-            listOf(binding.boxItem1, binding.boxItem2, binding.boxItem3, binding.boxItem4)
 
-        for (checkbox in checkboxes) {
-            if (checkbox.isChecked) {
-                selectedItems.add(checkbox.text.toString())
-            }
-        }
-        return selectedItems
-    }*/
 
     private fun tambahStok() {
         stokBarang += 1

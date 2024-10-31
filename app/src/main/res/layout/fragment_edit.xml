@@ -181,67 +181,13 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Warna" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewColorsEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fillViewport="true">
+                android:orientation="horizontal"
+                android:padding="16dp" />
 
-                <LinearLayout
-                    android:id="@+id/box_grub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <CheckBox
-                        android:id="@+id/box_item_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/background_radio_merah"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:gravity="start|center"
-                        android:text="merah"
-                        android:textSize="12sp" />
-
-                    <CheckBox
-                        android:id="@+id/box_item_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/background_radio_biru"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:gravity="start|center"
-                        android:text="biru"
-                        android:textSize="12sp" />
-
-                    <CheckBox
-                        android:id="@+id/box_item_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/background_radio_kuning"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:gravity="start|center"
-                        android:text="kuning"
-                        android:textSize="12sp" />
-
-                    <CheckBox
-                        android:id="@+id/box_item_4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/background_radio_hijau"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:gravity="start|center"
-                        android:text="hijau"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </HorizontalScrollView>
 
             <TextView
                 android:layout_width="wrap_content"

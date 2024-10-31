@@ -26,7 +26,7 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         holder.price.text = laporan.harga.toString()
         laporan.kodeBarang
         laporan.harga
-        //laporan.warna
+        laporan.warna
         holder.itemId
         holder.itemView.setOnClickListener {
             itemClickListener(laporan)  // Panggil listener dengan data barang

@@ -30,6 +30,8 @@ class LaporanAdapter(private var barangList: List<Barang>) :
         holder.kodeprodukTextView.text = currentLaporan.kodeBarang
         holder.stokTextView.text = currentLaporan.stok.toString()
         holder.hargaTextView.text = currentLaporan.harga.toString()
+
+
     }
     fun updateLaporanList(newBarangList: List<Barang>) {
         this.barangList = newBarangList

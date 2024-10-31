@@ -26,18 +26,24 @@ class AdapterColorIn(
 
     override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
         holder.bind(colorNames[position], colorValues[position])
+        val colorName = colorNames[position] // Ambil nama warna untuk posisi saat ini
+        holder.bind(colorName, colorValues[position])
+        holder.checkBoxColor.isChecked = selectedColors.contains(colorName)
     }
 
     override fun getItemCount(): Int = colorNames.size
 
     fun getSelectedColors(): List<String> = selectedColors
-
+    fun setSelectedColors(colors: List<String>) {
+        selectedColors.clear()
+        selectedColors.addAll(colors)
+        notifyDataSetChanged()
+    }
     inner class ColorViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val checkBoxColor: CheckBox = itemView.findViewById(R.id.checkBoxColor)
+        val checkBoxColor: CheckBox = itemView.findViewById(R.id.checkBoxColor)
 
         fun bind(colorName: String, colorValue: String) {
             checkBoxColor.text = colorName
-            //checkBoxColor.setBackgroundColor(Color.parseColor(colorValue))
             val backgroundDrawable = checkBoxColor.background as? LayerDrawable
             val colorLayer = backgroundDrawable?.findDrawableByLayerId(R.id.color_layer)
             colorLayer?.setTint(Color.parseColor(colorValue))
