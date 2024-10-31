@@ -16,7 +16,6 @@ class AdapterColorIn(
     private val colorValues: Array<String>
 ) : RecyclerView.Adapter<AdapterColorIn.ColorViewHolder>() {
 
-    // List untuk menyimpan warna yang dipilih
     private val selectedColors = mutableListOf<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {

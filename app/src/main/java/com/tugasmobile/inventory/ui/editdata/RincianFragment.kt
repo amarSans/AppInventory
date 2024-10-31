@@ -34,11 +34,9 @@ class RincianFragment : Fragment() {
                 binding.tvKodeBarang.text = it.kodeBarang
                 binding.tvHarga.text = it.harga.toString()
                 binding.tvStok.text = it.stok.toString()
-                //binding.tvKategori.text = it.kategori
+                binding.tvKategori.text = it.kategori
             }
         }
-
-
         return root  // Inflate the layout for this fragment
     }
     override fun onDestroyView() {

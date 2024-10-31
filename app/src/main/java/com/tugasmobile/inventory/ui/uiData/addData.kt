@@ -37,6 +37,11 @@ class addData : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val imgViewBack=binding.imgViewBack
+        imgViewBack.setOnClickListener {
+            // Logika kembali ke halaman sebelumnya atau menutup halaman saat ini
+            finish() // Menutup Activity saat ini dan kembali ke halaman sebelumnya
+        }
         stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
         binding.editStokBarang.setText(stokBarang.toString())
         binding.buttonAddStok.setOnClickListener { tambahStok() }
@@ -71,6 +76,9 @@ class addData : AppCompatActivity() {
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
         }
+
+
+
     }
 
     private fun saveData() {
