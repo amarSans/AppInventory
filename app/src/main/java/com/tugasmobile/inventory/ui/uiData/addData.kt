@@ -52,7 +52,8 @@ class addData : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewColors)
         val colorAdapter = AdapterColorIn(this, colorNames, colorValues)
 
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
         val selectedColors = colorAdapter.getSelectedColors()
 
@@ -76,7 +77,9 @@ class addData : AppCompatActivity() {
         val namaProduk = binding.editTextNamaBarang.text.toString()
         val kodeProduk = binding.editTextKodeBarang.text.toString()
         val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
-        val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors() // Ambil warna yang dipilih
+        val selectedColors =
+            (recyclerView.adapter as AdapterColorIn).getSelectedColors()
+        val waktu=binding.editTextDate.text.toString()
         val selectedCategory = binding.SpinnerKategori.selectedItem.toString()
         val barang = Barang(
             id = 0,
@@ -84,9 +87,9 @@ class addData : AppCompatActivity() {
             kodeBarang = kodeProduk,
             harga = hargaProduk,
             stok = stokBarang,
-            warna = selectedColors
-            /*waktu = getCurrentDate(),
-            kategori = selectedCategory,
+            warna = selectedColors,
+            waktu = getCurrentDate()
+            /*kategori = selectedCategory,
             ukuran = selectedSizesList*/
         )
 
@@ -94,7 +97,8 @@ class addData : AppCompatActivity() {
         viewModel.insertLaporan(barang)
         Toast.makeText(this, "data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         val intent = Intent(
-            this, MainActivity::class.java)
+            this, MainActivity::class.java
+        )
         startActivity(intent)
         finish()
     }
@@ -104,7 +108,6 @@ class addData : AppCompatActivity() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
-
 
 
     private fun tambahStok() {

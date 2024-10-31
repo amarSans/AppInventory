@@ -66,6 +66,7 @@ class EditFragment : Fragment() {
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.SpinnerKategori.adapter = adapter
+                binding.editTextDate.setText(it.waktu)
                 /*val selectedPosition = categories.indexOf(it.kategori)
                 binding.SpinnerKategori.setSelection(if (selectedPosition >= 0) selectedPosition else 0)
 
