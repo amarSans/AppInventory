@@ -55,7 +55,7 @@ class addData : AppCompatActivity() {
         recyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
-        val selectedColors = colorAdapter.getSelectedColors()
+
 
         val currentDate = getCurrentDate()
         binding.editTextDate.setText(currentDate)
@@ -79,7 +79,6 @@ class addData : AppCompatActivity() {
         val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
         val selectedColors =
             (recyclerView.adapter as AdapterColorIn).getSelectedColors()
-        val waktu=binding.editTextDate.text.toString()
         val selectedCategory = binding.SpinnerKategori.selectedItem.toString()
         val barang = Barang(
             id = 0,
@@ -88,9 +87,9 @@ class addData : AppCompatActivity() {
             harga = hargaProduk,
             stok = stokBarang,
             warna = selectedColors,
-            waktu = getCurrentDate()
-            /*kategori = selectedCategory,
-            ukuran = selectedSizesList*/
+            waktu = getCurrentDate(),
+            kategori = selectedCategory
+            /*ukuran = selectedSizesList*/
         )
 
 

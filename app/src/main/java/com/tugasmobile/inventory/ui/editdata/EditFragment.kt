@@ -60,6 +60,7 @@ class EditFragment : Fragment() {
                 binding.editStokBarang.setText(it.stok.toString())
                 binding.editTextHargaBarang.setText(it.harga.toString())
                 binding.editTextKodeBarang.setText(it.kodeBarang)
+                stokBarang=it.stok
                 val warnaFromDb = it.warna // Pastikan ini mengembalikan List<String> warna
                 colorAdapter.setSelectedColors(warnaFromDb)
                 val categories = resources.getStringArray(R.array.daftar_pilihan)
@@ -67,14 +68,14 @@ class EditFragment : Fragment() {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.SpinnerKategori.adapter = adapter
                 binding.editTextDate.setText(it.waktu)
-                /*val selectedPosition = categories.indexOf(it.kategori)
+                val selectedPosition = categories.indexOf(it.kategori)
                 binding.SpinnerKategori.setSelection(if (selectedPosition >= 0) selectedPosition else 0)
 
-                binding.edtUkuran.setText(it.ukuran)*/
+                /*binding.edtUkuran.setText(it.ukuran)*/
             }
 
         }
-        /*binding.SpinnerKategori.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.SpinnerKategori.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedCategory = binding.SpinnerKategori.selectedItem.toString()
                 editViewModel.currentBarang.value?.kategori = selectedCategory
@@ -83,7 +84,7 @@ class EditFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Do nothing
             }
-        }*/
+        }
 
         // Menyimpan perubahan ketika tombol save ditekan
         binding.buttonSave.setOnClickListener {
@@ -92,10 +93,10 @@ class EditFragment : Fragment() {
                 stok = binding.editStokBarang.text.toString().toInt(),
                 harga = binding.editTextHargaBarang.text.toString().toInt(),
                 kodeBarang = binding.editTextKodeBarang.text.toString(),
-                warna = colorAdapter.getSelectedColors()
-               /* kategori = binding.SpinnerKategori.selectedItem.toString(), // Use the selected item
+                warna = colorAdapter.getSelectedColors(),
+                kategori = binding.SpinnerKategori.selectedItem.toString(), // Use the selected item
 
-                ukuran = binding.edtUkuran.text.toString()*/
+               // ukuran = binding.edtUkuran.text.toString()*/
             )
 
             updatedBarang?.let {
@@ -113,6 +114,7 @@ class EditFragment : Fragment() {
         _binding = null
     }
     private fun tambahStok() {
+
         stokBarang += 1
         binding.editStokBarang.setText(stokBarang.toString())
     }

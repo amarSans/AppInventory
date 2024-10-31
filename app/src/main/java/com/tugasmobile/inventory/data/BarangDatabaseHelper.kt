@@ -19,8 +19,8 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         const val COLUMN_STOK = "stok"
         const val COLUMN_HARGA = "harga"
         const val COLUMN_WARNA = "warna"
-        const val COLUMN_WAKTU = "waktu"/*
-        const val COLUMN_KATEGORI = "kategori"
+        const val COLUMN_WAKTU = "waktu"
+        const val COLUMN_KATEGORI = "kategori"/*
         const val COLUMN_UKURAN = "ukuran"
         const val COLUMN_GAMBAR = "gambar"*/
     }
@@ -33,9 +33,9 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                 + "$COLUMN_STOK INTEGER, "
                 + "$COLUMN_HARGA INTEGER, "
                 + "$COLUMN_WARNA TEXT, "
-                + "$COLUMN_WAKTU TEXT "
-                /* + "$COLUMN_KATEGORI TEXT, "
-                 + "$COLUMN_UKURAN TEXT, "
+                + "$COLUMN_WAKTU TEXT, "
+                + "$COLUMN_KATEGORI TEXT "
+                /* + "$COLUMN_UKURAN TEXT, "
                  + "$COLUMN_GAMBAR TEXT)"*/
                 +")") // Menyimpan gambar sebagai URI dalam bentuk string
         db.execSQL(createTable)
@@ -56,9 +56,9 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             put(COLUMN_HARGA, barang.harga)
             put(COLUMN_WARNA, barang.warna.joinToString (","))
             put(COLUMN_WAKTU, barang.waktu)
-            /* put(COLUMN_KATEGORI, barang.kategori)
-             put(COLUMN_UKURAN, barang.ukuran)
-             put(COLUMN_GAMBAR, barang.gambar.toString() )*/ // Simpan Uri gambar sebagai string
+            put(COLUMN_KATEGORI, barang.kategori)
+            /*put(COLUMN_UKURAN, barang.ukuran)
+            put(COLUMN_GAMBAR, barang.gambar.toString() )*/ // Simpan Uri gambar sebagai string
         }
         val id = db.insert(TABLE_LAPORAN, null, values)
         db.close()
@@ -89,7 +89,8 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                     val harga = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA))
                     val warna = it.getString(it.getColumnIndexOrThrow(COLUMN_WARNA)).split(",")
                     val waktu=it.getString(it.getColumnIndexOrThrow(COLUMN_WAKTU))
-                    barangList.add(Barang(id, namaBarang, kodeBarang, stok, harga, warna, waktu))
+                    val kategori=it.getString(it.getColumnIndexOrThrow(COLUMN_KATEGORI))
+                    barangList.add(Barang(id, namaBarang, kodeBarang, stok, harga, warna, waktu, kategori))
                 } while (it.moveToNext())
             }
         }
@@ -116,8 +117,8 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             put(COLUMN_HARGA, barang.harga)
             put(COLUMN_WARNA, barang.warna.joinToString (","))
             put(COLUMN_WAKTU, barang.waktu)
-            /* put(COLUMN_KATEGORI, barang.kategori)
-             put(COLUMN_UKURAN, barang.ukuran)
+            put(COLUMN_KATEGORI, barang.kategori)
+            /*  put(COLUMN_UKURAN, barang.ukuran)
             put(COLUMN_GAMBAR, barang.gambar.toString()) // Simpan Uri gambar sebagai */
         }
 
@@ -156,15 +157,15 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                 val hargaIndex = it.getColumnIndex(COLUMN_HARGA)
                 val warnaIndex = it.getColumnIndex(COLUMN_WARNA)
                 val waktuIndex = it.getColumnIndex(COLUMN_WAKTU)
-                /*val kategoriIndex = it.getColumnIndex(COLUMN_KATEGORI)
-                val ukuranIndex = it.getColumnIndex(COLUMN_UKURAN)
-                */
+                val kategoriIndex = it.getColumnIndex(COLUMN_KATEGORI)
+                /* val ukuranIndex = it.getColumnIndex(COLUMN_UKURAN)
+                 */
                 /*val gambarIndex = it.getColumnIndex(COLUMN_GAMBAR)*/
 
                 // Pastikan kolom tidak -1
                 if (idIndex != -1 && namaBarangIndex != -1 && kodeBarangIndex != -1 && stokIndex != -1 &&
-                    hargaIndex != -1 && warnaIndex != -1 && waktuIndex != -1/*&& kategoriIndex != -1 &
-                    & ukuranIndex != -1  && gambarIndex != -1*/) {
+                    hargaIndex != -1 && warnaIndex != -1 && waktuIndex != -1&& kategoriIndex != -1/* &&
+                    ukuranIndex != -1  && gambarIndex != -1*/) {
 
                     val idBarang = it.getLong(idIndex)
                     val namaBarang = it.getString(namaBarangIndex)
@@ -173,12 +174,12 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                     val harga = it.getInt(hargaIndex)
                     val warna = it.getString(it.getColumnIndexOrThrow(COLUMN_WARNA)).split(",")
                     val waktu = it.getString(waktuIndex)
-                    /*val kategori = it.getString(kategoriIndex)
+                    val kategori = it.getString(kategoriIndex)
 
-                    val ukuran = it.getString(ukuranIndex)*/
+                    /*val ukuran = it.getString(ukuranIndex)*/
                     //val gambarUri = Uri.parse(it.getString(gambarIndex)) // Convert string ke Uri
 
-                    barang = Barang(idBarang, namaBarang, kodeBarang, stok, harga, warna,waktu/*, kategori, ukuran,*/ //,gambarUri
+                    barang = Barang(idBarang, namaBarang, kodeBarang, stok, harga, warna,waktu, kategori/*, ukuran,*/ //,gambarUri
                     )
                 }
             }
