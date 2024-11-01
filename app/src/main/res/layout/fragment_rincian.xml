@@ -5,11 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.editdata.RincianFragment">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constrain1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#A3E6E5E5">
 
         <ImageView
@@ -80,9 +84,10 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_stok" />
 
         <LinearLayout
+            android:id="@+id/linearrv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
             app:layout_constraintTop_toBottomOf="@id/tv_kode_barang"
             android:background="@color/white">
@@ -97,6 +102,19 @@
                 />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/TV_Ukuran"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/tv_kode_barang"
+            app:layout_constraintTop_toBottomOf="@id/linearrv"
+            android:background="@drawable/bacground_harga"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/poppins_semibold"
+
+            />
 
 
         <LinearLayout
@@ -106,10 +124,10 @@
             android:orientation="vertical"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="17dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/tv_stok"
-            app:layout_constraintStart_toStartOf="@id/tv_nama_barang">
+            app:layout_constraintTop_toBottomOf="@id/TV_Ukuran">
 
             <TextView
                 android:layout_width="match_parent"
@@ -123,11 +141,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
+                android:gravity="center_vertical"
                 android:text="500000"
                 android:textColor="@color/coklat_abu_abu"
-                android:textSize="34sp" />
+                android:textSize="35sp" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </ScrollView>
 </FrameLayout>

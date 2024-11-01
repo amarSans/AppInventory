@@ -52,7 +52,7 @@ class RincianFragment : Fragment() {
                 val warnaFromDb = it.warna.map { warna -> warna.trim() }
                 val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
                 colorAdapter.updateColors(warnaFromDb, selectedColorValues)
-
+                binding.TVUkuran.text=it.ukuran
             }
         }
         return root  // Inflate the layout for this fragment
