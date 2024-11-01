@@ -10,7 +10,7 @@
         android:id="@+id/constrain1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/coklat_abu_abu">
+        android:background="#A3E6E5E5">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -78,25 +78,26 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stok" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_ukuran_sendal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="25dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
-            app:layout_constraintTop_toBottomOf="@id/rv_warna_sendal"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_warna_sendal"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
-            app:layout_constraintTop_toBottomOf="@id/tv_kode_barang" />
+            app:layout_constraintTop_toBottomOf="@id/tv_kode_barang"
+            android:background="@color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_warna_sendal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginStart="20dp"
+                android:orientation="horizontal"
+                />
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

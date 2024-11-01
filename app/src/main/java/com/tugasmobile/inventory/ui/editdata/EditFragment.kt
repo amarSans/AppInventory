@@ -82,7 +82,7 @@ class EditFragment : Fragment() {
                 val selectedPosition = categories.indexOf(it.kategori)
                 binding.SpinnerKategori.setSelection(if (selectedPosition >= 0) selectedPosition else 0)
 
-                
+
                 binding.edtUkuran.text = it.ukuran
                 selectedSizesList = it.ukuran.split(",").map { size -> size.trim() }
 
