@@ -187,4 +187,21 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         db.close()
         return barang
     }
+    fun updateWarna(barangId: Long, newColors: List<String>): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_WARNA, newColors.joinToString(","))
+        }
+
+        // Mengupdate warna berdasarkan ID
+        val result = db.update(
+            TABLE_LAPORAN,
+            values,
+            "$COLUMN_ID = ?",
+            arrayOf(barangId.toString())
+        )
+
+        db.close()
+        return result
+    }
 }

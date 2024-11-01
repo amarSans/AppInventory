@@ -102,17 +102,26 @@ class EditFragment : Fragment() {
 
         // Menyimpan perubahan ketika tombol save ditekan
         binding.buttonSave.setOnClickListener {
+            val selectedColors = colorAdapter.getSelectedColors().toSet() // Set untuk mencegah duplikasi
+
+            // Dapatkan warna dari data yang sudah ada
+            val currentColors = editViewModel.currentBarang.value?.warna?.toSet() ?: emptySet()
+
+            // Menghapus warna yang tidak terpilih
+            val colorsToRemove = currentColors - selectedColors // Warna yang ada di database tetapi tidak dipilih
+            val colorsToAdd = selectedColors - currentColors
             val updatedBarang = editViewModel.currentBarang.value?.copy(
                 namaBarang = binding.editTextNamaBarang.text.toString(),
                 stok = binding.editStokBarang.text.toString().toInt(),
                 harga = binding.editTextHargaBarang.text.toString().toInt(),
                 kodeBarang = binding.editTextKodeBarang.text.toString(),
-                warna = colorAdapter.getSelectedColors(),
+                warna = selectedColors.toList(),
                 kategori = binding.SpinnerKategori.selectedItem.toString(), // Use the selected item
                 ukuran = binding.edtUkuran.text.toString()
             )
 
             updatedBarang?.let {
+                editViewModel.updateWarna(it.id, selectedColors.toList())
                 editViewModel.updateLaporan(it)
                 activity?.supportFragmentManager?.popBackStack()
             }

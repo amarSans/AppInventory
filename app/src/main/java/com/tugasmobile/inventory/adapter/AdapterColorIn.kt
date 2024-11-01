@@ -32,7 +32,9 @@ class AdapterColorIn(
 
     override fun getItemCount(): Int = colorNames.size
 
-    fun getSelectedColors(): List<String> = selectedColors
+    fun getSelectedColors(): List<String> {
+        return selectedColors.toList()
+    }
     fun setSelectedColors(colors: List<String>) {
         selectedColors.clear()
         selectedColors.addAll(colors)
@@ -48,7 +50,8 @@ class AdapterColorIn(
             colorLayer?.setTint(Color.parseColor(colorValue))
 
 
-
+            checkBoxColor.setOnCheckedChangeListener(null) // Hapus listener yang ada
+            checkBoxColor.isChecked = selectedColors.contains(colorName)
             // Mengatur listener untuk menambahkan atau menghapus warna yang dipilih
             checkBoxColor.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {

@@ -34,4 +34,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun setCurrentBarang(id: Long) {
         _currentBarang.value = databaseHelper.getLaporanById(id)
     }
+    fun updateWarna(barangId: Long, newColors: List<String>) {
+        databaseHelper.updateWarna(barangId, newColors)
+    }
 }
