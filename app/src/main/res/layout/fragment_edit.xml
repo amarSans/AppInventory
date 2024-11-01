@@ -53,22 +53,7 @@
                         android:hint="masukkan nama barang"
                         android:textSize="12sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="Harga Barang" />
 
-                    <EditText
-                        android:id="@+id/editTextHargaBarang"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/edit_text_bacground"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:hint="masukkan harga barang"
-                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -83,8 +68,25 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
+                        android:layout_marginBottom="16dp"
                         android:hint="masukkan kode barang"
                         android:textSize="12sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="Harga Barang" />
+
+                    <EditText
+                        android:id="@+id/editTextHargaBarang"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edit_text_bacground"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:hint="masukkan harga barang"
+                        android:textSize="12sp"
+                        android:inputType="number"/>
 
                 </LinearLayout>
 
