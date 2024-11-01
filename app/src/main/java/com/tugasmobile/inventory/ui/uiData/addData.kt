@@ -71,7 +71,7 @@ class addData : AppCompatActivity() {
             bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
                 override fun onSizeSelected(selectedSizes: List<String>) {
                     selectedSizesList = selectedSizes.joinToString(", ")
-                    binding.edtUkuran.setText(selectedSizesList)
+                    binding.edtUkuran.text=selectedSizesList
                 }
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
@@ -96,8 +96,8 @@ class addData : AppCompatActivity() {
             stok = stokBarang,
             warna = selectedColors,
             waktu = getCurrentDate(),
-            kategori = selectedCategory
-            /*ukuran = selectedSizesList*/
+            kategori = selectedCategory,
+            ukuran = selectedSizesList
         )
 
 

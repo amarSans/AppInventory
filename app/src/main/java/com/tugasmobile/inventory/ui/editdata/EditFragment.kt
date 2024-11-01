@@ -16,6 +16,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.FragmentEditBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.uiData.BottonUkuranSheet
 
 class EditFragment : Fragment() {
 
@@ -25,7 +26,7 @@ class EditFragment : Fragment() {
     private var barangId: Long = 0
     private var stokBarang = 0
     private lateinit var recyclerView: RecyclerView
-
+    private var selectedSizesList: List<String> = emptyList()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,6 +53,16 @@ class EditFragment : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
+        binding.edtUkuran.setOnClickListener {
+            val bottonUkuranSheet = BottonUkuranSheet.newInstance(selectedSizesList) // Kirim ukuran yang dipilih
+            bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
+                override fun onSizeSelected(selectedSizes: List<String>) {
+                    selectedSizesList = selectedSizes
+                    binding.edtUkuran.text = selectedSizes.joinToString(", ")
+                }
+            }
+            bottonUkuranSheet.show(parentFragmentManager, BottonUkuranSheet.TAG)
+        }
 
         // Mengisi field dengan data barang yang diambil dari ViewModel
         editViewModel.currentBarang.observe(viewLifecycleOwner) { barang ->
@@ -71,7 +82,10 @@ class EditFragment : Fragment() {
                 val selectedPosition = categories.indexOf(it.kategori)
                 binding.SpinnerKategori.setSelection(if (selectedPosition >= 0) selectedPosition else 0)
 
-                /*binding.edtUkuran.setText(it.ukuran)*/
+                
+                binding.edtUkuran.text = it.ukuran
+                selectedSizesList = it.ukuran.split(",").map { size -> size.trim() }
+
             }
 
         }
@@ -95,8 +109,7 @@ class EditFragment : Fragment() {
                 kodeBarang = binding.editTextKodeBarang.text.toString(),
                 warna = colorAdapter.getSelectedColors(),
                 kategori = binding.SpinnerKategori.selectedItem.toString(), // Use the selected item
-
-               // ukuran = binding.edtUkuran.text.toString()*/
+                ukuran = binding.edtUkuran.text.toString()
             )
 
             updatedBarang?.let {

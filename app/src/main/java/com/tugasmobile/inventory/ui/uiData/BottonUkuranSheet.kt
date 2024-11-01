@@ -17,6 +17,7 @@ class BottonUkuranSheet : BottomSheetDialogFragment() {
         fun onSizeSelected(selectedSizes: List<String>)
     }
     var listener: SizeSelectionListener? = null
+    private var selectedSizes: List<String> = emptyList()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,14 +25,49 @@ class BottonUkuranSheet : BottomSheetDialogFragment() {
         _binding = FragmentButtonUkuranSheetBinding.inflate(inflater, container, false)
         return binding.root
     }
+    companion object {
+        const val TAG = "ModalBottomSheet"
+        private const val ARG_SELECTED_SIZES = "selected_sizes"
+
+        fun newInstance(selectedSizes: List<String>): BottonUkuranSheet {
+            val fragment = BottonUkuranSheet()
+            val args = Bundle()
+            args.putStringArrayList(ARG_SELECTED_SIZES, ArrayList(selectedSizes))
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        selectedSizes = arguments?.getStringArrayList(ARG_SELECTED_SIZES) ?: emptyList()
+        for (i in 19..44) {
+            val checkbox = binding.root.findViewById<CheckBox>(
+                resources.getIdentifier("checkbox_$i", "id", requireContext().packageName)
+            )
+            if (selectedSizes.contains(checkbox.text.toString())) {
+                checkbox.isChecked = true
+            }
+        }
+
+        if (selectedSizes.contains(binding.checkbox6.text.toString())) binding.checkbox6.isChecked = true
+        if (selectedSizes.contains(binding.checkbox65.text.toString())) binding.checkbox65.isChecked = true
+        if (selectedSizes.contains(binding.checkbox7.text.toString())) binding.checkbox7.isChecked = true
+        if (selectedSizes.contains(binding.checkbox75.text.toString())) binding.checkbox75.isChecked = true
+        if (selectedSizes.contains(binding.checkbox8.text.toString())) binding.checkbox8.isChecked = true
+        if (selectedSizes.contains(binding.checkbox85.text.toString())) binding.checkbox85.isChecked = true
+        if (selectedSizes.contains(binding.checkbox9.text.toString())) binding.checkbox9.isChecked = true
+        if (selectedSizes.contains(binding.checkbox95.text.toString())) binding.checkbox95.isChecked = true
+        if (selectedSizes.contains(binding.checkbox10.text.toString())) binding.checkbox10.isChecked = true
+        if (selectedSizes.contains(binding.checkbox105.text.toString())) binding.checkbox105.isChecked = true
+        if (selectedSizes.contains(binding.checkbox11.text.toString())) binding.checkbox11.isChecked = true
+        if (selectedSizes.contains(binding.checkbox115.text.toString())) binding.checkbox115.isChecked = true
 
         binding.buttonSimpanUkuran.setOnClickListener {
             // Mengambil ukuran yang dipilih dari setiap checkbox
             val selectedSizes = mutableListOf<String>()
             for (i in 19..44) {
-                val checkbox = binding.root.findViewById<CheckBox>(resources.getIdentifier("checkbox$i", "id",  requireContext().packageName))
+                val checkbox = binding.root.findViewById<CheckBox>(resources.getIdentifier("checkbox_$i", "id",  requireContext().packageName))
                 if (checkbox.isChecked) selectedSizes.add(checkbox.text.toString())
             }
             if (binding.checkbox6.isChecked) selectedSizes.add(binding.checkbox6.text.toString())
@@ -58,7 +94,4 @@ class BottonUkuranSheet : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    companion object {
-        const val TAG = "ModalBottomSheet"
-    }
 }

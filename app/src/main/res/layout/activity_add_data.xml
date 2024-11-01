@@ -232,7 +232,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="Ukuran" />
 
-        <EditText
+        <TextView
             android:id="@+id/edt_ukuran"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

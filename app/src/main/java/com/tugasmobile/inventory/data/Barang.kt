@@ -8,7 +8,7 @@ data class Barang(
     val harga: Int,
     val warna: List<String>,
     val waktu: String,
-    var kategori: String/*,
-    val ukuran: String,
+    var kategori: String,
+    val ukuran: String/*,
     val gambar: Uri*/
 );
