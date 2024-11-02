@@ -1,11 +1,17 @@
 package com.tugasmobile.inventory.ui.editdata
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,8 +24,10 @@ import com.tugasmobile.inventory.ui.ViewModel
 class RincianFragment : Fragment() {
     private var _binding:FragmentRincianBinding?=null
     private val binding get() = _binding!!
+    private var gambarUri: Uri? = null
     private lateinit var rincianViewModel: ViewModel
     private var BarangId:Long=0
+    private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +48,8 @@ class RincianFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
 
+        checkPermission()
+
         // Gunakan barangId untuk memuat detail barang
         rincianViewModel.setCurrentBarang(BarangId)
         rincianViewModel.currentBarang.observe(viewLifecycleOwner){barang->
@@ -53,10 +63,47 @@ class RincianFragment : Fragment() {
                 val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
                 colorAdapter.updateColors(warnaFromDb, selectedColorValues)
                 binding.TVUkuran.text=it.ukuran
+                gambarUri = it.gambar?.let { Uri.parse(it) }
+                gambarUri?.let { uri ->
+                    // Menyimpan URI untuk digunakan setelah izin diberikan
+                    loadImage(uri)
             }
-        }
+        }}
         return root  // Inflate the layout for this fragment
     }
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Izin belum diberikan, minta izin
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_CODE_READ_EXTERNAL_STORAGE)
+        } else {
+            // Izin sudah diberikan, lakukan tindakan yang memerlukan izin
+            gambarUri?.let { uri ->
+                loadImage(uri)
+            }
+        }
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Izin diberikan, lakukan tindakan yang memerlukan izin
+                rincianViewModel.currentBarang.value?.gambar?.let { gambar ->
+                    loadImage(Uri.parse(gambar))
+                }
+            } else {
+                // Izin ditolak, berikan penjelasan atau tampilkan pesan kepada pengguna
+                Toast.makeText(requireContext(), "Izin diperlukan untuk mengakses gambar", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun loadImage(uri: Uri) {
+        // Memuat gambar dari URI
+        binding.imageView3.setImageURI(uri)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

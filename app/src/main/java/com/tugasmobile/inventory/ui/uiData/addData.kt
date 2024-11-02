@@ -1,10 +1,14 @@
 package com.tugasmobile.inventory.ui.uiData
 
+import android.app.Activity
 import android.content.Intent
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,6 +31,7 @@ class addData : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private var selectedColor: String? = null
     private var selectedSizesList: String = ""
+    private var selectedImageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -76,9 +81,22 @@ class addData : AppCompatActivity() {
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
         }
+        binding.buttonGallery.setOnClickListener {
+            openGallery()
+        }
 
 
 
+    }
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intent)
+    }
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            selectedImageUri = result.data?.data
+            binding.imageViewBarang.setImageURI(selectedImageUri)
+        }
     }
 
     private fun saveData() {
@@ -97,7 +115,8 @@ class addData : AppCompatActivity() {
             warna = selectedColors,
             waktu = getCurrentDate(),
             kategori = selectedCategory,
-            ukuran = selectedSizesList
+            ukuran = selectedSizesList,
+            gambar = selectedImageUri?.toString() ?: ""
         )
 
 

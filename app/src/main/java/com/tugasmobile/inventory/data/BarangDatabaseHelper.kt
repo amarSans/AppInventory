@@ -21,8 +21,8 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         const val COLUMN_WARNA = "warna"
         const val COLUMN_WAKTU = "waktu"
         const val COLUMN_KATEGORI = "kategori"
-        const val COLUMN_UKURAN = "ukuran"/*
-        const val COLUMN_GAMBAR = "gambar"*/
+        const val COLUMN_UKURAN = "ukuran"
+        const val COLUMN_GAMBAR = "gambar"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -35,9 +35,9 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                 + "$COLUMN_WARNA TEXT, "
                 + "$COLUMN_WAKTU TEXT, "
                 + "$COLUMN_KATEGORI TEXT, "
-                + "$COLUMN_UKURAN TEXT "
-                /*+ "$COLUMN_GAMBAR TEXT)"*/
-                +")") // Menyimpan gambar sebagai URI dalam bentuk string
+                + "$COLUMN_UKURAN TEXT, "
+                + "$COLUMN_GAMBAR TEXT"
+                +")")
         db.execSQL(createTable)
     }
 
@@ -58,7 +58,7 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             put(COLUMN_WAKTU, barang.waktu)
             put(COLUMN_KATEGORI, barang.kategori)
             put(COLUMN_UKURAN, barang.ukuran)
-            /*put(COLUMN_GAMBAR, barang.gambar.toString() )*/
+            put(COLUMN_GAMBAR, barang.gambar)
         }
         val id = db.insert(TABLE_LAPORAN, null, values)
         db.close()
@@ -91,7 +91,13 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                     val waktu=it.getString(it.getColumnIndexOrThrow(COLUMN_WAKTU))
                     val kategori=it.getString(it.getColumnIndexOrThrow(COLUMN_KATEGORI))
                     val ukuran=it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN))
-                    barangList.add(Barang(id, namaBarang, kodeBarang, stok, harga, warna, waktu, kategori,ukuran))
+                    val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
+
+                    // Membuat objek Barang
+                    val barang = Barang(id, namaBarang, kodeBarang, stok, harga, warna, waktu, kategori, ukuran,
+                        gambarUri.toString()
+                    )
+                    barangList.add(barang)
                 } while (it.moveToNext())
             }
         }
@@ -120,7 +126,7 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
             put(COLUMN_WAKTU, barang.waktu)
             put(COLUMN_KATEGORI, barang.kategori)
             put(COLUMN_UKURAN, barang.ukuran)
-            /*put(COLUMN_GAMBAR, barang.gambar.toString()) // Simpan Uri gambar sebagai */
+            put(COLUMN_GAMBAR, barang.gambar.toString())
         }
 
         // Mengupdate barang berdasarkan ID
@@ -160,12 +166,12 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                 val waktuIndex = it.getColumnIndex(COLUMN_WAKTU)
                 val kategoriIndex = it.getColumnIndex(COLUMN_KATEGORI)
                 val ukuranIndex = it.getColumnIndex(COLUMN_UKURAN)
-                /*val gambarIndex = it.getColumnIndex(COLUMN_GAMBAR)*/
+                val gambarIndex = it.getColumnIndex(COLUMN_GAMBAR)
 
                 // Pastikan kolom tidak -1
                 if (idIndex != -1 && namaBarangIndex != -1 && kodeBarangIndex != -1 && stokIndex != -1 &&
                     hargaIndex != -1 && warnaIndex != -1 && waktuIndex != -1&& kategoriIndex != -1 &&
-                    ukuranIndex != -1 /* && gambarIndex != -1*/) {
+                    ukuranIndex != -1  && gambarIndex != -1) {
 
                     val idBarang = it.getLong(idIndex)
                     val namaBarang = it.getString(namaBarangIndex)
@@ -176,9 +182,9 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                     val waktu = it.getString(waktuIndex)
                     val kategori = it.getString(kategoriIndex)
                     val ukuran = it.getString(ukuranIndex)
-                    //val gambarUri = Uri.parse(it.getString(gambarIndex)) // Convert string ke Uri
+                    val gambarUri = Uri.parse(it.getString(gambarIndex))
 
-                    barang = Barang(idBarang, namaBarang, kodeBarang, stok, harga, warna,waktu, kategori, ukuran //,gambarUri
+                    barang = Barang(idBarang, namaBarang, kodeBarang, stok, harga, warna,waktu, kategori, ukuran ,gambarUri.toString()
                     )
                 }
             }

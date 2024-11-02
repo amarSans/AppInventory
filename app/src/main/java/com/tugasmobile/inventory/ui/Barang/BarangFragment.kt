@@ -39,7 +39,7 @@ class BarangFragment : Fragment() {
                 putExtra("NAMA_BARANG", barang.namaBarang)
                 putExtra("STOK_BARANG", barang.stok)
                 putExtra("HARGA_BARANG", barang.harga)
-                putExtra("ID_BARANG",barang.id)
+                putExtra("ID_BARANG", barang.id)
             }
             startActivity(intent)  // Mulai Activity dengan data
         }
@@ -48,7 +48,8 @@ class BarangFragment : Fragment() {
             startActivity(intent)
         }
         binding.recyclerViewLaporan.adapter = barangAdapter
-        binding.recyclerViewLaporan.layoutManager = GridLayoutManager(requireContext(), 2) // 2 kolom
+        binding.recyclerViewLaporan.layoutManager =
+            GridLayoutManager(requireContext(), 2) // 2 kolom
         barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
@@ -59,6 +60,7 @@ class BarangFragment : Fragment() {
         super.onResume()
         barangViewModel.loadLaporan()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
