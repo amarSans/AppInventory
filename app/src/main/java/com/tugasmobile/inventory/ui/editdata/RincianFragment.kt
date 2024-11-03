@@ -74,12 +74,11 @@ class RincianFragment : Fragment() {
     private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            // Izin belum diberikan, minta izin
+
             ActivityCompat.requestPermissions(requireActivity(),
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 REQUEST_CODE_READ_EXTERNAL_STORAGE)
         } else {
-            // Izin sudah diberikan, lakukan tindakan yang memerlukan izin
             gambarUri?.let { uri ->
                 loadImage(uri)
             }

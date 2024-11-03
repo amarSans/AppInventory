@@ -1,16 +1,22 @@
 package com.tugasmobile.inventory.ui.uiData
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +27,9 @@ import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.data.Barang
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -32,6 +41,11 @@ class addData : AppCompatActivity() {
     private var selectedColor: String? = null
     private var selectedSizesList: String = ""
     private var selectedImageUri: Uri? = null
+    private lateinit var photoUri:Uri
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 1001 // Konstanta untuk kode permintaan izin
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,7 +80,7 @@ class addData : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
 
-
+        checkStoragePermissions()
         val currentDate = getCurrentDate()
         binding.editTextDate.setText(currentDate)
 
@@ -84,10 +98,75 @@ class addData : AppCompatActivity() {
         binding.buttonGallery.setOnClickListener {
             openGallery()
         }
-
+        binding.buttonCamera.setOnClickListener {
+            openCamera()
+        }
 
 
     }
+    private fun checkStoragePermissions() {
+        val permissionsNeeded = mutableListOf<String>()
+
+        // Cek izin untuk WRITE_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        // Cek izin untuk READ_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        // Jika izin belum diberikan, minta izin
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), REQUEST_CODE_PERMISSIONS)
+        } else {
+            openCamera()
+            openGallery()
+        }
+    }
+    private fun openCamera() {
+        // Membuat file sementara untuk menyimpan gambar
+        val photoFile = File.createTempFile("IMG_", ".jpg", cacheDir).apply {
+            // Menyimpan URI file untuk digunakan nanti
+            photoUri = FileProvider.getUriForFile(
+                this@addData,
+                "${packageName}.fileprovider",
+                this
+            )
+        }
+
+        // Intent ubuntu membuka kamera
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+        }
+
+        // Meluncurkan kamera
+        cameraLauncher.launch(cameraIntent)
+    }
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Menyimpan URI foto yang diambil
+            selectedImageUri = photoUri
+            binding.imageViewBarang.setImageURI(selectedImageUri)
+
+            val outputFile = File(Environment.getExternalStorageDirectory(), "gambar.jpg")
+            FileInputStream(File(photoUri.path!!)).use { input -> // Menggunakan path dari photoUri
+                FileOutputStream(outputFile).use { output ->
+                    input.copyTo(output)
+                }
+            }
+
+            // Memberikan feedback kepada pengguna
+            Toast.makeText(this, "Gambar berhasil disimpan ke penyimpanan eksternal", Toast.LENGTH_SHORT).show()
+
+
+        } else {
+            Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
@@ -148,4 +227,15 @@ class addData : AppCompatActivity() {
         }
         binding.editStokBarang.setText(stokBarang.toString())
     }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Izin diberikan, Anda bisa melanjutkan operasi yang memerlukan izin
+            } else {
+                Toast.makeText(this, "Izin tidak diberikan untuk menyimpan gambar", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }
