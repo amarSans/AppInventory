@@ -3,7 +3,7 @@ package com.tugasmobile.inventory.data
 import android.net.Uri
 
 data class Barang(
-    val id: Long ,
+    val id: Long,
     val namaBarang: String,
     val kodeBarang: String,
     val stok: Int,
@@ -12,5 +12,5 @@ data class Barang(
     val waktu: String,
     var kategori: String,
     val ukuran: String,
-    val gambar: String
+    var gambar: String
 );

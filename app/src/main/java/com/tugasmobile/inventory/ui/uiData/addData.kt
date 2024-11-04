@@ -17,8 +17,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.MainActivity
@@ -28,8 +26,6 @@ import com.tugasmobile.inventory.data.Barang
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -52,6 +48,10 @@ class addData : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityAddDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val imgViewBack = binding.imgViewBack
+        imgViewBack.setOnClickListener {
+            finish()
+        }
 
         // Tambahkan periksa izin
         checkPermissions()
