@@ -63,5 +63,7 @@ dependencies {
     androidTestImplementation(libs.mockito.core)
     androidTestImplementation(libs.mockito.inline)
     androidTestImplementation(libs.mockito.kotlin)
+    implementation(libs.glide)
+    
 
 }

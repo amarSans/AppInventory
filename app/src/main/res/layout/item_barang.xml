@@ -1,51 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/itemBarang"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginTop="10dp"
+    android:clipToOutline="true">
+
+    <!-- Bagian gambar produk -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <!-- Gambar produk -->
         <ImageView
-            android:id="@+id/imgBarang"
+            android:id="@+id/item_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/item_background"
             android:scaleType="centerCrop"
-            app:cardCornerRadius="8dp"
-            android:background="@drawable/ic_launcher_background"
-            />
+            android:src="@drawable/ic_launcher_background" />
+
+        <!-- Badge untuk jumlah stok atau angka lainnya -->
         <TextView
+            android:id="@+id/TVstok"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/badge_background"
+        android:gravity="center"
+        android:text="4"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+    </RelativeLayout>
+
+    <!-- Bagian bawah untuk harga dan kode barang -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+
+        android:background="@drawable/tampilan_bawah_item">
+
+        <TextView
+            android:id="@+id/TVPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/TVstok"
-            android:text="50"
-            android:textSize="40sp"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:text="1231"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="sans-serif-medium"/>
+
         <TextView
             android:id="@+id/TVkodebarang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="kode barang"
-            android:paddingStart="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/TVPrice"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5000"
-            android:id="@+id/TVPrice"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:padding="10dp"
-            android:textSize="25sp"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+            android:text="qdwqdqd"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+</LinearLayout>

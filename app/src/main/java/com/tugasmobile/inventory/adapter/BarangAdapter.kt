@@ -3,8 +3,10 @@ package com.tugasmobile.inventory.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.Barang
 
@@ -24,6 +26,9 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         holder.name.text= laporan.namaBarang
         holder.stok.text = laporan.stok.toString()
         holder.price.text = laporan.harga.toString()
+        Glide.with(holder.itemView.context)
+            .load(laporan.gambar) // Gantilah dengan path gambar dari database
+            .into(holder.gambar)
         laporan.kodeBarang
         laporan.harga
         laporan.warna
@@ -39,6 +44,7 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         val name:TextView=itemView.findViewById(R.id.TVkodebarang)
         val stok:TextView=itemView.findViewById(R.id.TVstok)
         val price:TextView=itemView.findViewById(R.id.TVPrice)
+        val gambar:ImageView=itemView.findViewById(R.id.item_image)
     }
     fun updateLaporanList(newBarangList: List<Barang>) {
         this.listBarang = newBarangList
