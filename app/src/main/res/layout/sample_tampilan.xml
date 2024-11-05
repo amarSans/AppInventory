@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/et_kode_barang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Masukkan Kode Barang" />
+
+    <Button
+        android:id="@+id/btn_cari"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cari" />
+
+    <TextView
+        android:id="@+id/tv_detail_barang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp" />
+
+    <EditText
+        android:id="@+id/et_jumlah_keluar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Jumlah Barang Keluar" />
+
+    <Button
+        android:id="@+id/btn_proses_keluar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Proses Keluar" />
+</LinearLayout>
