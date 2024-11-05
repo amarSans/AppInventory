@@ -1,74 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:orientation="vertical"
-    android:padding="8dp"
     android:layout_marginStart="10dp"
     android:layout_marginEnd="10dp"
     android:layout_marginTop="10dp"
-    android:clipToOutline="true">
+    app:cardCornerRadius="25dp"
+    app:cardElevation="4dp">
 
-    <!-- Bagian gambar produk -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+        android:layout_height="wrap_content">
 
-        <!-- Gambar produk -->
+        <!-- Gambar produk yang mengikuti ukuran gambar -->
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/item_background"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/side_nav_bar" />
 
         <!-- Badge untuk jumlah stok atau angka lainnya -->
         <TextView
             android:id="@+id/TVstok"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/badge_background"
-        android:gravity="center"
-        android:text="4"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+            android:layout_alignEnd="@id/item_image"
+            android:layout_alignTop="@id/item_image"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:text="4"
+            android:textColor="@android:color/white"
+            android:textSize="12sp" />
+
+        <!-- Bagian bawah untuk harga dan kode barang -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/item_image"
+            android:background="@drawable/tampilan_bawah_item"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/TVPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1231"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_marginStart="10dp" />
+
+            <TextView
+                android:id="@+id/TVkodebarang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="qdwqdqd"
+                android:layout_marginStart="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="13sp" />
+        </LinearLayout>
+
     </RelativeLayout>
-
-    <!-- Bagian bawah untuk harga dan kode barang -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp"
-
-        android:background="@drawable/tampilan_bawah_item">
-
-        <TextView
-            android:id="@+id/TVPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1231"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:layout_marginStart="10dp"
-            android:fontFamily="sans-serif-medium"/>
-
-        <TextView
-            android:id="@+id/TVkodebarang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="qdwqdqd"
-            android:layout_marginStart="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="13sp" />
-    </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>
