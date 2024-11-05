@@ -12,6 +12,7 @@ class LaporanAdapter(private var barangList: List<Barang>) :
     RecyclerView.Adapter<LaporanAdapter.LaporanViewHolder>() {
 
     class LaporanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tanggalTextView:TextView=itemView.findViewById(R.id.tanggalTextView)
         val namaProdukTextView: TextView = itemView.findViewById(R.id.namaProdukTextView)
         val kodeprodukTextView:TextView=itemView.findViewById(R.id.kodeProdukTextView)
         val stokTextView: TextView = itemView.findViewById(R.id.stokTextView)
@@ -26,10 +27,12 @@ class LaporanAdapter(private var barangList: List<Barang>) :
 
     override fun onBindViewHolder(holder: LaporanViewHolder, position: Int) {
         val currentLaporan = barangList[position]
+        holder.tanggalTextView.text=currentLaporan.waktu
         holder.namaProdukTextView.text = currentLaporan.namaBarang
         holder.kodeprodukTextView.text = currentLaporan.kodeBarang
         holder.stokTextView.text = currentLaporan.stok.toString()
         holder.hargaTextView.text = currentLaporan.harga.toString()
+
 
 
 
