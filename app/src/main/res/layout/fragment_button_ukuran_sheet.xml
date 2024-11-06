@@ -11,7 +11,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ukuran"
+            android:text="@string/ukuran"
             android:textSize="16sp"
             android:textStyle="bold"
             android:fontFamily="@font/poppins_semibold"/>
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Bayi"
+            android:text="@string/bayi"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="14sp" />
 
@@ -41,31 +41,31 @@
                 android:id="@+id/checkbox_19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="19" />
+                android:text="@string/_19" />
 
             <CheckBox
                 android:id="@+id/checkbox_20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20" />
+                android:text="@string/_20" />
 
             <CheckBox
                 android:id="@+id/checkbox_21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="21" />
+                android:text="@string/_21" />
 
             <CheckBox
                 android:id="@+id/checkbox_22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="22" />
+                android:text="@string/_22" />
 
             <CheckBox
                 android:id="@+id/checkbox_23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="23" />
+                android:text="@string/_23" />
 
 
         </LinearLayout>
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Anak-anak"
+            android:text="@string/anak_anak"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="14sp" />
         <LinearLayout
@@ -95,37 +95,37 @@
                 android:id="@+id/checkbox_24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="24" />
+                android:text="@string/_24" />
 
             <CheckBox
                 android:id="@+id/checkbox_25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="25" />
+                android:text="@string/_25" />
 
             <CheckBox
                 android:id="@+id/checkbox_26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="26" />
+                android:text="@string/_26" />
 
             <CheckBox
                 android:id="@+id/checkbox_27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="27" />
+                android:text="@string/_27" />
 
             <CheckBox
                 android:id="@+id/checkbox_28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="28" />
+                android:text="@string/_28" />
 
             <CheckBox
                 android:id="@+id/checkbox_29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="29" />
+                android:text="@string/_29" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -140,37 +140,37 @@
                 android:id="@+id/checkbox_30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="30" />
+                android:text="@string/_30" />
 
             <CheckBox
                 android:id="@+id/checkbox_31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="31" />
+                android:text="@string/_31" />
 
             <CheckBox
                 android:id="@+id/checkbox_32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="32" />
+                android:text="@string/_32" />
 
             <CheckBox
                 android:id="@+id/checkbox_33"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="33" />
+                android:text="@string/_33" />
 
             <CheckBox
                 android:id="@+id/checkbox_34"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="34" />
+                android:text="@string/_34" />
 
             <CheckBox
                 android:id="@+id/checkbox_35"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="35" />
+                android:text="@string/_35" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -181,7 +181,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Dewasa"
+            android:text="@string/dewasa"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="14sp" />
         <LinearLayout
@@ -196,37 +196,37 @@
                 android:id="@+id/checkbox_36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="36" />
+                android:text="@string/_36" />
 
             <CheckBox
                 android:id="@+id/checkbox_37"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="37" />
+                android:text="@string/_37" />
 
             <CheckBox
                 android:id="@+id/checkbox_38"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="38" />
+                android:text="@string/_38" />
 
             <CheckBox
                 android:id="@+id/checkbox_39"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="39" />
+                android:text="@string/_39" />
 
             <CheckBox
                 android:id="@+id/checkbox_40"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="40" />
+                android:text="@string/_40" />
 
             <CheckBox
                 android:id="@+id/checkbox_41"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="41" />
+                android:text="@string/_41" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -241,19 +241,19 @@
                 android:id="@+id/checkbox_42"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="42" />
+                android:text="@string/_42" />
 
             <CheckBox
                 android:id="@+id/checkbox_43"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="43" />
+                android:text="@string/_43" />
 
             <CheckBox
                 android:id="@+id/checkbox_44"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="44" />
+                android:text="@string/_44" />
 
 
         </LinearLayout>
@@ -266,7 +266,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Standar US"
+            android:text="@string/standar_us"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="14sp" />
         <LinearLayout
@@ -283,37 +283,37 @@
                 android:id="@+id/checkbox_6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6" />
+                android:text="@string/_6" />
 
             <CheckBox
                 android:id="@+id/checkbox_6.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6.5" />
+                android:text="@string/_6_5" />
 
             <CheckBox
                 android:id="@+id/checkbox_7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7" />
+                android:text="@string/_7" />
 
             <CheckBox
                 android:id="@+id/checkbox_7.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7.5" />
+                android:text="@string/_7_5" />
 
             <CheckBox
                 android:id="@+id/checkbox_8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8" />
+                android:text="@string/_8" />
 
             <CheckBox
                 android:id="@+id/checkbox_8.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="8.5" />
+                android:text="@string/_8_5" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -329,37 +329,37 @@
                 android:id="@+id/checkbox_9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9" />
+                android:text="@string/_9" />
 
             <CheckBox
                 android:id="@+id/checkbox_9.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9.5" />
+                android:text="@string/_9_5" />
 
             <CheckBox
                 android:id="@+id/checkbox_10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10" />
+                android:text="@string/_10" />
 
             <CheckBox
                 android:id="@+id/checkbox_10.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.5" />
+                android:text="@string/_10_5" />
 
             <CheckBox
                 android:id="@+id/checkbox_11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11" />
+                android:text="@string/_11" />
 
             <CheckBox
                 android:id="@+id/checkbox_11.5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="11.5" />
+                android:text="@string/_11_5" />
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -374,7 +374,7 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/bottom_color"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Simpan"
+            android:text="@string/simpan"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 

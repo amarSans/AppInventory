@@ -38,6 +38,69 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!--bagian addData-->
+    <string name="nama_barang">Nama Barang</string>
+    <string name="masukkan_nama_barang">masukkan nama barang</string>
+    <string name="kode_barang">Kode Barang</string>
+    <string name="masukkan_kode_barang">masukkan kode barang</string>
+    <string name="harga_barang">Harga Barang</string>
+    <string name="masukkan_harga_barang">masukkan harga barang</string>
+    <string name="camera">camera</string>
+    <string name="gallery">gallery</string>
+    <string name="stok_barang">Stok Barang</string>
+    <string name="stok">stok</string>
+    <string name="warna">Warna</string>
+    <string name="waktu">Waktu</string>
+    <string name="kategori">Kategori</string>
+    <string name="ukuran">Ukuran</string>
+    <string name="masukkan_ukuran">masukkan ukuran</string>
+    <string name="save">Save</string>
+
+    <!--bagian button sheet-->
+    <string name="bayi">Bayi</string>
+    <string name="_19">19</string>
+    <string name="_21">21</string>
+    <string name="_22">22</string>
+    <string name="_23">23</string>
+    <string name="_25">25</string>
+    <string name="_26">26</string>
+    <string name="_27">27</string>
+    <string name="_28">28</string>
+    <string name="_29">29</string>
+    <string name="_30">30</string>
+    <string name="_31">31</string>
+    <string name="_32">32</string>
+    <string name="_34">34</string>
+    <string name="_35">35</string>
+    <string name="dewasa">Dewasa</string>
+    <string name="_36">36</string>
+    <string name="_37">37</string>
+    <string name="_38">38</string>
+    <string name="_39">39</string>
+    <string name="_40">40</string>
+    <string name="_41">41</string>
+    <string name="_42">42</string>
+    <string name="_43">43</string>
+    <string name="_44">44</string>
+    <string name="standar_us">Standar US</string>
+    <string name="_6">6</string>
+    <string name="_6_5">6.5</string>
+    <string name="_7">7</string>
+    <string name="_7_5">7.5</string>
+    <string name="_8">8</string>
+    <string name="_8_5">8.5</string>
+    <string name="_9">9</string>
+    <string name="_9_5">9.5</string>
+    <string name="_10">10</string>
+    <string name="_10_5">10.5</string>
+    <string name="_11_5">11.5</string>
+    <string name="_11">11</string>
+    <string name="simpan">Simpan</string>
+    <string name="_33">33</string>
+    <string name="_24">24</string>
+    <string name="anak_anak">Anak-anak</string>
+    <string name="_20">20</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Nama Barang" />
+                        android:text="@string/nama_barang" />
 
                     <EditText
                         android:id="@+id/editTextNamaBarang"
@@ -50,7 +50,7 @@
                         android:layout_marginBottom="16dp"
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
-                        android:hint="masukkan nama barang"
+                        android:hint="@string/masukkan_nama_barang"
                         android:textSize="12sp" />
 
 
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Kode Barang" />
+                        android:text="@string/kode_barang" />
 
                     <EditText
                         android:id="@+id/editTextKodeBarang"
@@ -69,14 +69,14 @@
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
                         android:layout_marginBottom="16dp"
-                        android:hint="masukkan kode barang"
+                        android:hint="@string/masukkan_kode_barang"
                         android:textSize="12sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="6dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Harga Barang" />
+                        android:text="@string/harga_barang" />
 
                     <EditText
                         android:id="@+id/editTextHargaBarang"
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
-                        android:hint="masukkan harga barang"
+                        android:hint="@string/masukkan_harga_barang"
                         android:textSize="12sp"
                         android:inputType="number"/>
 
@@ -118,14 +118,14 @@
                             android:id="@+id/buttonCamera"
                             style="@style/CustomButtonStyle"
                             android:layout_marginEnd="4dp"
-                            android:text="camera" />
+                            android:text="@string/camera" />
 
 
                         <Button
                             android:id="@+id/buttonGallery"
                             style="@style/CustomButtonStyle"
                             android:layout_marginStart="4dp"
-                            android:text="gallery" />
+                            android:text="@string/gallery" />
                         />
                     </LinearLayout>
                 </LinearLayout>
@@ -137,7 +137,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="6dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Stok Barang" />
+                android:text="@string/stok_barang" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -160,7 +160,7 @@
                     android:layout_weight="@integer/material_motion_duration_long_1"
                     android:background="@drawable/bacgorund_kotak"
                     android:fontFamily="@font/poppins_semibold"
-                    android:hint="stok"
+                    android:hint="@string/stok"
                     android:textAlignment="center"
                     android:textSize="31sp"
 
@@ -183,7 +183,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Warna" />
+                android:text="@string/warna" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewColorsEdit"
@@ -199,7 +199,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="6dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Waktu" />
+                android:text="@string/waktu" />
 
             <EditText
                 android:id="@+id/edit_text_date"
@@ -209,7 +209,7 @@
                 android:clickable="false"
                 android:focusable="false"
                 android:fontFamily="@font/poppins_semibold"
-                android:hint="masukkan tanggal"
+
                 android:textSize="12sp" />
 
             <TextView
@@ -218,7 +218,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="6dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Kategori" />
+                android:text="@string/kategori" />
 
             <Spinner
                 android:id="@+id/Spinner_kategori"
@@ -235,7 +235,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="6dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Ukuran" />
+                android:text="@string/ukuran" />
 
             <TextView
                 android:id="@+id/edt_ukuran"
@@ -243,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_bacground"
                 android:fontFamily="@font/poppins_semibold"
-                android:hint="masukkan ukuran"
+                android:hint="@string/masukkan_ukuran"
                 android:textSize="12sp" />
 
             <Button
@@ -254,7 +254,7 @@
                 android:layout_marginBottom="30dp"
                 android:backgroundTint="@color/bottom_color"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Save"
+                android:text="@string/save"
                 android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
