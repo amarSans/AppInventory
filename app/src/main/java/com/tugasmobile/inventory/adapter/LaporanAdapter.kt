@@ -12,7 +12,7 @@ class LaporanAdapter(private var barangList: List<Barang>) :
     RecyclerView.Adapter<LaporanAdapter.LaporanViewHolder>() {
 
     class LaporanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tanggalTextView:TextView=itemView.findViewById(R.id.tanggalTextView)
+        val tanggalTextView:TextView=itemView.findViewById(R.id.item_data_tanggal)
         val namaProdukTextView: TextView = itemView.findViewById(R.id.namaProdukTextView)
         val kodeprodukTextView:TextView=itemView.findViewById(R.id.kodeProdukTextView)
         val stokTextView: TextView = itemView.findViewById(R.id.stokTextView)
