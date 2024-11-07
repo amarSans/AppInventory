@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.runner)
     implementation(libs.androidx.fragment.testing)
+    implementation(libs.filament.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)

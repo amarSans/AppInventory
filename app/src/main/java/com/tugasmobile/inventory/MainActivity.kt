@@ -14,7 +14,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_barang, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_barang_masuk, R.id.nav_tabel_barang
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
