@@ -29,10 +29,7 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         Glide.with(holder.itemView.context)
             .load(laporan.gambar) // Gantilah dengan path gambar dari database
             .into(holder.gambar)
-        laporan.kodeBarang
-        laporan.harga
-        laporan.warna
-        holder.itemId
+
         holder.itemView.setOnClickListener {
             itemClickListener(laporan)  // Panggil listener dengan data barang
         }
