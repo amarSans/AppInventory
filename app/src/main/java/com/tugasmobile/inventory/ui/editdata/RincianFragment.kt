@@ -32,7 +32,7 @@ class RincianFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         rincianViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         _binding = FragmentRincianBinding.inflate(inflater,container,false)
         val root:View=binding.root
@@ -56,14 +56,14 @@ class RincianFragment : Fragment() {
             barang?.let{
                 binding.tvNamaBarang.text = it.namaBarang
                 binding.tvKodeBarang.text = it.kodeBarang
-                binding.tvHarga.text = it.harga.toString()
+                binding.tvHarga.text = "Rp. ${it.harga}"
                 binding.tvStok.text = it.stok.toString()
                 binding.tvKategori.text = it.kategori
                 val warnaFromDb = it.warna.map { warna -> warna.trim() }
                 val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
                 colorAdapter.updateColors(warnaFromDb, selectedColorValues)
                 binding.TVUkuran.text=it.ukuran
-                gambarUri = it.gambar?.let { Uri.parse(it) }
+                gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
                     // Menyimpan URI untuk digunakan setelah izin diberikan
                     loadImage(uri)
