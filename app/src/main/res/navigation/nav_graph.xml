@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/barangFragment"
-        android:name="com.tugasmobile.inventory.ui.Barang.BarangFragment"
+        android:name="com.tugasmobile.inventory.ui.Barang.BarangMasuk"
         android:label="Barang"
-        tools:layout="@layout/fragment_barang">
+        tools:layout="@layout/fragment_barang_masuk">
         <action
             android:id="@+id/action_barangFragment_to_rincianFragment"
             app:destination="@id/rincianFragment"/>

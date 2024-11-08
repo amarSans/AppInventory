@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.databinding.FragmentLaporanBinding
 import com.tugasmobile.inventory.ui.ViewModel
 
-class LaporanFragment : Fragment() {
+class Tabel : Fragment() {
 
     private var _binding: FragmentLaporanBinding? = null
     private val binding get() = _binding!!

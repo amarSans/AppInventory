@@ -3,25 +3,60 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@id/nav_home">
 
+    <!-- Home Fragment -->
     <fragment
         android:id="@+id/nav_home"
         android:name="com.tugasmobile.inventory.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
+    <!-- Barang Masuk Fragment -->
     <fragment
         android:id="@+id/nav_barang_masuk"
-        android:name="com.tugasmobile.inventory.ui.Barang.BarangFragment"
-        android:label="Barang"
-        tools:layout="@layout/fragment_barang" />
+        android:name="com.tugasmobile.inventory.ui.Barang.BarangMasuk"
+        android:label="@string/barang_masuk"
+        tools:layout="@layout/fragment_barang_masuk" />
 
+    <!-- Barang Keluar Fragment -->
     <fragment
         android:id="@+id/nav_barang_keluar"
-        android:name="com.tugasmobile.inventory.ui.laporan.LaporanFragment"
-        android:label="@string/menu_laporan"
+        android:name="com.tugasmobile.inventory.ui.Barang.BarangKeluar"
+        android:label="Barang Keluar"
+        tools:layout="@layout/fragment_barang_keluar" />
+
+    <!-- Tabel Barang Fragment -->
+    <fragment
+        android:id="@+id/nav_tabel"
+        android:name="com.tugasmobile.inventory.ui.laporan.Tabel"
+        android:label="Tabel Barang"
         tools:layout="@layout/fragment_laporan" />
 
+    <!-- Laporan Bulanan Fragment -->
+    <fragment
+        android:id="@+id/nav_daftar_barang"
+        android:name="com.tugasmobile.inventory.ui.laporan.DaftarBarang"
+        android:label="Daftar Barang"
+        tools:layout="@layout/fragment_daftar_barang" />
 
+    <!-- Laporan Harian Fragment -->
+    <fragment
+        android:id="@+id/nav_history_barang"
+        android:name="com.tugasmobile.inventory.ui.laporan.HistoryBarang"
+        android:label="History Barang"
+        tools:layout="@layout/fragment_history_barang" />
+
+    <!-- Lainnya Fragment -->
+    <!--<fragment
+        android:id="@+id/nav_setting"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting" />
+
+    &lt;!&ndash; About Fragment &ndash;&gt;
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.tugasmobile.inventory.ui.about.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />-->
 </navigation>
