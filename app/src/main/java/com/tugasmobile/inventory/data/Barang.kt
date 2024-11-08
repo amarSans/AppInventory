@@ -1,7 +1,5 @@
 package com.tugasmobile.inventory.data
 
-import android.net.Uri
-
 data class Barang(
     val id: Long,
     val namaBarang: String,

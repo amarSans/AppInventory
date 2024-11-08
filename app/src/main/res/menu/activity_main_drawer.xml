@@ -17,28 +17,46 @@
             android:title="@string/barang_masuk"
             />
         <item
-            android:id="@+id/nav_tabel_barang"
-            android:icon="@drawable/baseline_add_chart_24"
-            android:title="@string/menu_laporan" />
+            android:id="@+id/nav_barang_keluar"
+            android:icon="@drawable/baseline_outbox_24"
+            android:title="Barang Keluar" />
         <item
             android:id="@+id/labels_item"
             android:title="tabel">
             <menu>
                 <item
                     android:id="@+id/nav_tabel"
-                    android:icon="@drawable/baseline_home_24"
-                    android:title="@string/menu_home"
+                    android:icon="@drawable/outline_data_table_24"
+                    android:title="tabel barang"
                     />
 
                 <item
                     android:id="@+id/nav_laporan_bulanan"
-                    android:icon="@drawable/baseline_move_to_inbox_24"
-                    android:title="@string/barang_masuk"
+                    android:icon="@drawable/sharp_box_24"
+                    android:title="Daftar Barang"
                     />
                 <item
                     android:id="@+id/nav_laporan_harian"
-                    android:icon="@drawable/baseline_add_chart_24"
-                    android:title="@string/menu_laporan" />
+                    android:icon="@drawable/rounded_deployed_code_history_24"
+                    android:title="history barang" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/labels_setting"
+            android:title="setting">
+            <menu>
+                <item
+                    android:id="@+id/nav_setting"
+                    android:icon="@drawable/baseline_settings_24"
+                    android:title="Setting"
+                    />
+
+                <item
+                    android:id="@+id/nav_about"
+                    android:icon="@drawable/baseline_info_24"
+                    android:title="About"
+                    />
+
             </menu>
         </item>
 
