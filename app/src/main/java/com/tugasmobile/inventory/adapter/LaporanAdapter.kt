@@ -31,7 +31,7 @@ class LaporanAdapter(private var barangList: List<Barang>) :
         holder.namaProdukTextView.text = currentLaporan.namaBarang
         holder.kodeprodukTextView.text = currentLaporan.kodeBarang
         holder.stokTextView.text = currentLaporan.stok.toString()
-        holder.hargaTextView.text = currentLaporan.harga.toString()
+        holder.hargaTextView.text = "Rp. ${currentLaporan.harga}"
 
 
 

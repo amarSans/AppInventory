@@ -25,7 +25,7 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
         val laporan=listBarang[position]
         holder.name.text= laporan.namaBarang
         holder.stok.text = laporan.stok.toString()
-        holder.price.text = laporan.harga.toString()
+        holder.price.text = "Rp. ${laporan.harga}"
         Glide.with(holder.itemView.context)
             .load(laporan.gambar) // Gantilah dengan path gambar dari database
             .into(holder.gambar)
