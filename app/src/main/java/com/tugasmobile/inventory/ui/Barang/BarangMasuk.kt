@@ -48,8 +48,7 @@ class BarangMasuk : Fragment() {
             startActivity(intent)
         }
         binding.recyclerViewLaporan.adapter = barangAdapter
-        binding.recyclerViewLaporan.layoutManager =
-            GridLayoutManager(requireContext(), 2) // 2 kolom
+        binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())// 2 kolom
         barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
