@@ -52,10 +52,8 @@ class addData : AppCompatActivity() {
         imgViewBack.setOnClickListener {
             finish()
         }
-
         // Tambahkan periksa izin
         checkPermissions()
-
         // Inisialisasi komponen UI dan set onClickListener
         setupUI()
     }
@@ -68,7 +66,6 @@ class addData : AppCompatActivity() {
 
     private fun openCamera() {
         val photoFile = File(getAppSpecificAlbumStorageDir(), "IMG_${System.currentTimeMillis()}.jpg").apply {
-            // Periksa jika direktori berhasil dibuat
             if (!parentFile.exists()) {
                 parentFile.mkdirs()
             }
