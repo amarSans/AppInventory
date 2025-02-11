@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.adapter.BarangAdapter
 import com.tugasmobile.inventory.databinding.FragmentBarangMasukBinding
@@ -43,7 +42,7 @@ class BarangMasuk : Fragment() {
             }
             startActivity(intent)  // Mulai Activity dengan data
         }
-        binding.fabAddData.setOnClickListener {
+        binding.btnTamBar.setOnClickListener {
             val intent = Intent(requireContext(), addData::class.java)
             startActivity(intent)
         }

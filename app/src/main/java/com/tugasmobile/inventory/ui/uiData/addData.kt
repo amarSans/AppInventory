@@ -24,6 +24,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.data.Barang
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
+import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
 import java.io.File
 import java.text.SimpleDateFormat
@@ -124,7 +125,7 @@ class addData : AppCompatActivity() {
 
         viewModel.insertLaporan(barang)
         Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, MainActivity::class.java))
+        startActivity(Intent(this, BarangMasuk::class.java))
         finish()
     }
 
