@@ -51,13 +51,13 @@ class RincianFragment : Fragment() {
 
         // Gunakan barangId untuk memuat detail barang
         rincianViewModel.setCurrentBarang(BarangId)
-        rincianViewModel.currentBarang.observe(viewLifecycleOwner){barang->
+        rincianViewModel.currentBarangPrototype.observe(viewLifecycleOwner){ barang->
             barang?.let{
                 binding.tvNamaBarang.text = it.namaBarang
                 binding.tvKodeBarang.text = it.kodeBarang
                 binding.tvHarga.text = "Rp. ${it.harga}"
                 binding.tvStok.text = it.stok.toString()
-                binding.tvKategori.text = it.kategori
+                binding.tvKategori.text = it.nama_toko
                 val warnaFromDb = it.warna.map { warna -> warna.trim() }
                 val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
                 colorAdapter.updateColors(warnaFromDb, selectedColorValues)
@@ -88,7 +88,7 @@ class RincianFragment : Fragment() {
         if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Izin diberikan, lakukan tindakan yang memerlukan izin
-                rincianViewModel.currentBarang.value?.gambar?.let { gambar ->
+                rincianViewModel.currentBarangPrototype.value?.gambar?.let { gambar ->
                     loadImage(Uri.parse(gambar))
                 }
             } else {

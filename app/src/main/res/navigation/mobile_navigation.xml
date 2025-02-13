@@ -12,21 +12,21 @@
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
-    <!-- Barang Masuk Fragment -->
+    <!-- BarangPrototype Masuk Fragment -->
     <fragment
         android:id="@+id/nav_barang_masuk"
         android:name="com.tugasmobile.inventory.ui.Barang.BarangMasuk"
         android:label="@string/barang_masuk"
         tools:layout="@layout/fragment_barang_masuk" />
 
-    <!-- Barang Keluar Fragment -->
+    <!-- BarangPrototype Keluar Fragment -->
     <fragment
         android:id="@+id/nav_barang_keluar"
         android:name="com.tugasmobile.inventory.ui.Barang.BarangKeluar"
         android:label="Barang Keluar"
         tools:layout="@layout/fragment_barang_keluar" />
 
-    <!-- Tabel Barang Fragment -->
+    <!-- Tabel BarangPrototype Fragment -->
     <fragment
         android:id="@+id/nav_tabel"
         android:name="com.tugasmobile.inventory.ui.laporan.Tabel"

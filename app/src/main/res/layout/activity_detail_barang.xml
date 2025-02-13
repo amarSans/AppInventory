@@ -29,7 +29,7 @@
 
 </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Konten Detail Barang -->
+    <!-- Konten Detail BarangPrototype -->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"

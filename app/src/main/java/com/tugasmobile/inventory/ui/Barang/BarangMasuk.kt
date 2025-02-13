@@ -48,7 +48,7 @@ class BarangMasuk : Fragment() {
         }
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())// 2 kolom
-        barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
+        barangViewModel.barangPrototypeList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
         return binding.root

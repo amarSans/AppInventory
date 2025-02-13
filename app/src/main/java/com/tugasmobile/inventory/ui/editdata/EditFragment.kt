@@ -83,24 +83,17 @@ class EditFragment : Fragment() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
 
-        binding.SpinnerKategori.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                editViewModel.currentBarang.value?.kategori = binding.SpinnerKategori.selectedItem.toString()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
         binding.buttonSave.setOnClickListener { saveChanges(colorAdapter) }
     }
 
     private fun setupObservers() {
-        editViewModel.currentBarang.observe(viewLifecycleOwner) { barang ->
+        editViewModel.currentBarangPrototype.observe(viewLifecycleOwner) { barang ->
             barang?.let {
                 binding.editTextNamaBarang.setText(it.namaBarang)
                 binding.editStokBarang.setText(it.stok.toString())
                 binding.editTextHargaBarang.setText(it.harga.toString())
                 binding.editTextKodeBarang.setText(it.kodeBarang)
+                binding.edtNamaToko.setText(it.nama_toko)
                 stokBarang = it.stok
                 binding.editTextDate.setText(it.waktu)
                 binding.edtUkuran.text = it.ukuran
@@ -111,26 +104,20 @@ class EditFragment : Fragment() {
                 selectedImageUri = Uri.parse(it.gambar)
                 binding.imageViewBarang.setImageURI(selectedImageUri)
 
-                val categories = resources.getStringArray(R.array.daftar_pilihan)
-                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.SpinnerKategori.adapter = adapter
 
-                val selectedPosition = categories.indexOf(it.kategori)
-                binding.SpinnerKategori.setSelection(if (selectedPosition >= 0) selectedPosition else 0)
             }
         }
     }
 
     private fun saveChanges(colorAdapter: AdapterColorIn) {
         val selectedColors = colorAdapter.getSelectedColors().toSet()
-        val updatedBarang = editViewModel.currentBarang.value?.copy(
+        val updatedBarang = editViewModel.currentBarangPrototype.value?.copy(
             namaBarang = binding.editTextNamaBarang.text.toString(),
             stok = binding.editStokBarang.text.toString().toInt(),
             harga = binding.editTextHargaBarang.text.toString().toInt(),
             kodeBarang = binding.editTextKodeBarang.text.toString(),
             warna = selectedColors.toList(),
-            kategori = binding.SpinnerKategori.selectedItem.toString(),
+            nama_toko = binding.edtNamaToko.text.toString(),
             ukuran = binding.edtUkuran.text.toString(),
             gambar = selectedImageUri?.toString() ?: ""
         )
@@ -166,7 +153,7 @@ class EditFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             selectedImageUri = photoUri
             binding.imageViewBarang.setImageURI(selectedImageUri)
-            editViewModel.currentBarang.value?.gambar = selectedImageUri.toString()
+            editViewModel.currentBarangPrototype.value?.gambar = selectedImageUri.toString()
             Toast.makeText(requireContext(), "Gambar berhasil disimpan di folder aplikasi.", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(requireContext(), "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
@@ -183,7 +170,7 @@ class EditFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             selectedImageUri = result.data?.data
             binding.imageViewBarang.setImageURI(selectedImageUri)
-            editViewModel.currentBarang.value?.gambar = selectedImageUri.toString()
+            editViewModel.currentBarangPrototype.value?.gambar = selectedImageUri.toString()
         }
     }
 

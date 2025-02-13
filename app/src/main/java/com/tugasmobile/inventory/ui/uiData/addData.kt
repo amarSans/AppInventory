@@ -19,10 +19,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
-import com.tugasmobile.inventory.data.Barang
+import com.tugasmobile.inventory.data.BarangPrototype
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
@@ -108,9 +107,9 @@ class addData : AppCompatActivity() {
         val kodeProduk = binding.editTextKodeBarang.text.toString()
         val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
         val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors()
-        val selectedCategory = binding.SpinnerKategori.selectedItem.toString()
+        val namaToko = binding.edtNamaToko.text.toString()
 
-        val barang = Barang(
+        val barangPrototype = BarangPrototype(
             id = 0,
             namaBarang = namaProduk,
             kodeBarang = kodeProduk,
@@ -118,12 +117,12 @@ class addData : AppCompatActivity() {
             stok = stokBarang,
             warna = selectedColors,
             waktu = getCurrentDate(),
-            kategori = selectedCategory,
+            nama_toko = namaToko,
             ukuran = selectedSizesList,
             gambar = selectedImageUri?.toString() ?: "" // Simpan URI dari gambar yang telah disimpan
         )
 
-        viewModel.insertLaporan(barang)
+        viewModel.insertLaporan(barangPrototype)
         Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, BarangMasuk::class.java))
         finish()

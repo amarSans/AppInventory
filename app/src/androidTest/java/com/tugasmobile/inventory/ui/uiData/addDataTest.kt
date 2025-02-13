@@ -8,7 +8,6 @@ import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.RootMatcherse
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -66,7 +65,7 @@ class addDataTest {
 
         // Membuka dropdown kategori
         // Membuka dropdown kategori
-        onView(withId(R.id.Spinner_kategori)).perform(click())
+        onView(withId(R.id.edt_nama_toko)).perform(click())
 
 // Memilih item dari dropdown berdasarkan teks yang ingin dipilih
         onData(allOf(`is`(instanceOf(String::class.java)), `is`("Bayi")))

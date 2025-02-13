@@ -48,6 +48,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/coklat_abu_abu"
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
                         android:hint="@string/masukkan_nama_barang"
@@ -66,9 +68,11 @@
                         android:id="@+id/editTextKodeBarang"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/coklat_abu_abu"
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
-                        android:layout_marginBottom="16dp"
                         android:hint="@string/masukkan_kode_barang"
                         android:textSize="12sp" />
                     <TextView
@@ -85,8 +89,11 @@
                         android:background="@drawable/edit_text_bacground"
                         android:fontFamily="@font/poppins_semibold"
                         android:hint="@string/masukkan_harga_barang"
-                        android:textSize="12sp"
-                        android:inputType="number"/>
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/coklat_abu_abu"
+
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -208,8 +215,8 @@
                 android:background="@drawable/edit_text_bacground"
                 android:clickable="false"
                 android:focusable="false"
+                android:textColor="@color/black"
                 android:fontFamily="@font/poppins_semibold"
-
                 android:textSize="12sp" />
 
             <TextView
@@ -220,12 +227,14 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/kategori" />
 
-            <Spinner
-                android:id="@+id/Spinner_kategori"
+            <EditText
+                android:id="@+id/edt_nama_toko"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:textColorHint="@color/coklat_abu_abu"
                 android:layout_height="wrap_content"
+                android:text="@string/masukkan_nama_toko"
                 android:background="@drawable/edit_text_bacground"
-                android:entries="@array/daftar_pilihan"
                 android:fontFamily="@font/poppins_semibold"
                 android:textSize="12sp" />
 
@@ -241,6 +250,8 @@
                 android:id="@+id/edt_ukuran"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textColorHint="@color/coklat_abu_abu"
                 android:background="@drawable/edit_text_bacground"
                 android:fontFamily="@font/poppins_semibold"
                 android:hint="@string/masukkan_ukuran"

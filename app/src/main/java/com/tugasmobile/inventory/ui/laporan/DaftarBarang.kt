@@ -9,13 +9,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.BarangAdapter
-import com.tugasmobile.inventory.databinding.FragmentBarangMasukBinding
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
-import com.tugasmobile.inventory.ui.uiData.addData
 
 
 class DaftarBarang : Fragment() {
@@ -49,7 +46,7 @@ class DaftarBarang : Fragment() {
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager =
             GridLayoutManager(requireContext(), 2) // 2 kolom
-        barangViewModel.barangList.observe(viewLifecycleOwner) { listBarang ->
+        barangViewModel.barangPrototypeList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
         return binding.root

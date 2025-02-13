@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.data.Barang
+import com.tugasmobile.inventory.data.BarangPrototype
 
-class BarangAdapter(private var listBarang: List<Barang>, private val itemClickListener: (Barang) -> Unit):
+class BarangAdapter(private var listBarangPrototype: List<BarangPrototype>, private val itemClickListener: (BarangPrototype) -> Unit):
     RecyclerView.Adapter<BarangAdapter.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -22,7 +22,7 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
 
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val laporan=listBarang[position]
+        val laporan=listBarangPrototype[position]
         holder.name.text= laporan.namaBarang
         holder.stok.text = laporan.stok.toString()
         holder.price.text = "Rp. ${laporan.harga}"
@@ -36,15 +36,15 @@ class BarangAdapter(private var listBarang: List<Barang>, private val itemClickL
 
     }
 
-    override fun getItemCount(): Int =listBarang.size
+    override fun getItemCount(): Int =listBarangPrototype.size
     class ListViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val name:TextView=itemView.findViewById(R.id.TVkodebarang)
         val stok:TextView=itemView.findViewById(R.id.TVstok)
         val price:TextView=itemView.findViewById(R.id.TVPrice)
         val gambar:ImageView=itemView.findViewById(R.id.item_image)
     }
-    fun updateLaporanList(newBarangList: List<Barang>) {
-        this.listBarang = newBarangList
+    fun updateLaporanList(newBarangPrototypeList: List<BarangPrototype>) {
+        this.listBarangPrototype = newBarangPrototypeList
         notifyDataSetChanged()
     }
 

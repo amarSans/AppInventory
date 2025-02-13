@@ -221,12 +221,14 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/kategori" />
 
-        <Spinner
-            android:id="@+id/Spinner_kategori"
+        <EditText
+            android:id="@+id/edt_nama_toko"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:textColorHint="@color/coklat_abu_abu"
             android:layout_height="wrap_content"
+            android:hint="@string/masukkan_nama_toko"
             android:background="@drawable/edit_text_bacground"
-            android:entries="@array/daftar_pilihan"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="12sp" />
 
