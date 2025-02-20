@@ -21,7 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
-import com.tugasmobile.inventory.data.BarangPrototype
+import com.tugasmobile.inventory.data.Barang1
+import com.tugasmobile.inventory.data.BarangIn
+import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
@@ -108,21 +110,27 @@ class addData : AppCompatActivity() {
         val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
         val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors()
         val namaToko = binding.edtNamaToko.text.toString()
-
-        val barangPrototype = BarangPrototype(
-            id = 0,
-            namaBarang = namaProduk,
-            kodeBarang = kodeProduk,
-            harga = hargaProduk,
-            stok = stokBarang,
-            warna = selectedColors,
-            waktu = getCurrentDate(),
-            nama_toko = namaToko,
-            ukuran = selectedSizesList,
-            gambar = selectedImageUri?.toString() ?: "" // Simpan URI dari gambar yang telah disimpan
+        val barang1=Barang1(
+            id_barang = 0,
+            nama_barang = namaProduk,
+            kode_barang = kodeProduk,
+            gambar = selectedImageUri.toString()
         )
-
-        viewModel.insertLaporan(barangPrototype)
+        val stok= Stok(
+            idStok = 0,
+            id_barang = 0,
+            stokBarang = stokBarang,
+            warna = selectedColors,
+            ukuran = selectedSizesList,
+        )
+        val barangIn = BarangIn(
+            IdBrgMasuk = 0,
+            id_barang = 0,
+            Tgl_Masuk = getCurrentDate(),
+            Harga_Modal = hargaProduk,
+            Nama_Toko =namaToko
+        )
+        viewModel.insertInputBarang(barang1,stok,barangIn)
         Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         startActivity(Intent(this, BarangMasuk::class.java))
         finish()

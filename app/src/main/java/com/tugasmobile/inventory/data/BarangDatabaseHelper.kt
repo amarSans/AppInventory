@@ -20,7 +20,7 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         const val COLUMN_HARGA = "harga"
         const val COLUMN_WARNA = "warna"
         const val COLUMN_WAKTU = "waktu"
-        const val `COLUMN_NAMA_TOKO` = "kategori"
+        const val COLUMN_NAMA_TOKO = "kategori"
         const val COLUMN_UKURAN = "ukuran"
         const val COLUMN_GAMBAR = "gambar"
     }
@@ -34,7 +34,7 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                 + "$COLUMN_HARGA INTEGER, "
                 + "$COLUMN_WARNA TEXT, "
                 + "$COLUMN_WAKTU TEXT, "
-                + "$`COLUMN_NAMA_TOKO` TEXT, "
+                + "$COLUMN_NAMA_TOKO TEXT, "
                 + "$COLUMN_UKURAN TEXT, "
                 + "$COLUMN_GAMBAR TEXT"
                 +")")
@@ -46,27 +46,27 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         onCreate(db)
     }
 
-    // Metode untuk menambahkan barangPrototype
-    fun insertLaporan(barangPrototype: BarangPrototype): Long {
+    // Metode untuk menambahkan dataBarangMasuk
+    fun insertLaporan(dataBarangMasuk: DataBarangMasuk): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_NAMA_BARANG, barangPrototype.namaBarang)
-            put(COLUMN_KODE_BARANG, barangPrototype.kodeBarang)
-            put(COLUMN_STOK, barangPrototype.stok)
-            put(COLUMN_HARGA, barangPrototype.harga)
-            put(COLUMN_WARNA, barangPrototype.warna.joinToString (","))
-            put(COLUMN_WAKTU, barangPrototype.waktu)
-            put(COLUMN_NAMA_TOKO, barangPrototype.nama_toko)
-            put(COLUMN_UKURAN, barangPrototype.ukuran)
-            put(COLUMN_GAMBAR, barangPrototype.gambar)
+            put(COLUMN_NAMA_BARANG, dataBarangMasuk.namaBarang)
+            put(COLUMN_KODE_BARANG, dataBarangMasuk.kodeBarang)
+            put(COLUMN_STOK, dataBarangMasuk.stok)
+            put(COLUMN_HARGA, dataBarangMasuk.harga)
+            put(COLUMN_WARNA, dataBarangMasuk.warna.joinToString (","))
+            put(COLUMN_WAKTU, dataBarangMasuk.waktu)
+            put(COLUMN_NAMA_TOKO, dataBarangMasuk.nama_toko)
+            put(COLUMN_UKURAN, dataBarangMasuk.ukuran)
+            put(COLUMN_GAMBAR, dataBarangMasuk.gambar)
         }
         val id = db.insert(TABLE_LAPORAN, null, values)
         db.close()
         return id
     }
 
-    fun getAllLaporan(): List<BarangPrototype> {
-        val barangPrototypeList = mutableListOf<BarangPrototype>()
+    fun getAllLaporan(): List<DataBarangMasuk> {
+        val dataBarangMasukList = mutableListOf<DataBarangMasuk>()
         val db = this.readableDatabase
         val cursor: Cursor? = db.query(
             TABLE_LAPORAN,
@@ -93,17 +93,17 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                     val ukuran=it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN))
                     val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
 
-                    // Membuat objek BarangPrototype
-                    val barangPrototype = BarangPrototype(id, namaBarang, kodeBarang, stok, harga, warna, waktu, kategori, ukuran,
+                    // Membuat objek DataBarangMasuk
+                    val dataBarangMasuk = DataBarangMasuk(id, namaBarang, kodeBarang, stok, harga, warna, waktu, kategori, ukuran,
                         gambarUri.toString()
                     )
-                    barangPrototypeList.add(barangPrototype)
+                    dataBarangMasukList.add(dataBarangMasuk)
                 } while (it.moveToNext())
             }
         }
         cursor?.close()
         db.close()
-        return barangPrototypeList
+        return dataBarangMasukList
     }
 
     // Metode untuk menghapus barang berdasarkan ID
@@ -115,35 +115,35 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
         return result
     }
 
-    fun updateLaporan(barangPrototype: BarangPrototype): Int {
+    fun updateLaporan(dataBarangMasuk: DataBarangMasuk): Int {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_NAMA_BARANG, barangPrototype.namaBarang)
-            put(COLUMN_KODE_BARANG, barangPrototype.kodeBarang)
-            put(COLUMN_STOK, barangPrototype.stok)
-            put(COLUMN_HARGA, barangPrototype.harga)
-            put(COLUMN_WARNA, barangPrototype.warna.joinToString (","))
-            put(COLUMN_WAKTU, barangPrototype.waktu)
-            put(COLUMN_NAMA_TOKO, barangPrototype.nama_toko)
-            put(COLUMN_UKURAN, barangPrototype.ukuran)
-            put(COLUMN_GAMBAR, barangPrototype.gambar.toString())
+            put(COLUMN_NAMA_BARANG, dataBarangMasuk.namaBarang)
+            put(COLUMN_KODE_BARANG, dataBarangMasuk.kodeBarang)
+            put(COLUMN_STOK, dataBarangMasuk.stok)
+            put(COLUMN_HARGA, dataBarangMasuk.harga)
+            put(COLUMN_WARNA, dataBarangMasuk.warna.joinToString (","))
+            put(COLUMN_WAKTU, dataBarangMasuk.waktu)
+            put(COLUMN_NAMA_TOKO, dataBarangMasuk.nama_toko)
+            put(COLUMN_UKURAN, dataBarangMasuk.ukuran)
+            put(COLUMN_GAMBAR, dataBarangMasuk.gambar.toString())
         }
 
-        // Mengupdate barangPrototype berdasarkan ID
+        // Mengupdate dataBarangMasuk berdasarkan ID
         val result = db.update(
             TABLE_LAPORAN,
             values,
             "$COLUMN_ID = ?",
-            arrayOf(barangPrototype.id.toString())
+            arrayOf(dataBarangMasuk.id.toString())
         )
 
         db.close()
         return result
     }
 
-    fun getLaporanById(id: Long): BarangPrototype? {
+    fun getLaporanById(id: Long): DataBarangMasuk? {
         val db = this.readableDatabase
-        var barangPrototype: BarangPrototype? = null
+        var dataBarangMasuk: DataBarangMasuk? = null
         val cursor: Cursor? = db.query(
             TABLE_LAPORAN,
             null,
@@ -184,14 +184,14 @@ class BarangDatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABAS
                     val ukuran = it.getString(ukuranIndex)
                     val gambarUri = Uri.parse(it.getString(gambarIndex))
 
-                    barangPrototype = BarangPrototype(idBarang, namaBarang, kodeBarang, stok, harga, warna,waktu, namaToko, ukuran ,gambarUri.toString()
+                    dataBarangMasuk = DataBarangMasuk(idBarang, namaBarang, kodeBarang, stok, harga, warna,waktu, namaToko, ukuran ,gambarUri.toString()
                     )
                 }
             }
         }
         cursor?.close()
         db.close()
-        return barangPrototype
+        return dataBarangMasuk
     }
     fun updateWarna(barangId: Long, newColors: List<String>): Int {
         val db = this.writableDatabase

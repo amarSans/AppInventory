@@ -1,5 +1,6 @@
 package com.tugasmobile.inventory.ui.editdata
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.uiData.EditData
 
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding
@@ -26,11 +28,7 @@ class DetailBarang : AppCompatActivity() {
         barangId = intent.getLongExtra("ID_BARANG", 0L)
         detailBarangViewModel.setCurrentBarang(barangId)
 
-        /*detailBarangViewModel.currentBarang.observe(this) { barang ->
-            barang?.let {
-                binding.toolbar.title = it.namaBarang
-            }
-        }*/
+
         if (savedInstanceState == null) {
             val rincianFragment = RincianFragment().apply {
                 arguments = Bundle().apply {
@@ -64,13 +62,10 @@ class DetailBarang : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_edit -> {
-                val editFragment = EditFragment().apply {
-                    arguments = Bundle().apply { putLong("ID_BARANG", barangId) }
+                val intent = Intent(this, EditData::class.java).apply {
+                    putExtra("ID_BARANG", barangId)
                 }
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, editFragment) // Pastikan `fragment_container` ada di layout activity
-                    .addToBackStack(null)
-                    .commit()
+                startActivity(intent)
                 true
             }
             R.id.action_delete -> {
@@ -81,7 +76,7 @@ class DetailBarang : AppCompatActivity() {
         }
     }
     private fun deleteBarang(){
-        detailBarangViewModel.deleteLaporan(barangId)
+        detailBarangViewModel.deleteBarang(barangId)
         finish()
     }
 

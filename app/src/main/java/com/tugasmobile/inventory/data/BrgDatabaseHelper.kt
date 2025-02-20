@@ -2,8 +2,11 @@ package com.tugasmobile.inventory.data
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.net.Uri
+import com.tugasmobile.inventory.data.BarangDatabaseHelper.Companion.COLUMN_ID
 
 class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -16,7 +19,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val COLUMN_ID_BARANG = "id_barang"
         const val COLUMN_NAMA_BARANG = "nama_barang"
         const val COLUMN_KODE_BARANG = "kode_barang"
-        const val COLUMN_KATEGORI = "kategori"
+        //const val COLUMN_TIPE_BARANG = "tipe_barang"
         const val COLUMN_GAMBAR = "gambar"
 
         // Tabel Stok
@@ -46,7 +49,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 $COLUMN_ID_BARANG INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_NAMA_BARANG TEXT,
                 $COLUMN_KODE_BARANG TEXT UNIQUE,
-                $COLUMN_KATEGORI TEXT,
                 $COLUMN_GAMBAR TEXT
             )
         """.trimIndent()
@@ -96,51 +98,212 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.execSQL("DROP TABLE IF EXISTS $TABLE_BARANG_KELUAR")
         onCreate(db)
     }
-    fun insertBarang(barang:Barang):Long{
+
+    fun insertInputBarang(barang:Barang1,stok:Stok,barangIn: BarangIn){
         val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_NAMA_BARANG, barang.namaBarang)
-            put(COLUMN_KODE_BARANG, barang.kodeBarang)
-            put(COLUMN_GAMBAR, barang.gambar)
+        db.beginTransaction()
+        return try {
+            val valuesBarang = ContentValues().apply {
+                put(COLUMN_NAMA_BARANG, barang.nama_barang)
+                put(COLUMN_KODE_BARANG, barang.kode_barang)
+                put(COLUMN_GAMBAR, barang.gambar)
+            }
+            val barangId = db.insert(TABLE_BARANG, null, valuesBarang)
+            if (barangId == -1L) throw Exception("terjadi kegagalan")
+            val valuesStok = ContentValues().apply {
+                put(COLUMN_ID_BARANG, barangId)
+                put(COLUMN_WARNA, stok.warna.joinToString(","))
+                put(COLUMN_UKURAN, stok.ukuran)
+                put(COLUMN_STOK, stok.stokBarang)
+            }
+            val stokId = db.insert(TABLE_STOK, null, valuesStok)
+            if (stokId == -1L) throw Exception("Gagal menyimpan stok")
+            val valuesBarangMasuk = ContentValues().apply {
+                put(COLUMN_ID_BARANG, barangId)
+                put(COLUMN_TANGGAL_MASUK, barangIn.Tgl_Masuk)
+                put(COLUMN_HARGA_JUAL, barangIn.Harga_Modal)
+                put(COLUMN_NAMA_TOKO, barangIn.Nama_Toko)
+            }
+            val barangMasukId = db.insert(TABLE_BARANG_MASUK, null, valuesBarangMasuk)
+            if (barangMasukId == -1L) throw Exception("Gagal menyimpan barang masuk")
+            db.setTransactionSuccessful()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }finally {
+            db.endTransaction()
+            db.close()
         }
-        val id = db.insert(TABLE_BARANG, null, values)
-        db.close()
-        return id
     }
-    fun insertStok(stok: Stok):Long{
+    fun insertBarangKeluar(barangOut: BarangOut): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_ID_BARANG, stok.id_barang)
-            put(COLUMN_WARNA, stok.warna.joinToString (","))
-            put(COLUMN_UKURAN, stok.ukuran)
-            put(COLUMN_STOK, stok.stok)
-        }
-        val id = db.insert(TABLE_STOK, null, values)
-        db.close()
-        return id
-    }
-    fun insertBarangMasuk(masuk: BarangMasuk):Long{
-        val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_ID_BARANG, masuk.id_barang)
-            put(COLUMN_TANGGAL_MASUK, masuk.Tgl_Masuk)
-            put(COLUMN_HARGA_JUAL, masuk.Harga_Modal)
-            put(COLUMN_NAMA_TOKO, masuk.Nama_Toko)
-        }
-        val id = db.insert(TABLE_BARANG_MASUK, null, values)
-        db.close()
-        return id
-    }
-    fun insertBarangKeluar(keluar: BarangKeluar):Long{
-        val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_ID_BARANG, keluar.id_barang)
-            put(COLUMN_TANGGAL_KELUAR, keluar.Tgl_Keluar)
-            put(COLUMN_HARGA_JUAL, keluar.Hrg_Beli)
+            put(COLUMN_ID_BARANG, barangOut.id_barang)
+            put(COLUMN_TANGGAL_KELUAR, barangOut.Tgl_Keluar)
+            put(COLUMN_HARGA_BELI, barangOut.Hrg_Beli)
         }
         val id = db.insert(TABLE_BARANG_KELUAR, null, values)
         db.close()
         return id
     }
 
+    fun getAllBarang(): List<DataBarangMasuk> {
+        val barangList = mutableListOf<DataBarangMasuk>()
+        val db = this.readableDatabase
+        val query = """
+            SELECT b.$COLUMN_ID_BARANG, b.$COLUMN_NAMA_BARANG, b.$COLUMN_KODE_BARANG, 
+                   b.$COLUMN_GAMBAR, s.$COLUMN_STOK, s.$COLUMN_WARNA, s.$COLUMN_UKURAN, 
+                   m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
+            FROM $TABLE_BARANG b
+            LEFT JOIN $TABLE_STOK s ON b.$COLUMN_ID_BARANG = s.$COLUMN_ID_BARANG
+            LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_ID_BARANG = m.$COLUMN_ID_BARANG
+        """.trimIndent()
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val idBarang = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ID_BARANG))
+                val namaBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))
+                val kodeBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG))
+                val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
+                val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
+                val warna = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WARNA)).split(",")
+                val ukuran = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN))
+                val waktu = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))
+                val harga = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
+                val namaToko = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))
+
+                val barang = DataBarangMasuk(idBarang, namaBarang, kodeBarang, stok, harga, warna, waktu, namaToko, ukuran, gambar)
+                barangList.add(barang)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return barangList
+    }
+    fun updateWarna(barangId: Long, newColors: List<String>): Int {
+        val db = this.writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_WARNA, newColors.joinToString(","))
+        }
+
+        // Mengupdate warna berdasarkan ID
+        val result = db.update(
+            TABLE_STOK,
+            values,
+            "$COLUMN_ID_BARANG = ?",
+            arrayOf(barangId.toString())
+        )
+
+        db.close()
+        return result
+    }
+    fun deleteBarang(id: Long): Int {
+        val db = this.writableDatabase
+        // Menghapus barang berdasarkan ID
+        val result = db.delete(TABLE_BARANG, "$COLUMN_ID = ?", arrayOf(id.toString()))
+
+        db.close()
+        return result
+    }
+    fun updateBarang(barang: Barang1, stok: Stok, barangIn: BarangIn): Boolean {
+        val db = this.writableDatabase
+        db.beginTransaction()
+        try {
+            // Update TABLE_BARANG (hanya nama, kode, dan gambar)
+            val valuesBarang = ContentValues().apply {
+                put(COLUMN_NAMA_BARANG, barang.nama_barang)
+                put(COLUMN_KODE_BARANG, barang.kode_barang)
+                put(COLUMN_GAMBAR, barang.gambar)
+            }
+            val resultBarang = db.update(
+                TABLE_BARANG,
+                valuesBarang,
+                "$COLUMN_ID_BARANG = ?",
+                arrayOf(barang.id_barang.toString())
+            )
+
+            // Update TABLE_STOK (stok, warna, ukuran)
+            val valuesStok = ContentValues().apply {
+                put(COLUMN_STOK, stok.stokBarang)
+                put(COLUMN_WARNA, stok.warna.joinToString ( "," ))
+                put(COLUMN_UKURAN, stok.ukuran)
+            }
+            val resultStok = db.update(
+                TABLE_STOK,
+                valuesStok,
+                "$COLUMN_ID_BARANG = ?",
+                arrayOf(stok.idStok.toString())
+            )
+
+            // Update TABLE_BARANG_MASUK (harga, tanggal masuk, nama toko)
+            val valuesBarangMasuk = ContentValues().apply {
+                put(COLUMN_HARGA_JUAL, barangIn.Harga_Modal)
+                put(COLUMN_TANGGAL_MASUK, barangIn.Tgl_Masuk)
+                put(COLUMN_NAMA_TOKO, barangIn.Nama_Toko)
+            }
+            val resultBarangMasuk = db.update(
+                TABLE_BARANG_MASUK,
+                valuesBarangMasuk,
+                "$COLUMN_ID_BARANG = ?",
+                arrayOf(barangIn.IdBrgMasuk.toString())
+            )
+
+            // Cek apakah semua update berhasil
+            if (resultBarang > 0 && resultStok > 0 && resultBarangMasuk > 0) {
+                db.setTransactionSuccessful()
+                return true
+            }
+            return false
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            db.endTransaction()
+        }
+    }
+    fun getBarangById(id: Long): Triple<Barang1?,Stok?, BarangIn?> {
+        val db = this.readableDatabase
+        val query = """
+            SELECT b.$COLUMN_ID_BARANG, b.$COLUMN_NAMA_BARANG, b.$COLUMN_KODE_BARANG, 
+               b.$COLUMN_GAMBAR, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_WARNA, s.$COLUMN_UKURAN, 
+               m.$COLUMN_ID_MASUK, m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
+        FROM $TABLE_BARANG b
+        LEFT JOIN $TABLE_STOK s ON b.$COLUMN_ID_BARANG = s.$COLUMN_ID_BARANG
+        LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_ID_BARANG = m.$COLUMN_ID_BARANG
+        WHERE b.$COLUMN_ID_BARANG = ?
+        """.trimIndent()
+        var barang1:Barang1?=null
+        var stok:Stok?=null
+        var barangIn:BarangIn?=null
+        val cursor: Cursor? = db.rawQuery(query, arrayOf(id.toString()))
+
+        // Memeriksa apakah cursor tidak null dan memiliki data
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val idBarang = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_BARANG))
+                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))
+                val kodeBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG))
+                val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
+
+                val idStok=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
+                val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK))
+                val warna = it.getString(it.getColumnIndexOrThrow(COLUMN_WARNA)).split(",")
+                val ukuran = it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN))
+
+                val idMasuk=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_MASUK))
+                val tanggalMasuk = it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))
+                val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
+                val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))
+
+                // Inisialisasi objek
+                barang1 = Barang1(idBarang, namaBarang, kodeBarang, gambarUri.toString())
+                stok = Stok(idStok,idBarang, stokJumlah,warna, ukuran )
+                barangIn = BarangIn(idMasuk,idBarang, tanggalMasuk, hargaJual, namaToko)
+            }
+        }
+
+        db.close()
+        return Triple(barang1, stok, barangIn)
+    }
 }

@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.editdata
+package com.tugasmobile.inventory.ui.uiData
 
 import android.app.Activity
 import android.content.Intent
@@ -7,28 +7,23 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.fragment.app.Fragment
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
-import com.tugasmobile.inventory.databinding.FragmentEditBinding
+import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.uiData.BottonUkuranSheet
 import java.io.File
 
-class EditFragment : Fragment() {
-
-    private var _binding: FragmentEditBinding? = null
-    private val binding get() = _binding!!
+class EditData : AppCompatActivity() {
+    private lateinit var binding: ActivityEditDataBinding
     private lateinit var editViewModel: ViewModel
     private var barangId: Long = 0
     private var stokBarang = 0
@@ -37,23 +32,20 @@ class EditFragment : Fragment() {
     private lateinit var photoUri: Uri
     private lateinit var colorAdapter: AdapterColorIn
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityEditDataBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         editViewModel = ViewModelProvider(this).get(ViewModel::class.java)
-        _binding = FragmentEditBinding.inflate(inflater, container, false)
-
-        barangId = arguments?.getLong("ID_BARANG", 0) ?: 0L
-        if (barangId != 0L) {
-            editViewModel.setCurrentBarang(barangId)
+        barangId = intent.getLongExtra("ID_BARANG", 0)
+        if (barangId != 0L) editViewModel.setCurrentBarang(barangId)
+        val imgViewBack = binding.imgViewBack
+        imgViewBack.setOnClickListener {
+            finish()
         }
-
         setupUI()
         setupObservers()
-
-        return binding.root
     }
 
     private fun setupUI() {
@@ -62,10 +54,10 @@ class EditFragment : Fragment() {
 
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
         val colorValues = resources.getStringArray(R.array.daftar_warna)
-        colorAdapter = AdapterColorIn(requireContext(), colorNames, colorValues)
+        colorAdapter = AdapterColorIn(this, colorNames, colorValues)
 
         binding.recyclerViewColorsEdit.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@EditData, LinearLayoutManager.HORIZONTAL, false)
             adapter = colorAdapter
         }
 
@@ -77,68 +69,74 @@ class EditFragment : Fragment() {
                     binding.edtUkuran.text = selectedSizes.joinToString(", ")
                 }
             }
-            bottonUkuranSheet.show(parentFragmentManager, BottonUkuranSheet.TAG)
+            bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
         }
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
-
-        binding.buttonSave.setOnClickListener { saveChanges(colorAdapter) }
+        binding.buttonSave.setOnClickListener { saveChanges() }
     }
 
     private fun setupObservers() {
-        editViewModel.currentBarangPrototype.observe(viewLifecycleOwner) { barang ->
+        editViewModel.currentBarang.observe(this) { barang ->
             barang?.let {
-                binding.editTextNamaBarang.setText(it.namaBarang)
-                binding.editStokBarang.setText(it.stok.toString())
-                binding.editTextHargaBarang.setText(it.harga.toString())
-                binding.editTextKodeBarang.setText(it.kodeBarang)
-                binding.edtNamaToko.setText(it.nama_toko)
-                stokBarang = it.stok
-                binding.editTextDate.setText(it.waktu)
-                binding.edtUkuran.text = it.ukuran
-                val warnaFromDb = it.warna
-                colorAdapter.setSelectedColors(warnaFromDb)
-
-                selectedSizesList = it.ukuran.split(",").map { size -> size.trim() }
+                binding.editTextNamaBarang.setText(it.nama_barang)
+                binding.editTextKodeBarang.setText(it.kode_barang)
                 selectedImageUri = Uri.parse(it.gambar)
                 binding.imageViewBarang.setImageURI(selectedImageUri)
-
-
+            }
+        }
+        editViewModel.currentStok.observe(this) { stok ->
+            stok?.let {
+                binding.edtUkuran.text = it.ukuran
+                selectedSizesList = it.ukuran.split(",").map { size -> size.trim() }
+                colorAdapter.setSelectedColors(it.warna)
+                binding.editStokBarang.setText(it.stokBarang.toString())
+                stokBarang = it.stokBarang
+            }
+        }
+        editViewModel.currentBarangIn.observe(this){barangIn->
+            barangIn?.let{
+                binding.editTextHargaBarang.setText(it.Harga_Modal.toString())
+                binding.edtNamaToko.setText(it.Nama_Toko)
             }
         }
     }
 
-    private fun saveChanges(colorAdapter: AdapterColorIn) {
+    private fun saveChanges() {
         val selectedColors = colorAdapter.getSelectedColors().toSet()
-        val updatedBarang = editViewModel.currentBarangPrototype.value?.copy(
-            namaBarang = binding.editTextNamaBarang.text.toString(),
-            stok = binding.editStokBarang.text.toString().toInt(),
-            harga = binding.editTextHargaBarang.text.toString().toInt(),
-            kodeBarang = binding.editTextKodeBarang.text.toString(),
-            warna = selectedColors.toList(),
-            nama_toko = binding.edtNamaToko.text.toString(),
-            ukuran = binding.edtUkuran.text.toString(),
+        val updatedBarang = editViewModel.currentBarang.value?.copy(
+            nama_barang = binding.editTextNamaBarang.text.toString(),
+            kode_barang = binding.editTextKodeBarang.text.toString(),
             gambar = selectedImageUri?.toString() ?: ""
+        )
+        val updatedStok = editViewModel.currentStok.value?.copy(
+            stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
+            ukuran = binding.edtUkuran.text.toString(),
+            warna = selectedColors.toList()
+        )
+        val updatedBarangMasuk = editViewModel.currentBarangIn.value?.copy(
+            Harga_Modal = binding.editTextHargaBarang.text.toString().toInt(),
+            Nama_Toko = binding.edtNamaToko.text.toString()
         )
 
         updatedBarang?.let {
-            deleteImage(Uri.parse(it.gambar)) // Hapus gambar sebelumnya
-            editViewModel.updateWarna(it.id, selectedColors.toList())
-            editViewModel.updateLaporan(it)
-            activity?.supportFragmentManager?.popBackStack()
+            deleteImage(Uri.parse(it.gambar))
+            editViewModel.updateWarna(it.id_barang, selectedColors.toList())
         }
+        if (updatedBarang != null && updatedStok != null && updatedBarangMasuk!=null) {
+            editViewModel.updateBarang(updatedBarang, updatedStok, updatedBarangMasuk)
+        }
+        finish()
     }
 
     private fun openCamera() {
         selectedImageUri?.let { deleteImage(it) }
         val photoFile = File(getAppSpecificAlbumStorageDir(), "IMG_${System.currentTimeMillis()}.jpg").apply {
-            if (!parentFile.exists()) {
-                parentFile.mkdirs()
-            }
+            if (!parentFile.exists()) parentFile.mkdirs()
             photoUri = FileProvider.getUriForFile(
-                requireContext(),
-                "${requireContext().packageName}.fileprovider",
+                this@EditData,
+                "$packageName.fileprovider",
                 this
             )
         }
@@ -153,10 +151,9 @@ class EditFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             selectedImageUri = photoUri
             binding.imageViewBarang.setImageURI(selectedImageUri)
-            editViewModel.currentBarangPrototype.value?.gambar = selectedImageUri.toString()
-            Toast.makeText(requireContext(), "Gambar berhasil disimpan di folder aplikasi.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(requireContext(), "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -170,43 +167,29 @@ class EditFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             selectedImageUri = result.data?.data
             binding.imageViewBarang.setImageURI(selectedImageUri)
-            editViewModel.currentBarangPrototype.value?.gambar = selectedImageUri.toString()
         }
     }
 
     private fun deleteImage(imageUri: Uri) {
         val fileToDelete = File(imageUri.path ?: return)
-        if (fileToDelete.exists()) {
-            if (fileToDelete.delete()) {
-                Log.d("EditFragment", "Gambar berhasil dihapus: ${fileToDelete.absolutePath}")
-            } else {
-                Log.e("EditFragment", "Gagal menghapus gambar: ${fileToDelete.absolutePath}")
-            }
+        if (fileToDelete.exists() && fileToDelete.delete()) {
+            Log.d("EditActivity", "Gambar dihapus: ${fileToDelete.absolutePath}")
         }
     }
 
     private fun getAppSpecificAlbumStorageDir(): File {
-        return File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "InventoryApp").apply {
-            if (!exists()) {
-                mkdirs()
-            }
+        return File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "InventoryApp").apply {
+            if (!exists()) mkdirs()
         }
     }
 
     private fun tambahStok() {
-        stokBarang += 1
+        stokBarang++
         binding.editStokBarang.setText(stokBarang.toString())
     }
 
     private fun kurangiStok() {
-        if (stokBarang > 0) {
-            stokBarang -= 1
-        }
+        if (stokBarang > 0) stokBarang--
         binding.editStokBarang.setText(stokBarang.toString())
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

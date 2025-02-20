@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.data.BarangPrototype
+import com.tugasmobile.inventory.data.DataBarangMasuk
 
-class LaporanAdapter(private var barangPrototypeList: List<BarangPrototype>) :
+class LaporanAdapter(private var dataBarangMasukList: List<DataBarangMasuk>) :
     RecyclerView.Adapter<LaporanAdapter.LaporanViewHolder>() {
 
     class LaporanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,20 +26,16 @@ class LaporanAdapter(private var barangPrototypeList: List<BarangPrototype>) :
     }
 
     override fun onBindViewHolder(holder: LaporanViewHolder, position: Int) {
-        val currentLaporan = barangPrototypeList[position]
+        val currentLaporan = dataBarangMasukList[position]
         holder.tanggalTextView.text=currentLaporan.waktu
         holder.namaProdukTextView.text = currentLaporan.namaBarang
         holder.kodeprodukTextView.text = currentLaporan.kodeBarang
         holder.stokTextView.text = currentLaporan.stok.toString()
         holder.hargaTextView.text = "Rp. ${currentLaporan.harga}"
-
-
-
-
     }
-    fun updateLaporanList(newBarangPrototypeList: List<BarangPrototype>) {
-        this.barangPrototypeList = newBarangPrototypeList
+    fun updateLaporanList(newDataBarangMasukList: List<DataBarangMasuk>) {
+        this.dataBarangMasukList = newDataBarangMasukList
         notifyDataSetChanged()
     }
-    override fun getItemCount() = barangPrototypeList.size
+    override fun getItemCount() = dataBarangMasukList.size
 }

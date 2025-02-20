@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".ui.uiData.addData">
+    tools:context=".ui.uiData.EditData">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,6 +51,9 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:hint="@string/masukkan_nama_barang"
                     android:textSize="12sp" />
+
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,8 +108,9 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="16dp"
                     android:layout_weight="1"
-                    android:background="@color/coklat_abu_abu"
                     android:scaleType="centerCrop"
+
+                    android:background="@color/coklat_abu_abu"
                     android:src="@drawable/baseline_image_24" />
 
                 <LinearLayout
@@ -142,7 +146,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -160,12 +163,12 @@
                 android:layout_weight="@integer/material_motion_duration_long_1"
                 android:background="@drawable/bacgorund_kotak"
                 android:fontFamily="@font/poppins_semibold"
-                android:hint="@string/stok"
                 android:textAlignment="center"
-                android:textSize="31sp"
-
+                android:inputType="number"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:textSize="30sp"
                 />
-
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/button_remove_stok"
                 android:layout_width="wrap_content"
@@ -186,29 +189,11 @@
             android:text="@string/warna" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewColors"
+            android:id="@+id/recyclerViewColorsEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="16dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="6dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/waktu" />
-
-        <EditText
-            android:id="@+id/edit_text_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_bacground"
-            android:clickable="false"
-            android:focusable="false"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -224,7 +209,7 @@
             android:textColor="@color/black"
             android:textColorHint="@color/coklat_abu_abu"
             android:layout_height="wrap_content"
-            android:hint="@string/masukkan_nama_toko"
+            android:text="@string/masukkan_nama_toko"
             android:background="@drawable/edit_text_bacground"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="12sp" />
@@ -253,18 +238,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="30dp"
             android:backgroundTint="@color/bottom_color"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/save"
             android:textStyle="bold" />
-
-        <FrameLayout
-            android:id="@+id/standard_bottom_sheet"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        </FrameLayout>
     </LinearLayout>
 
 </ScrollView>

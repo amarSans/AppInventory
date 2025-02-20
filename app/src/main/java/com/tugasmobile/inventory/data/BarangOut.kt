@@ -1,6 +1,6 @@
 package com.tugasmobile.inventory.data
 
-data class BarangKeluar(
+data class BarangOut(
     val IdBrgKeluar:Long,
     val id_barang:Long,
     val Tgl_Keluar:String,

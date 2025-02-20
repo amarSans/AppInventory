@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Inventory"
         tools:targetApi="31">
         <activity
-            android:name=".ui.lainnya.Lainnya"
+            android:name=".ui.uiData.EditData"
             android:exported="false" />
 
         <provider

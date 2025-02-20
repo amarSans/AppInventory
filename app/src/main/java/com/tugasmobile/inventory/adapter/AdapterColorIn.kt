@@ -48,8 +48,6 @@ class AdapterColorIn(
             val backgroundDrawable = checkBoxColor.background as? LayerDrawable
             val colorLayer = backgroundDrawable?.findDrawableByLayerId(R.id.color_layer)
             colorLayer?.setTint(Color.parseColor(colorValue))
-
-
             checkBoxColor.setOnCheckedChangeListener(null) // Hapus listener yang ada
             checkBoxColor.isChecked = selectedColors.contains(colorName)
             // Mengatur listener untuk menambahkan atau menghapus warna yang dipilih

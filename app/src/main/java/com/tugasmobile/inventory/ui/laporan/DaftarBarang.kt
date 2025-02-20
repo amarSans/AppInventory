@@ -46,7 +46,7 @@ class DaftarBarang : Fragment() {
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager =
             GridLayoutManager(requireContext(), 2) // 2 kolom
-        barangViewModel.barangPrototypeList.observe(viewLifecycleOwner) { listBarang ->
+        barangViewModel.dataBarangMasukList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
         return binding.root
@@ -54,7 +54,7 @@ class DaftarBarang : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        barangViewModel.loadLaporan()
+        barangViewModel.loadBarang()
     }
 
     override fun onDestroyView() {

@@ -1,9 +1,9 @@
 package com.tugasmobile.inventory.data
 
 data class Stok(
-    val id_stok:Long,
+    val idStok: Long,
     val id_barang:Long,
-    val stok: Int,
-    val warna: List<String>,
-    val ukuran: String,
+    val stokBarang: Int,
+    var warna: List<String>,
+    var ukuran: String
 )

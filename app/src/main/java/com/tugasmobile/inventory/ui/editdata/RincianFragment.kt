@@ -51,23 +51,32 @@ class RincianFragment : Fragment() {
 
         // Gunakan barangId untuk memuat detail barang
         rincianViewModel.setCurrentBarang(BarangId)
-        rincianViewModel.currentBarangPrototype.observe(viewLifecycleOwner){ barang->
+        rincianViewModel.currentBarang.observe(viewLifecycleOwner){ barang->
             barang?.let{
-                binding.tvNamaBarang.text = it.namaBarang
-                binding.tvKodeBarang.text = it.kodeBarang
-                binding.tvHarga.text = "Rp. ${it.harga}"
-                binding.tvStok.text = it.stok.toString()
-                binding.tvKategori.text = it.nama_toko
-                val warnaFromDb = it.warna.map { warna -> warna.trim() }
-                val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
-                colorAdapter.updateColors(warnaFromDb, selectedColorValues)
-                binding.TVUkuran.text=it.ukuran
+                binding.tvNamaBarang.text = it.nama_barang
+                binding.tvKodeBarang.text = it.kode_barang
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
                     // Menyimpan URI untuk digunakan setelah izin diberikan
                     loadImage(uri)
             }
         }}
+        rincianViewModel.currentStok.observe(viewLifecycleOwner) { stok ->
+            stok?.let {
+                binding.tvStok.text = it.stokBarang.toString()
+                binding.TVUkuran.text = it.ukuran
+                val warnaFromDb = it.warna.map { warna -> warna.trim() }
+                val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
+                colorAdapter.updateColors(warnaFromDb, selectedColorValues)
+
+            }
+        }
+        rincianViewModel.currentBarangIn.observe(viewLifecycleOwner){barangIn->
+            barangIn?.let{
+                binding.tvHarga.text = "Rp. ${it.Harga_Modal}"
+                binding.tvNamaToko.text = it.Nama_Toko
+            }
+        }
         return root  // Inflate the layout for this fragment
     }
     private fun checkPermission() {
@@ -88,7 +97,7 @@ class RincianFragment : Fragment() {
         if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Izin diberikan, lakukan tindakan yang memerlukan izin
-                rincianViewModel.currentBarangPrototype.value?.gambar?.let { gambar ->
+                rincianViewModel.currentDataBarangMasuk.value?.gambar?.let { gambar ->
                     loadImage(Uri.parse(gambar))
                 }
             } else {
