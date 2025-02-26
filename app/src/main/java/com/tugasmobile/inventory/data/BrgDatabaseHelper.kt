@@ -6,7 +6,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
-import com.tugasmobile.inventory.data.BarangDatabaseHelper.Companion.COLUMN_ID
 
 class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -19,7 +18,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val COLUMN_ID_BARANG = "id_barang"
         const val COLUMN_NAMA_BARANG = "nama_barang"
         const val COLUMN_KODE_BARANG = "kode_barang"
-        //const val COLUMN_TIPE_BARANG = "tipe_barang"
         const val COLUMN_GAMBAR = "gambar"
 
         // Tabel Stok
@@ -40,6 +38,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val TABLE_BARANG_KELUAR = "barang_keluar"
         const val COLUMN_ID_KELUAR = "id_keluar"
         const val COLUMN_TANGGAL_KELUAR = "tanggal_keluar"
+        const val COLUMN_STOK_KELUAR = "stok_keluar"
         const val COLUMN_HARGA_BELI = "harga_beli"
     }
 
@@ -79,6 +78,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             CREATE TABLE $TABLE_BARANG_KELUAR (
                 $COLUMN_ID_KELUAR INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_ID_BARANG INTEGER,
+                $COLUMN_STOK_KELUAR INTEGER,
                 $COLUMN_TANGGAL_KELUAR TEXT,
                 $COLUMN_HARGA_BELI INTEGER,
                 FOREIGN KEY ($COLUMN_ID_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_ID_BARANG) ON DELETE CASCADE
@@ -99,7 +99,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         onCreate(db)
     }
 
-    fun insertInputBarang(barang:Barang1,stok:Stok,barangIn: BarangIn){
+    fun insertInputBarang(barang:ItemBarang, stok:Stok, barangIn: BarangIn){
         val db = this.writableDatabase
         db.beginTransaction()
         return try {
@@ -138,12 +138,50 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_ID_BARANG, barangOut.id_barang)
+            put(COLUMN_STOK_KELUAR, barangOut.stok_keluar)
             put(COLUMN_TANGGAL_KELUAR, barangOut.Tgl_Keluar)
             put(COLUMN_HARGA_BELI, barangOut.Hrg_Beli)
         }
         val id = db.insert(TABLE_BARANG_KELUAR, null, values)
         db.close()
         return id
+    }
+    fun searchBarang(query:String):List<DataSearch>{
+        val resultList = mutableListOf<DataSearch>()
+        val db = this.readableDatabase
+
+        val selectQuery = """
+        SELECT $TABLE_BARANG.$COLUMN_ID_BARANG, 
+               $TABLE_BARANG.$COLUMN_NAMA_BARANG, 
+               $TABLE_BARANG.$COLUMN_KODE_BARANG, 
+               $TABLE_BARANG_MASUK.$COLUMN_NAMA_TOKO
+        FROM $TABLE_BARANG
+        LEFT JOIN $TABLE_BARANG_MASUK 
+        ON $TABLE_BARANG.$COLUMN_ID_BARANG = $TABLE_BARANG_MASUK.$COLUMN_ID_BARANG
+        WHERE $TABLE_BARANG.$COLUMN_NAMA_BARANG LIKE ? 
+           OR $TABLE_BARANG.$COLUMN_KODE_BARANG LIKE ? 
+           OR $TABLE_BARANG_MASUK.$COLUMN_NAMA_TOKO LIKE ?
+        GROUP BY $TABLE_BARANG.$COLUMN_ID_BARANG
+    """.trimIndent()
+
+        val cursor = db.rawQuery(selectQuery, arrayOf("%$query%", "%$query%", "%$query%"))
+
+        if (cursor.moveToFirst()) {
+            do {
+                val idBarang = cursor.getLong(0)
+                val namaBarang = cursor.getString(1) ?: ""
+                val kodeBarang = cursor.getString(2) ?: ""
+                val namaToko = cursor.getString(3) ?: ""
+
+                // Format hasil: "Kode Barang - Nama Barang (Nama Toko)"
+                val dataSearch = DataSearch(idBarang, namaBarang, kodeBarang, namaToko)
+                resultList.add(dataSearch)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return resultList
     }
 
     fun getAllBarang(): List<DataBarangMasuk> {
@@ -201,12 +239,12 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun deleteBarang(id: Long): Int {
         val db = this.writableDatabase
         // Menghapus barang berdasarkan ID
-        val result = db.delete(TABLE_BARANG, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        val result = db.delete(TABLE_BARANG, "$COLUMN_ID_BARANG = ?", arrayOf(id.toString()))
 
         db.close()
         return result
     }
-    fun updateBarang(barang: Barang1, stok: Stok, barangIn: BarangIn): Boolean {
+    fun updateBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn): Boolean {
         val db = this.writableDatabase
         db.beginTransaction()
         try {
@@ -262,7 +300,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             db.endTransaction()
         }
     }
-    fun getBarangById(id: Long): Triple<Barang1?,Stok?, BarangIn?> {
+    fun getBarangById(id: Long): Triple<ItemBarang?,Stok?, BarangIn?> {
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_ID_BARANG, b.$COLUMN_NAMA_BARANG, b.$COLUMN_KODE_BARANG, 
@@ -273,7 +311,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_ID_BARANG = m.$COLUMN_ID_BARANG
         WHERE b.$COLUMN_ID_BARANG = ?
         """.trimIndent()
-        var barang1:Barang1?=null
+        var itemBarang:ItemBarang?=null
         var stok:Stok?=null
         var barangIn:BarangIn?=null
         val cursor: Cursor? = db.rawQuery(query, arrayOf(id.toString()))
@@ -297,13 +335,13 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))
 
                 // Inisialisasi objek
-                barang1 = Barang1(idBarang, namaBarang, kodeBarang, gambarUri.toString())
+                itemBarang = ItemBarang(idBarang, namaBarang, kodeBarang, gambarUri.toString())
                 stok = Stok(idStok,idBarang, stokJumlah,warna, ukuran )
                 barangIn = BarangIn(idMasuk,idBarang, tanggalMasuk, hargaJual, namaToko)
             }
         }
 
         db.close()
-        return Triple(barang1, stok, barangIn)
+        return Triple(itemBarang, stok, barangIn)
     }
 }

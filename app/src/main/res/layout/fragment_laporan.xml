@@ -32,10 +32,10 @@
                 android:id="@+id/recyclerViewLaporan"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_data_laporan"
                 android:divider="@android:color/darker_gray"
-                android:dividerHeight="1dp" />
+                android:dividerHeight="1dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_data_laporan" />
         </LinearLayout>
     </HorizontalScrollView>
 </LinearLayout>

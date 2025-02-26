@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.adapter.AdapterColorOut
+import com.tugasmobile.inventory.adapter.AdapterColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
 import com.tugasmobile.inventory.ui.ViewModel
 
@@ -43,7 +43,7 @@ class RincianFragment : Fragment() {
         }
 // Inisialisasi RecyclerView dan Adapter
         val recyclerView: RecyclerView = binding.rvWarnaSendal // Sesuaikan dengan ID RecyclerView Anda
-        val colorAdapter = AdapterColorOut(requireContext())
+        val colorAdapter = AdapterColorUI(requireContext())
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
 

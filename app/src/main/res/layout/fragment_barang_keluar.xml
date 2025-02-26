@@ -6,17 +6,168 @@
     android:layout_height="match_parent"
     tools:context=".ui.Barang.BarangKeluar">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-    <include
-        android:id="@+id/layoutinclude"
-        layout="@layout/item_barang_keluar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_height="match_parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteBarang"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edit_text_bacground"
+            android:layout_margin="10dp"
+            android:dropDownWidth="match_parent"
+            android:dropDownHeight="wrap_content"
+            android:hint="Cari barang..."
+            android:drawableStart="@drawable/baseline_search_24"
+            android:padding="10dp"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <LinearLayout
+            android:id="@+id/laytransaksi"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/edit_text_bacground"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/lytotalbayar"
+            app:layout_constraintTop_toBottomOf="@+id/autoCompleteBarang">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Include Layout yang akan ikut bergulir -->
+                    <include
+                        android:id="@+id/itembarr"
+                        layout="@layout/item_bar_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <!-- RecyclerView untuk data laporan -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewLaporan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:divider="@android:color/darker_gray"
+                        android:dividerHeight="1dp"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_data_out" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lytotalbayar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/ly_dibayar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/material_motion_duration_short_1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="total bayar"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/total_bayar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_bacground"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="50000"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ly_dibayar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/ly_kembalian"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/material_motion_duration_short_1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="uang dibayar"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/uang_dibayar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_bacground"
+                android:fontFamily="@font/poppins_semibold"
+                android:inputType="number"
+                android:text="50000"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ly_kembalian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_barang_keluar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_weight="@integer/material_motion_duration_short_1"
+                android:text="kembalian"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/kembalian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_bacground"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="50000"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_barang_keluar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="barang keluar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

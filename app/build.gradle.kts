@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.runner)
     implementation(libs.androidx.fragment.testing)
     implementation(libs.filament.android)
+    implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.firebase.crashlytics.buildtools)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)

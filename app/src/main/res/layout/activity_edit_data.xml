@@ -151,7 +151,7 @@
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/button_add_stok"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/coklat_abu_abu"
                 app:icon="@drawable/baseline_add_24" />
@@ -159,7 +159,7 @@
             <EditText
                 android:id="@+id/edit_stok_barang"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="@integer/material_motion_duration_long_1"
                 android:background="@drawable/bacgorund_kotak"
                 android:fontFamily="@font/poppins_semibold"
@@ -172,7 +172,7 @@
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/button_remove_stok"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
                 android:backgroundTint="@color/coklat_abu_abu"
                 app:icon="@drawable/baseline_remove_24" />

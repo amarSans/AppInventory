@@ -19,9 +19,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
-import com.tugasmobile.inventory.data.Barang1
+import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
@@ -110,7 +111,7 @@ class addData : AppCompatActivity() {
         val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
         val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors()
         val namaToko = binding.edtNamaToko.text.toString()
-        val barang1=Barang1(
+        val itemBarang=ItemBarang(
             id_barang = 0,
             nama_barang = namaProduk,
             kode_barang = kodeProduk,
@@ -130,9 +131,9 @@ class addData : AppCompatActivity() {
             Harga_Modal = hargaProduk,
             Nama_Toko =namaToko
         )
-        viewModel.insertInputBarang(barang1,stok,barangIn)
-        Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, BarangMasuk::class.java))
+        viewModel.insertInputBarang(itemBarang,stok,barangIn)/*
+        Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()*/
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
