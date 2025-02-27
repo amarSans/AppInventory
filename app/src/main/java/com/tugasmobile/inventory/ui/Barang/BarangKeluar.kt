@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -16,14 +17,12 @@ import com.tugasmobile.inventory.data.DaftarBarangKeluar
 import com.tugasmobile.inventory.databinding.FragmentBarangKeluarBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.simpleItem.BarangKeluarDialogFragment
-import kotlinx.coroutines.selects.select
-
 
 class BarangKeluar : Fragment() {
     private var _binding: FragmentBarangKeluarBinding? = null
     private val binding get() = _binding!!
     private lateinit var barangKeluarViewModel: ViewModel
-    private lateinit var autoCompletxTextadapter: ArrayAdapter<String>
+    private lateinit var autoCompleteAdapter: ArrayAdapter<String>
     private val daftarBarangKeluar = mutableListOf<DaftarBarangKeluar>()
     private lateinit var adapterTransaksi: AdafterTransaksiBarangKeluar
 
@@ -38,84 +37,105 @@ class BarangKeluar : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        barangKeluarViewModel = ViewModelProvider(this).get(ViewModel::class.java)
-        adapterTransaksi = AdafterTransaksiBarangKeluar(daftarBarangKeluar)
-        binding.recyclerViewBarangKeluar.adapter = adapterTransaksi
-        binding.recyclerViewBarangKeluar.layoutManager = LinearLayoutManager(requireContext())
+        setupViewModel()
+        setupRecyclerView()
         setupAutoCompleteTextView()
         observeSearchResults()
         setupItemSelection()
-        adapterTransaksi.onTotalHargaUpdated = { total_bayar ->
-            binding.totalBayar.text = total_bayar.toString()
-            Log.d("Transaksi", "Total Bayar: $total_bayar")
-            val dibayarText = binding.uangDibayar.text.toString()
-            val dibayar=if (dibayarText.isNotEmpty()) dibayarText.toInt() else 0
-            val kembalian = dibayar - total_bayar
-            binding.totalBayar.text=total_bayar.toString()
-            binding.kembalian.text=kembalian.toString()
-            binding.uangDibayar.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        setupTotalBayarListener()
+        setupClearButton()
+    }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    val dibayarBaru = if (!s.isNullOrEmpty()) s.toString().toInt() else 0
-                    val kembalianBaru = dibayarBaru - total_bayar
-                    binding.kembalian.text = kembalianBaru.toString()
-                }
+    private fun setupViewModel() {
+        barangKeluarViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+    }
 
-                override fun afterTextChanged(s: Editable?) {}
-            })
+    private fun setupRecyclerView() {
+        adapterTransaksi = AdafterTransaksiBarangKeluar(daftarBarangKeluar)
+        binding.recyclerViewBarangKeluar.apply {
+            adapter = adapterTransaksi
+            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
     private fun setupAutoCompleteTextView() {
-        autoCompletxTextadapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
-        binding.autoCompleteBarang.setAdapter(autoCompletxTextadapter)
-
+        autoCompleteAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        binding.autoCompleteBarang.setAdapter(autoCompleteAdapter)
         binding.autoCompleteBarang.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.isNullOrEmpty()) {
-                    barangKeluarViewModel.searchBarang(s.toString())
-                } else {
-                    autoCompletxTextadapter.clear()
-                    autoCompletxTextadapter.notifyDataSetChanged()
+                if (!s.isNullOrEmpty()) barangKeluarViewModel.searchBarang(s.toString())
+                else {
+                    autoCompleteAdapter.clear()
+                    autoCompleteAdapter.notifyDataSetChanged()
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
     }
 
     private fun observeSearchResults() {
         barangKeluarViewModel.dataSearch.observe(viewLifecycleOwner) { result ->
-            autoCompletxTextadapter.clear()
-            if (result.isNullOrEmpty()) {
-                autoCompletxTextadapter.add("Barang Tidak Ditemukan")
-            } else {
-                autoCompletxTextadapter.addAll(result.map { "${it.kodeBarang} / ${it.namaBarang} / ${it.nama_toko}" })
-            }
-            autoCompletxTextadapter.notifyDataSetChanged()
+            autoCompleteAdapter.clear()
+            autoCompleteAdapter.addAll(
+                if (result.isNullOrEmpty()) listOf("Barang Tidak Ditemukan")
+                else result.map { "${it.kodeBarang} / ${it.namaBarang} / ${it.nama_toko}" }
+            )
+            autoCompleteAdapter.notifyDataSetChanged()
             binding.autoCompleteBarang.showDropDown()
         }
     }
+
     private fun setupItemSelection() {
         binding.autoCompleteBarang.setOnItemClickListener { _, _, position, _ ->
-            val selectedItemText = autoCompletxTextadapter.getItem(position)
-
+            val selectedItemText = autoCompleteAdapter.getItem(position)
             if (selectedItemText == "Barang Tidak Ditemukan") {
                 binding.autoCompleteBarang.setText("")
-            } else {
-                val selectedItem = barangKeluarViewModel.dataBarangMasukList.value?.find {
-                    "${it.kodeBarang} / ${it.namaBarang} / ${it.nama_toko}" == selectedItemText
-                }
+                return@setOnItemClickListener
+            }
+            val selectedItem = barangKeluarViewModel.dataBarangMasukList.value?.find {
+                "${it.kodeBarang} / ${it.namaBarang} / ${it.nama_toko}" == selectedItemText
+            }
+            selectedItem?.let {
+                barangKeluarViewModel.setCurrentBarang(it.id)
+                showBarangKeluarDialog(it.kodeBarang, it.namaBarang, it.harga.toString(), it.warna.toString(), it.ukuran)
+                binding.autoCompleteBarang.postDelayed({ binding.autoCompleteBarang.text.clear() }, 100)
+            }
+        }
+    }
 
-                selectedItem?.let {
-                    binding.autoCompleteBarang.setText(it.namaBarang)
-                    barangKeluarViewModel.setCurrentBarang(it.id)
-                    showBarangKeluarDialog(it.kodeBarang, it.namaBarang, it.harga.toString(), it.warna.toString(), it.ukuran)
+    private fun setupTotalBayarListener() {
+        adapterTransaksi.onTotalHargaUpdated = { totalBayar ->
+            binding.totalBayar.text = totalBayar.toString()
+            updateKembalian(totalBayar)
+            binding.uangDibayar.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    updateKembalian(totalBayar)
+                }
+                override fun afterTextChanged(s: Editable?) {}
+            })
+        }
+    }
+
+    private fun updateKembalian(totalBayar: Int) {
+        val dibayar = binding.uangDibayar.text.toString().toIntOrNull() ?: 0
+        binding.kembalian.text = (dibayar - totalBayar).toString()
+    }
+
+    private fun setupClearButton() {
+        binding.autoCompleteBarang.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableStart = binding.autoCompleteBarang.compoundDrawables[0]
+                drawableStart?.let {
+                    val drawableWidth = it.bounds.width()
+                    if (event.rawX <= (binding.autoCompleteBarang.left + drawableWidth + binding.autoCompleteBarang.paddingStart)) {
+                        binding.autoCompleteBarang.text.clear()
+                        return@setOnTouchListener true
+                    }
                 }
             }
+            false
         }
     }
 
@@ -131,20 +151,9 @@ class BarangKeluar : Fragment() {
                 stokKeluar: Int,
                 hargaBeli: Int
             ) {
-                Log.d("BarangKeluar", "Data disimpan: Kode: $kodeBarang, Nama: $namaBarang, Harga: $hargaBarang, Warna: $warnaTerpilih, Ukuran: $ukuranTerpilih, Stok: $stokKeluar,hargabeli: $hargaBeli")
-                // Bisa update UI atau simpan ke database di sini
-                val barangKeluar = DaftarBarangKeluar(
-                    kodeBarang = kodeBarang,
-                    stok = stokKeluar,
-                    ukuran = ukuranTerpilih.joinToString(", "), // Gabungkan list ukuran menjadi satu string
-                    hargaJual = hargaBeli,
-                    hargaTotal = 0
-                )
-
-                // Tambahkan ke daftar dan update adapter
+                val barangKeluar = DaftarBarangKeluar(kodeBarang, stokKeluar, ukuranTerpilih.joinToString(", "), hargaBeli, 0)
                 daftarBarangKeluar.add(barangKeluar)
                 adapterTransaksi.notifyDataSetChanged()
-
             }
         })
         dialog.show(parentFragmentManager, "BarangKeluarDialog")

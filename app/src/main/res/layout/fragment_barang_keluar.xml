@@ -19,7 +19,7 @@
             android:dropDownWidth="match_parent"
             android:dropDownHeight="wrap_content"
             android:hint="Cari barang..."
-            android:drawableStart="@drawable/baseline_search_24"
+            android:drawableStart="@drawable/baseline_close_24"
             android:padding="10dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
