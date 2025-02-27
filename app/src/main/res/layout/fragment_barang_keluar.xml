@@ -59,7 +59,7 @@
 
                     <!-- RecyclerView untuk data laporan -->
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerViewLaporan"
+                        android:id="@+id/recyclerViewBarangKeluar"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:divider="@android:color/darker_gray"
@@ -83,19 +83,20 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="@integer/material_motion_duration_short_1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="total bayar"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/total_bayar"
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
+                android:gravity="end"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_bacground"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="50000"
+                android:hint="@string/_00"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -113,20 +114,21 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="@integer/material_motion_duration_short_1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="uang dibayar"
                 android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/uang_dibayar"
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
+                android:gravity="end"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_bacground"
                 android:fontFamily="@font/poppins_semibold"
                 android:inputType="number"
-                android:text="50000"
+                android:hint="@string/_00"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -143,19 +145,20 @@
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_weight="@integer/material_motion_duration_short_1"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
-                android:layout_weight="@integer/material_motion_duration_short_1"
                 android:text="kembalian"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/kembalian"
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
+                android:gravity="end"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_bacground"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="50000"
+                android:hint="@string/_00"
                 android:textSize="14sp" />
 
         </LinearLayout>

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ViewModel(application: Application) : AndroidViewModel(application) {
-    //private val databaseHelper= BarangDatabaseHelper(application)
+
     private val databaseHelper= BrgDatabaseHelper(application)
     private val _Data_barangMasukList= MutableLiveData<List<DataBarangMasuk>>()
     val dataBarangMasukList: LiveData<List<DataBarangMasuk>> = _Data_barangMasukList
