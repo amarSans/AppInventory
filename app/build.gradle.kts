@@ -16,6 +16,14 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    packaging {
+        resources {
+            excludes.add("META-INF/LICENSE.md") // Mengecualikan file LICENSE.md
+            excludes.add("META-INF/LICENSE-notice.md") // Jika ada file lain yang bermasalah
+            excludes.add("META-INF/NOTICE.md") // Mengecualikan file NOTICE.md
+            excludes.add("META-INF/DEPENDENCIES") // Mengecualikan file DEPENDENCIES jika diperlukan
+        }
+    }
 
     buildTypes {
         release {
@@ -56,6 +64,7 @@ dependencies {
     implementation(libs.filament.android)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.firebase.crashlytics.buildtools)
+    implementation(libs.screenshot.validation.junit.engine)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)

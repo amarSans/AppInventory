@@ -6,26 +6,28 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
+import java.text.NumberFormat
+import java.util.Locale
 
 class EditData : AppCompatActivity() {
     private lateinit var binding: ActivityEditDataBinding
     private lateinit var editViewModel: ViewModel
-    private var barangId: Long = 0
+    private var barangId: String = ""
     private var stokBarang = 0
     private var selectedSizesList: List<String> = emptyList()
     private var selectedImageUri: Uri? = null
@@ -38,8 +40,8 @@ class EditData : AppCompatActivity() {
         setContentView(binding.root)
 
         editViewModel = ViewModelProvider(this).get(ViewModel::class.java)
-        barangId = intent.getLongExtra("ID_BARANG", 0)
-        if (barangId != 0L) editViewModel.setCurrentBarang(barangId)
+        barangId = intent.getStringExtra("ID_BARANG") ?: ""
+        if (barangId.isNotEmpty()) editViewModel.setCurrentBarang(barangId)
         val imgViewBack = binding.imgViewBack
         imgViewBack.setOnClickListener {
             finish()
@@ -75,50 +77,70 @@ class EditData : AppCompatActivity() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.buttonSave.setOnClickListener { saveChanges() }
+        HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
     }
 
     private fun setupObservers() {
         editViewModel.currentBarang.observe(this) { barang ->
             barang?.let {
                 binding.editTextNamaBarang.setText(it.nama_barang)
-                binding.editTextKodeBarang.setText(it.kode_barang)
-                selectedImageUri = Uri.parse(it.gambar)
+                binding.editTextKodeBarang.setText(it.id_barang)
+                selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
                 binding.imageViewBarang.setImageURI(selectedImageUri)
+            }?: run {
+                // Handle kasus ketika barang bernilai null
+                Toast.makeText(this, "Data barang tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
         editViewModel.currentStok.observe(this) { stok ->
             stok?.let {
                 binding.edtUkuran.text = it.ukuran
-                selectedSizesList = it.ukuran.split(",").map { size -> size.trim() }
+                selectedSizesList = it.ukuran?.split(",")?.map { size -> size.trim() }?: emptyList()
                 colorAdapter.setSelectedColors(it.warna)
                 binding.editStokBarang.setText(it.stokBarang.toString())
                 stokBarang = it.stokBarang
+            }?: run {
+                // Handle kasus ketika stok bernilai null
+                Toast.makeText(this, "Data stok tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
         editViewModel.currentBarangIn.observe(this){barangIn->
             barangIn?.let{
-                binding.editTextHargaBarang.setText(it.Harga_Modal.toString())
+                binding.editTextHargaBarang.setText(HargaUtils.formatHarga(it.Harga_Modal))
                 binding.edtNamaToko.setText(it.Nama_Toko)
+            } ?: run {
+                // Handle kasus ketika barangIn bernilai null
+                Toast.makeText(this, "Data barang masuk tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
     private fun saveChanges() {
         val selectedColors = colorAdapter.getSelectedColors().toSet()
+        val hargaBarang = binding.editTextHargaBarang.text.toString().replace(".", "").toIntOrNull() ?: 0
         val updatedBarang = editViewModel.currentBarang.value?.copy(
             nama_barang = binding.editTextNamaBarang.text.toString(),
-            kode_barang = binding.editTextKodeBarang.text.toString(),
+            id_barang = binding.editTextKodeBarang.text.toString(),
             gambar = selectedImageUri?.toString() ?: ""
-        )
+        )?: run {
+            Toast.makeText(this, "Data barang tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
         val updatedStok = editViewModel.currentStok.value?.copy(
             stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
             ukuran = binding.edtUkuran.text.toString(),
             warna = selectedColors.toList()
-        )
+        )?: run {
+            Toast.makeText(this, "Data stok tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
         val updatedBarangMasuk = editViewModel.currentBarangIn.value?.copy(
-            Harga_Modal = binding.editTextHargaBarang.text.toString().toInt(),
+            Harga_Modal = hargaBarang,
             Nama_Toko = binding.edtNamaToko.text.toString()
-        )
+        )?: run {
+            Toast.makeText(this, "Data barang masuk tidak valid", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         updatedBarang?.let {
             deleteImage(Uri.parse(it.gambar))
@@ -127,8 +149,10 @@ class EditData : AppCompatActivity() {
         if (updatedBarang != null && updatedStok != null && updatedBarangMasuk!=null) {
             editViewModel.updateBarang(updatedBarang, updatedStok, updatedBarangMasuk)
         }
+        editViewModel.loadBarang()
         finish()
     }
+
 
     private fun openCamera() {
         selectedImageUri?.let { deleteImage(it) }

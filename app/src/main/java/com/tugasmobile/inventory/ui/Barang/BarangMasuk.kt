@@ -54,6 +54,15 @@ class BarangMasuk : Fragment() {
         }
         return binding.root
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val toastMessage = arguments?.getString("toastMessage")
+        if (!toastMessage.isNullOrEmpty()) {
+            Toast.makeText(requireContext(), toastMessage, Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()

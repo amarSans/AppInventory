@@ -18,6 +18,9 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
+import java.text.NumberFormat
+import java.util.Locale
 
 
 class RincianFragment : Fragment() {
@@ -25,7 +28,7 @@ class RincianFragment : Fragment() {
     private val binding get() = _binding!!
     private var gambarUri: Uri? = null
     private lateinit var rincianViewModel: ViewModel
-    private var BarangId:Long=0
+    private var BarangId:String=""
     private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
 
     override fun onCreateView(
@@ -35,7 +38,7 @@ class RincianFragment : Fragment() {
         rincianViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         _binding = FragmentRincianBinding.inflate(inflater,container,false)
         val root:View=binding.root
-        BarangId = arguments?.getLong("ID_BARANG") ?: 0L
+        BarangId = arguments?.getString("ID_BARANG") ?: ""
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
         val colorValues = resources.getStringArray(R.array.daftar_warna)
         val colorMap = colorNames.indices.associate { index ->
@@ -54,7 +57,7 @@ class RincianFragment : Fragment() {
         rincianViewModel.currentBarang.observe(viewLifecycleOwner){ barang->
             barang?.let{
                 binding.tvNamaBarang.text = it.nama_barang
-                binding.tvKodeBarang.text = it.kode_barang
+                binding.tvKodeBarang.text = it.id_barang
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
                     // Menyimpan URI untuk digunakan setelah izin diberikan
@@ -73,7 +76,8 @@ class RincianFragment : Fragment() {
         }
         rincianViewModel.currentBarangIn.observe(viewLifecycleOwner){barangIn->
             barangIn?.let{
-                binding.tvHarga.text = "Rp. ${it.Harga_Modal}"
+                val formattedHarga = HargaUtils.formatHarga(it.Harga_Modal)
+                binding.tvHarga.text = "Rp. $formattedHarga"
                 binding.tvNamaToko.text = it.Nama_Toko
             }
         }
@@ -114,6 +118,11 @@ class RincianFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    override fun onResume() {
+        super.onResume()
+        // Memuat ulang data saat fragment kembali ke tampilan
+        rincianViewModel.setCurrentBarang(BarangId)
     }
 
 

@@ -16,7 +16,7 @@ import com.tugasmobile.inventory.ui.uiData.EditData
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding
     private lateinit var detailBarangViewModel:ViewModel
-    private var barangId:Long =0
+    private var barangId:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,15 +25,17 @@ class DetailBarang : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         detailBarangViewModel=  ViewModelProvider(this).get(ViewModel::class.java)
-        barangId = intent.getLongExtra("ID_BARANG", 0L)
+        barangId = intent.getStringExtra("ID_BARANG") ?: ""
+        if (barangId.isNotEmpty()) detailBarangViewModel.setCurrentBarang(barangId)
         detailBarangViewModel.setCurrentBarang(barangId)
 
 
         if (savedInstanceState == null) {
             val rincianFragment = RincianFragment().apply {
                 arguments = Bundle().apply {
-                    putLong("ID_BARANG", barangId)
+                    putString("ID_BARANG", barangId)
                 }
+
             }
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, rincianFragment)  // Gunakan ID container dari layout

@@ -1,9 +1,8 @@
 package com.tugasmobile.inventory.data
 
 data class DataBarangMasuk(
-    val id: Long,
+    val id: String,
     val namaBarang: String,
-    val kodeBarang: String,
     val stok: Int,
     val harga: Int,
     val warna: List<String>,

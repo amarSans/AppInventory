@@ -28,8 +28,8 @@ class LaporanAdapter(private var dataBarangMasukList: List<DataBarangMasuk>) :
     override fun onBindViewHolder(holder: LaporanViewHolder, position: Int) {
         val currentLaporan = dataBarangMasukList[position]
         holder.tanggalTextView.text=currentLaporan.waktu
+        holder.kodeprodukTextView.text = currentLaporan.id
         holder.namaProdukTextView.text = currentLaporan.namaBarang
-        holder.kodeprodukTextView.text = currentLaporan.kodeBarang
         holder.stokTextView.text = currentLaporan.stok.toString()
         holder.hargaTextView.text = "Rp. ${currentLaporan.harga}"
     }

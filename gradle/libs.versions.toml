@@ -26,6 +26,7 @@ glide = "4.12.0"
 filamentAndroid = "1.17.1"
 media3CommonKtx = "1.5.1"
 firebaseCrashlyticsBuildtools = "3.0.3"
+screenshotValidationJunitEngine = "0.0.1-alpha09"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +54,7 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 filament-android = { group = "com.google.ar.sceneform", name = "filament-android", version.ref = "filamentAndroid" }
 androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-ktx", version.ref = "media3CommonKtx" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+screenshot-validation-junit-engine = { group = "com.android.tools.screenshot", name = "screenshot-validation-junit-engine", version.ref = "screenshotValidationJunitEngine" }
 
 
 

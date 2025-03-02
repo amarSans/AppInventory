@@ -40,12 +40,17 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadBarang() {
         viewModelScope.launch(Dispatchers.IO) {
-            val barangList = databaseHelper.getAllBarang()
-            withContext(Dispatchers.Main) {
-                _Data_barangMasukList.value = barangList
+            try {
+                val barangList = databaseHelper.getAllBarang()
+                withContext(Dispatchers.Main) {
+                    _Data_barangMasukList.value = barangList
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
+
     fun insertInputBarang(barang:ItemBarang, stok:Stok, barangIn: BarangIn){
         databaseHelper.insertInputBarang(barang,stok,barangIn)
         loadBarang()
@@ -55,7 +60,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _dataSearch.value = results
     }
 
-    fun deleteBarang(id: Long) {
+    fun deleteBarang(id: String) {
         databaseHelper.deleteBarang(id)
         loadBarang()
     }
@@ -63,14 +68,19 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         databaseHelper.updateBarang(barang,stok,barangIn)
         loadBarang()
     }
-    fun setCurrentBarang(id: Long) {
+    fun setCurrentBarang(id: String) {
         val (barang, stok, barangIn) = databaseHelper.getBarangById(id)
         _currentBarang.value = barang
         _currentStok.value = stok
         _currentBarangIn.value = barangIn
     }
 
-    fun updateWarna(barangId: Long, newColors: List<String>) {
+    fun updateWarna(barangId: String, newColors: List<String>) {
         databaseHelper.updateWarna(barangId, newColors)
     }
+
+    fun cekKodeBarangAda(kode: String): Boolean {
+        return databaseHelper.cekKodeBarangAda(kode)
+    }
+
 }

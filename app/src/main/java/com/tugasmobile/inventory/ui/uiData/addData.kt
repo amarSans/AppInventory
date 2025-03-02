@@ -9,6 +9,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.tools.screenshot.isValid
 import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
@@ -28,7 +31,9 @@ import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -105,35 +110,77 @@ class addData : AppCompatActivity() {
         return file
     }
 
+    fun generateKodeBarang(kodeBarang: String, checkExist: (String) -> Boolean): String {
+        var kode: String
+        do {
+            val prefix = if (kodeBarang.isBlank()) "" else kodeBarang.take(3).uppercase()
+            kode = "SND$prefix${(1000..9999).random()}"
+        } while (checkExist(kode))
+        return kode
+    }
+
+
     private fun saveData() {
-        val namaProduk = binding.editTextNamaBarang.text.toString()
-        val kodeProduk = binding.editTextKodeBarang.text.toString()
-        val hargaProduk = binding.editTextHargaBarang.text.toString().toInt()
+        var kodeProduk = binding.editTextKodeBarang.text.toString()
+        if (kodeProduk.isBlank()) {
+            kodeProduk = generateKodeBarang(kodeProduk) { kode ->
+                viewModel.cekKodeBarangAda(kode)
+            }
+        }
+        val namaProduk = binding.editTextNamaBarang.text.toString().trim()
+        if (namaProduk.isEmpty()) {
+            binding.editTextNamaBarang.error = "Nama barang tidak boleh kosong"
+            return
+        }
+        val stokBarangText = binding.editStokBarang.text.toString().trim()
+        if (stokBarangText.isEmpty()) {
+            binding.editStokBarang.error = "Stok barang tidak boleh kosong"
+            return
+        }
+
+        val hargaProdukText = binding.editTextHargaBarang.text.toString().replace(".", "").trim()
+        if (hargaProdukText.isEmpty()) {
+            binding.editTextHargaBarang.error = "Harga barang tidak boleh kosong"
+            return
+        }
+        val hargaProduk = hargaProdukText.toIntOrNull()
+        if (hargaProduk == null || hargaProduk <= 0) {
+            binding.editTextHargaBarang.error = "Harga barang harus berupa angka dan lebih dari 0"
+            return
+        }
+
         val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors()
-        val namaToko = binding.edtNamaToko.text.toString()
+        if (selectedColors.isEmpty()) {
+            Toast.makeText(this, "Pilih minimal satu warna", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val namaToko = binding.edtNamaToko.text.toString().trim()
+        if (namaToko.isEmpty()) {
+            binding.edtNamaToko.error = "Nama toko tidak boleh kosong"
+            return
+        }
+
         val itemBarang=ItemBarang(
-            id_barang = 0,
+            id_barang = kodeProduk,
             nama_barang = namaProduk,
-            kode_barang = kodeProduk,
             gambar = selectedImageUri.toString()
         )
         val stok= Stok(
             idStok = 0,
-            id_barang = 0,
+            id_barang = kodeProduk,
             stokBarang = stokBarang,
             warna = selectedColors,
             ukuran = selectedSizesList,
         )
         val barangIn = BarangIn(
             IdBrgMasuk = 0,
-            id_barang = 0,
+            id_barang = kodeProduk,
             Tgl_Masuk = getCurrentDate(),
             Harga_Modal = hargaProduk,
             Nama_Toko =namaToko
         )
-        viewModel.insertInputBarang(itemBarang,stok,barangIn)/*
-        Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()*/
-        startActivity(Intent(this, MainActivity::class.java))
+        viewModel.insertInputBarang(itemBarang,stok,barangIn)
+        Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         finish()
     }
 
@@ -162,6 +209,7 @@ class addData : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerViewColors) // Pastikan RecyclerView sudah di-inisialisasi
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = AdapterColorIn(this, resources.getStringArray(R.array.daftar_nama_warna), resources.getStringArray(R.array.daftar_warna))
+        HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
     }
 
     private fun openGallery() {

@@ -11,13 +11,12 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
     companion object {
         private const val DATABASE_NAME = "Inventaris.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
 
         // Tabel Barang
         const val TABLE_BARANG = "barang"
-        const val COLUMN_ID_BARANG = "id_barang"
-        const val COLUMN_NAMA_BARANG = "nama_barang"
         const val COLUMN_KODE_BARANG = "kode_barang"
+        const val COLUMN_NAMA_BARANG = "nama_barang"
         const val COLUMN_GAMBAR = "gambar"
 
         // Tabel Stok
@@ -45,43 +44,42 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     override fun onCreate(db: SQLiteDatabase) {
         val createBarangTable = """
             CREATE TABLE $TABLE_BARANG (
-                $COLUMN_ID_BARANG INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COLUMN_NAMA_BARANG TEXT,
-                $COLUMN_KODE_BARANG TEXT UNIQUE,
-                $COLUMN_GAMBAR TEXT
+                $COLUMN_KODE_BARANG TEXT PRIMARY KEY,
+                $COLUMN_NAMA_BARANG TEXT NOT NULL,
+                $COLUMN_GAMBAR TEXT DEFAULT NULL
             )
         """.trimIndent()
 
         val createStokTable = """
             CREATE TABLE $TABLE_STOK (
                 $COLUMN_ID_STOK INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COLUMN_ID_BARANG INTEGER,
-                $COLUMN_WARNA TEXT,
-                $COLUMN_UKURAN TEXT,
-                $COLUMN_STOK INTEGER,
-                FOREIGN KEY ($COLUMN_ID_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_ID_BARANG) ON DELETE CASCADE
+                $COLUMN_KODE_BARANG TEXT,
+                $COLUMN_WARNA TEXT DEFAULT '',
+                $COLUMN_UKURAN TEXT DEFAULT '',
+                $COLUMN_STOK INTEGER DEFAULT 0,
+                FOREIGN KEY ($COLUMN_KODE_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_KODE_BARANG) ON DELETE CASCADE
             )
         """.trimIndent()
 
         val createBarangMasukTable = """
             CREATE TABLE $TABLE_BARANG_MASUK (
                 $COLUMN_ID_MASUK INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COLUMN_ID_BARANG INTEGER,
-                $COLUMN_TANGGAL_MASUK TEXT,
-                $COLUMN_HARGA_JUAL INTEGER,
-                $COLUMN_NAMA_TOKO TEXT,
-                FOREIGN KEY ($COLUMN_ID_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_ID_BARANG) ON DELETE CASCADE
+                $COLUMN_KODE_BARANG TEXT,
+                $COLUMN_TANGGAL_MASUK TEXT NOT NULL,
+                $COLUMN_HARGA_JUAL INTEGER NOT NULL,
+                $COLUMN_NAMA_TOKO TEXT DEFAULT NULL,
+                FOREIGN KEY ($COLUMN_KODE_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_KODE_BARANG) ON DELETE CASCADE
             )
         """.trimIndent()
 
         val createBarangKeluarTable = """
             CREATE TABLE $TABLE_BARANG_KELUAR (
                 $COLUMN_ID_KELUAR INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COLUMN_ID_BARANG INTEGER,
-                $COLUMN_STOK_KELUAR INTEGER,
-                $COLUMN_TANGGAL_KELUAR TEXT,
+                $COLUMN_KODE_BARANG TEXT,
+                $COLUMN_STOK_KELUAR INTEGER NOT NULL,
+                $COLUMN_TANGGAL_KELUAR TEXT NOT NULL,
                 $COLUMN_HARGA_BELI INTEGER,
-                FOREIGN KEY ($COLUMN_ID_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_ID_BARANG) ON DELETE CASCADE
+                FOREIGN KEY ($COLUMN_KODE_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_KODE_BARANG) ON DELETE CASCADE
             )
         """.trimIndent()
 
@@ -104,22 +102,24 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.beginTransaction()
         return try {
             val valuesBarang = ContentValues().apply {
+                put(COLUMN_KODE_BARANG, barang.id_barang)
                 put(COLUMN_NAMA_BARANG, barang.nama_barang)
-                put(COLUMN_KODE_BARANG, barang.kode_barang)
                 put(COLUMN_GAMBAR, barang.gambar)
             }
             val barangId = db.insert(TABLE_BARANG, null, valuesBarang)
             if (barangId == -1L) throw Exception("terjadi kegagalan")
+
             val valuesStok = ContentValues().apply {
-                put(COLUMN_ID_BARANG, barangId)
+                put(COLUMN_KODE_BARANG, barang.id_barang)
                 put(COLUMN_WARNA, stok.warna.joinToString(","))
                 put(COLUMN_UKURAN, stok.ukuran)
                 put(COLUMN_STOK, stok.stokBarang)
             }
             val stokId = db.insert(TABLE_STOK, null, valuesStok)
             if (stokId == -1L) throw Exception("Gagal menyimpan stok")
+
             val valuesBarangMasuk = ContentValues().apply {
-                put(COLUMN_ID_BARANG, barangId)
+                put(COLUMN_KODE_BARANG, barang.id_barang)
                 put(COLUMN_TANGGAL_MASUK, barangIn.Tgl_Masuk)
                 put(COLUMN_HARGA_JUAL, barangIn.Harga_Modal)
                 put(COLUMN_NAMA_TOKO, barangIn.Nama_Toko)
@@ -137,7 +137,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun insertBarangKeluar(barangOut: BarangOut): Long {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_ID_BARANG, barangOut.id_barang)
+            put(COLUMN_KODE_BARANG, barangOut.id_barang)
             put(COLUMN_STOK_KELUAR, barangOut.stok_keluar)
             put(COLUMN_TANGGAL_KELUAR, barangOut.Tgl_Keluar)
             put(COLUMN_HARGA_BELI, barangOut.Hrg_Beli)
@@ -151,30 +151,28 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = this.readableDatabase
 
         val selectQuery = """
-        SELECT $TABLE_BARANG.$COLUMN_ID_BARANG, 
-               $TABLE_BARANG.$COLUMN_NAMA_BARANG, 
-               $TABLE_BARANG.$COLUMN_KODE_BARANG, 
+        SELECT $TABLE_BARANG.$COLUMN_KODE_BARANG, 
+               $TABLE_BARANG.$COLUMN_NAMA_BARANG,
                $TABLE_BARANG_MASUK.$COLUMN_NAMA_TOKO
         FROM $TABLE_BARANG
         LEFT JOIN $TABLE_BARANG_MASUK 
-        ON $TABLE_BARANG.$COLUMN_ID_BARANG = $TABLE_BARANG_MASUK.$COLUMN_ID_BARANG
+        ON $TABLE_BARANG.$COLUMN_KODE_BARANG = $TABLE_BARANG_MASUK.$COLUMN_KODE_BARANG
         WHERE $TABLE_BARANG.$COLUMN_NAMA_BARANG LIKE ? 
            OR $TABLE_BARANG.$COLUMN_KODE_BARANG LIKE ? 
            OR $TABLE_BARANG_MASUK.$COLUMN_NAMA_TOKO LIKE ?
-        GROUP BY $TABLE_BARANG.$COLUMN_ID_BARANG
+        GROUP BY $TABLE_BARANG.$COLUMN_KODE_BARANG
     """.trimIndent()
 
         val cursor = db.rawQuery(selectQuery, arrayOf("%$query%", "%$query%", "%$query%"))
 
         if (cursor.moveToFirst()) {
             do {
-                val idBarang = cursor.getLong(0)
+                val idBarang = cursor.getString(0) ?:""
                 val namaBarang = cursor.getString(1) ?: ""
-                val kodeBarang = cursor.getString(2) ?: ""
-                val namaToko = cursor.getString(3) ?: ""
+                val namaToko = cursor.getString(2) ?: ""
 
                 // Format hasil: "Kode Barang - Nama Barang (Nama Toko)"
-                val dataSearch = DataSearch(idBarang, namaBarang, kodeBarang, namaToko)
+                val dataSearch = DataSearch(idBarang, namaBarang,  namaToko)
                 resultList.add(dataSearch)
             } while (cursor.moveToNext())
         }
@@ -188,29 +186,28 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val barangList = mutableListOf<DataBarangMasuk>()
         val db = this.readableDatabase
         val query = """
-            SELECT b.$COLUMN_ID_BARANG, b.$COLUMN_NAMA_BARANG, b.$COLUMN_KODE_BARANG, 
+            SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG, 
                    b.$COLUMN_GAMBAR, s.$COLUMN_STOK, s.$COLUMN_WARNA, s.$COLUMN_UKURAN, 
                    m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
             FROM $TABLE_BARANG b
-            LEFT JOIN $TABLE_STOK s ON b.$COLUMN_ID_BARANG = s.$COLUMN_ID_BARANG
-            LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_ID_BARANG = m.$COLUMN_ID_BARANG
+            LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
+            LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_KODE_BARANG = m.$COLUMN_KODE_BARANG
         """.trimIndent()
         val cursor = db.rawQuery(query, null)
 
         if (cursor.moveToFirst()) {
             do {
-                val idBarang = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_ID_BARANG))
-                val namaBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))
-                val kodeBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG))
+                val idBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG))?: ""
+                val namaBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))?: ""
                 val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
                 val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
-                val warna = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WARNA)).split(",")
-                val ukuran = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN))
-                val waktu = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))
+                val warna = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WARNA))?.split(",")?: emptyList()
+                val ukuran = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN))?: ""
+                val waktu = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))?: ""
                 val harga = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
-                val namaToko = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))
+                val namaToko = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))?: ""
 
-                val barang = DataBarangMasuk(idBarang, namaBarang, kodeBarang, stok, harga, warna, waktu, namaToko, ukuran, gambar)
+                val barang = DataBarangMasuk(idBarang, namaBarang, stok, harga, warna, waktu, namaToko, ukuran, gambar)
                 barangList.add(barang)
             } while (cursor.moveToNext())
         }
@@ -219,7 +216,16 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
         return barangList
     }
-    fun updateWarna(barangId: Long, newColors: List<String>): Int {
+    fun cekKodeBarangAda(kode: String): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM $TABLE_BARANG WHERE kode_barang = ?", arrayOf(kode))
+        cursor.moveToFirst()
+        val exists = cursor.getInt(0) > 0
+        cursor.close()
+        return exists
+    }
+
+    fun updateWarna(barangId: String, newColors: List<String>): Int {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_WARNA, newColors.joinToString(","))
@@ -229,17 +235,17 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val result = db.update(
             TABLE_STOK,
             values,
-            "$COLUMN_ID_BARANG = ?",
-            arrayOf(barangId.toString())
+            "$COLUMN_KODE_BARANG = ?",
+            arrayOf(barangId)
         )
 
         db.close()
         return result
     }
-    fun deleteBarang(id: Long): Int {
+    fun deleteBarang(id: String): Int {
         val db = this.writableDatabase
         // Menghapus barang berdasarkan ID
-        val result = db.delete(TABLE_BARANG, "$COLUMN_ID_BARANG = ?", arrayOf(id.toString()))
+        val result = db.delete(TABLE_BARANG, "$COLUMN_KODE_BARANG = ?", arrayOf(id))
 
         db.close()
         return result
@@ -250,18 +256,17 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         try {
             // Update TABLE_BARANG (hanya nama, kode, dan gambar)
             val valuesBarang = ContentValues().apply {
+                put(COLUMN_KODE_BARANG, barang.id_barang)
                 put(COLUMN_NAMA_BARANG, barang.nama_barang)
-                put(COLUMN_KODE_BARANG, barang.kode_barang)
                 put(COLUMN_GAMBAR, barang.gambar)
             }
             val resultBarang = db.update(
                 TABLE_BARANG,
                 valuesBarang,
-                "$COLUMN_ID_BARANG = ?",
-                arrayOf(barang.id_barang.toString())
+                "$COLUMN_KODE_BARANG = ?",
+                arrayOf(barang.id_barang)
             )
 
-            // Update TABLE_STOK (stok, warna, ukuran)
             val valuesStok = ContentValues().apply {
                 put(COLUMN_STOK, stok.stokBarang)
                 put(COLUMN_WARNA, stok.warna.joinToString ( "," ))
@@ -270,11 +275,9 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             val resultStok = db.update(
                 TABLE_STOK,
                 valuesStok,
-                "$COLUMN_ID_BARANG = ?",
-                arrayOf(stok.idStok.toString())
+                "$COLUMN_KODE_BARANG = ?",
+                arrayOf(stok.id_barang)
             )
-
-            // Update TABLE_BARANG_MASUK (harga, tanggal masuk, nama toko)
             val valuesBarangMasuk = ContentValues().apply {
                 put(COLUMN_HARGA_JUAL, barangIn.Harga_Modal)
                 put(COLUMN_TANGGAL_MASUK, barangIn.Tgl_Masuk)
@@ -283,11 +286,10 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             val resultBarangMasuk = db.update(
                 TABLE_BARANG_MASUK,
                 valuesBarangMasuk,
-                "$COLUMN_ID_BARANG = ?",
-                arrayOf(barangIn.IdBrgMasuk.toString())
+                "$COLUMN_KODE_BARANG = ?",
+                arrayOf(barangIn.id_barang)
             )
 
-            // Cek apakah semua update berhasil
             if (resultBarang > 0 && resultStok > 0 && resultBarangMasuk > 0) {
                 db.setTransactionSuccessful()
                 return true
@@ -300,16 +302,16 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             db.endTransaction()
         }
     }
-    fun getBarangById(id: Long): Triple<ItemBarang?,Stok?, BarangIn?> {
+    fun getBarangById(id: String): Triple<ItemBarang?,Stok?, BarangIn?> {
         val db = this.readableDatabase
         val query = """
-            SELECT b.$COLUMN_ID_BARANG, b.$COLUMN_NAMA_BARANG, b.$COLUMN_KODE_BARANG, 
+            SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG,
                b.$COLUMN_GAMBAR, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_WARNA, s.$COLUMN_UKURAN, 
                m.$COLUMN_ID_MASUK, m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
         FROM $TABLE_BARANG b
-        LEFT JOIN $TABLE_STOK s ON b.$COLUMN_ID_BARANG = s.$COLUMN_ID_BARANG
-        LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_ID_BARANG = m.$COLUMN_ID_BARANG
-        WHERE b.$COLUMN_ID_BARANG = ?
+        LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
+        LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_KODE_BARANG = m.$COLUMN_KODE_BARANG
+        WHERE b.$COLUMN_KODE_BARANG = ?
         """.trimIndent()
         var itemBarang:ItemBarang?=null
         var stok:Stok?=null
@@ -319,23 +321,20 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         // Memeriksa apakah cursor tidak null dan memiliki data
         cursor?.use {
             if (it.moveToFirst()) {
-                val idBarang = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_BARANG))
-                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))
-                val kodeBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG))
+                val idBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG))?: ""
+                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))?: ""
                 val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
-
                 val idStok=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
-                val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK))
-                val warna = it.getString(it.getColumnIndexOrThrow(COLUMN_WARNA)).split(",")
+                val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK))?: 0
+                val warna = it.getString(it.getColumnIndexOrThrow(COLUMN_WARNA))?.split(",")?: emptyList()
                 val ukuran = it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN))
-
                 val idMasuk=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_MASUK))
-                val tanggalMasuk = it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))
-                val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
-                val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))
+                val tanggalMasuk = it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))?: ""
+                val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))?: 0
+                val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))?: ""
 
                 // Inisialisasi objek
-                itemBarang = ItemBarang(idBarang, namaBarang, kodeBarang, gambarUri.toString())
+                itemBarang = ItemBarang(idBarang, namaBarang, gambarUri.toString())
                 stok = Stok(idStok,idBarang, stokJumlah,warna, ukuran )
                 barangIn = BarangIn(idMasuk,idBarang, tanggalMasuk, hargaJual, namaToko)
             }

@@ -3,7 +3,6 @@ package com.tugasmobile.inventory.ui.Barang
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -79,7 +78,7 @@ class BarangKeluar : Fragment() {
             autoCompleteAdapter.clear()
             autoCompleteAdapter.addAll(
                 if (result.isNullOrEmpty()) listOf("Barang Tidak Ditemukan")
-                else result.map { "${it.kodeBarang} / ${it.namaBarang} / ${it.nama_toko}" }
+                else result.map { "${it.id} / ${it.namaBarang} / ${it.nama_toko}" }
             )
             autoCompleteAdapter.notifyDataSetChanged()
             binding.autoCompleteBarang.showDropDown()
@@ -94,11 +93,11 @@ class BarangKeluar : Fragment() {
                 return@setOnItemClickListener
             }
             val selectedItem = barangKeluarViewModel.dataBarangMasukList.value?.find {
-                "${it.kodeBarang} / ${it.namaBarang} / ${it.nama_toko}" == selectedItemText
+                "${it.id} / ${it.namaBarang} / ${it.nama_toko}" == selectedItemText
             }
             selectedItem?.let {
                 barangKeluarViewModel.setCurrentBarang(it.id)
-                showBarangKeluarDialog(it.kodeBarang, it.namaBarang, it.harga.toString(), it.warna.toString(), it.ukuran)
+                showBarangKeluarDialog(it.id, it.namaBarang, it.harga.toString(), it.warna.toString(), it.ukuran)
                 binding.autoCompleteBarang.postDelayed({ binding.autoCompleteBarang.text.clear() }, 100)
             }
         }

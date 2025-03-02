@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
+import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,8 +25,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001
     }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +49,11 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         checkPermissions()
+        val fragment = BarangMasuk()
+        val bundle = Bundle()
+        bundle.putString("toastMessage", "Data berhasil ditambahkan")
+        fragment.arguments = bundle
+
 
     }
     private fun checkPermissions() {
