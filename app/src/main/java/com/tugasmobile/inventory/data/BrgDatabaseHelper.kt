@@ -6,12 +6,13 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
+import android.util.Log
 
 class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "Inventaris.db"
-        private const val DATABASE_VERSION = 3
+        private const val DATABASE_VERSION = 1
 
         // Tabel Barang
         const val TABLE_BARANG = "barang"
@@ -37,6 +38,8 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val TABLE_BARANG_KELUAR = "barang_keluar"
         const val COLUMN_ID_KELUAR = "id_keluar"
         const val COLUMN_TANGGAL_KELUAR = "tanggal_keluar"
+        const val COLUMN_WARNA_KELUAR = "warna"
+        const val COLUMN_UKURAN_KELUAR = "ukuran"
         const val COLUMN_STOK_KELUAR = "stok_keluar"
         const val COLUMN_HARGA_BELI = "harga_beli"
     }
@@ -76,6 +79,8 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             CREATE TABLE $TABLE_BARANG_KELUAR (
                 $COLUMN_ID_KELUAR INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_KODE_BARANG TEXT,
+                $COLUMN_WARNA_KELUAR TEXT ,
+                $COLUMN_UKURAN_KELUAR TEXT ,
                 $COLUMN_STOK_KELUAR INTEGER NOT NULL,
                 $COLUMN_TANGGAL_KELUAR TEXT NOT NULL,
                 $COLUMN_HARGA_BELI INTEGER,
@@ -136,14 +141,82 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
     fun insertBarangKeluar(barangOut: BarangOut): Long {
         val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_KODE_BARANG, barangOut.id_barang)
-            put(COLUMN_STOK_KELUAR, barangOut.stok_keluar)
-            put(COLUMN_TANGGAL_KELUAR, barangOut.Tgl_Keluar)
-            put(COLUMN_HARGA_BELI, barangOut.Hrg_Beli)
+        var id = -1L
+
+        try {
+            db.beginTransaction()
+
+            // 1. Insert data ke tabel barang_keluar
+            val values = ContentValues().apply {
+                put(COLUMN_KODE_BARANG, barangOut.id_barang)
+                put(COLUMN_WARNA_KELUAR, barangOut.warna)
+                put(COLUMN_UKURAN_KELUAR, barangOut.ukuran)
+                put(COLUMN_STOK_KELUAR, barangOut.stok_keluar)
+                put(COLUMN_TANGGAL_KELUAR, barangOut.Tgl_Keluar)
+                put(COLUMN_HARGA_BELI, barangOut.Hrg_Beli)
+            }
+            id = db.insert(TABLE_BARANG_KELUAR, null, values)
+
+            if (id == -1L) {
+                throw Exception("Gagal memasukkan data barang keluar")
+            }
+
+            // 2. Kurangi stok di tabel stok
+            val stokCursor = db.rawQuery(
+                "SELECT $COLUMN_STOK, $COLUMN_UKURAN FROM $TABLE_STOK WHERE $COLUMN_KODE_BARANG = ?",
+                arrayOf(barangOut.id_barang)
+            )
+
+            if (stokCursor.moveToFirst()) {
+                val currentStok = stokCursor.getInt(stokCursor.getColumnIndexOrThrow(COLUMN_STOK))
+                val currentUkuran = stokCursor.getString(stokCursor.getColumnIndexOrThrow(COLUMN_UKURAN))
+
+                // Kurangi stok
+                val newStok = currentStok - barangOut.stok_keluar
+                if (newStok < 0) {
+                    throw Exception("Stok tidak mencukupi")
+                }
+
+                // Update stok
+                val updateValues = ContentValues().apply {
+                    put(COLUMN_STOK, newStok)
+                }
+                db.update(
+                    TABLE_STOK,
+                    updateValues,
+                    "$COLUMN_KODE_BARANG = ?",
+                    arrayOf(barangOut.id_barang)
+                )
+
+                // 3. Hapus ukuran jika ada
+                if (barangOut.ukuran.isNotEmpty()) {
+                    val ukuranList = currentUkuran.split(",").toMutableList()
+                    ukuranList.removeAll(barangOut.ukuran.split(","))
+
+                    val newUkuran = ukuranList.joinToString(",")
+                    val updateUkuranValues = ContentValues().apply {
+                        put(COLUMN_UKURAN, newUkuran)
+                    }
+                    db.update(
+                        TABLE_STOK,
+                        updateUkuranValues,
+                        "$COLUMN_KODE_BARANG = ?",
+                        arrayOf(barangOut.id_barang)
+                    )
+                }
+            } else {
+                throw Exception("Data stok tidak ditemukan")
+            }
+
+            stokCursor.close()
+            db.setTransactionSuccessful()
+        } catch (e: Exception) {
+            Log.e("BarangKeluar", "Error: ${e.message}")
+        } finally {
+            db.endTransaction()
+            db.close()
         }
-        val id = db.insert(TABLE_BARANG_KELUAR, null, values)
-        db.close()
+
         return id
     }
     fun searchBarang(query:String):List<DataSearch>{

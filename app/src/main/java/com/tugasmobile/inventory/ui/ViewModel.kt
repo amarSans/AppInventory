@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
+import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.DataBarangMasuk
 import com.tugasmobile.inventory.data.BrgDatabaseHelper
 import com.tugasmobile.inventory.data.DataSearch
@@ -18,12 +19,16 @@ import kotlinx.coroutines.withContext
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseHelper= BrgDatabaseHelper(application)
+
     private val _Data_barangMasukList= MutableLiveData<List<DataBarangMasuk>>()
     val dataBarangMasukList: LiveData<List<DataBarangMasuk>> = _Data_barangMasukList
+
     private val _dataSearch = MutableLiveData<List<DataSearch>>()
     val dataSearch:LiveData<List<DataSearch>> =_dataSearch
+
     private val _currentDataBarangMasuk = MutableLiveData<ItemBarang?>()
     val currentDataBarangMasuk: LiveData<ItemBarang?> = _currentDataBarangMasuk
+
     private val _currentBarang = MutableLiveData<ItemBarang?>()
     val currentBarang: LiveData<ItemBarang?> = _currentBarang
 
@@ -32,6 +37,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _currentBarangIn = MutableLiveData<BarangIn?>()
     val currentBarangIn: LiveData<BarangIn?> = _currentBarangIn
+
+    private val _insertResult = MutableLiveData<BarangOut?>()
+    val insertResult: LiveData<BarangOut?> = _insertResult
 
 
     init {
@@ -48,6 +56,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+    }
+
+
+    fun insertBarangKeluar(barangOut: BarangOut) {
+        viewModelScope.launch(Dispatchers.IO) {
+           databaseHelper.insertBarangKeluar(barangOut)
+            loadBarang()
         }
     }
 

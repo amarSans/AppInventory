@@ -8,16 +8,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorOut
 import com.tugasmobile.inventory.adapter.AdapterUkuranOut
+import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.UkuranItem
 import com.tugasmobile.inventory.databinding.PopupBarangKeluarBinding
+import com.tugasmobile.inventory.ui.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 class BarangKeluarDialogFragment : DialogFragment() {
     private var _binding: PopupBarangKeluarBinding? = null
     private var listener: BarangKeluarListener? = null
+    private val BarangKeluarViewModel: ViewModel by viewModels()
     private val binding get() = _binding!!
     private lateinit var colorAdapter: AdapterColorOut
     private lateinit var ukuranAdapter: AdapterUkuranOut
@@ -69,9 +78,25 @@ class BarangKeluarDialogFragment : DialogFragment() {
 
             val hargaBeli = binding.ppedtHargaBeli.text.toString().toIntOrNull() ?: 0
 
+            val tanggalKeluar= DateUtils.getCurrentDate()
+            val barangOut = BarangOut(
+                IdBrgKeluar=0,
+                id_barang = kodeBarang,
+                warna = warnaTerpilih.joinToString(", "),
+                ukuran = ukuranTerpilih.joinToString(", "),
+                stok_keluar = stokKeluar,
+                Tgl_Keluar = tanggalKeluar,
+                Hrg_Beli = hargaBeli
+            )
+            simpanDatabase(barangOut)
             listener?.onBarangKeluarSaved(kodeBarang, namaBarang, hargaBarang, warnaTerpilih, ukuranTerpilih, stokKeluar,hargaBeli)
 
             dismiss()
+        }
+    }
+    private fun simpanDatabase(barangOut: BarangOut){
+        CoroutineScope(Dispatchers.IO).launch {
+            BarangKeluarViewModel.insertBarangKeluar(barangOut)
         }
     }
 

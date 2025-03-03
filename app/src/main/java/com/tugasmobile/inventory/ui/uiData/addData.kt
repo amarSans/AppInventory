@@ -31,6 +31,7 @@ import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.DateUtils
 import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
 import java.text.NumberFormat
@@ -175,7 +176,7 @@ class addData : AppCompatActivity() {
         val barangIn = BarangIn(
             IdBrgMasuk = 0,
             id_barang = kodeProduk,
-            Tgl_Masuk = getCurrentDate(),
+            Tgl_Masuk = DateUtils.getCurrentDate(),
             Harga_Modal = hargaProduk,
             Nama_Toko =namaToko
         )
@@ -192,7 +193,7 @@ class addData : AppCompatActivity() {
         binding.buttonSave.setOnClickListener { saveData() }
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
-        binding.editTextDate.setText(getCurrentDate())
+        binding.editTextDate.setText(DateUtils.getCurrentDate())
         binding.edtUkuran.setOnClickListener {
             val bottonUkuranSheet = BottonUkuranSheet()
             bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
@@ -224,11 +225,7 @@ class addData : AppCompatActivity() {
         }
     }
 
-    private fun getCurrentDate(): String {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return dateFormat.format(calendar.time)
-    }
+
 
     private fun tambahStok() {
         stokBarang += 1
