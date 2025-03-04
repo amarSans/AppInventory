@@ -4,13 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,22 +18,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.tools.screenshot.isValid
-import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
-import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.BottonUkuranSheet
 import com.tugasmobile.inventory.ui.simpleItem.DateUtils
 import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
-import java.text.NumberFormat
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class addData : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
@@ -195,11 +187,15 @@ class addData : AppCompatActivity() {
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.editTextDate.setText(DateUtils.getCurrentDate())
         binding.edtUkuran.setOnClickListener {
-            val bottonUkuranSheet = BottonUkuranSheet()
+            selectedSizesList = ""
+            val stok = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
+
+            // Buat instance BottomSheet dan kirim nilai stok
+            val bottonUkuranSheet = BottonUkuranSheet.newInstance(selectedSizesList.split(","),stok)
             bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
                 override fun onSizeSelected(selectedSizes: List<String>) {
-                    selectedSizesList = selectedSizes.joinToString(", ")
-                    binding.edtUkuran.text=selectedSizesList
+                    selectedSizesList = selectedSizes.filter { it.isNotBlank() }.joinToString(", ")
+                    binding.edtUkuran.text = selectedSizesList
                 }
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)

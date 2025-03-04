@@ -40,6 +40,8 @@ class BarangKeluarDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        HargaUtils.setupHargaTextWatcher(binding.ppedtHargaBeli)
+
         binding.ppimgButtonAdd.setOnClickListener {
             updateStock(1)
         }
@@ -53,10 +55,12 @@ class BarangKeluarDialogFragment : DialogFragment() {
         val warnaBarang = arguments?.getString("warnaBarang") ?: ""
         val ukuranBarang = arguments?.getString("ukuran") ?: ""
 
+        val hargaBarangFormatted = HargaUtils.formatHarga(hargaBarang.toIntOrNull() ?: 0)
+
         // Tampilkan data di UI
         binding.ppKodeBarang.text = "Kode: $kodeBarang"
         binding.ppNamaBarang.text = "Nama: $namaBarang"
-        binding.ppHargaBarang.text = "Harga: Rp. $hargaBarang"
+        binding.ppHargaBarang.text = "Harga: Rp. $hargaBarangFormatted"
         if (warnaBarang.isNotEmpty()) {
             setupRecyclerViewWarna(warnaBarang)
         }
@@ -69,14 +73,15 @@ class BarangKeluarDialogFragment : DialogFragment() {
         binding.ppbuttonSave.setOnClickListener {
             val kodeBarang = arguments?.getString("kodeBarang") ?: ""
             val namaBarang = arguments?.getString("namaBarang") ?: ""
-            val hargaBarang = arguments?.getString("hargaBarang") ?: ""
+            val hargaBarang = arguments?.getString("hargaBarang") ?: "0"
             val warnaTerpilih = colorAdapter.getSelectedColors()
 
             val ukuranTerpilih = ukuranAdapter.getSelectedUkuran()
 
             val stokKeluar = binding.ppedtStokKeluar.text.toString().toIntOrNull() ?: 0
 
-            val hargaBeli = binding.ppedtHargaBeli.text.toString().toIntOrNull() ?: 0
+            val hargaBeliText = binding.ppedtHargaBeli.text.toString().replace(".", "")
+            val hargaBeli = hargaBeliText.toIntOrNull() ?: 0
 
             val tanggalKeluar= DateUtils.getCurrentDate()
             val barangOut = BarangOut(

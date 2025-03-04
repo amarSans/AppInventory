@@ -6,8 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,17 +17,17 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.BottonUkuranSheet
 import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
-import java.text.NumberFormat
-import java.util.Locale
 
 class EditData : AppCompatActivity() {
     private lateinit var binding: ActivityEditDataBinding
     private lateinit var editViewModel: ViewModel
     private var barangId: String = ""
     private var stokBarang = 0
-    private var selectedSizesList: List<String> = emptyList()
+    //private var selectedSizesList: List<String> = emptyList()
+    private var selectedSizesList: String = ""
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
     private lateinit var colorAdapter: AdapterColorIn
@@ -64,11 +62,15 @@ class EditData : AppCompatActivity() {
         }
 
         binding.edtUkuran.setOnClickListener {
-            val bottonUkuranSheet = BottonUkuranSheet.newInstance(selectedSizesList)
+            selectedSizesList = ""
+            val stok = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
+
+            // Buat instance BottomSheet dan kirim nilai stok
+            val bottonUkuranSheet = BottonUkuranSheet.newInstance(selectedSizesList.split(","),stok)
             bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
                 override fun onSizeSelected(selectedSizes: List<String>) {
-                    selectedSizesList = selectedSizes
-                    binding.edtUkuran.text = selectedSizes.joinToString(", ")
+                    selectedSizesList = selectedSizes.filter { it.isNotBlank() }.joinToString(", ")
+                    binding.edtUkuran.text = selectedSizesList
                 }
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
@@ -95,7 +97,7 @@ class EditData : AppCompatActivity() {
         editViewModel.currentStok.observe(this) { stok ->
             stok?.let {
                 binding.edtUkuran.text = it.ukuran
-                selectedSizesList = it.ukuran?.split(",")?.map { size -> size.trim() }?: emptyList()
+                selectedSizesList = it.ukuran?.split(",")?.map { size -> size.trim() }?.joinToString(", ") ?: ""
                 colorAdapter.setSelectedColors(it.warna)
                 binding.editStokBarang.setText(it.stokBarang.toString())
                 stokBarang = it.stokBarang

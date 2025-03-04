@@ -13,6 +13,14 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     companion object {
         private const val DATABASE_NAME = "Inventaris.db"
         private const val DATABASE_VERSION = 1
+        @Volatile
+        private var INSTANCE: BrgDatabaseHelper? = null
+
+        fun getInstance(context: Context): BrgDatabaseHelper {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: BrgDatabaseHelper(context.applicationContext).also { INSTANCE = it }
+            }
+        }
 
         // Tabel Barang
         const val TABLE_BARANG = "barang"
@@ -136,7 +144,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             e.printStackTrace()
         }finally {
             db.endTransaction()
-            db.close()
         }
     }
     fun insertBarangKeluar(barangOut: BarangOut): Long {
@@ -214,9 +221,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             Log.e("BarangKeluar", "Error: ${e.message}")
         } finally {
             db.endTransaction()
-            db.close()
         }
-
         return id
     }
     fun searchBarang(query:String):List<DataSearch>{
@@ -286,7 +291,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
 
         cursor.close()
-        db.close()
         return barangList
     }
     fun cekKodeBarangAda(kode: String): Boolean {
@@ -320,7 +324,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         // Menghapus barang berdasarkan ID
         val result = db.delete(TABLE_BARANG, "$COLUMN_KODE_BARANG = ?", arrayOf(id))
 
-        db.close()
         return result
     }
     fun updateBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn): Boolean {
@@ -412,8 +415,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 barangIn = BarangIn(idMasuk,idBarang, tanggalMasuk, hargaJual, namaToko)
             }
         }
-
-        db.close()
         return Triple(itemBarang, stok, barangIn)
     }
 }

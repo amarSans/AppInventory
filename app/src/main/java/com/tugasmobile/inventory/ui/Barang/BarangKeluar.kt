@@ -16,6 +16,7 @@ import com.tugasmobile.inventory.data.DaftarBarangKeluar
 import com.tugasmobile.inventory.databinding.FragmentBarangKeluarBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.simpleItem.BarangKeluarDialogFragment
+import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 
 class BarangKeluar : Fragment() {
     private var _binding: FragmentBarangKeluarBinding? = null
@@ -43,6 +44,10 @@ class BarangKeluar : Fragment() {
         setupItemSelection()
         setupTotalBayarListener()
         setupClearButton()
+        HargaUtils.setupHargaTextWatcher(binding.uangDibayar)
+        binding.btnBarangKeluar.setOnClickListener {
+            resetUI() // Reset semua tampilan data
+        }
     }
 
     private fun setupViewModel() {
@@ -105,7 +110,7 @@ class BarangKeluar : Fragment() {
 
     private fun setupTotalBayarListener() {
         adapterTransaksi.onTotalHargaUpdated = { totalBayar ->
-            binding.totalBayar.text = totalBayar.toString()
+            binding.totalBayar.text = "Rp. ${HargaUtils.formatHarga(totalBayar)}"
             updateKembalian(totalBayar)
             binding.uangDibayar.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -118,8 +123,12 @@ class BarangKeluar : Fragment() {
     }
 
     private fun updateKembalian(totalBayar: Int) {
-        val dibayar = binding.uangDibayar.text.toString().toIntOrNull() ?: 0
-        binding.kembalian.text = (dibayar - totalBayar).toString()
+        val dibayarText = binding.uangDibayar.text.toString().replace(".", "")
+        val dibayar = dibayarText.toIntOrNull() ?: 0
+        val kembalian = dibayar - totalBayar
+
+        // Format kembalian sebagai Rupiah
+        binding.kembalian.text = "Rp. ${HargaUtils.formatHarga(kembalian)}"
     }
 
     private fun setupClearButton() {
@@ -156,6 +165,21 @@ class BarangKeluar : Fragment() {
             }
         })
         dialog.show(parentFragmentManager, "BarangKeluarDialog")
+    }
+    private fun resetUI() {
+        // Reset AutoCompleteTextView
+        binding.autoCompleteBarang.text.clear()
+
+        // Reset RecyclerView
+        daftarBarangKeluar.clear()
+        adapterTransaksi.notifyDataSetChanged()
+
+        // Reset TextView untuk total bayar dan kembalian
+        binding.totalBayar.text = "0"
+        binding.kembalian.text = "0"
+
+        // Reset EditText untuk uang dibayar
+        binding.uangDibayar.text.clear()
     }
 
     override fun onDestroyView() {
