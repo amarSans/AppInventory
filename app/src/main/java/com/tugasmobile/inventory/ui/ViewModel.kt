@@ -5,13 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
-import com.tugasmobile.inventory.data.DataBarangMasuk
 import com.tugasmobile.inventory.data.BrgDatabaseHelper
+import com.tugasmobile.inventory.data.DataBarangMasuk
 import com.tugasmobile.inventory.data.DataSearch
+import com.tugasmobile.inventory.data.ItemBarang
+import com.tugasmobile.inventory.data.ItemNotifikasi
 import com.tugasmobile.inventory.data.Stok
+import com.tugasmobile.inventory.notifikasi.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,9 +43,12 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _insertResult = MutableLiveData<BarangOut?>()
     val insertResult: LiveData<BarangOut?> = _insertResult
 
+    private val _lowStockItems = MutableLiveData<List<ItemNotifikasi>>()
+    val lowStockItems: LiveData<List<ItemNotifikasi>> = _lowStockItems
 
     init {
         loadBarang()
+        loadLowStockItems()
     }
 
     fun loadBarang() {
@@ -97,6 +102,23 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     fun cekKodeBarangAda(kode: String): Boolean {
         return databaseHelper.cekKodeBarangAda(kode)
+    }
+
+    fun loadLowStockItems() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val items = databaseHelper.getLowStockItems()
+                withContext(Dispatchers.Main) {
+                    _lowStockItems.value = items
+                    val notifHelper = NotificationHelper(getApplication())  // Pastikan ada context di sini
+                    items.forEach {
+                        notifHelper.sendNotification(it.namaBarang, it.stok)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
 }

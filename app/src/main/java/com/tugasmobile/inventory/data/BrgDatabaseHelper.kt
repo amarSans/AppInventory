@@ -417,4 +417,29 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         return Triple(itemBarang, stok, barangIn)
     }
+    fun getLowStockItems(): List<ItemNotifikasi> {
+        val itemList = mutableListOf<ItemNotifikasi>()
+        val db = this.readableDatabase
+        val query = """
+        SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG, s.$COLUMN_STOK
+        FROM $TABLE_BARANG b
+        LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
+        GROUP BY b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG
+        HAVING COALESCE(s.$COLUMN_STOK, 0) < 2
+    """.trimIndent()
+        Log.d("DB_QUERY", "Running query: $query")
+        val cursor = db.rawQuery(query, null)
+        while (cursor.moveToNext()) {
+            val item = ItemNotifikasi(
+                kodeBarang = cursor.getString(0),
+                namaBarang = cursor.getString(1),
+                stok = cursor.getInt(2)
+            )
+            itemList.add(item)
+        }
+        Log.d("DB_QUERY", "Total low stock items: ${itemList.size}")
+        cursor.close()
+        return itemList
+    }
+
 }
