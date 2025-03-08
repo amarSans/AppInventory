@@ -5,7 +5,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,6 +19,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inventory"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ui.setting.SettingActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.uiData.EditData"
             android:exported="false" />
@@ -38,6 +45,8 @@
             android:name=".ui.uiData.addData"
             android:exported="false"
             android:theme="@style/Theme.Inventory" />
+        <receiver android:name=".ui.setting.notifikasi_cadangan.NotificationReceiver"
+            android:exported="false"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -49,6 +58,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

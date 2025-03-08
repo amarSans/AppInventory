@@ -4,47 +4,38 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.Manifest
-import android.content.Context
+import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
-import com.tugasmobile.inventory.notifikasi.NotificationHelper
-import com.tugasmobile.inventory.notifikasi.StockCheckWorker
 import com.tugasmobile.inventory.ui.Barang.BarangMasuk
-import java.util.Calendar
-import java.util.concurrent.TimeUnit
+import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.setting.SettingActivity
+import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
+import com.tugasmobile.inventory.ui.setting.notifikasi.SyncScheduler
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var settingViewModel: ViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001
     }
-    private val requestNotificationPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                Toast.makeText(this, "Izin notifikasi diberikan", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Izin notifikasi ditolak", Toast.LENGTH_SHORT).show()
-            }
-        }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,8 +43,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
-        val notificationHelper = NotificationHelper(this)
-        notificationHelper.createNotificationChannel()
+
+        settingViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        settingViewModel.loadSetting() // Memuat data pengaturan
+
+        // Observasi perubahan data
+        settingViewModel.settingData.observe(this) { setting ->
+            if (setting != null) {
+                AlarmScheduler.scheduleNotification(this)
+            }
+        }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -69,48 +68,43 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_setting -> {
+                    // Pindah ke SettingActivity
+                    val intent = Intent(this, SettingActivity::class.java)
+                    startActivity(intent)
+                    // Tutup drawer setelah berpindah
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                else -> {
+                    // Biarkan NavigationUI menangani item lainnya
+                    NavigationUI.onNavDestinationSelected(menuItem, navController)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+            }
+        }
+
         checkPermissions()
         val fragment = BarangMasuk()
         val bundle = Bundle()
         bundle.putString("toastMessage", "Data berhasil ditambahkan")
         fragment.arguments = bundle
 
-        checkNotificationPermission()
-        scheduleStockCheck()
+        SyncScheduler.scheduleSync(this)
 
-        getDelayUntilNextRun(6,20)
+        // Buat Notifikasi Channel
+        val notificationHelper = NotificationHelper(this)
+        notificationHelper.createNotificationChannel()
 
-        val workManager = WorkManager.getInstance(this)
-        workManager.getWorkInfosByTagLiveData("stock_check").observe(this) { workInfos ->
-            for (workInfo in workInfos) {
-                Log.d("StockCheckWorker", "Status Worker: ${workInfo.state}")
-            }
-        }
+
 
 
     }
-    private fun checkNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
-        }
-    }
-    private fun scheduleStockCheck() {
-        Log.d("WorkManager", "Menjadwalkan StockCheckWorker...")
 
-        val workRequest = PeriodicWorkRequestBuilder<StockCheckWorker>(24, TimeUnit.HOURS)
-            .setConstraints(Constraints.Builder().setRequiresBatteryNotLow(true).build())
-            .build()
 
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-            "StockCheck",
-            ExistingPeriodicWorkPolicy.KEEP,
-            workRequest
-        )
-    }
     private fun checkPermissions() {
         val permissionsNeeded = mutableListOf<String>()
 
@@ -156,21 +150,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-    private fun getDelayUntilNextRun(targetHour: Int, targetMinute: Int): Long {
-        val currentTime = Calendar.getInstance()
-        val targetTime = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, targetHour)
-            set(Calendar.MINUTE, targetMinute)
-            set(Calendar.SECOND, 0)
-        }
-
-        // Jika waktu target sudah terlewat hari ini, jadwalkan untuk besok
-        if (currentTime.after(targetTime)) {
-            targetTime.add(Calendar.DAY_OF_YEAR, 1)
-        }
-
-        return targetTime.timeInMillis - currentTime.timeInMillis
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

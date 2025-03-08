@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.data
+package com.tugasmobile.inventory.database
 
 import android.content.ContentValues
 import android.content.Context
@@ -7,12 +7,20 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.util.Log
+import com.tugasmobile.inventory.data.BarangIn
+import com.tugasmobile.inventory.data.BarangOut
+import com.tugasmobile.inventory.data.DataBarangMasuk
+import com.tugasmobile.inventory.data.DataSearch
+import com.tugasmobile.inventory.data.ItemBarang
+import com.tugasmobile.inventory.data.ItemNotifikasi
+import com.tugasmobile.inventory.data.SettingData
+import com.tugasmobile.inventory.data.Stok
 
 class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "Inventaris.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 2
         @Volatile
         private var INSTANCE: BrgDatabaseHelper? = null
 
@@ -50,6 +58,14 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val COLUMN_UKURAN_KELUAR = "ukuran"
         const val COLUMN_STOK_KELUAR = "stok_keluar"
         const val COLUMN_HARGA_BELI = "harga_beli"
+
+        //tabel setting
+        private const val TABLE_SETTINGS = "settings"
+        private const val COLUMN_ID = "id"
+        private const val COLUMN_NOTIF_ENABLED = "notif_enabled"
+        private const val COLUMN_NOTIF_TIME = "notif_time"
+        private const val COLUMN_START_DAY = "start_day"
+        private const val COLUMN_END_DAY = "end_day"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -96,10 +112,21 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             )
         """.trimIndent()
 
+        val createTableQuery = """
+            CREATE TABLE $TABLE_SETTINGS (
+                $COLUMN_ID INTEGER PRIMARY KEY,
+                $COLUMN_NOTIF_ENABLED INTEGER,
+                $COLUMN_NOTIF_TIME TEXT,
+                $COLUMN_START_DAY TEXT,
+                $COLUMN_END_DAY TEXT
+            )
+        """.trimIndent()
+
         db.execSQL(createBarangTable)
         db.execSQL(createStokTable)
         db.execSQL(createBarangMasukTable)
         db.execSQL(createBarangKeluarTable)
+        db.execSQL(createTableQuery)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -110,7 +137,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         onCreate(db)
     }
 
-    fun insertInputBarang(barang:ItemBarang, stok:Stok, barangIn: BarangIn){
+    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn){
         val db = this.writableDatabase
         db.beginTransaction()
         return try {
@@ -176,7 +203,9 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
             if (stokCursor.moveToFirst()) {
                 val currentStok = stokCursor.getInt(stokCursor.getColumnIndexOrThrow(COLUMN_STOK))
-                val currentUkuran = stokCursor.getString(stokCursor.getColumnIndexOrThrow(COLUMN_UKURAN))
+                val currentUkuran = stokCursor.getString(stokCursor.getColumnIndexOrThrow(
+                    COLUMN_UKURAN
+                ))
 
                 // Kurangi stok
                 val newStok = currentStok - barangOut.stok_keluar
@@ -378,7 +407,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             db.endTransaction()
         }
     }
-    fun getBarangById(id: String): Triple<ItemBarang?,Stok?, BarangIn?> {
+    fun getBarangById(id: String): Triple<ItemBarang?, Stok?, BarangIn?> {
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG,
@@ -389,9 +418,9 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_KODE_BARANG = m.$COLUMN_KODE_BARANG
         WHERE b.$COLUMN_KODE_BARANG = ?
         """.trimIndent()
-        var itemBarang:ItemBarang?=null
-        var stok:Stok?=null
-        var barangIn:BarangIn?=null
+        var itemBarang: ItemBarang?=null
+        var stok: Stok?=null
+        var barangIn: BarangIn?=null
         val cursor: Cursor? = db.rawQuery(query, arrayOf(id.toString()))
 
         // Memeriksa apakah cursor tidak null dan memiliki data
@@ -420,26 +449,50 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun getLowStockItems(): List<ItemNotifikasi> {
         val itemList = mutableListOf<ItemNotifikasi>()
         val db = this.readableDatabase
-        val query = """
-        SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG, s.$COLUMN_STOK
-        FROM $TABLE_BARANG b
-        LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
-        GROUP BY b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG
-        HAVING COALESCE(s.$COLUMN_STOK, 0) < 2
-    """.trimIndent()
-        Log.d("DB_QUERY", "Running query: $query")
-        val cursor = db.rawQuery(query, null)
+        val cursor = db.rawQuery("SELECT kode_barang,  stok FROM barang WHERE stok < 3", null)
+
         while (cursor.moveToNext()) {
-            val item = ItemNotifikasi(
-                kodeBarang = cursor.getString(0),
-                namaBarang = cursor.getString(1),
-                stok = cursor.getInt(2)
-            )
-            itemList.add(item)
+            val kode = cursor.getString(0)
+            val stok = cursor.getInt(1)
+            itemList.add(ItemNotifikasi(kode, stok))
         }
-        Log.d("DB_QUERY", "Total low stock items: ${itemList.size}")
         cursor.close()
         return itemList
+    }
+    fun saveSetting(setting: SettingData) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_ID, 1) // Hanya satu baris data
+            put(COLUMN_NOTIF_ENABLED, if (setting.isNotifEnabled) 1 else 0)
+            put(COLUMN_NOTIF_TIME, setting.notifTime)
+            put(COLUMN_START_DAY, setting.startDay)
+            put(COLUMN_END_DAY, setting.endDay)
+        }
+        db.insertWithOnConflict(TABLE_SETTINGS, null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        db.close()
+    }
+
+    // Fungsi untuk mengambil setting
+    fun getSetting(): SettingData? {
+        val db = readableDatabase
+        val cursor = db.query(
+            TABLE_SETTINGS,
+            null,
+            "$COLUMN_ID = ?",
+            arrayOf("1"),
+            null,
+            null,
+            null
+        )
+        return if (cursor.moveToFirst()) {
+            val isNotifEnabled = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTIF_ENABLED)) ==1
+            val notifTime = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTIF_TIME))
+            val startDay = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_START_DAY))
+            val endDay = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_END_DAY))
+            SettingData(isNotifEnabled, notifTime, startDay, endDay)
+        } else {
+            null
+        }
     }
 
 }

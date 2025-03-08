@@ -1,19 +1,24 @@
 package com.tugasmobile.inventory.ui
 
 import android.app.Application
+import android.content.Context
+import android.database.Cursor
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
-import com.tugasmobile.inventory.data.BrgDatabaseHelper
 import com.tugasmobile.inventory.data.DataBarangMasuk
 import com.tugasmobile.inventory.data.DataSearch
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.ItemNotifikasi
+import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
-import com.tugasmobile.inventory.notifikasi.NotificationHelper
+import com.tugasmobile.inventory.database.BrgDatabaseHelper
+import com.tugasmobile.inventory.database.SyncDatabaseHelper
+import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.cancelNotification
+import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.scheduleNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -21,6 +26,7 @@ import kotlinx.coroutines.withContext
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseHelper= BrgDatabaseHelper.getInstance(application)
+    private val databaseMigration= SyncDatabaseHelper.getInstance(application)
 
     private val _Data_barangMasukList= MutableLiveData<List<DataBarangMasuk>>()
     val dataBarangMasukList: LiveData<List<DataBarangMasuk>> = _Data_barangMasukList
@@ -46,9 +52,30 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _lowStockItems = MutableLiveData<List<ItemNotifikasi>>()
     val lowStockItems: LiveData<List<ItemNotifikasi>> = _lowStockItems
 
+    private val _settingData = MutableLiveData<SettingData?>()
+    val settingData: LiveData<SettingData?> get() = _settingData
+
+    private val _stokData = MutableLiveData<List<ItemNotifikasi>>()
+    val stokData: LiveData<List<ItemNotifikasi>> get() = _stokData
+
     init {
         loadBarang()
-        loadLowStockItems()
+        loadSetting()
+    }
+    fun loadSetting() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Ambil data pengaturan dari database
+                val setting = databaseHelper.getSetting()
+
+                // Perbarui LiveData di thread utama
+                withContext(Dispatchers.Main) {
+                    _settingData.value = setting
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun loadBarang() {
@@ -104,20 +131,24 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         return databaseHelper.cekKodeBarangAda(kode)
     }
 
-    fun loadLowStockItems() {
+
+    fun saveSetting(settingData: SettingData) {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val items = databaseHelper.getLowStockItems()
-                withContext(Dispatchers.Main) {
-                    _lowStockItems.value = items
-                    val notifHelper = NotificationHelper(getApplication())  // Pastikan ada context di sini
-                    items.forEach {
-                        notifHelper.sendNotification(it.namaBarang, it.stok)
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            databaseHelper.saveSetting(settingData)
+            loadSetting()
+        }
+    }
+
+
+
+    fun getSetting(): SettingData? {
+        return _settingData.value
+    }
+    fun getNotifStokLow() {
+        viewModelScope.launch {
+            val stokList = databaseMigration.getAllStokData()
+            _stokData.value = stokList // Simpan data ke LiveData
+
         }
     }
 

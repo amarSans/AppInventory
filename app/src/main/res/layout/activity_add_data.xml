@@ -48,8 +48,8 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/coklat_abu_abu"
                     android:background="@drawable/edit_text_bacground"
-                    android:fontFamily="@font/poppins_semibold"
                     android:hint="@string/masukkan_nama_barang"
+                    android:fontFamily="@font/poppins_semibold"
                     android:textSize="12sp" />
                 <TextView
                     android:layout_width="wrap_content"

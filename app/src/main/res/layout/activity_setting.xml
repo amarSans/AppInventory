@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.setting.SettingActivity">
+        <ImageView
+            android:id="@+id/imgViewBackSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_ios_new_24"
+            />
+
+        <!-- Judul Setting -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Setting"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="20sp" />
+
+        <!-- Bagian Notifikasi -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notifikasi"
+            android:gravity="start"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16sp" />
+
+        <!-- Garis Pemisah -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/coklat_abu_abu"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Aktifkan Notifikasi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:paddingVertical="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Aktifkan Notifikasi"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="16sp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchNotif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/minTouchTargetSize"/>
+        </LinearLayout>
+
+
+        <!-- Hari Mulai dan Hari Berakhir -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <!-- Hari Mulai -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hari Mulai"
+                    android:gravity="center"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerHariMulai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <!-- Spacer -->
+            <View
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <!-- Hari Berakhir -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Hari Berakhir"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+
+                <Spinner
+                    android:id="@+id/spinnerHariAkhir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <!-- Tombol Pilih Jam Notifikasi -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Jam Notifikasi"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16sp"
+            android:paddingVertical="8dp"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/btnPilihJam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pilih Jam"/>
+
+        <TextView
+            android:id="@+id/txtJamDipilih"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jam: Belum dipilih"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+

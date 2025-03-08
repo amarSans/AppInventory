@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation(libs.screenshot.validation.junit.engine)
+    implementation(libs.androidx.preference)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)
