@@ -45,7 +45,7 @@
             android:name=".ui.uiData.addData"
             android:exported="false"
             android:theme="@style/Theme.Inventory" />
-        <receiver android:name=".ui.setting.notifikasi_cadangan.NotificationReceiver"
+        <receiver android:name=".ui.setting.notifikasi.NotificationReceiver"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"

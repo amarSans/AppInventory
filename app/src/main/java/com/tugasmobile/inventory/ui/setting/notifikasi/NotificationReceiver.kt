@@ -1,12 +1,9 @@
-package com.tugasmobile.inventory.ui.setting.notifikasi_cadangan
+package com.tugasmobile.inventory.ui.setting.notifikasi
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
-import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

@@ -7,10 +7,7 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import com.tugasmobile.inventory.database.BrgDatabaseHelper
-import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.setting.notifikasi_cadangan.NotificationReceiver
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
