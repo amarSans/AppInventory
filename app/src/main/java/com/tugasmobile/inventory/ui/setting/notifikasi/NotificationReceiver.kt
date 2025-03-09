@@ -10,15 +10,17 @@ class NotificationReceiver : BroadcastReceiver() {
 
         Log.d("NOTIF_RECEIVER", "Broadcast diterima, memicu notifikasi")
         if (context != null) {
-            val itemName = intent?.getStringExtra("ITEM_NAME") ?: "Barang"
-            val currentStock = intent?.getIntExtra("CURRENT_STOCK", 0) ?: 0
-
+            val lowStockCount = getLowStockCountFromSharedPreferences(context)
             val notificationHelper = NotificationHelper(context)
             notificationHelper.createNotificationChannel() // Pastikan channel dibuat
-            notificationHelper.sendNotification(itemName, currentStock)
+            notificationHelper.sendNotification(lowStockCount)
             saveLastNotificationTime(context)
         }
 
+    }
+    private fun getLowStockCountFromSharedPreferences(context: Context): Int {
+        val sharedPreferences = context.getSharedPreferences("StokPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getInt("low_stock_count", 0)
     }
     private fun saveLastNotificationTime(context: Context) {
         val prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE)

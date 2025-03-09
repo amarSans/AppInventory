@@ -446,19 +446,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         return Triple(itemBarang, stok, barangIn)
     }
-    fun getLowStockItems(): List<ItemNotifikasi> {
-        val itemList = mutableListOf<ItemNotifikasi>()
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT kode_barang,  stok FROM barang WHERE stok < 3", null)
 
-        while (cursor.moveToNext()) {
-            val kode = cursor.getString(0)
-            val stok = cursor.getInt(1)
-            itemList.add(ItemNotifikasi(kode, stok))
-        }
-        cursor.close()
-        return itemList
-    }
     fun saveSetting(setting: SettingData) {
         val db = writableDatabase
         val values = ContentValues().apply {

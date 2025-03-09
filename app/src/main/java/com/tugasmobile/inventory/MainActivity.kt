@@ -27,10 +27,9 @@ import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.setting.SettingActivity
 import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
-import com.tugasmobile.inventory.ui.setting.notifikasi.SyncScheduler
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var settingViewModel: ViewModel
+    private lateinit var mainViewModel: ViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     companion object {
@@ -44,11 +43,11 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        settingViewModel = ViewModelProvider(this).get(ViewModel::class.java)
-        settingViewModel.loadSetting() // Memuat data pengaturan
+        mainViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+        mainViewModel.loadSetting() // Memuat data pengaturan
 
         // Observasi perubahan data
-        settingViewModel.settingData.observe(this) { setting ->
+        mainViewModel.settingData.observe(this) { setting ->
             if (setting != null) {
                 AlarmScheduler.scheduleNotification(this)
             }
@@ -93,14 +92,9 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("toastMessage", "Data berhasil ditambahkan")
         fragment.arguments = bundle
 
-        SyncScheduler.scheduleSync(this)
-
         // Buat Notifikasi Channel
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()
-
-
-
 
     }
 

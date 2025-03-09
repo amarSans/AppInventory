@@ -16,7 +16,6 @@ import com.tugasmobile.inventory.data.ItemNotifikasi
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.database.BrgDatabaseHelper
-import com.tugasmobile.inventory.database.SyncDatabaseHelper
 import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.cancelNotification
 import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.scheduleNotification
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,6 @@ import kotlinx.coroutines.withContext
 class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseHelper= BrgDatabaseHelper.getInstance(application)
-    private val databaseMigration= SyncDatabaseHelper.getInstance(application)
 
     private val _Data_barangMasukList= MutableLiveData<List<DataBarangMasuk>>()
     val dataBarangMasukList: LiveData<List<DataBarangMasuk>> = _Data_barangMasukList
@@ -84,6 +82,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 val barangList = databaseHelper.getAllBarang()
                 withContext(Dispatchers.Main) {
                     _Data_barangMasukList.value = barangList
+                    val lowStockCount = countLowStockItems()
+                    saveLowStockCountToSharedPreferences(getApplication(), lowStockCount)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -139,17 +139,14 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
-
-    fun getSetting(): SettingData? {
-        return _settingData.value
+    private fun saveLowStockCountToSharedPreferences(context: Context, count: Int) {
+        val sharedPreferences = context.getSharedPreferences("StokPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putInt("low_stock_count", count)
+        editor.apply()
     }
-    fun getNotifStokLow() {
-        viewModelScope.launch {
-            val stokList = databaseMigration.getAllStokData()
-            _stokData.value = stokList // Simpan data ke LiveData
-
-        }
+    private fun countLowStockItems(): Int {
+        val barangList = _Data_barangMasukList.value ?: return 0
+        return barangList.count { it.stok <= 2 }
     }
-
 }
