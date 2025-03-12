@@ -39,8 +39,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         // Tabel Stok
         const val TABLE_STOK = "stok"
         const val COLUMN_ID_STOK = "id_stok"
-        const val COLUMN_WARNA = "warna"
-        const val COLUMN_UKURAN = "ukuran"
+        const val COLUMN_UKURAN_WARNA = "ukuran_warna"
         const val COLUMN_STOK = "stok"
 
         // Tabel Barang Masuk
@@ -54,8 +53,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         const val TABLE_BARANG_KELUAR = "barang_keluar"
         const val COLUMN_ID_KELUAR = "id_keluar"
         const val COLUMN_TANGGAL_KELUAR = "tanggal_keluar"
-        const val COLUMN_WARNA_KELUAR = "warna"
-        const val COLUMN_UKURAN_KELUAR = "ukuran"
+        const val COLUMN_UKURAN_WARNA_KELUAR = "ukuran_warna"
         const val COLUMN_STOK_KELUAR = "stok_keluar"
         const val COLUMN_HARGA_BELI = "harga_beli"
 
@@ -81,8 +79,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             CREATE TABLE $TABLE_STOK (
                 $COLUMN_ID_STOK INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_KODE_BARANG TEXT,
-                $COLUMN_WARNA TEXT DEFAULT '',
-                $COLUMN_UKURAN TEXT DEFAULT '',
+                $COLUMN_UKURAN_WARNA TEXT DEFAULT '',
                 $COLUMN_STOK INTEGER DEFAULT 0,
                 FOREIGN KEY ($COLUMN_KODE_BARANG) REFERENCES $TABLE_BARANG ($COLUMN_KODE_BARANG) ON DELETE CASCADE
             )
@@ -103,8 +100,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             CREATE TABLE $TABLE_BARANG_KELUAR (
                 $COLUMN_ID_KELUAR INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_KODE_BARANG TEXT,
-                $COLUMN_WARNA_KELUAR TEXT ,
-                $COLUMN_UKURAN_KELUAR TEXT ,
+                $COLUMN_UKURAN_WARNA_KELUAR TEXT,
                 $COLUMN_STOK_KELUAR INTEGER NOT NULL,
                 $COLUMN_TANGGAL_KELUAR TEXT NOT NULL,
                 $COLUMN_HARGA_BELI INTEGER,
@@ -151,8 +147,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
             val valuesStok = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_WARNA, stok.warna.joinToString(","))
-                put(COLUMN_UKURAN, stok.ukuran)
+                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna.joinToString(","))
                 put(COLUMN_STOK, stok.stokBarang)
             }
             val stokId = db.insert(TABLE_STOK, null, valuesStok)
@@ -183,8 +178,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             // 1. Insert data ke tabel barang_keluar
             val values = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barangOut.id_barang)
-                put(COLUMN_WARNA_KELUAR, barangOut.warna)
-                put(COLUMN_UKURAN_KELUAR, barangOut.ukuran)
+                put(COLUMN_UKURAN_WARNA_KELUAR, barangOut.ukuran_warna)
                 put(COLUMN_STOK_KELUAR, barangOut.stok_keluar)
                 put(COLUMN_TANGGAL_KELUAR, barangOut.Tgl_Keluar)
                 put(COLUMN_HARGA_BELI, barangOut.Hrg_Beli)
@@ -197,14 +191,14 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
             // 2. Kurangi stok di tabel stok
             val stokCursor = db.rawQuery(
-                "SELECT $COLUMN_STOK, $COLUMN_UKURAN FROM $TABLE_STOK WHERE $COLUMN_KODE_BARANG = ?",
+                "SELECT $COLUMN_STOK, $COLUMN_UKURAN_WARNA FROM $TABLE_STOK WHERE $COLUMN_KODE_BARANG = ?",
                 arrayOf(barangOut.id_barang)
             )
 
             if (stokCursor.moveToFirst()) {
                 val currentStok = stokCursor.getInt(stokCursor.getColumnIndexOrThrow(COLUMN_STOK))
-                val currentUkuran = stokCursor.getString(stokCursor.getColumnIndexOrThrow(
-                    COLUMN_UKURAN
+                val currentUkuranWarna = stokCursor.getString(stokCursor.getColumnIndexOrThrow(
+                    COLUMN_UKURAN_WARNA
                 ))
 
                 // Kurangi stok
@@ -225,13 +219,13 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 )
 
                 // 3. Hapus ukuran jika ada
-                if (barangOut.ukuran.isNotEmpty()) {
-                    val ukuranList = currentUkuran.split(",").toMutableList()
-                    ukuranList.removeAll(barangOut.ukuran.split(","))
+                if (barangOut.ukuran_warna.isNotEmpty()) {
+                    val ukuranList = currentUkuranWarna.split(",").toMutableList()
+                    ukuranList.removeAll(barangOut.ukuran_warna.split(","))
 
                     val newUkuran = ukuranList.joinToString(",")
                     val updateUkuranValues = ContentValues().apply {
-                        put(COLUMN_UKURAN, newUkuran)
+                        put(COLUMN_UKURAN_WARNA, newUkuran)
                     }
                     db.update(
                         TABLE_STOK,
@@ -294,7 +288,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG, 
-                   b.$COLUMN_GAMBAR, s.$COLUMN_STOK, s.$COLUMN_WARNA, s.$COLUMN_UKURAN, 
+                   b.$COLUMN_GAMBAR, s.$COLUMN_STOK, s.$COLUMN_UKURAN_WARNA,
                    m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
             FROM $TABLE_BARANG b
             LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
@@ -308,13 +302,12 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 val namaBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))?: ""
                 val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
                 val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
-                val warna = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WARNA))?.split(",")?: emptyList()
-                val ukuran = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN))?: ""
+                val ukuranwarna = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")?: emptyList()
                 val waktu = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))?: ""
                 val harga = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
                 val namaToko = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))?: ""
 
-                val barang = DataBarangMasuk(idBarang, namaBarang, stok, harga, warna, waktu, namaToko, ukuran, gambar)
+                val barang = DataBarangMasuk(idBarang, namaBarang, stok, harga, ukuranwarna, waktu, namaToko, gambar)
                 barangList.add(barang)
             } while (cursor.moveToNext())
         }
@@ -334,7 +327,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
     fun updateWarna(barangId: String, newColors: List<String>): Int {
         val db = this.writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_WARNA, newColors.joinToString(","))
+            put(COLUMN_UKURAN_WARNA, newColors.joinToString(","))
         }
 
         // Mengupdate warna berdasarkan ID
@@ -374,8 +367,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
             val valuesStok = ContentValues().apply {
                 put(COLUMN_STOK, stok.stokBarang)
-                put(COLUMN_WARNA, stok.warna.joinToString ( "," ))
-                put(COLUMN_UKURAN, stok.ukuran)
+                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna.joinToString ( "," ))
             }
             val resultStok = db.update(
                 TABLE_STOK,
@@ -411,7 +403,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG,
-               b.$COLUMN_GAMBAR, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_WARNA, s.$COLUMN_UKURAN, 
+               b.$COLUMN_GAMBAR, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_UKURAN_WARNA,
                m.$COLUMN_ID_MASUK, m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
         FROM $TABLE_BARANG b
         LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
@@ -431,8 +423,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
                 val idStok=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
                 val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK))?: 0
-                val warna = it.getString(it.getColumnIndexOrThrow(COLUMN_WARNA))?.split(",")?: emptyList()
-                val ukuran = it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN))
+                val ukuranwarna = it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")?: emptyList()
                 val idMasuk=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_MASUK))
                 val tanggalMasuk = it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))?: ""
                 val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))?: 0
@@ -440,7 +431,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
                 // Inisialisasi objek
                 itemBarang = ItemBarang(idBarang, namaBarang, gambarUri.toString())
-                stok = Stok(idStok,idBarang, stokJumlah,warna, ukuran )
+                stok = Stok(idStok,idBarang, stokJumlah,ukuranwarna)
                 barangIn = BarangIn(idMasuk,idBarang, tanggalMasuk, hargaJual, namaToko)
             }
         }

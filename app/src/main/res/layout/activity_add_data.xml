@@ -180,16 +180,65 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:fontFamily="@font/poppins_semibold"
-            android:text="@string/warna" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewColors"
+            android:text="ukuran dan warna" />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp" />
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+            <ImageView
+                android:id="@+id/iconClose"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="start"
+                android:src="@drawable/baseline_close_24"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Spinner untuk angka (ukuran) -->
+            <EditText
+                android:id="@+id/edt_Ukuran"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:background="@drawable/edit_text_bacground"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="@string/_00"
+                android:inputType="numberDecimal"
+                android:textSize="15sp" />
+
+            <!-- Spinner untuk string (warna) -->
+            <Spinner
+                android:id="@+id/spinnerWarna"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_bacground"
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="12sp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- ImageView untuk ikon check -->
+            <ImageView
+                android:id="@+id/iconCheck"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/baseline_check_24"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+        <EditText
+            android:id="@+id/edit_text_ukuranwarna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_bacground"
+            android:textColor="@color/black"
+            android:hint="masukkan ukuran warna"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="12sp" />
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -228,24 +277,6 @@
             android:fontFamily="@font/poppins_semibold"
             android:textSize="12sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="6dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/ukuran" />
-
-        <TextView
-            android:id="@+id/edt_ukuran"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textColorHint="@color/coklat_abu_abu"
-            android:background="@drawable/edit_text_bacground"
-            android:fontFamily="@font/poppins_semibold"
-            android:hint="@string/masukkan_ukuran"
-            android:textSize="12sp" />
 
         <Button
             android:id="@+id/button_save"

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.adapter.AdapterColorUI
+import com.tugasmobile.inventory.adapter.AdapterSizeColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
-import java.text.NumberFormat
-import java.util.Locale
 
 
 class RincianFragment : Fragment() {
@@ -45,8 +44,8 @@ class RincianFragment : Fragment() {
             colorNames[index] to colorValues[index]
         }
 // Inisialisasi RecyclerView dan Adapter
-        val recyclerView: RecyclerView = binding.rvWarnaSendal // Sesuaikan dengan ID RecyclerView Anda
-        val colorAdapter = AdapterColorUI(requireContext())
+        val recyclerView: RecyclerView = binding.rvUkuranWarnaSendal // Sesuaikan dengan ID RecyclerView Anda
+        val colorAdapter = AdapterSizeColorUI(requireContext())
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
 
@@ -66,12 +65,22 @@ class RincianFragment : Fragment() {
         }}
         rincianViewModel.currentStok.observe(viewLifecycleOwner) { stok ->
             stok?.let {
+                val teksLengkap = it.ukuranwarna.map { item -> item.trim() }
                 binding.tvStok.text = it.stokBarang.toString()
-                binding.TVUkuran.text = it.ukuran
-                val warnaFromDb = it.warna.map { warna -> warna.trim() }
+                val warnaFromDb = it.ukuranwarna.map { item ->
+                    item.split(" ").last().trim() // Ambil bagian terakhir (warna)
+                }
                 val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
-                colorAdapter.updateColors(warnaFromDb, selectedColorValues)
+                Log.d("RincianFragment", "Data ukuranwarna dikirim ke adapter: $teksLengkap")
+                Log.d("RincianFragment", "Data warna dikirim ke adapter: $selectedColorValues")
 
+                if (teksLengkap.isNotEmpty() && selectedColorValues.isNotEmpty()) {
+                    colorAdapter.updateColors(teksLengkap, selectedColorValues)
+                } else {
+                    // Handle jika data kosong
+                    colorAdapter.updateColors(emptyList(), emptyList())
+                    Toast.makeText(requireContext(), "Tidak ada data warna yang valid", Toast.LENGTH_SHORT).show()
+                }
             }
         }
         rincianViewModel.currentBarangIn.observe(viewLifecycleOwner){barangIn->

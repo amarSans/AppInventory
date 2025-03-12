@@ -102,7 +102,7 @@ class BarangKeluar : Fragment() {
             }
             selectedItem?.let {
                 barangKeluarViewModel.setCurrentBarang(it.id)
-                showBarangKeluarDialog(it.id, it.namaBarang, it.harga.toString(), it.warna.toString(), it.ukuran)
+                showBarangKeluarDialog(it.id, it.namaBarang, it.harga.toString(), it.ukuranwarna.toString())
                 binding.autoCompleteBarang.postDelayed({ binding.autoCompleteBarang.text.clear() }, 100)
             }
         }
@@ -147,19 +147,18 @@ class BarangKeluar : Fragment() {
         }
     }
 
-    private fun showBarangKeluarDialog(kode: String, nama: String, harga: String, warna: String, ukuran: String) {
-        val dialog = BarangKeluarDialogFragment.newInstance(kode, nama, harga, warna, ukuran)
+    private fun showBarangKeluarDialog(kode: String, nama: String, harga: String, ukuranwarna: String) {
+        val dialog = BarangKeluarDialogFragment.newInstance(kode, nama, harga, ukuranwarna)
         dialog.setBarangKeluarListener(object : BarangKeluarDialogFragment.BarangKeluarListener {
             override fun onBarangKeluarSaved(
                 kodeBarang: String,
                 namaBarang: String,
                 hargaBarang: String,
-                warnaTerpilih: List<String>,
-                ukuranTerpilih: List<String>,
+                ukuranWarnaTerpilih: List<String>,
                 stokKeluar: Int,
                 hargaBeli: Int
             ) {
-                val barangKeluar = DaftarBarangKeluar(kodeBarang, stokKeluar, ukuranTerpilih.joinToString(", "), hargaBeli, 0)
+                val barangKeluar = DaftarBarangKeluar(kodeBarang, stokKeluar, ukuranWarnaTerpilih, hargaBeli, 0)
                 daftarBarangKeluar.add(barangKeluar)
                 adapterTransaksi.notifyDataSetChanged()
             }

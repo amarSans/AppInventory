@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,6 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.simpleItem.BottonUkuranSheet
 import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
 
@@ -26,8 +26,7 @@ class EditData : AppCompatActivity() {
     private lateinit var editViewModel: ViewModel
     private var barangId: String = ""
     private var stokBarang = 0
-    //private var selectedSizesList: List<String> = emptyList()
-    private var selectedSizesList: String = ""
+    private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
     private lateinit var colorAdapter: AdapterColorIn
@@ -55,13 +54,13 @@ class EditData : AppCompatActivity() {
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
         val colorValues = resources.getStringArray(R.array.daftar_warna)
         colorAdapter = AdapterColorIn(this, colorNames, colorValues)
-
-        binding.recyclerViewColorsEdit.apply {
+        setupSpinners()
+        /*binding.recyclerViewColorsEdit.apply {
             layoutManager = LinearLayoutManager(this@EditData, LinearLayoutManager.HORIZONTAL, false)
             adapter = colorAdapter
-        }
+        }*/
 
-        binding.edtUkuran.setOnClickListener {
+        /*binding.edtUkuran.setOnClickListener {
             selectedSizesList = ""
             val stok = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
 
@@ -74,12 +73,52 @@ class EditData : AppCompatActivity() {
                 }
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
-        }
+        }*/
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.buttonSave.setOnClickListener { saveChanges() }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
+    }
+    private fun setupSpinners() {
+        val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
+
+        // Inisialisasi adapter untuk Spinner warna
+        val warnaAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, warnaList)
+        warnaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerWarnaEdit.adapter = warnaAdapter
+
+        // Listener untuk icon close
+        binding.iconCloseEdit.setOnClickListener {
+            binding.edtUkuranEdit.setText("") // Reset Spinner ukuran
+            binding.spinnerWarnaEdit.setSelection(0)  // Reset Spinner warna
+        }
+
+        // Listener untuk icon check
+        binding.iconCheckEdit.setOnClickListener {
+            val selectedUkuran = binding.edtUkuranEdit.text.toString().trim()
+            val selectedWarna = binding.spinnerWarnaEdit.selectedItem as String
+
+            // Gabungkan ukuran dan warna
+            val newEntry = "$selectedUkuran $selectedWarna"
+
+            // Ambil teks yang sudah ada di EditText
+            val currentText = binding.editTextUkuranwarna.text.toString()
+
+            // Tambahkan entri baru ke EditText (dipisahkan koma jika sudah ada data)
+            val updatedText = if (currentText.isEmpty()) {
+                newEntry
+            } else {
+                "$currentText, $newEntry"
+            }
+
+            // Set teks ke EditText
+            binding.editTextUkuranwarna.setText(updatedText)
+
+            // Reset Spinner
+            binding.edtUkuranEdit.setText("")
+            binding.spinnerWarnaEdit.setSelection(0)
+        }
     }
 
     private fun setupObservers() {
@@ -96,9 +135,7 @@ class EditData : AppCompatActivity() {
         }
         editViewModel.currentStok.observe(this) { stok ->
             stok?.let {
-                binding.edtUkuran.text = it.ukuran
-                selectedSizesList = it.ukuran?.split(",")?.map { size -> size.trim() }?.joinToString(", ") ?: ""
-                colorAdapter.setSelectedColors(it.warna)
+                binding.editTextUkuranwarna.setText(it.ukuranwarna.toString())
                 binding.editStokBarang.setText(it.stokBarang.toString())
                 stokBarang = it.stokBarang
             }?: run {
@@ -130,8 +167,7 @@ class EditData : AppCompatActivity() {
         }
         val updatedStok = editViewModel.currentStok.value?.copy(
             stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
-            ukuran = binding.edtUkuran.text.toString(),
-            warna = selectedColors.toList()
+            ukuranwarna = binding.editTextUkuranwarna.text.toString().split(",")
         )?: run {
             Toast.makeText(this, "Data stok tidak valid", Toast.LENGTH_SHORT).show()
             return

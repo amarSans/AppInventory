@@ -128,14 +128,13 @@
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pptv_stok_keluar"
-            app:layout_constraintEnd_toStartOf="@id/pprv_warna_sendal"
-            app:layout_constraintBottom_toBottomOf="@id/pprv_warna_sendal"
+            app:layout_constraintEnd_toStartOf="@id/pprv_ukuranwarna_sendal"
+            app:layout_constraintBottom_toBottomOf="@id/pprv_ukuranwarna_sendal"
             />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pprv_warna_sendal"
+            android:id="@+id/pprv_ukuranwarna_sendal"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:orientation="horizontal"
@@ -144,30 +143,8 @@
             app:layout_constraintStart_toEndOf="@+id/tvwarna"
             app:layout_constraintTop_toBottomOf="@+id/pptv_stok_keluar" />
 
-        <TextView
-            android:id="@+id/pptv_ukuran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ukuran"
-            android:gravity="center"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="16sp"
-            android:layout_marginTop="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvwarna"
-            app:layout_constraintBottom_toBottomOf="@id/pprv_ukuran_sendal"
-        />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pprv_ukuran_sendal"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:layout_marginStart="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/pptv_ukuran"
-            app:layout_constraintTop_toBottomOf="@id/tvwarna" />
+
+
         <TextView
             android:id="@+id/pptv_harga_beli"
             android:layout_width="wrap_content"
@@ -178,7 +155,7 @@
             android:textSize="16sp"
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pptv_ukuran"
+            app:layout_constraintTop_toBottomOf="@+id/tvwarna"
             />
         <EditText
             android:id="@+id/ppedt_harga_beli"

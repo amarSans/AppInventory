@@ -12,11 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 
-class AdapterColorUI(
+class AdapterSizeColorUI(
     private val context: Context,
     private var selectedColorNames: List<String> = listOf(),
     private var selectedColorValues: List<String> = listOf()
-) : RecyclerView.Adapter<AdapterColorUI.ColorViewHolder>() {
+) : RecyclerView.Adapter<AdapterSizeColorUI.ColorViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_color_ui, parent, false)

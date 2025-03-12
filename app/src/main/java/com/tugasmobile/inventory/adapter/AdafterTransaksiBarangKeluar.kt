@@ -31,7 +31,7 @@ class AdafterTransaksiBarangKeluar(private val data: List<DaftarBarangKeluar>) :
         val item = data[position]
         holder.kodeBarang.text = item.kodeBarang
         holder.stok.text = item.stok.toString()
-        holder.ukuran.text = item.ukuran
+        holder.ukuran.text = item.ukuranWarna.joinToString(", ")
         holder.hargaJual.text = item.hargaJual.toString()
         val stok= holder.stok.text.toString().toInt()
         val hargajual= holder.hargaJual.text.toString().toInt()

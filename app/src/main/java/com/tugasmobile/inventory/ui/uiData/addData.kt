@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,7 +26,6 @@ import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.simpleItem.BottonUkuranSheet
 import com.tugasmobile.inventory.ui.simpleItem.DateUtils
 import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
 import java.io.File
@@ -36,7 +36,7 @@ class addData : AppCompatActivity() {
     private var stokBarang = 0
     private lateinit var recyclerView: RecyclerView
 
-    private var selectedSizesList: String = ""
+    private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
 
@@ -130,6 +130,10 @@ class addData : AppCompatActivity() {
             binding.editStokBarang.error = "Stok barang tidak boleh kosong"
             return
         }
+        val ukuranWarna = binding.editTextUkuranwarna.text.toString().trim()
+
+        // Simpan ke selectedSizesList
+        selectedSizesColorList = listOf(ukuranWarna)
 
         val hargaProdukText = binding.editTextHargaBarang.text.toString().replace(".", "").trim()
         if (hargaProdukText.isEmpty()) {
@@ -142,11 +146,7 @@ class addData : AppCompatActivity() {
             return
         }
 
-        val selectedColors = (recyclerView.adapter as AdapterColorIn).getSelectedColors()
-        if (selectedColors.isEmpty()) {
-            Toast.makeText(this, "Pilih minimal satu warna", Toast.LENGTH_SHORT).show()
-            return
-        }
+
         val namaToko = binding.edtNamaToko.text.toString().trim()
         if (namaToko.isEmpty()) {
             binding.edtNamaToko.error = "Nama toko tidak boleh kosong"
@@ -162,8 +162,7 @@ class addData : AppCompatActivity() {
             idStok = 0,
             id_barang = kodeProduk,
             stokBarang = stokBarang,
-            warna = selectedColors,
-            ukuran = selectedSizesList,
+            ukuranwarna = selectedSizesColorList,
         )
         val barangIn = BarangIn(
             IdBrgMasuk = 0,
@@ -186,7 +185,7 @@ class addData : AppCompatActivity() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.editTextDate.setText(DateUtils.getCurrentDate())
-        binding.edtUkuran.setOnClickListener {
+       /* binding.edtUkuran.setOnClickListener {
             selectedSizesList = ""
             val stok = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
 
@@ -199,14 +198,56 @@ class addData : AppCompatActivity() {
                 }
             }
             bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
-        }
+        }*/
+        setupSpinners()
 
 
         // Inisialisasi lainnya
-        recyclerView = findViewById(R.id.recyclerViewColors) // Pastikan RecyclerView sudah di-inisialisasi
+       /* recyclerView = findViewById(R.id.recyclerViewColors) // Pastikan RecyclerView sudah di-inisialisasi
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = AdapterColorIn(this, resources.getStringArray(R.array.daftar_nama_warna), resources.getStringArray(R.array.daftar_warna))
+        */
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
+    }
+    private fun setupSpinners() {
+        val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
+
+        // Inisialisasi adapter untuk Spinner warna
+        val warnaAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, warnaList)
+        warnaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerWarna.adapter = warnaAdapter
+
+        // Listener untuk icon close
+        binding.iconClose.setOnClickListener {
+            binding.edtUkuran.setText("") // Reset Spinner ukuran
+            binding.spinnerWarna.setSelection(0)  // Reset Spinner warna
+        }
+
+        // Listener untuk icon check
+        binding.iconCheck.setOnClickListener {
+            val selectedUkuran = binding.edtUkuran.text.toString().trim()
+            val selectedWarna = binding.spinnerWarna.selectedItem as String
+
+            // Gabungkan ukuran dan warna
+            val newEntry = "$selectedUkuran $selectedWarna"
+
+            // Ambil teks yang sudah ada di EditText
+            val currentText = binding.editTextUkuranwarna.text.toString()
+
+            // Tambahkan entri baru ke EditText (dipisahkan koma jika sudah ada data)
+            val updatedText = if (currentText.isEmpty()) {
+                newEntry
+            } else {
+                "$currentText, $newEntry"
+            }
+
+            // Set teks ke EditText
+            binding.editTextUkuranwarna.setText(updatedText)
+
+            // Reset Spinner
+            binding.edtUkuran.setText("")
+            binding.spinnerWarna.setSelection(0)
+        }
     }
 
     private fun openGallery() {
