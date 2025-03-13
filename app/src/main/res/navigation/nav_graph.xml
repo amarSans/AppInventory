@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/rincianFragment"
-        android:name="com.tugasmobile.inventory.ui.Barang.RincianFragment"
+
         android:label="Rincian"
         tools:layout="@layout/fragment_rincian">
         <action

@@ -220,6 +220,11 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
                 // 3. Hapus ukuran jika ada
                 if (barangOut.ukuran_warna.isNotEmpty()) {
+                    val currentUkuranList = currentUkuranWarna.split(",").map { it.trim() }.toMutableList()
+                    val ukuranToRemove = barangOut.ukuran_warna.split(",").map { it.trim() }
+
+                    currentUkuranList.removeAll(ukuranToRemove)
+
                     val ukuranList = currentUkuranWarna.split(",").toMutableList()
                     ukuranList.removeAll(barangOut.ukuran_warna.split(","))
 
@@ -413,7 +418,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         var itemBarang: ItemBarang?=null
         var stok: Stok?=null
         var barangIn: BarangIn?=null
-        val cursor: Cursor? = db.rawQuery(query, arrayOf(id.toString()))
+        val cursor: Cursor? = db.rawQuery(query, arrayOf(id))
 
         // Memeriksa apakah cursor tidak null dan memiliki data
         cursor?.use {

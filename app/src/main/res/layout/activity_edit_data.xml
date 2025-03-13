@@ -130,7 +130,7 @@
                         style="@style/CustomButtonStyle"
                         android:layout_marginStart="4dp"
                         android:text="@string/gallery" />
-                    />
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

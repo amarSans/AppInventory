@@ -48,7 +48,6 @@ class BarangKeluarDialogFragment : DialogFragment() {
         val namaBarang = arguments?.getString("namaBarang") ?: "Tidak ada"
         val hargaBarang = arguments?.getString("hargaBarang") ?: "Tidak ada"
         val ukuranWarnaBarang = arguments?.getString("ukuranWarnaBarang") ?: ""
-        Log.d("BarangKeluarDialog", "Data ukuranWarnaBarang diterima: $ukuranWarnaBarang")
 
         val hargaBarangFormatted = HargaUtils.formatHarga(hargaBarang.toIntOrNull() ?: 0)
 
@@ -85,8 +84,6 @@ class BarangKeluarDialogFragment : DialogFragment() {
                 Tgl_Keluar = tanggalKeluar,
                 Hrg_Beli = hargaBeli
             )
-            Log.d("BarangKeluarDialog", "Warna yang dipilih sebelum disimpan: $ukuranWarnaTerpilih")
-            Log.d("BarangKeluarDialog", "Data barang yang akan disimpan: id=$kodeBarang, ukuran_warna=${ukuranWarnaTerpilih.joinToString(", ")}, stok_keluar=$stokKeluar, harga_beli=$hargaBeli")
 
             simpanDatabase(barangOut)
             listener?.onBarangKeluarSaved(kodeBarang, namaBarang, hargaBarang, ukuranWarnaTerpilih, stokKeluar,hargaBeli)
@@ -112,15 +109,10 @@ class BarangKeluarDialogFragment : DialogFragment() {
             item.split(" ").last().trim() // Ambil bagian terakhir (warna)
         }
         val selectedColorValues = warnaOnly.mapNotNull { colorMap[it] }
-        Log.d("BarangKeluarDialog", "Warna dari DB (mentah): $warnaBarang")
-        Log.d("BarangKeluarDialog", "Warna setelah diproses: $warnaFromDb")
-        Log.d("BarangKeluarDialog", "Warna yang dipilih (hanya warna): $warnaOnly")
-        Log.d("BarangKeluarDialog", "Warna yang cocok di daftar: $selectedColorValues")
 
        if (warnaFromDb.isNotEmpty() && selectedColorValues.isNotEmpty()) {
             colorAdapter.updateColors(warnaFromDb, selectedColorValues)
         } else {
-            Log.e("BarangKeluarDialog", "Tidak ada data warna yang valid")
             Toast.makeText(requireContext(), "Tidak ada data warna yang valid", Toast.LENGTH_SHORT).show()
         }
     }

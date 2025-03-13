@@ -26,7 +26,6 @@ class EditData : AppCompatActivity() {
     private lateinit var editViewModel: ViewModel
     private var barangId: String = ""
     private var stokBarang = 0
-    private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
     private lateinit var colorAdapter: AdapterColorIn
@@ -55,25 +54,7 @@ class EditData : AppCompatActivity() {
         val colorValues = resources.getStringArray(R.array.daftar_warna)
         colorAdapter = AdapterColorIn(this, colorNames, colorValues)
         setupSpinners()
-        /*binding.recyclerViewColorsEdit.apply {
-            layoutManager = LinearLayoutManager(this@EditData, LinearLayoutManager.HORIZONTAL, false)
-            adapter = colorAdapter
-        }*/
 
-        /*binding.edtUkuran.setOnClickListener {
-            selectedSizesList = ""
-            val stok = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
-
-            // Buat instance BottomSheet dan kirim nilai stok
-            val bottonUkuranSheet = BottonUkuranSheet.newInstance(selectedSizesList.split(","),stok)
-            bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
-                override fun onSizeSelected(selectedSizes: List<String>) {
-                    selectedSizesList = selectedSizes.filter { it.isNotBlank() }.joinToString(", ")
-                    binding.edtUkuran.text = selectedSizesList
-                }
-            }
-            bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
-        }*/
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
@@ -167,7 +148,13 @@ class EditData : AppCompatActivity() {
         }
         val updatedStok = editViewModel.currentStok.value?.copy(
             stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
-            ukuranwarna = binding.editTextUkuranwarna.text.toString().split(",")
+            ukuranwarna = binding.editTextUkuranwarna.text.toString()
+
+                .replace("[", "") // Hapus semua tanda "["
+                .replace("]", "") // Hapus semua tanda "]"
+                .trim() // Hapus spasi di awal dan akhir
+                .split(",")
+                .map { it.trim() }
         )?: run {
             Toast.makeText(this, "Data stok tidak valid", Toast.LENGTH_SHORT).show()
             return
