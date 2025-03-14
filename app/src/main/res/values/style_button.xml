@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="CustomButtonStyle" parent="Widget.Material3.Button">
+    <style name="CustomButtonStyle" >
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:backgroundTint">@color/bottom_color</item>
+        <item name="android:backgroundTint">@color/secondaryColor</item>
         <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>

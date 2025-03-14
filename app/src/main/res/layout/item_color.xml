@@ -9,9 +9,9 @@
     android:checkable="true"
     android:checked="true"
     android:text="warna"
-    app:chipBackgroundColor="@color/gray"
+    app:chipBackgroundColor="@color/hintColor"
     app:chipStrokeWidth="1dp"
     app:chipCornerRadius="16dp"
-    app:chipStrokeColor="@color/black"
+    app:chipStrokeColor="@color/textColor"
     android:clickable="true"
     android:focusable="true"/>

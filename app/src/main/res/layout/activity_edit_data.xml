@@ -1,278 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:padding="20dp"
     tools:context=".ui.uiData.EditData">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/imgViewBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_arrow_back_ios_new_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/tvnamaBarang"/>
+    <TextView
+        android:id="@+id/tvnamaBarang"
+        style="@style/CustomTextViewStyle"
+        android:text="@string/nama_barang"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
+        app:layout_constraintBottom_toTopOf="@id/editTextNamaBarang"
+        app:layout_constraintStart_toStartOf="@id/imgViewBack"
+        app:layout_constraintTop_toBottomOf="@+id/imgViewBack"
+        />
+    <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        style="@style/CustomEditTextStyle"
+        android:id="@+id/editTextNamaBarang"
+        android:hint="@string/masukkan_nama_barang"
+        app:layout_constraintBottom_toTopOf="@id/tvkodebarang"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
+        app:layout_constraintStart_toStartOf="@id/tvnamaBarang"
+        app:layout_constraintTop_toBottomOf="@+id/tvnamaBarang"/>
+    <TextView
+        android:id="@+id/tvkodebarang"
+        style="@style/CustomTextViewStyle"
+        android:text="@string/kode_barang"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
+        app:layout_constraintBottom_toTopOf="@id/editTextKodeBarang"
+        app:layout_constraintStart_toStartOf="@id/editTextNamaBarang"
+        app:layout_constraintTop_toBottomOf="@id/editTextNamaBarang"/>
+    <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        style="@style/CustomEditTextStyle"
+        android:id="@+id/editTextKodeBarang"
+        android:hint="@string/masukkan_kode_barang"
+        app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"
+        app:layout_constraintStart_toStartOf="@+id/tvkodebarang"
+        app:layout_constraintTop_toBottomOf="@id/tvkodebarang"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBarang"/>
+    <TextView
+        android:id="@+id/tvHargaBarang"
+        style="@style/CustomTextViewStyle"
+        android:text="@string/harga_barang"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
+        app:layout_constraintBottom_toTopOf="@id/editTextHargaBarang"
+        app:layout_constraintStart_toStartOf="@id/editTextKodeBarang"
+        app:layout_constraintTop_toBottomOf="@id/editTextKodeBarang"/>
+
+    <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        style="@style/CustomEditTextStyle"
+        android:id="@+id/editTextHargaBarang"
+        android:hint="@string/masukkan_harga_barang"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@id/tvHargaBarang"
+        app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
+        app:layout_constraintTop_toBottomOf="@id/tvHargaBarang"
+        app:layout_constraintBottom_toTopOf="@id/tvstokBarang"/>
+    <ImageView
+        android:id="@+id/imageViewBarang"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="@color/hintColor"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_image_24"
+        app:layout_constraintTop_toBottomOf="@id/imgViewBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextNamaBarang"
+        app:layout_constraintBottom_toTopOf="@id/buttonCamera"/>
+    <Button
+        android:id="@+id/buttonCamera"
+        style="@style/CustomButtonStyle"
+        android:layout_marginEnd="4dp"
+        android:text="@string/camera"
+        app:layout_constraintBottom_toBottomOf="@id/editTextHargaBarang"
+        app:layout_constraintTop_toBottomOf="@id/imageViewBarang"
+        app:layout_constraintStart_toStartOf="@id/imageViewBarang"
+        app:layout_constraintEnd_toStartOf="@id/buttonGallery"/>
+    <Button
+        android:id="@+id/buttonGallery"
+        style="@style/CustomButtonStyle"
+        android:layout_marginStart="4dp"
+        android:text="@string/gallery"
+        app:layout_constraintBottom_toBottomOf="@id/buttonCamera"
+        app:layout_constraintStart_toEndOf="@id/buttonCamera"
+        app:layout_constraintEnd_toEndOf="@id/imageViewBarang"
+        app:layout_constraintTop_toTopOf="@id/buttonCamera"/>
+    <TextView
+        android:id="@+id/tvstokBarang"
+        style="@style/CustomTextViewStyle"
+        android:text="@string/stok_barang"
+        app:layout_constraintBottom_toTopOf="@id/button_add_stok"
+        app:layout_constraintEnd_toEndOf="@id/buttonGallery"
+        app:layout_constraintStart_toStartOf="@id/editTextHargaBarang"
+        app:layout_constraintTop_toBottomOf="@id/editTextHargaBarang"/>
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/button_add_stok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:backgroundTint="@color/hintColor"
+        app:icon="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toTopOf="@id/tvukuranwarna"
+        app:layout_constraintEnd_toStartOf="@id/edit_stok_barang"
+        app:layout_constraintStart_toStartOf="@id/tvstokBarang"
+        app:layout_constraintTop_toBottomOf="@id/tvstokBarang"
+        />
+    <EditText
+        android:id="@+id/edit_stok_barang"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="@integer/material_motion_duration_long_1"
+        android:background="@drawable/bacgorund_kotak"
+        android:fontFamily="@font/poppins_semibold"
+        android:hint="@string/_00"
+        android:inputType="number"
+        android:textColor="@color/textColor"
+        android:textColorHint="@color/hintColor"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@id/button_remove_stok"
+        app:layout_constraintStart_toEndOf="@id/button_add_stok"
+        app:layout_constraintBottom_toBottomOf="@id/button_add_stok"
+        app:layout_constraintTop_toTopOf="@id/button_add_stok"
+        />
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/button_remove_stok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/hintColor"
+        app:icon="@drawable/baseline_remove_24"
+        app:layout_constraintBottom_toBottomOf="@id/edit_stok_barang"
+        app:layout_constraintStart_toEndOf="@id/edit_stok_barang"
+        app:layout_constraintTop_toTopOf="@id/edit_stok_barang"
+        app:layout_constraintEnd_toEndOf="@id/buttonGallery"/>
+    <TextView
+        android:id="@+id/tvukuranwarna"
+        style="@style/CustomTextViewStyle"
+        android:text="ukuran dan warna"
+        app:layout_constraintEnd_toEndOf="@id/button_remove_stok"
+        app:layout_constraintBottom_toTopOf="@id/edt_Ukuran"
+        app:layout_constraintTop_toBottomOf="@id/button_add_stok"
+        app:layout_constraintStart_toStartOf="@id/button_add_stok"/>
+
+    <EditText
+        android:id="@+id/edt_Ukuran"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:background="@drawable/edit_text_bacground"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="@dimen/text_size_large"
+        android:hint="@string/_00"
+        android:inputType="numberDecimal"
+        android:maxLength="3"
+        app:layout_constraintStart_toStartOf="@id/tvukuranwarna"
+        app:layout_constraintTop_toBottomOf="@id/tvukuranwarna"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_ukuranwarna"
+        app:layout_constraintEnd_toStartOf="@id/spinnerWarna"/>
+    <Spinner
+        android:id="@+id/spinnerWarna"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/edit_text_bacground"
+        android:fontFamily="@font/poppins_semibold"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/edt_Ukuran"
+        app:layout_constraintStart_toEndOf="@id/edt_Ukuran"
+        app:layout_constraintTop_toTopOf="@id/edt_Ukuran"
+        app:layout_constraintEnd_toStartOf="@id/iconClose"
+        />
+    <ImageView
+        android:id="@+id/iconClose"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:layout_gravity="start"
+        android:src="@drawable/baseline_close_24"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toEndOf="@id/spinnerWarna"
+        app:layout_constraintTop_toTopOf="@id/spinnerWarna"
+        app:layout_constraintBottom_toBottomOf="@id/spinnerWarna"
+        app:layout_constraintEnd_toStartOf="@id/iconCheck"
+        />
+    <ImageView
+        android:id="@+id/iconCheck"
+        android:layout_width="35dp"
+        android:layout_height="0dp"
+        android:src="@drawable/baseline_check_24"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/iconClose"
+        app:layout_constraintStart_toEndOf="@id/iconClose"
+        app:layout_constraintTop_toTopOf="@id/iconClose"
+        app:layout_constraintEnd_toEndOf="@id/tvukuranwarna"/>
+    <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        style="@style/CustomEditTextStyle"
+        android:id="@+id/edit_text_ukuranwarna"
+        android:hint="masukkan ukuran warna"
+        app:layout_constraintBottom_toTopOf="@id/tvTime"
+        app:layout_constraintEnd_toEndOf="@id/iconCheck"
+        app:layout_constraintStart_toStartOf="@id/edt_Ukuran"
+        app:layout_constraintTop_toBottomOf="@id/edt_Ukuran"/>
+    <TextView
+        android:id="@+id/tvTime"
+        style="@style/CustomTextViewStyle"
+        android:text="@string/waktu"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarna"
+        app:layout_constraintBottom_toTopOf="@id/edit_text_date"
+        app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarna"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarna"/>
+
+    <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        style="@style/CustomEditTextStyle"
+        android:id="@+id/edit_text_date"
+        android:clickable="false"
+        android:focusable="false"
+        app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarna"
+        app:layout_constraintStart_toStartOf="@id/tvTime"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"/>
+
+    <TextView
+        android:id="@+id/tvnamaToko"
+        style="@style/CustomTextViewStyle"
+        android:text="@string/nama_toko"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_date"
+        app:layout_constraintBottom_toTopOf="@id/edt_nama_toko"
+        app:layout_constraintStart_toStartOf="@id/edit_text_date"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_date"/>
+
+    <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        style="@style/CustomEditTextStyle"
+        android:id="@+id/edt_nama_toko"
+        android:hint="@string/masukkan_nama_toko"
+        app:layout_constraintStart_toStartOf="@id/tvnamaToko"
+        app:layout_constraintTop_toBottomOf="@id/tvnamaToko"
+        app:layout_constraintEnd_toEndOf="@id/edit_text_date"
+        app:layout_constraintBottom_toTopOf="@id/button_save"
+        />
+
+
+    <Button
+        android:id="@+id/button_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/imgViewBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:src="@drawable/baseline_arrow_back_ios_new_24" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="9dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/nama_barang" />
-
-                <EditText
-                    android:id="@+id/editTextNamaBarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/coklat_abu_abu"
-                    android:background="@drawable/edit_text_bacground"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:hint="@string/masukkan_nama_barang"
-                    android:textSize="12sp" />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/secondaryColor"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/save"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/edt_nama_toko"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_nama_toko"
+        app:layout_constraintEnd_toEndOf="@id/edt_nama_toko"/>
 
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/kode_barang" />
-
-                <EditText
-                    android:id="@+id/editTextKodeBarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/coklat_abu_abu"
-                    android:background="@drawable/edit_text_bacground"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:hint="@string/masukkan_kode_barang"
-                    android:textSize="12sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/harga_barang" />
-
-                <EditText
-                    android:id="@+id/editTextHargaBarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edit_text_bacground"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:hint="@string/masukkan_harga_barang"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/coklat_abu_abu"
-
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="9dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/imageViewBarang"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="16dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-
-                    android:background="@color/coklat_abu_abu"
-                    android:src="@drawable/baseline_image_24" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/buttonCamera"
-                        style="@style/CustomButtonStyle"
-                        android:layout_marginEnd="4dp"
-                        android:text="@string/camera" />
-
-
-                    <Button
-                        android:id="@+id/buttonGallery"
-                        style="@style/CustomButtonStyle"
-                        android:layout_marginStart="4dp"
-                        android:text="@string/gallery" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="6dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/stok_barang" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/button_add_stok"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/coklat_abu_abu"
-                app:icon="@drawable/baseline_add_24" />
-
-            <EditText
-                android:id="@+id/edit_stok_barang"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="@integer/material_motion_duration_long_1"
-                android:background="@drawable/bacgorund_kotak"
-                android:fontFamily="@font/poppins_semibold"
-                android:textAlignment="center"
-                android:inputType="number"
-                android:focusable="false"
-                android:cursorVisible="false"
-                android:textSize="30sp"
-                />
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/button_remove_stok"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:backgroundTint="@color/coklat_abu_abu"
-                app:icon="@drawable/baseline_remove_24" />
-
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="ukuran dan warna" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp">
-            <ImageView
-                android:id="@+id/iconCloseEdit"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_gravity="start"
-                android:src="@drawable/baseline_close_24"
-                android:layout_marginEnd="8dp" />
-
-            <!-- Spinner untuk angka (ukuran) -->
-            <EditText
-                android:id="@+id/edt_Ukuran_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:background="@drawable/edit_text_bacground"
-                android:fontFamily="@font/poppins_semibold"
-                android:hint="@string/_00"
-                android:inputType="numberDecimal"
-                android:textSize="15sp" />
-
-            <!-- Spinner untuk string (warna) -->
-            <Spinner
-                android:id="@+id/spinnerWarnaEdit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/edit_text_bacground"
-                android:fontFamily="@font/poppins_semibold"
-                android:textSize="12sp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
-
-            <!-- ImageView untuk ikon check -->
-            <ImageView
-                android:id="@+id/iconCheckEdit"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/baseline_check_24"
-                android:layout_marginStart="8dp" />
-        </LinearLayout>
-        <EditText
-            android:id="@+id/edit_text_ukuranwarna"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edit_text_bacground"
-            android:textColor="@color/black"
-            android:hint="masukkan ukuran warna"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="6dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/nama_toko" />
-
-        <EditText
-            android:id="@+id/edt_nama_toko"
-            android:layout_width="match_parent"
-            android:textColor="@color/black"
-            android:textColorHint="@color/coklat_abu_abu"
-            android:layout_height="wrap_content"
-            android:text="@string/masukkan_nama_toko"
-            android:background="@drawable/edit_text_bacground"
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="12sp" />
-
-
-        <Button
-            android:id="@+id/button_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="30dp"
-            android:backgroundTint="@color/bottom_color"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/save"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

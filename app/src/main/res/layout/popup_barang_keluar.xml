@@ -91,7 +91,7 @@
             app:layout_constraintEnd_toStartOf="@+id/ppedt_stok_keluar"
             app:layout_constraintStart_toEndOf="@+id/pptv_stok_keluar"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:tint="@color/white" />
+            app:tint="@color/textColor" />
 
         <TextView
             android:id="@+id/ppedt_stok_keluar"
@@ -116,7 +116,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ppedt_stok_keluar"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:tint="@color/white" />
+            app:tint="@color/textColor" />
         <TextView
             android:id="@+id/tvwarna"
             android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
             android:gravity="center"
             android:textSize="16sp"
             android:hint="@string/_00"
-            android:textColorHint="@color/coklat_abu_abu"
+            android:textColorHint="@color/hintColor"
             android:inputType="number"
             android:background="@drawable/edit_text_bacground"
             android:fontFamily="@font/poppins_semibold"

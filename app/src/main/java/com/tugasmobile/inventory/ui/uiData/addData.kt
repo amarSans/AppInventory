@@ -185,28 +185,7 @@ class addData : AppCompatActivity() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.editTextDate.setText(DateUtils.getCurrentDate())
-       /* binding.edtUkuran.setOnClickListener {
-            selectedSizesList = ""
-            val stok = binding.editStokBarang.text.toString().toIntOrNull() ?: 0
-
-            // Buat instance BottomSheet dan kirim nilai stok
-            val bottonUkuranSheet = BottonUkuranSheet.newInstance(selectedSizesList.split(","),stok)
-            bottonUkuranSheet.listener = object : BottonUkuranSheet.SizeSelectionListener {
-                override fun onSizeSelected(selectedSizes: List<String>) {
-                    selectedSizesList = selectedSizes.filter { it.isNotBlank() }.joinToString(", ")
-                    binding.edtUkuran.text = selectedSizesList
-                }
-            }
-            bottonUkuranSheet.show(supportFragmentManager, BottonUkuranSheet.TAG)
-        }*/
         setupSpinners()
-
-
-        // Inisialisasi lainnya
-       /* recyclerView = findViewById(R.id.recyclerViewColors) // Pastikan RecyclerView sudah di-inisialisasi
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = AdapterColorIn(this, resources.getStringArray(R.array.daftar_nama_warna), resources.getStringArray(R.array.daftar_warna))
-        */
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
     }
     private fun setupSpinners() {

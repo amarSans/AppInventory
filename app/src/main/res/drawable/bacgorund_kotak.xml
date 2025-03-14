@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Warna latar belakang -->
-    <solid android:color="@color/coklat_abu_abu" /> <!-- Ganti warna sesuai kebutuhan -->
+    <solid android:color="@color/hintColor" /> <!-- Ganti warna sesuai kebutuhan -->
 
     <!-- Radius untuk sudut melengkung -->
     <corners android:radius="10dp" /> <!-- Atur radius sesuai preferensi -->
 
     <!-- Garis batas (border) -->
-    <stroke android:color="@color/coklat_abu_abu" /> <!-- Ganti warna sesuai kebutuhan -->
+    <stroke android:color="@color/hintColor" /> <!-- Ganti warna sesuai kebutuhan -->
 
     <!-- Padding dalam -->
     <padding
