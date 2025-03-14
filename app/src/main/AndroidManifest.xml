@@ -25,6 +25,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.uiData.EditData"
+            android:theme="@style/Theme.Inventory.NoActionBar"
             android:exported="false" />
 
         <provider
@@ -44,7 +45,7 @@
         <activity
             android:name=".ui.uiData.addData"
             android:exported="false"
-            android:theme="@style/Theme.Inventory" />
+            android:theme="@style/Theme.Inventory.NoActionBar" />
         <receiver android:name=".ui.setting.notifikasi.NotificationReceiver"
             android:exported="false"/>
         <activity

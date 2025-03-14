@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -46,20 +48,40 @@ class EditData : AppCompatActivity() {
         setupObservers()
     }
 
+
     private fun setupUI() {
-        binding.buttonAddStok.setOnClickListener { tambahStok() }
-        binding.buttonRemoveStok.setOnClickListener { kurangiStok() }
+        binding.buttonAddStokEdit.setOnClickListener { tambahStok() }
+        binding.buttonRemoveStokEdit.setOnClickListener { kurangiStok() }
 
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
         val colorValues = resources.getStringArray(R.array.daftar_warna)
         colorAdapter = AdapterColorIn(this, colorNames, colorValues)
         setupSpinners()
 
-
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.buttonSave.setOnClickListener { saveChanges() }
-        HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
+        HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
+
+        // Tambahkan listener untuk memantau perubahan stok
+        binding.editStokBarang.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Ambil nilai stok
+                val stokBarangText = s?.toString()?.trim() ?: ""
+                val stokBarang = stokBarangText.toIntOrNull() ?: 0
+
+                // Ambil teks yang sudah ada di EditText (ukuran dan warna yang sudah dipilih)
+                val currentText = binding.editTextUkuranwarnaEdit.text.toString()
+                val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
+
+                // Nonaktifkan tombol check jika stok sudah sama dengan jumlah kombinasi
+                binding.iconCheckEdit.isEnabled = stokBarang > jumlahKombinasi
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
     private fun setupSpinners() {
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
@@ -77,14 +99,37 @@ class EditData : AppCompatActivity() {
 
         // Listener untuk icon check
         binding.iconCheckEdit.setOnClickListener {
-            val selectedUkuran = binding.edtUkuranEdit.text.toString().trim()
+            val selectedUkuranText = binding.edtUkuranEdit.text.toString().trim()
             val selectedWarna = binding.spinnerWarnaEdit.selectedItem as String
+
+            // Pengecekan ukuran
+            if (selectedUkuranText.isEmpty()) {
+                binding.edtUkuranEdit.error = "Ukuran tidak boleh kosong"
+                return@setOnClickListener
+            }
+
+            val selectedUkuran = selectedUkuranText.toIntOrNull()
+            if (selectedUkuran == null || selectedUkuran !in 1..45) {
+                binding.edtUkuranEdit.error = "Ukuran harus antara 1 - 45"
+                return@setOnClickListener
+            }
+
+            // Ambil nilai stok
+            val stokBarangText = binding.editStokBarang.text.toString().trim()
+            val stokBarang = stokBarangText.toIntOrNull() ?: 0
+
+            // Ambil teks yang sudah ada di EditText (ukuran dan warna yang sudah dipilih)
+            val currentText = binding.editTextUkuranwarnaEdit.text.toString()
+            val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
+
+            // Pengecekan apakah stok sudah sama dengan jumlah kombinasi
+            if (stokBarang == jumlahKombinasi) {
+                Toast.makeText(this, "Tambahkan stok jika ingin menambahkan ukuran dan warna", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             // Gabungkan ukuran dan warna
             val newEntry = "$selectedUkuran $selectedWarna"
-
-            // Ambil teks yang sudah ada di EditText
-            val currentText = binding.editTextUkuranwarna.text.toString()
 
             // Tambahkan entri baru ke EditText (dipisahkan koma jika sudah ada data)
             val updatedText = if (currentText.isEmpty()) {
@@ -94,7 +139,7 @@ class EditData : AppCompatActivity() {
             }
 
             // Set teks ke EditText
-            binding.editTextUkuranwarna.setText(updatedText)
+            binding.editTextUkuranwarnaEdit.setText(updatedText)
 
             // Reset Spinner
             binding.edtUkuranEdit.setText("")
@@ -102,13 +147,14 @@ class EditData : AppCompatActivity() {
         }
     }
 
+
     private fun setupObservers() {
         editViewModel.currentBarang.observe(this) { barang ->
             barang?.let {
-                binding.editTextNamaBarang.setText(it.nama_barang)
-                binding.editTextKodeBarang.setText(it.id_barang)
+                binding.editTextNamaBarangEdit.setText(it.nama_barang)
+                binding.editTextKodeBarangEdit.setText(it.id_barang)
                 selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
-                binding.imageViewBarang.setImageURI(selectedImageUri)
+                binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             }?: run {
                 // Handle kasus ketika barang bernilai null
                 Toast.makeText(this, "Data barang tidak ditemukan", Toast.LENGTH_SHORT).show()
@@ -116,7 +162,7 @@ class EditData : AppCompatActivity() {
         }
         editViewModel.currentStok.observe(this) { stok ->
             stok?.let {
-                binding.editTextUkuranwarna.setText(it.ukuranwarna.toString())
+                binding.editTextUkuranwarnaEdit.setText(it.ukuranwarna.toString())
                 binding.editStokBarang.setText(it.stokBarang.toString())
                 stokBarang = it.stokBarang
             }?: run {
@@ -126,8 +172,8 @@ class EditData : AppCompatActivity() {
         }
         editViewModel.currentBarangIn.observe(this){barangIn->
             barangIn?.let{
-                binding.editTextHargaBarang.setText(HargaUtils.formatHarga(it.Harga_Modal))
-                binding.edtNamaToko.setText(it.Nama_Toko)
+                binding.editTextHargaBarangEdit.setText(HargaUtils.formatHarga(it.Harga_Modal))
+                binding.edtNamaTokoEdit.setText(it.Nama_Toko)
             } ?: run {
                 // Handle kasus ketika barangIn bernilai null
                 Toast.makeText(this, "Data barang masuk tidak ditemukan", Toast.LENGTH_SHORT).show()
@@ -136,11 +182,22 @@ class EditData : AppCompatActivity() {
     }
 
     private fun saveChanges() {
+        val stokBarangText = binding.editStokBarang.text.toString().trim()
+        val stokBarang = stokBarangText.toIntOrNull() ?: 0
+
+        val ukuranWarna = binding.editTextUkuranwarnaEdit.text.toString().trim()
+        val jumlahKombinasi = if (ukuranWarna.isEmpty()) 0 else ukuranWarna.split(",").size
+
+        // Validasi jumlah kombinasi tidak melebihi stok
+        if (stokBarang != jumlahKombinasi) {
+            binding.editTextUkuranwarnaEdit.error = "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
+            return
+        }
         val selectedColors = colorAdapter.getSelectedColors().toSet()
-        val hargaBarang = binding.editTextHargaBarang.text.toString().replace(".", "").toIntOrNull() ?: 0
+        val hargaBarang = binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
         val updatedBarang = editViewModel.currentBarang.value?.copy(
-            nama_barang = binding.editTextNamaBarang.text.toString(),
-            id_barang = binding.editTextKodeBarang.text.toString(),
+            nama_barang = binding.editTextNamaBarangEdit.text.toString(),
+            id_barang = binding.editTextKodeBarangEdit.text.toString(),
             gambar = selectedImageUri?.toString() ?: ""
         )?: run {
             Toast.makeText(this, "Data barang tidak valid", Toast.LENGTH_SHORT).show()
@@ -148,7 +205,7 @@ class EditData : AppCompatActivity() {
         }
         val updatedStok = editViewModel.currentStok.value?.copy(
             stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
-            ukuranwarna = binding.editTextUkuranwarna.text.toString()
+            ukuranwarna = binding.editTextUkuranwarnaEdit.text.toString()
 
                 .replace("[", "") // Hapus semua tanda "["
                 .replace("]", "") // Hapus semua tanda "]"
@@ -161,7 +218,7 @@ class EditData : AppCompatActivity() {
         }
         val updatedBarangMasuk = editViewModel.currentBarangIn.value?.copy(
             Harga_Modal = hargaBarang,
-            Nama_Toko = binding.edtNamaToko.text.toString()
+            Nama_Toko = binding.edtNamaTokoEdit.text.toString()
         )?: run {
             Toast.makeText(this, "Data barang masuk tidak valid", Toast.LENGTH_SHORT).show()
             return
@@ -199,7 +256,7 @@ class EditData : AppCompatActivity() {
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedImageUri = photoUri
-            binding.imageViewBarang.setImageURI(selectedImageUri)
+            binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
@@ -215,7 +272,7 @@ class EditData : AppCompatActivity() {
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             selectedImageUri = result.data?.data
-            binding.imageViewBarang.setImageURI(selectedImageUri)
+            binding.imageViewBarangEdit.setImageURI(selectedImageUri)
         }
     }
 

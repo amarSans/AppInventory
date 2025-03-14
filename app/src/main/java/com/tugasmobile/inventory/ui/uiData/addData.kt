@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -111,30 +113,28 @@ class addData : AppCompatActivity() {
         } while (checkExist(kode))
         return kode
     }
+    private fun getDefaultImageUri(): Uri {
+        val drawableResourceId = R.drawable.baseline_image_24 // ID gambar default
+        val resources = resources
+        return Uri.parse("android.resource://${packageName}/$drawableResourceId")
+    }
 
 
     private fun saveData() {
+        val gambarUri = selectedImageUri ?: getDefaultImageUri()
+
+
+        val namaProduk = binding.editTextNamaBarang.text.toString().trim()
+        if (namaProduk.isEmpty()) {
+            binding.editTextNamaBarang.error = "Nama barang tidak boleh kosong"
+            return
+        }
         var kodeProduk = binding.editTextKodeBarang.text.toString()
         if (kodeProduk.isBlank()) {
             kodeProduk = generateKodeBarang(kodeProduk) { kode ->
                 viewModel.cekKodeBarangAda(kode)
             }
         }
-        val namaProduk = binding.editTextNamaBarang.text.toString().trim()
-        if (namaProduk.isEmpty()) {
-            binding.editTextNamaBarang.error = "Nama barang tidak boleh kosong"
-            return
-        }
-        val stokBarangText = binding.editStokBarang.text.toString().trim()
-        if (stokBarangText.isEmpty()) {
-            binding.editStokBarang.error = "Stok barang tidak boleh kosong"
-            return
-        }
-        val ukuranWarna = binding.editTextUkuranwarna.text.toString().trim()
-
-        // Simpan ke selectedSizesList
-        selectedSizesColorList = listOf(ukuranWarna)
-
         val hargaProdukText = binding.editTextHargaBarang.text.toString().replace(".", "").trim()
         if (hargaProdukText.isEmpty()) {
             binding.editTextHargaBarang.error = "Harga barang tidak boleh kosong"
@@ -146,6 +146,26 @@ class addData : AppCompatActivity() {
             return
         }
 
+        val stokBarangText = binding.editStokBarang.text.toString().trim()
+        if (stokBarangText.isEmpty()) {
+            binding.editStokBarang.error = "Stok barang tidak boleh kosong"
+            return
+        }
+        val stokBarang = stokBarangText.toIntOrNull() ?: 0
+
+        val ukuranWarna = binding.editTextUkuranwarna.text.toString().trim()
+        if (ukuranWarna.isEmpty()) {
+            binding.editTextUkuranwarna.error = "Ukuran dan warna tidak boleh kosong"
+            return
+        }
+
+        val jumlahKombinasi = if (ukuranWarna.isEmpty()) 0 else ukuranWarna.split(",").size
+        if (stokBarang != jumlahKombinasi) {
+            binding.editTextUkuranwarna.error = "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
+            return
+        }
+        // Simpan ke selectedSizesList
+        selectedSizesColorList = ukuranWarna.split(",").map { it.trim() }
 
         val namaToko = binding.edtNamaToko.text.toString().trim()
         if (namaToko.isEmpty()) {
@@ -156,7 +176,7 @@ class addData : AppCompatActivity() {
         val itemBarang=ItemBarang(
             id_barang = kodeProduk,
             nama_barang = namaProduk,
-            gambar = selectedImageUri.toString()
+            gambar = gambarUri.toString()
         )
         val stok= Stok(
             idStok = 0,
@@ -187,10 +207,28 @@ class addData : AppCompatActivity() {
         binding.editTextDate.setText(DateUtils.getCurrentDate())
         setupSpinners()
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
+        binding.editStokBarang.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Ambil nilai stok
+                val stokBarangText = s?.toString()?.trim() ?: ""
+                val stokBarang = stokBarangText.toIntOrNull() ?: 0
+
+                // Ambil teks yang sudah ada di EditText (ukuran dan warna yang sudah dipilih)
+                val currentText = binding.editTextUkuranwarna.text.toString()
+                val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
+
+                // Nonaktifkan tombol check jika stok sudah sama dengan jumlah kombinasi
+                binding.iconCheck.isEnabled = stokBarang > jumlahKombinasi
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
     }
     private fun setupSpinners() {
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
-
+        binding.spinnerWarna.prompt = "Pilih Warna"
         // Inisialisasi adapter untuk Spinner warna
         val warnaAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, warnaList)
         warnaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -204,15 +242,30 @@ class addData : AppCompatActivity() {
 
         // Listener untuk icon check
         binding.iconCheck.setOnClickListener {
-            val selectedUkuran = binding.edtUkuran.text.toString().trim()
+            val selectedUkuranText = binding.edtUkuran.text.toString().trim()
             val selectedWarna = binding.spinnerWarna.selectedItem as String
 
+            if (selectedUkuranText.isEmpty()) {
+                binding.edtUkuran.error = "Ukuran tidak boleh kosong"
+                return@setOnClickListener
+            }
+            val selectedUkuran = selectedUkuranText.toIntOrNull()
+            if (selectedUkuran == null || selectedUkuran !in 1..45) {
+                binding.edtUkuran.error = "Ukuran harus antara 1 - 45"
+                return@setOnClickListener
+            }
             // Gabungkan ukuran dan warna
             val newEntry = "$selectedUkuran $selectedWarna"
 
             // Ambil teks yang sudah ada di EditText
             val currentText = binding.editTextUkuranwarna.text.toString()
+            val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
 
+            // Pengecekan apakah stok sudah sama dengan jumlah kombinasi
+            if (stokBarang == jumlahKombinasi) {
+                Toast.makeText(this, "Tambahkan stok jika ingin menambahkan ukuran dan warna", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             // Tambahkan entri baru ke EditText (dipisahkan koma jika sudah ada data)
             val updatedText = if (currentText.isEmpty()) {
                 newEntry
