@@ -4,6 +4,5 @@
 
     <solid android:color="@color/hintColor" />
     <size android:width="50dp" android:height="50dp"/>
-    <corners android:radius="25dp"/>
-    <elevation android:shadowColor="@color/black" />
+    <corners android:radius="25dp"/> />
 </shape>

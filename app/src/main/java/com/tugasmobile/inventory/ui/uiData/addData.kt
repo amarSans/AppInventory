@@ -36,7 +36,6 @@ class addData : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
     private lateinit var binding: ActivityAddDataBinding
     private var stokBarang = 0
-    private lateinit var recyclerView: RecyclerView
 
     private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null

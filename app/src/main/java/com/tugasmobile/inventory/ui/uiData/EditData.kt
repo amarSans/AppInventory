@@ -36,7 +36,6 @@ class EditData : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         editViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         barangId = intent.getStringExtra("ID_BARANG") ?: ""
         if (barangId.isNotEmpty()) editViewModel.setCurrentBarang(barangId)

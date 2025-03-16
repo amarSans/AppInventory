@@ -3,97 +3,75 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
+    android:layout_height="match_parent"
     tools:context=".ui.editdata.RincianFragment">
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        >
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constrain1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#A3E6E5E5">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="362dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-            tools:src="@tools:sample/avatars" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="30dp"
+        android:minHeight="?attr/actionBarSize"
+        android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrain1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content">
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constrain1">
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                app:layout_constraintBottom_toTopOf="@id/tv_nama_barang"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@tools:sample/avatars" />
+            <TextView
+                android:id="@+id/tv_nama_barang"
+                android:layout_marginTop="17dp"
+                style="@style/CustomTextViewStyle"
+                android:text="Nama Barang"
+                app:layout_constraintHeight_default="wrap"
+                app:layout_constraintStart_toStartOf="@id/imageView3"
+                app:layout_constraintTop_toBottomOf="@id/imageView3"
+                app:layout_constraintEnd_toStartOf="@id/tv_stok"
+                app:layout_constraintBottom_toTopOf="@id/tv_kode_barang"
+                />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_kode_barang"
+                style="@style/CustomTextViewStyle"
+                app:layout_constraintHeight_default="wrap"
+                android:text="@string/kode_barang"
+                app:layout_constraintBottom_toTopOf="@id/rv_ukuran_warna_sendal"
+                app:layout_constraintEnd_toEndOf="@id/tv_nama_barang"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
+                app:layout_constraintTop_toBottomOf="@+id/tv_nama_barang" />
 
-        <TextView
-            android:id="@+id/tv_nama_barang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="17dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="Nama Barang"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+            <TextView
+                android:id="@+id/tv_stok"
+                style="@style/CustomTextViewStyle"
+                app:layout_constraintHeight_default="wrap"
+                android:text="@string/_00"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="@id/tv_nama_barang"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_nama_barang"
+                app:layout_constraintTop_toTopOf="@+id/tv_nama_barang" />
 
-        <TextView
-            android:id="@+id/tv_kode_barang"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/kode_barang"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
-            app:layout_constraintTop_toBottomOf="@+id/tv_nama_barang" />
-
-        <TextView
-            android:id="@+id/tv_stok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/_00"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_nama_barang" />
-
-        <TextView
-            android:id="@+id/tv_nama_toko"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:fontFamily="@font/poppins_semibold"
-            android:text="@string/nama_toko"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stok" />
-
-        <LinearLayout
-            android:id="@+id/linearrv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
-            app:layout_constraintTop_toBottomOf="@id/tv_kode_barang"
-            android:background="@color/white">
-
+            <TextView
+                android:id="@+id/tv_nama_toko"
+                style="@style/CustomTextViewStyle"
+                app:layout_constraintHeight_default="wrap"
+                android:gravity="end"
+                android:text="@string/nama_toko"
+                app:layout_constraintEnd_toEndOf="@id/tv_stok"
+                app:layout_constraintBottom_toBottomOf="@id/tv_kode_barang"
+                app:layout_constraintStart_toEndOf="@id/tv_kode_barang"
+                app:layout_constraintTop_toTopOf="@id/tv_kode_barang" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_ukuran_warna_sendal"
                 android:layout_width="match_parent"
@@ -101,30 +79,21 @@
                 android:layout_margin="8dp"
                 android:layout_marginStart="20dp"
                 android:orientation="horizontal"
-                />
-        </LinearLayout>
-
-
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bacground_harga"
-            android:orientation="vertical"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@id/tv_kode_barang"
-            app:layout_constraintTop_toBottomOf="@id/linearrv"
-            >
-
+                app:layout_constraintBottom_toTopOf="@id/tv_harga_barang"
+                app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
+                app:layout_constraintEnd_toEndOf="@id/tv_nama_toko"
+                app:layout_constraintTop_toBottomOf="@id/tv_kode_barang"/>
             <TextView
+                android:id="@+id/tv_harga_barang"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
+                android:layout_marginTop="20dp"
                 android:text="@string/harga_barang"
+                app:layout_constraintStart_toStartOf="@id/rv_ukuran_warna_sendal"
+                app:layout_constraintEnd_toEndOf="@id/rv_ukuran_warna_sendal"
+                app:layout_constraintBottom_toTopOf="@id/tv_harga"
+                app:layout_constraintTop_toBottomOf="@id/rv_ukuran_warna_sendal"
                 android:textSize="24sp" />
 
             <TextView
@@ -134,10 +103,12 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="center_vertical"
                 android:text="@string/_500000"
-                android:textColor="@color/coklat_abu_abu"
-                android:textSize="35sp" />
-        </LinearLayout>
+                android:textSize="35sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tv_harga_barang"
+                app:layout_constraintStart_toStartOf="@id/tv_harga_barang"
+                app:layout_constraintTop_toBottomOf="@id/tv_harga_barang"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>
