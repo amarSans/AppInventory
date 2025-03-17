@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/imgViewBack"
@@ -34,6 +34,7 @@
             android:id="@+id/editTextNamaBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_nama_barang"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toTopOf="@id/tvkodebarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
             app:layout_constraintStart_toStartOf="@id/tvnamaBarang"
@@ -52,6 +53,7 @@
             android:id="@+id/editTextKodeBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_kode_barang"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
             app:layout_constraintStart_toStartOf="@+id/tvkodebarang"
@@ -71,6 +73,7 @@
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_harga_barang"
             android:inputType="number"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toTopOf="@id/tvstokBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
             app:layout_constraintStart_toStartOf="@id/tvHargaBarang"
@@ -114,6 +117,7 @@
             android:id="@+id/tvstokBarang"
             style="@style/CustomTextViewStyle"
             android:text="@string/stok_barang"
+
             app:layout_constraintBottom_toTopOf="@id/button_add_stokEdit"
             app:layout_constraintEnd_toEndOf="@id/buttonGallery"
             app:layout_constraintStart_toStartOf="@id/editTextHargaBarangEdit"

@@ -12,6 +12,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/textColor"
         android:text="@string/kode_barang"
         android:textSize="14sp" />
 
@@ -20,6 +21,7 @@
         android:layout_width="100dp"
         android:fontFamily="@font/poppins_semibold"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
         android:gravity="center"
         android:text="Stok Keluar"
         android:textSize="14sp" />
@@ -29,6 +31,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/textColor"
         android:text="@string/ukuran"
         android:textSize="14sp" />
 
@@ -37,6 +40,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/textColor"
         android:fontFamily="@font/poppins_semibold"
         android:text="harga jual"
         android:textSize="14sp" />
@@ -45,6 +49,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/textColor"
         android:fontFamily="@font/poppins_semibold"
         android:text="total harga"
         android:textSize="14sp" />

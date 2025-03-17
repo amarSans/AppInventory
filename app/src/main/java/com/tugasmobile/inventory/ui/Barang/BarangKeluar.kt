@@ -102,7 +102,7 @@ class BarangKeluar : Fragment() {
             }
             selectedItem?.let {
                 barangKeluarViewModel.setCurrentBarang(it.id)
-                showBarangKeluarDialog(it.id, it.namaBarang, it.harga.toString(), it.ukuranwarna.toString())
+                showBarangKeluarDialog(it.id)
                 binding.autoCompleteBarang.postDelayed({ binding.autoCompleteBarang.text.clear() }, 100)
             }
         }
@@ -147,8 +147,8 @@ class BarangKeluar : Fragment() {
         }
     }
 
-    private fun showBarangKeluarDialog(kode: String, nama: String, harga: String, ukuranwarna: String) {
-        val dialog = BarangKeluarDialogFragment.newInstance(kode, nama, harga, ukuranwarna)
+    private fun showBarangKeluarDialog(kode: String) {
+        val dialog = BarangKeluarDialogFragment.newInstance(kode)
         dialog.setBarangKeluarListener(object : BarangKeluarDialogFragment.BarangKeluarListener {
             override fun onBarangKeluarSaved(
                 kodeBarang: String,

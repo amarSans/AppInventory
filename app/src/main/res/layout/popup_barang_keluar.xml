@@ -29,6 +29,7 @@
                 android:id="@+id/pp_imageView"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
+                android:scaleType="centerCrop"
                 android:layout_marginBottom="16dp"
                 android:src="@drawable/baseline_account_circle_24" />
 
@@ -61,7 +62,6 @@
                     android:layout_width="match_parent"
                     android:text="@string/harga_barang"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -99,6 +99,8 @@
             android:layout_height="45dp"
             android:background="@drawable/tv_style_stok"
             android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/textColor"
+            android:textColorHint="@color/hintColor"
             android:gravity="center"
             android:text="0"
             android:textSize="16sp"
@@ -165,6 +167,7 @@
             android:textSize="16sp"
             android:hint="@string/_00"
             android:textColorHint="@color/hintColor"
+            android:textColor="@color/textColor"
             android:inputType="number"
             android:background="@drawable/edit_text_bacground"
             android:fontFamily="@font/poppins_semibold"
