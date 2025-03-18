@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorOut
 import com.tugasmobile.inventory.data.BarangOut
+import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.PopupBarangKeluarBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.DateUtils
@@ -143,8 +144,16 @@ class BarangKeluarDialogFragment : DialogFragment() {
                         Tgl_Keluar = tanggalKeluar,
                         Hrg_Beli = hargaBeli
                     )
-
-                    simpanDatabase(barangOut)
+                    val history= History(
+                        id = 0,
+                        waktu = DateUtils.getCurrentDate(),
+                        kodeBarang = kodeBarang,
+                        stok = stokKeluar.toString(),
+                        ukuranWarna = ukuranWarnaTerpilih.toString(),
+                        harga = hargaBeli.toString(),
+                        jenisData = false
+                    )
+                    simpanDatabase(barangOut,history)
                     listener?.onBarangKeluarSaved(
                         kodeBarang,
                         namaBarang,
@@ -160,12 +169,12 @@ class BarangKeluarDialogFragment : DialogFragment() {
         }
     }
 
-    private fun simpanDatabase(barangOut: BarangOut) {
-        Log.d("BarangKeluar", "Menyimpan ke database: $barangOut")
+    private fun simpanDatabase(barangOut: BarangOut,history: History) {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 BarangKeluarViewModel.insertBarangKeluar(barangOut)
+                BarangKeluarViewModel.insertHistory(history)
                 Log.d("BarangKeluar", "Data berhasil disimpan ke database")
             } catch (e: Exception) {
                 Log.e("BarangKeluar", "Gagal menyimpan data ke database", e)

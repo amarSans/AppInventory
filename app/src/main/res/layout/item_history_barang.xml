@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="8dp"
+    >
+        <TextView
+            android:id="@+id/item_time_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waktu"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:id="@+id/item_kode_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kode Barang"
+            android:textSize="16sp"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:id="@+id/item_stok_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stok"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:id="@+id/item_ukuran_warna_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ukuran / Warna"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp"/>
+
+        <TextView
+            android:id="@+id/item_harga_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Harga"
+            android:textSize="14sp"
+            android:layout_marginEnd="12dp"/>
+
+
+</LinearLayout>

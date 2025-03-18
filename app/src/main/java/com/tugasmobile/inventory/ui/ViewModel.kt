@@ -2,6 +2,7 @@ package com.tugasmobile.inventory.ui
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +11,7 @@ import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.data.DataSearch
+import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.ItemNotifikasi
 import com.tugasmobile.inventory.data.SettingData
@@ -53,10 +55,31 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _stokData = MutableLiveData<List<ItemNotifikasi>>()
     val stokData: LiveData<List<ItemNotifikasi>> get() = _stokData
 
+    private val _historyData = MutableLiveData<List<History>>()
+    val allHistory: LiveData<List<History>> get() = _historyData
+
     init {
         loadBarang()
         loadSetting()
+        loadHistory()
     }
+    fun loadHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Ambil data pengaturan dari database
+                val history = databaseHelper.getAllHistoryItems()
+
+                // Perbarui LiveData di thread utama
+                withContext(Dispatchers.Main) {
+                    _historyData.value = history
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("ViewModel", "Gagal memuat history: ${e.message}", e)
+            }
+        }
+    }
+
     fun loadSetting() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -119,7 +142,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _currentStok.value = stok
         _currentBarangIn.value = barangIn
     }
-
     fun updateWarna(barangId: String, newColors: List<String>) {
         databaseHelper.updateWarna(barangId, newColors)
     }
@@ -146,4 +168,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         val barangList = _Data_barangMasukList.value ?: return 0
         return barangList.count { it.stok <= 2 }
     }
+    fun insertHistory(history: History) {
+        databaseHelper.insertHistory(history)
+    }
+
 }

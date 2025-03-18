@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
+import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
@@ -187,6 +188,16 @@ class addData : AppCompatActivity() {
             Harga_Modal = hargaProduk,
             Nama_Toko =namaToko
         )
+        val history=History(
+            id = 0,
+            waktu = DateUtils.getCurrentDate(),
+            kodeBarang = kodeProduk,
+            stok = stokBarang.toString(),
+            ukuranWarna = ukuranWarna,
+            harga = hargaProduk.toString(),
+            jenisData = true
+        )
+        viewModel.insertHistory(history)
         viewModel.insertInputBarang(itemBarang,stok,barangIn)
         Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         finish()

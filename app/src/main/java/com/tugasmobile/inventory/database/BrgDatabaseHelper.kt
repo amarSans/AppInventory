@@ -7,19 +7,27 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.data.DataSearch
+import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class BrgDatabaseHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         private const val DATABASE_NAME = "Inventaris.db"
         private const val DATABASE_VERSION = 2
+
         @Volatile
         private var INSTANCE: BrgDatabaseHelper? = null
 
@@ -63,6 +71,15 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         private const val COLUMN_NOTIF_TIME = "notif_time"
         private const val COLUMN_START_DAY = "start_day"
         private const val COLUMN_END_DAY = "end_day"
+
+        const val TABLE_HISTORY = "history"
+        const val COLUMN_ID_HISTORY = "id"
+        const val COLUMN_WAKTU_HISTORY = "waktu"
+        const val COLUMN_KODE_BARANG_HISTORY = "kode_barang"
+        const val COLUMN_STOK_HISTORY = "stok"
+        const val COLUMN_UKURAN_WARNA_HISTORY = "ukuran_warna"
+        const val COLUMN_HARGA_HISTORY = "harga"
+        const val COLUMN_JENIS_DATA_HISTORY = "jenis_data"
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -107,7 +124,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             )
         """.trimIndent()
 
-        val createTableQuery = """
+        val createSettingTable = """
             CREATE TABLE $TABLE_SETTINGS (
                 $COLUMN_ID INTEGER PRIMARY KEY,
                 $COLUMN_NOTIF_ENABLED INTEGER,
@@ -116,12 +133,25 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 $COLUMN_END_DAY TEXT
             )
         """.trimIndent()
+        val createHistoryTable = """
+            CREATE TABLE $TABLE_HISTORY (
+                $COLUMN_ID_HISTORY INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_WAKTU_HISTORY TEXT,
+                $COLUMN_KODE_BARANG_HISTORY TEXT,
+                $COLUMN_STOK_HISTORY TEXT,
+                $COLUMN_UKURAN_WARNA_HISTORY TEXT,
+                $COLUMN_HARGA_HISTORY TEXT,
+                $COLUMN_JENIS_DATA_HISTORY INTEGER
+            )
+        """.trimIndent()
+
 
         db.execSQL(createBarangTable)
         db.execSQL(createStokTable)
         db.execSQL(createBarangMasukTable)
         db.execSQL(createBarangKeluarTable)
-        db.execSQL(createTableQuery)
+        db.execSQL(createSettingTable)
+        db.execSQL(createHistoryTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -132,7 +162,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         onCreate(db)
     }
 
-    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn){
+    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn) {
         val db = this.writableDatabase
         db.beginTransaction()
         return try {
@@ -161,12 +191,13 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             val barangMasukId = db.insert(TABLE_BARANG_MASUK, null, valuesBarangMasuk)
             if (barangMasukId == -1L) throw Exception("Gagal menyimpan barang masuk")
             db.setTransactionSuccessful()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-        }finally {
+        } finally {
             db.endTransaction()
         }
     }
+
     fun insertBarangKeluar(barangOut: BarangOut): Long {
         val db = this.writableDatabase
         var id = -1L
@@ -196,9 +227,11 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
             if (stokCursor.moveToFirst()) {
                 val currentStok = stokCursor.getInt(stokCursor.getColumnIndexOrThrow(COLUMN_STOK))
-                val currentUkuranWarna = stokCursor.getString(stokCursor.getColumnIndexOrThrow(
-                    COLUMN_UKURAN_WARNA
-                ))
+                val currentUkuranWarna = stokCursor.getString(
+                    stokCursor.getColumnIndexOrThrow(
+                        COLUMN_UKURAN_WARNA
+                    )
+                )
 
                 // Kurangi stok
                 val newStok = currentStok - barangOut.stok_keluar
@@ -219,7 +252,8 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
                 // 3. Hapus ukuran jika ada
                 if (barangOut.ukuran_warna.isNotEmpty()) {
-                    val currentUkuranList = currentUkuranWarna.split(",").map { it.trim() }.toMutableList()
+                    val currentUkuranList =
+                        currentUkuranWarna.split(",").map { it.trim() }.toMutableList()
                     val ukuranToRemove = barangOut.ukuran_warna.split(",").map { it.trim() }
 
                     currentUkuranList.removeAll(ukuranToRemove)
@@ -251,7 +285,8 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
         return id
     }
-    fun searchBarang(query:String):List<DataSearch>{
+
+    fun searchBarang(query: String): List<DataSearch> {
         val resultList = mutableListOf<DataSearch>()
         val db = this.readableDatabase
 
@@ -272,12 +307,12 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         if (cursor.moveToFirst()) {
             do {
-                val idBarang = cursor.getString(0) ?:""
+                val idBarang = cursor.getString(0) ?: ""
                 val namaBarang = cursor.getString(1) ?: ""
                 val namaToko = cursor.getString(2) ?: ""
 
                 // Format hasil: "Kode Barang - Nama Barang (Nama Toko)"
-                val dataSearch = DataSearch(idBarang, namaBarang,  namaToko)
+                val dataSearch = DataSearch(idBarang, namaBarang, namaToko)
                 resultList.add(dataSearch)
             } while (cursor.moveToNext())
         }
@@ -302,16 +337,31 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         if (cursor.moveToFirst()) {
             do {
-                val idBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG))?: ""
-                val namaBarang = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))?: ""
+                val idBarang =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
+                val namaBarang =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG)) ?: ""
                 val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
                 val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
-                val ukuranwarna = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")?: emptyList()
-                val waktu = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))?: ""
+                val ukuranwarna =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")
+                        ?: emptyList()
+                val waktu =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK)) ?: ""
                 val harga = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
-                val namaToko = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))?: ""
+                val namaToko =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO)) ?: ""
 
-                val barang = DataBarangAkses(idBarang, namaBarang, stok, harga, ukuranwarna, waktu, namaToko, gambar)
+                val barang = DataBarangAkses(
+                    idBarang,
+                    namaBarang,
+                    stok,
+                    harga,
+                    ukuranwarna,
+                    waktu,
+                    namaToko,
+                    gambar
+                )
                 barangList.add(barang)
             } while (cursor.moveToNext())
         }
@@ -319,9 +369,11 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         cursor.close()
         return barangList
     }
+
     fun cekKodeBarangAda(kode: String): Boolean {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT COUNT(*) FROM $TABLE_BARANG WHERE kode_barang = ?", arrayOf(kode))
+        val cursor =
+            db.rawQuery("SELECT COUNT(*) FROM $TABLE_BARANG WHERE kode_barang = ?", arrayOf(kode))
         cursor.moveToFirst()
         val exists = cursor.getInt(0) > 0
         cursor.close()
@@ -345,6 +397,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
         return result
     }
+
     fun deleteBarang(id: String): Int {
         val db = this.writableDatabase
         // Menghapus barang berdasarkan ID
@@ -352,6 +405,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         return result
     }
+
     fun updateBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn): Boolean {
         val db = this.writableDatabase
         db.beginTransaction()
@@ -371,7 +425,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
 
             val valuesStok = ContentValues().apply {
                 put(COLUMN_STOK, stok.stokBarang)
-                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna.joinToString ( "," ))
+                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna.joinToString(","))
             }
             val resultStok = db.update(
                 TABLE_STOK,
@@ -403,6 +457,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             db.endTransaction()
         }
     }
+
     fun getBarangById(id: String): Triple<ItemBarang?, Stok?, BarangIn?> {
         val db = this.readableDatabase
         val query = """
@@ -414,29 +469,32 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         LEFT JOIN $TABLE_BARANG_MASUK m ON b.$COLUMN_KODE_BARANG = m.$COLUMN_KODE_BARANG
         WHERE b.$COLUMN_KODE_BARANG = ?
         """.trimIndent()
-        var itemBarang: ItemBarang?=null
-        var stok: Stok?=null
-        var barangIn: BarangIn?=null
+        var itemBarang: ItemBarang? = null
+        var stok: Stok? = null
+        var barangIn: BarangIn? = null
         val cursor: Cursor? = db.rawQuery(query, arrayOf(id))
 
         // Memeriksa apakah cursor tidak null dan memiliki data
         cursor?.use {
             if (it.moveToFirst()) {
-                val idBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG))?: ""
-                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_BARANG))?: ""
+                val idBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
+                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_BARANG)) ?: ""
                 val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
-                val idStok=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
-                val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK))?: 0
-                val ukuranwarna = it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")?: emptyList()
-                val idMasuk=it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_MASUK))
-                val tanggalMasuk = it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK))?: ""
-                val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))?: 0
-                val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))?: ""
+                val idStok = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
+                val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK)) ?: 0
+                val ukuranwarna =
+                    it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")
+                        ?: emptyList()
+                val idMasuk = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_MASUK))
+                val tanggalMasuk =
+                    it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK)) ?: ""
+                val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL)) ?: 0
+                val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO)) ?: ""
 
                 // Inisialisasi objek
                 itemBarang = ItemBarang(idBarang, namaBarang, gambarUri.toString())
-                stok = Stok(idStok,idBarang, stokJumlah,ukuranwarna)
-                barangIn = BarangIn(idMasuk,idBarang, tanggalMasuk, hargaJual, namaToko)
+                stok = Stok(idStok, idBarang, stokJumlah, ukuranwarna)
+                barangIn = BarangIn(idMasuk, idBarang, tanggalMasuk, hargaJual, namaToko)
             }
         }
         return Triple(itemBarang, stok, barangIn)
@@ -455,7 +513,6 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         db.close()
     }
 
-    // Fungsi untuk mengambil setting
     fun getSetting(): SettingData? {
         val db = readableDatabase
         val cursor = db.query(
@@ -468,7 +525,8 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             null
         )
         return if (cursor.moveToFirst()) {
-            val isNotifEnabled = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTIF_ENABLED)) ==1
+            val isNotifEnabled =
+                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_NOTIF_ENABLED)) == 1
             val notifTime = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTIF_TIME))
             val startDay = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_START_DAY))
             val endDay = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_END_DAY))
@@ -477,5 +535,61 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
             null
         }
     }
+
+    fun insertHistory(item: History) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = writableDatabase
+            val values = ContentValues().apply {
+                put(COLUMN_WAKTU_HISTORY, item.waktu)
+                put(COLUMN_KODE_BARANG_HISTORY, item.kodeBarang)
+                put(COLUMN_STOK_HISTORY, item.stok)
+                put(COLUMN_UKURAN_WARNA_HISTORY, item.ukuranWarna)
+                put(COLUMN_HARGA_HISTORY, item.harga)
+                put(COLUMN_JENIS_DATA_HISTORY, if (item.jenisData) 1 else 0)
+            }
+            db.insert(TABLE_HISTORY, null, values)
+            db.close()
+        }
+    }
+
+    fun getAllHistoryItems(): List<History> {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM ${TABLE_HISTORY}", null)
+        val items = mutableListOf<History>()
+        if (cursor.moveToFirst()) {
+            do {
+
+                val idhistory =
+                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_HISTORY))
+                val historwaktu =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WAKTU_HISTORY))
+                val historykodeBarang =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG_HISTORY))
+                val historystok =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STOK_HISTORY))
+                val historyukuranWarna = cursor.getString(
+                    cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA_HISTORY)
+                )
+                val historyharga =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HARGA_HISTORY))
+                val historyjenisData =
+                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_JENIS_DATA_HISTORY)) == 1
+
+                val history = History(
+                    idhistory,
+                    historwaktu,
+                    historykodeBarang,
+                    historystok,
+                    historyukuranWarna,
+                    historyharga,
+                    historyjenisData
+                )
+                items.add(history)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return items
+    }
+
 
 }
