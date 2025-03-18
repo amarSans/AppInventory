@@ -30,7 +30,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Konten Detail DataBarangMasuk -->
+    <!-- Konten Detail DataBarangAkses -->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"

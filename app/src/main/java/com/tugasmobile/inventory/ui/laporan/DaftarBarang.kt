@@ -46,7 +46,7 @@ class DaftarBarang : Fragment() {
         binding.recyclerViewLaporan.adapter = barangAdapter
         binding.recyclerViewLaporan.layoutManager =
             GridLayoutManager(requireContext(), 2) // 2 kolom
-        barangViewModel.dataBarangMasukList.observe(viewLifecycleOwner) { listBarang ->
+        barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
             barangAdapter.updateLaporanList(listBarang)
         }
         return binding.root

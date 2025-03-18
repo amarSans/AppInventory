@@ -2,22 +2,19 @@ package com.tugasmobile.inventory.ui
 
 import android.app.Application
 import android.content.Context
-import android.database.Cursor
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
-import com.tugasmobile.inventory.data.DataBarangMasuk
+import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.data.DataSearch
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.ItemNotifikasi
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.database.BrgDatabaseHelper
-import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.cancelNotification
-import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.scheduleNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,8 +23,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val databaseHelper= BrgDatabaseHelper.getInstance(application)
 
-    private val _Data_barangMasukList= MutableLiveData<List<DataBarangMasuk>>()
-    val dataBarangMasukList: LiveData<List<DataBarangMasuk>> = _Data_barangMasukList
+    private val _Data_barangMasukList= MutableLiveData<List<DataBarangAkses>>()
+    val dataBarangAksesList: LiveData<List<DataBarangAkses>> = _Data_barangMasukList
 
     private val _dataSearch = MutableLiveData<List<DataSearch>>()
     val dataSearch:LiveData<List<DataSearch>> =_dataSearch

@@ -8,10 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.data.DataBarangMasuk
-import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
+import com.tugasmobile.inventory.data.DataBarangAkses
+import com.tugasmobile.inventory.utils.HargaUtils
 
-class BarangAdapter(private var listDataBarangMasuk: List<DataBarangMasuk>, private val itemClickListener: (DataBarangMasuk) -> Unit):
+class BarangAdapter(private var listDataBarangAkses: List<DataBarangAkses>, private val itemClickListener: (DataBarangAkses) -> Unit):
     RecyclerView.Adapter<BarangAdapter.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -21,7 +21,7 @@ class BarangAdapter(private var listDataBarangMasuk: List<DataBarangMasuk>, priv
         return ListViewHolder(view)
     }
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val laporan=listDataBarangMasuk[position]
+        val laporan=listDataBarangAkses[position]
         holder.name.text= laporan.namaBarang
         holder.stok.text = laporan.stok.toString()
         val formattedHarga = HargaUtils.formatHarga(laporan.harga)
@@ -36,15 +36,15 @@ class BarangAdapter(private var listDataBarangMasuk: List<DataBarangMasuk>, priv
 
     }
 
-    override fun getItemCount(): Int =listDataBarangMasuk.size
+    override fun getItemCount(): Int =listDataBarangAkses.size
     class ListViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
         val name:TextView=itemView.findViewById(R.id.TVkodebarang)
         val stok:TextView=itemView.findViewById(R.id.TVstok)
         val price:TextView=itemView.findViewById(R.id.TVPrice)
         val gambar:ImageView=itemView.findViewById(R.id.item_image)
     }
-    fun updateLaporanList(newDataBarangMasukList: List<DataBarangMasuk>) {
-        this.listDataBarangMasuk = newDataBarangMasukList
+    fun updateLaporanList(newDataBarangAksesList: List<DataBarangAkses>) {
+        this.listDataBarangAkses = newDataBarangAksesList
         notifyDataSetChanged()
     }
 

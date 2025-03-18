@@ -16,7 +16,7 @@ import com.tugasmobile.inventory.data.DaftarBarangKeluar
 import com.tugasmobile.inventory.databinding.FragmentBarangKeluarBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.simpleItem.BarangKeluarDialogFragment
-import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
+import com.tugasmobile.inventory.utils.HargaUtils
 
 class BarangKeluar : Fragment() {
     private var _binding: FragmentBarangKeluarBinding? = null
@@ -97,7 +97,7 @@ class BarangKeluar : Fragment() {
                 binding.autoCompleteBarang.setText("")
                 return@setOnItemClickListener
             }
-            val selectedItem = barangKeluarViewModel.dataBarangMasukList.value?.find {
+            val selectedItem = barangKeluarViewModel.dataBarangAksesList.value?.find {
                 "${it.id} / ${it.namaBarang} / ${it.nama_toko}" == selectedItemText
             }
             selectedItem?.let {

@@ -9,10 +9,9 @@ import android.net.Uri
 import android.util.Log
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
-import com.tugasmobile.inventory.data.DataBarangMasuk
+import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.data.DataSearch
 import com.tugasmobile.inventory.data.ItemBarang
-import com.tugasmobile.inventory.data.ItemNotifikasi
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
 
@@ -288,8 +287,8 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
         return resultList
     }
 
-    fun getAllBarang(): List<DataBarangMasuk> {
-        val barangList = mutableListOf<DataBarangMasuk>()
+    fun getAllBarang(): List<DataBarangAkses> {
+        val barangList = mutableListOf<DataBarangAkses>()
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG, 
@@ -312,7 +311,7 @@ class BrgDatabaseHelper (context: Context) : SQLiteOpenHelper(context, DATABASE_
                 val harga = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
                 val namaToko = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_TOKO))?: ""
 
-                val barang = DataBarangMasuk(idBarang, namaBarang, stok, harga, ukuranwarna, waktu, namaToko, gambar)
+                val barang = DataBarangAkses(idBarang, namaBarang, stok, harga, ukuranwarna, waktu, namaToko, gambar)
                 barangList.add(barang)
             } while (cursor.moveToNext())
         }

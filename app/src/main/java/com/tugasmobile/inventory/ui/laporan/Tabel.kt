@@ -34,7 +34,7 @@ class Tabel : Fragment() {
         binding.recyclerViewLaporan.adapter = laporanAdapter
 
         // Observasi LiveData dari ViewModel untuk memperbarui UI ketika data berubah
-        laporanViewModel.dataBarangMasukList.observe(viewLifecycleOwner) { laporanList ->
+        laporanViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { laporanList ->
             laporanAdapter.updateLaporanList(laporanList)
         }
 

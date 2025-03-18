@@ -2,7 +2,6 @@ package com.tugasmobile.inventory.ui.simpleItem
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +17,8 @@ import com.tugasmobile.inventory.adapter.AdapterColorOut
 import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.databinding.PopupBarangKeluarBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.HargaUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

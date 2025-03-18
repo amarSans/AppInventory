@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.simpleItem
+package com.tugasmobile.inventory.utils
 
 import android.text.Editable
 import android.text.TextWatcher

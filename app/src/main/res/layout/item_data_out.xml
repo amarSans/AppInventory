@@ -11,6 +11,7 @@
         android:layout_width="100dp"
         android:fontFamily="@font/poppins_semibold"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
         android:gravity="center"
         android:text="123"
         android:textSize="14sp" />
@@ -21,6 +22,7 @@
         android:fontFamily="@font/poppins_semibold"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/textColor"
         android:text="@string/_40"
         android:textSize="14sp" />
     <TextView
@@ -28,6 +30,7 @@
         android:layout_width="100dp"
         android:fontFamily="@font/poppins_semibold"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
         android:gravity="center"
         android:text="@string/_40"
         android:textSize="14sp" />
@@ -38,6 +41,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:fontFamily="@font/poppins_semibold"
+        android:textColor="@color/textColor"
         android:text="50000"
         android:inputType="number"
         android:textSize="14sp" />
@@ -45,6 +49,7 @@
         android:id="@+id/harga_total_out"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/textColor"
         android:gravity="center"
         android:fontFamily="@font/poppins_semibold"
         android:text="45345345"

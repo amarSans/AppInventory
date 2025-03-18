@@ -19,17 +19,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.simpleItem.DateUtils
-import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
+import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.HargaUtils
 import java.io.File
 
 class addData : AppCompatActivity() {

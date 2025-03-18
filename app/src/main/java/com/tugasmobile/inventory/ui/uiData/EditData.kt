@@ -15,12 +15,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.simpleItem.HargaUtils
+import com.tugasmobile.inventory.utils.HargaUtils
 import java.io.File
 
 class EditData : AppCompatActivity() {
@@ -205,7 +204,6 @@ class EditData : AppCompatActivity() {
         val updatedStok = editViewModel.currentStok.value?.copy(
             stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
             ukuranwarna = binding.editTextUkuranwarnaEdit.text.toString()
-
                 .replace("[", "") // Hapus semua tanda "["
                 .replace("]", "") // Hapus semua tanda "]"
                 .trim() // Hapus spasi di awal dan akhir
