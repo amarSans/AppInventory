@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.laporan.Tabel"
+    tools:context=".ui.daftarBarang.Tabel"
     android:padding="16dp">
 
     <!-- HorizontalScrollView untuk kolom lainnya -->

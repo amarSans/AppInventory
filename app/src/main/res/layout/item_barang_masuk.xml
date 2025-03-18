@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/baseline_image_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- TextView untuk menampilkan nama item -->
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Nama Barang"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"/>
+
+        <!-- TextView untuk menampilkan kode item -->
+        <TextView
+            android:id="@+id/item_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Code"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/item_name"
+            app:layout_constraintTop_toBottomOf="@id/item_name"
+            app:layout_constraintEnd_toEndOf="@id/item_name"
+            android:layout_marginTop="4dp"/>
+
+        <!-- ImageView untuk menampilkan ikon waktu -->
+        <ImageView
+            android:id="@+id/item_time_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/baseline_access_time_24"
+            app:layout_constraintStart_toStartOf="@id/item_code"
+            app:layout_constraintTop_toBottomOf="@id/item_code"
+            android:layout_marginTop="8dp"/>
+
+        <!-- TextView untuk menampilkan waktu -->
+        <TextView
+            android:id="@+id/item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20/09/2025"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/item_time_icon"
+            app:layout_constraintTop_toTopOf="@id/item_time_icon"
+            app:layout_constraintBottom_toBottomOf="@id/item_time_icon"
+            android:layout_marginStart="4dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.cardview.widget.CardView>

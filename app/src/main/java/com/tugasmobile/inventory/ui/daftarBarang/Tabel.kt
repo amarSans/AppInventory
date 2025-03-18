@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.laporan
+package com.tugasmobile.inventory.ui.daftarBarang
 import com.tugasmobile.inventory.adapter.LaporanAdapter
 import android.os.Bundle
 import android.view.LayoutInflater

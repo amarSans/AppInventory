@@ -8,7 +8,6 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.ui.laporan.DaftarBarang
 
 class NotificationHelper(private val context: Context) {
 
