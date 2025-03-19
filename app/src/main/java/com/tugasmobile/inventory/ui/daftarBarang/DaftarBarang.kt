@@ -63,7 +63,8 @@ class DaftarBarang : Fragment() {
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_filter, menu) // Tambahkan menu hanya di sini
+                menu.clear()
+                menuInflater.inflate(R.menu.menu_main, menu)// Tambahkan menu hanya di sini
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
