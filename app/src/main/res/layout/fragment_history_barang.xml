@@ -4,14 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryBarang">
-    <TextView
+
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="haloword"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_history"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"/>
+        android:scrollbars="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_history"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:dividerHeight="1dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_history_barang" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
 
 </FrameLayout>

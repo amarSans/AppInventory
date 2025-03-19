@@ -188,13 +188,14 @@ class addData : AppCompatActivity() {
             Harga_Modal = hargaProduk,
             Nama_Toko =namaToko
         )
+        val harga_history = HargaUtils.formatHarga(hargaProduk)
         val history=History(
             id = 0,
             waktu = DateUtils.getCurrentDate(),
             kodeBarang = kodeProduk,
             stok = stokBarang.toString(),
             ukuranWarna = ukuranWarna,
-            harga = hargaProduk.toString(),
+            harga = harga_history,
             jenisData = true
         )
         viewModel.insertHistory(history)

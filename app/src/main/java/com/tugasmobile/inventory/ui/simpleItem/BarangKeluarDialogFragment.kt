@@ -144,13 +144,14 @@ class BarangKeluarDialogFragment : DialogFragment() {
                         Tgl_Keluar = tanggalKeluar,
                         Hrg_Beli = hargaBeli
                     )
+                    val harga_history = HargaUtils.formatHarga(hargaBeli)
                     val history= History(
                         id = 0,
                         waktu = DateUtils.getCurrentDate(),
                         kodeBarang = kodeBarang,
                         stok = stokKeluar.toString(),
-                        ukuranWarna = ukuranWarnaTerpilih.toString(),
-                        harga = hargaBeli.toString(),
+                        ukuranWarna = ukuranWarnaTerpilih.joinToString(","),
+                        harga = harga_history,
                         jenisData = false
                     )
                     simpanDatabase(barangOut,history)

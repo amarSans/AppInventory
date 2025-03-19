@@ -1,5 +1,6 @@
 package com.tugasmobile.inventory.adapter
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,11 +24,19 @@ class AdapterHistoryBarang (private var historyDataBarang: List<History>):
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val history=historyDataBarang[position]
         Log.d("AdapterHistoryBarang", "Mengikat data ke ViewHolder: $history")
-        holder.time.text = history.waktu
-        holder.kode.text = history.kodeBarang
-        holder.stok.text = history.stok
-        holder.ukuranWarna.text = history.ukuranWarna
-        holder.harga.text = history.harga
+        holder.apply {
+            time.text = history.waktu
+            kode.text = history.kodeBarang
+            stok.text = history.stok
+            ukuranWarna.text = history.ukuranWarna
+            harga.text = "Rp. ${history.harga}"
+        }
+
+        // Menentukan warna berdasarkan jenisData
+        val textColor = if (history.jenisData) Color.GREEN else Color.RED
+        arrayOf(holder.time, holder.kode, holder.stok, holder.ukuranWarna, holder.harga).forEach {
+            it.setTextColor(textColor)
+        }
 
     }
 
