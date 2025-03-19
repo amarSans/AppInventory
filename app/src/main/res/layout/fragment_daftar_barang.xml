@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.daftarBarang.DaftarBarang">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLaporan"
         android:layout_width="0dp"

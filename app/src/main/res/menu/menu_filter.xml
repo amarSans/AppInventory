@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/filter_stok_asc"
+        android:title="Stok: Kecil → Besar" />
+    <item
+        android:id="@+id/filter_stok_desc"
+        android:title="Stok: Besar → Kecil" />
+    <item
+        android:id="@+id/filter_harga_asc"
+        android:title="Harga: Termurah → Termahal" />
+    <item
+        android:id="@+id/filter_harga_desc"
+        android:title="Harga: Termahal → Termurah" />
+    <item
+        android:id="@+id/filter_nama_az"
+        android:title="Nama: A-Z" />
+    <item
+        android:id="@+id/filter_nama_za"
+        android:title="Nama: Z-A" />
+
+
+</menu>

@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--<color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="coklat_abu_abu">#BBB9B9</color>
-    <color name="icon_color">#F5F5F5</color>
-    <color name="bottom_color">#008080</color>-->
-
 
     <color name="primaryColor">#2196F3</color>
     <color name="secondaryColor">#448649</color> <!-- Hijau Muda -->
@@ -24,4 +13,17 @@
     <color name="textColornight">#FFFFFF</color> <!-- Putih -->
     <color name="hintColornight">#BDBDBD</color> <!-- Abu-abu terang -->
 
+    <!-- Warna untuk Mode Gelap -->
+    <color name="dark_appbar">#222831</color>
+    <color name="dark_background">#393E46</color>
+    <color name="dark_text">#EEEEEE</color>
+    <color name="dark_button">#00ADB5</color>
+    <color name="dark_button_text">#222831</color>
+
+    <!-- Warna untuk Mode Terang -->
+    <color name="light_appbar">#EEEEEE</color>
+    <color name="light_background">#F5F5F5</color>
+    <color name="light_text">#222831</color>
+    <color name="light_button">#008C99</color>
+    <color name="light_button_text">#FFFFFF</color>
 </resources>

@@ -47,5 +47,34 @@ class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>
         this.listDataBarangAkses = newDataBarangAksesList
         notifyDataSetChanged()
     }
+    fun sortByStok(ascending: Boolean) {
+        listDataBarangAkses = if (ascending) {
+            listDataBarangAkses.sortedBy { it.stok }.toMutableList()
+        } else {
+            listDataBarangAkses.sortedByDescending { it.stok }.toMutableList()
+        }
+        notifyDataSetChanged()
+    }
+
+    // Fungsi sorting berdasarkan harga
+    fun sortByHarga(ascending: Boolean) {
+        listDataBarangAkses = if (ascending) {
+            listDataBarangAkses.sortedBy { it.harga }.toMutableList()
+        } else {
+            listDataBarangAkses.sortedByDescending { it.harga }.toMutableList()
+        }
+        notifyDataSetChanged()
+    }
+
+    // Fungsi sorting berdasarkan nama barang
+    fun sortByNama(ascending: Boolean) {
+        listDataBarangAkses = if (ascending) {
+            listDataBarangAkses.sortedBy { it.namaBarang }.toMutableList()
+        } else {
+            listDataBarangAkses.sortedByDescending { it.namaBarang }.toMutableList()
+        }
+        notifyDataSetChanged()
+    }
+
 
 }

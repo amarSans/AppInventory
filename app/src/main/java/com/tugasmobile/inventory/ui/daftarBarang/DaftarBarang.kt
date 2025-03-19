@@ -4,11 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
@@ -50,6 +57,46 @@ class DaftarBarang : Fragment() {
             adapterDaftarBarang.updateLaporanList(listBarang)
         }
         return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_filter, menu) // Tambahkan menu hanya di sini
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_filter -> {
+                        showFilterMenu(requireActivity().findViewById(R.id.action_filter))
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+
+
+
+    private fun showFilterMenu(view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        popup.menuInflater.inflate(R.menu.menu_filter, popup.menu)
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.filter_stok_asc -> adapterDaftarBarang.sortByStok(ascending = true)
+                R.id.filter_stok_desc -> adapterDaftarBarang.sortByStok(ascending = false)
+                R.id.filter_harga_asc -> adapterDaftarBarang.sortByHarga(ascending = true)
+                R.id.filter_harga_desc -> adapterDaftarBarang.sortByHarga(ascending = false)
+                R.id.filter_nama_az -> adapterDaftarBarang.sortByNama(ascending = true)
+                R.id.filter_nama_za -> adapterDaftarBarang.sortByNama(ascending = false)
+            }
+            true
+        }
+        popup.show()
     }
 
     override fun onResume() {

@@ -256,12 +256,18 @@ class BrgDatabaseHelper(context: Context) :
                         currentUkuranWarna.split(",").map { it.trim() }.toMutableList()
                     val ukuranToRemove = barangOut.ukuran_warna.split(",").map { it.trim() }
 
-                    currentUkuranList.removeAll(ukuranToRemove)
+                    for (ukuran in ukuranToRemove) {
+                        val index = currentUkuranList.indexOf(ukuran)
+                        if (index != -1) {
+                            currentUkuranList.removeAt(index) // Hapus hanya satu elemen yang cocok
+                        }
+                    }
+                   /* currentUkuranList.removeAll(ukuranToRemove)
 
                     val ukuranList = currentUkuranWarna.split(",").toMutableList()
                     ukuranList.removeAll(barangOut.ukuran_warna.split(","))
-
-                    val newUkuran = ukuranList.joinToString(",")
+*/
+                    val newUkuran = currentUkuranList.joinToString(",")
                     val updateUkuranValues = ContentValues().apply {
                         put(COLUMN_UKURAN_WARNA, newUkuran)
                     }
