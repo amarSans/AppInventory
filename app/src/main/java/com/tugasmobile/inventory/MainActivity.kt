@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,6 +24,7 @@ import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.Barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.editdata.RincianFragment
 import com.tugasmobile.inventory.ui.setting.SettingActivity
 import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         mainViewModel.loadSetting() // Memuat data pengaturan
+
 
         // Observasi perubahan data
         mainViewModel.settingData.observe(this) { setting ->
@@ -155,4 +158,12 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null) // Agar bisa kembali ke fragment sebelumnya dengan tombol back
+            .commit()
+    }
+
+
 }

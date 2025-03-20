@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tugasmobile.inventory.MainActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
@@ -41,7 +42,7 @@ class DaftarBarang : Fragment() {
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
         adapterDaftarBarang = AdapterDaftarBarang(emptyList()) { barang ->
-            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
+            val intent = Intent(requireActivity(), MainActivity::class.java).apply {
                 putExtra("NAMA_BARANG", barang.namaBarang)
                 putExtra("STOK_BARANG", barang.stok)
                 putExtra("HARGA_BARANG", barang.harga)

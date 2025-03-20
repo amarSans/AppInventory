@@ -4,13 +4,13 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
     <string name="menu_home">Home</string>
     <string name="menu_laporan">Laporan</string>
     <!-- Strings used for fragments for navigation -->
 
 
     <string-array name="daftar_nama_warna">
+        <item>kosong</item>
         <item>hitam</item>
         <item>putih</item>
         <item>kuning</item>
@@ -21,6 +21,7 @@
         <item>coklat</item>
     </string-array>
     <string-array name="daftar_warna">
+        <item>#00000000</item>
         <item>#838282</item> <!-- hitam -->
         <item>#FFFAFA</item> <!-- putih -->
         <item>#FFFF9A</item> <!-- kuning -->

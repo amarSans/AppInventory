@@ -262,6 +262,10 @@ class addData : AppCompatActivity() {
                 binding.edtUkuran.error = "Ukuran harus antara 1 - 45"
                 return@setOnClickListener
             }
+            if (selectedWarna.equals("kosong", ignoreCase = true)) {
+                Toast.makeText(this, "Pilih warna dulu", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             // Gabungkan ukuran dan warna
             val newEntry = "$selectedUkuran $selectedWarna"
 

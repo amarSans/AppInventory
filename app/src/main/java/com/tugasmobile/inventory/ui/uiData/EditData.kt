@@ -111,6 +111,10 @@ class EditData : AppCompatActivity() {
                 binding.edtUkuranEdit.error = "Ukuran harus antara 1 - 45"
                 return@setOnClickListener
             }
+            if (selectedWarna.equals("kosong", ignoreCase = true)) {
+                Toast.makeText(this, "Pilih warna dulu", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             // Ambil nilai stok
             val stokBarangText = binding.editStokBarang.text.toString().trim()

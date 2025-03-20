@@ -262,11 +262,7 @@ class BrgDatabaseHelper(context: Context) :
                             currentUkuranList.removeAt(index) // Hapus hanya satu elemen yang cocok
                         }
                     }
-                   /* currentUkuranList.removeAll(ukuranToRemove)
 
-                    val ukuranList = currentUkuranWarna.split(",").toMutableList()
-                    ukuranList.removeAll(barangOut.ukuran_warna.split(","))
-*/
                     val newUkuran = currentUkuranList.joinToString(",")
                     val updateUkuranValues = ContentValues().apply {
                         put(COLUMN_UKURAN_WARNA, newUkuran)
@@ -277,6 +273,17 @@ class BrgDatabaseHelper(context: Context) :
                         "$COLUMN_KODE_BARANG = ?",
                         arrayOf(barangOut.id_barang)
                     )
+                    if (newStok == 0) {
+                        val resetValues = ContentValues().apply {
+                            put(COLUMN_UKURAN_WARNA, "0 kosong") // Set "0 kosong" jika stok habis
+                        }
+                        db.update(
+                            TABLE_STOK,
+                            resetValues,
+                            "$COLUMN_KODE_BARANG = ?",
+                            arrayOf(barangOut.id_barang)
+                        )
+                    }
                 }
             } else {
                 throw Exception("Data stok tidak ditemukan")

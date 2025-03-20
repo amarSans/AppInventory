@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/baseline_home_24"
-            android:title="@string/menu_home"
-            />
+            android:title="@string/menu_home" />
 
         <item
             android:id="@+id/nav_barang_masuk"
             android:icon="@drawable/baseline_move_to_inbox_24"
-            android:title="@string/barang_masuk"
-            />
+            android:title="@string/barang_masuk" />
         <item
             android:id="@+id/nav_barang_keluar"
             android:icon="@drawable/baseline_outbox_24"
@@ -27,14 +25,12 @@
                 <item
                     android:id="@+id/nav_tabel"
                     android:icon="@drawable/outline_data_table_24"
-                    android:title="tabel barang"
-                    />
+                    android:title="tabel barang" />
 
                 <item
                     android:id="@+id/nav_daftar_barang"
                     android:icon="@drawable/sharp_box_24"
-                    android:title="Daftar Barang"
-                    />
+                    android:title="Daftar Barang" />
                 <item
                     android:id="@+id/nav_history_barang"
                     android:icon="@drawable/rounded_deployed_code_history_24"
@@ -48,21 +44,18 @@
                 <item
                     android:id="@+id/nav_setting"
                     android:icon="@drawable/baseline_settings_24"
-                    android:title="Setting"
-                    />
+                    android:title="Setting" />
 
                 <item
                     android:id="@+id/nav_about"
                     android:icon="@drawable/baseline_info_24"
-                    android:title="About"
-                    />
+                    android:title="About" />
 
             </menu>
         </item>
 
 
     </group>
-
 
 
 </menu>
