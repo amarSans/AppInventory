@@ -3,15 +3,30 @@
     <style name="Theme.Inventory" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColornight</item>
-        <item name="colorPrimaryVariant">@color/backgroundColornight</item>
-        <item name="colorOnPrimary">@color/textColor</item>
+        <item name="colorPrimaryVariant">@color/dark_background</item>
+        <item name="colorOnPrimary">@color/dark_text</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryColor</item>
+        <item name="colorSecondary">@color/dark_button</item>
+        <item name="colorSecondaryVariant">@color/dark_button</item>
         <item name="colorOnSecondary">@color/textColornight</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <!-- Warna latar belakang -->
+        <item name="android:colorBackground">@color/dark_background</item>
+        <item name="colorSurface">@color/dark_appbar</item>
+        <item name="colorOutline">@color/hintColornight</item>
+        <!-- Warna teks -->
+        <item name="android:textColorPrimary">@color/dark_text</item>
+        <item name="android:textColorHint">@color/hintColornight</item>
+        <item name="android:textColorSecondary">@color/dark_text</item>
+        <item name="colorOnSurface">@color/dark_text</item>
+
+        <!-- Warna tombol -->
+        <item name="android:colorButtonNormal">@color/dark_button</item>
+        <item name="android:textColorPrimaryInverse">@color/dark_button_text</item>
+
+
     </style>
   <!-- Base application theme. -->
     <style name="Theme.Inventory.NoActionBar">

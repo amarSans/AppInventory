@@ -2,15 +2,31 @@
     <!-- Base application theme. -->
     <style name="Theme.Inventory" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/backgroundColor</item>
-        <item name="colorOnPrimary">@color/textColor</item>
+        <item name="colorPrimary">@color/light_button</item>
+        <item name="colorPrimaryVariant">@color/light_button</item>
+        <item name="colorOnPrimary">@color/light_button_text</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryColor</item>
+        <item name="colorSecondary">@color/light_button</item>
+        <item name="colorSecondaryVariant">@color/light_button</item>
         <item name="colorOnSecondary">@color/textColor</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/primaryColor</item>
+
+        <!-- Warna latar belakang -->
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="colorSurface">@color/light_appbar</item>
+        <item name="colorOutline">@color/hintColor</item>
+        <!-- Warna teks -->
+        <item name="android:textColorPrimary">@color/light_text</item>
+        <item name="android:textColorHint">@color/hintColor</item>
+        <item name="android:textColorSecondary">@color/light_text</item>
+        <item name="colorOnSurface">@color/light_text</item>
+
+        <!-- Warna tombol -->
+        <item name="android:colorButtonNormal">@color/light_button</item>
+        <item name="android:textColorPrimaryInverse">@color/light_button_text</item>
+
+
         <!-- Customize your theme here. -->
     </style>
 

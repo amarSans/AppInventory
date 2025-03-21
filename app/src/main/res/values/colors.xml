@@ -11,7 +11,7 @@
     <color name="secondaryColornight">#388E3C</color> <!-- Hijau lebih gelap -->
     <color name="backgroundColornight">#121212</color> <!-- Hitam Abu-abu -->
     <color name="textColornight">#FFFFFF</color> <!-- Putih -->
-    <color name="hintColornight">#BDBDBD</color> <!-- Abu-abu terang -->
+    <color name="hintColornight">#8E99A4</color> <!-- Abu-abu terang -->
 
     <!-- Warna untuk Mode Gelap -->
     <color name="dark_appbar">#222831</color>

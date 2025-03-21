@@ -6,8 +6,8 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:fontFamily">@font/poppins_semibold</item>
         <item name="android:autoSizeTextType">uniform</item>
-        <item name="android:autoSizeMinTextSize">@dimen/text_size_small</item>
+        <item name="android:autoSizeMinTextSize">@dimen/text_size_minismall</item>
         <item name="android:autoSizeMaxTextSize">@dimen/text_size_large</item>
-        <item name="android:autoSizeStepGranularity">2sp</item>
+        <item name="android:autoSizeStepGranularity">1sp</item>
     </style>
 </resources>
