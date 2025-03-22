@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.databinding.ActivitySettingBinding
@@ -34,13 +35,36 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val switchmode=binding.switchMode
         val switchNotif = binding.switchNotif
         val spinnerHariMulai = binding.spinnerHariMulai
         val spinnerHariAkhir = binding.spinnerHariAkhir
         val btnPilihJam = binding.btnPilihJam
         val txtJamDipilih = binding.txtJamDipilih
 
+        val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
+        val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)
 
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            switchmode.isChecked = true
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            switchmode.isChecked = false
+        }
+
+        switchmode.setOnCheckedChangeListener { _, isChecked ->
+            val editor = sharedPreferences.edit()
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                editor.putBoolean("dark_mode", true)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+               editor.putBoolean("dark_mode", false)
+            }
+            editor.apply()
+
+        }
         val daysOfWeek = arrayOf("Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu")
 
         // Adapter untuk Spinner

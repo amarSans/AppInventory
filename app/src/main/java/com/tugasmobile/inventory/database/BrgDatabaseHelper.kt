@@ -65,12 +65,12 @@ class BrgDatabaseHelper(context: Context) :
         const val COLUMN_HARGA_BELI = "harga_beli"
 
         //tabel setting
-        private const val TABLE_SETTINGS = "settings"
-        private const val COLUMN_ID = "id"
-        private const val COLUMN_NOTIF_ENABLED = "notif_enabled"
-        private const val COLUMN_NOTIF_TIME = "notif_time"
-        private const val COLUMN_START_DAY = "start_day"
-        private const val COLUMN_END_DAY = "end_day"
+        const val TABLE_SETTINGS = "settings"
+        const val COLUMN_ID = "id"
+        const val COLUMN_NOTIF_ENABLED = "notif_enabled"
+        const val COLUMN_NOTIF_TIME = "notif_time"
+        const val COLUMN_START_DAY = "start_day"
+        const val COLUMN_END_DAY = "end_day"
 
         const val TABLE_HISTORY = "history"
         const val COLUMN_ID_HISTORY = "id"

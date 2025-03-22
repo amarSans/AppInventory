@@ -52,6 +52,13 @@ class addData : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityAddDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.edtNamaToko.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.scrollView.postDelayed({
+                    binding.scrollView.smoothScrollTo(0, binding.edtNamaToko.bottom)
+                }, 200)
+            }
+        }
         val imgViewBack = binding.imgViewBack
         imgViewBack.setOnClickListener {
             finish()
