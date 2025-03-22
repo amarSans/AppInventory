@@ -34,11 +34,34 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Inventory.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="Theme.Inventory.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Theme.Inventory.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="colorPrimary">@color/primaryColornight</item>
+        <item name="colorPrimaryVariant">@color/dark_background</item>
+        <item name="colorOnPrimary">@color/dark_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dark_button</item>
+        <item name="colorSecondaryVariant">@color/dark_button</item>
+        <item name="colorOnSecondary">@color/textColornight</item>
+    </style>
+    <style name="Theme.Inventory.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="colorPrimary">@color/primaryColornight</item>
+        <item name="colorPrimaryVariant">@color/dark_background</item>
+        <item name="colorOnPrimary">@color/dark_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dark_button</item>
+        <item name="colorSecondaryVariant">@color/dark_button</item>
+        <item name="colorOnSecondary">@color/textColornight</item>
+    </style>
     <!-- Base application theme. -->
     <style name="Base.Theme.Inventory" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primaryColornight</item>
+        <item name="colorPrimaryVariant">@color/dark_background</item>
+        <item name="colorOnPrimary">@color/dark_text</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/dark_button</item>
+        <item name="colorSecondaryVariant">@color/dark_button</item>
+        <item name="colorOnSecondary">@color/textColornight</item>
     </style>
 </resources>

@@ -19,13 +19,12 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:background="@color/primaryColor"
             app:menu="@menu/menu_detail"
-            android:theme="@style/Theme.Inventory.AppBarOverlay"
-            app:title="Detail Barang"
-            app:titleTextColor="@android:color/white" />
+            android:theme="@style/Theme.Inventory.NoActionBar"
+            app:title="Detail Barang"/>
 
 
     </com.google.android.material.appbar.AppBarLayout>

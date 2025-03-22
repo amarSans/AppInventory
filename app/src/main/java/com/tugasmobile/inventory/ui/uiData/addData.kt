@@ -19,6 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.dicoding.picodiploma.mycamera.getImageUri
+import com.dicoding.picodiploma.mycamera.reduceFileImage
+import com.dicoding.picodiploma.mycamera.uriToFile
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.BarangIn
@@ -29,6 +32,7 @@ import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 import java.io.File
+import java.io.FileOutputStream
 
 class addData : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
@@ -85,10 +89,12 @@ class addData : AppCompatActivity() {
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            selectedImageUri = photoUri
+            val originalFile = uriToFile(photoUri!!, this) // Ubah URI ke File
+            val compressedFile = originalFile.reduceFileImage() // Kompres gambar
+            selectedImageUri = Uri.fromFile(compressedFile) // Ubah kembali ke URI
+
             binding.imageViewBarang.setImageURI(selectedImageUri)
 
-            Toast.makeText(this, "Gambar berhasil disimpan di folder aplikasi.", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
         }
@@ -203,13 +209,30 @@ class addData : AppCompatActivity() {
         Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         finish()
     }
+    private fun saveImageToStorage() {
+        selectedImageUri?.let { uri ->
+            val savedUri = getImageUri(this) // Dapatkan lokasi penyimpanan
+            val inputStream = contentResolver.openInputStream(uri)
+            val outputStream = contentResolver.openOutputStream(savedUri!!)
+
+            inputStream?.copyTo(outputStream!!)
+            inputStream?.close()
+            outputStream?.close()
+
+
+            Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
+        } ?: Toast.makeText(this, "Tidak ada gambar untuk disimpan.", Toast.LENGTH_SHORT).show()
+    }
 
     private fun setupUI() {
         // Inisialisasi UI dan tombol untuk stok dan warna
         // Serta set onClickListener pada tombol kamera dan galeri
         binding.buttonAddStok.setOnClickListener { tambahStok() }
         binding.buttonRemoveStok.setOnClickListener { kurangiStok() }
-        binding.buttonSave.setOnClickListener { saveData() }
+        binding.buttonSave.setOnClickListener {
+            saveData()
+            saveImageToStorage()
+        }
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.editTextDate.setText(DateUtils.getCurrentDate())
@@ -301,10 +324,15 @@ class addData : AppCompatActivity() {
 
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            selectedImageUri = result.data?.data
+            val selectedUri = result.data?.data
+            val originalFile = uriToFile(selectedUri!!, this) // Ubah URI ke File
+            val compressedFile = originalFile.reduceFileImage() // Kompres gambar
+            selectedImageUri = Uri.fromFile(compressedFile) // Ubah kembali ke URI
+
             binding.imageViewBarang.setImageURI(selectedImageUri)
         }
     }
+
 
 
 

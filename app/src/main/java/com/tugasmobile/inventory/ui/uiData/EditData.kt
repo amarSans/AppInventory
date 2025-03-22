@@ -15,6 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import com.dicoding.picodiploma.mycamera.getImageUri
+import com.dicoding.picodiploma.mycamera.reduceFileImage
+import com.dicoding.picodiploma.mycamera.uriToFile
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
@@ -58,7 +61,10 @@ class EditData : AppCompatActivity() {
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
-        binding.buttonSave.setOnClickListener { saveChanges() }
+        binding.buttonSave.setOnClickListener {
+            saveChanges()
+            saveImageToStorage()
+        }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
 
         // Tambahkan listener untuk memantau perubahan stok
@@ -81,6 +87,7 @@ class EditData : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
     }
+
     private fun setupSpinners() {
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
 
@@ -126,7 +133,11 @@ class EditData : AppCompatActivity() {
 
             // Pengecekan apakah stok sudah sama dengan jumlah kombinasi
             if (stokBarang == jumlahKombinasi) {
-                Toast.makeText(this, "Tambahkan stok jika ingin menambahkan ukuran dan warna", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Tambahkan stok jika ingin menambahkan ukuran dan warna",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -157,7 +168,7 @@ class EditData : AppCompatActivity() {
                 binding.editTextKodeBarangEdit.setText(it.id_barang)
                 selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
-            }?: run {
+            } ?: run {
                 // Handle kasus ketika barang bernilai null
                 Toast.makeText(this, "Data barang tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
@@ -167,13 +178,13 @@ class EditData : AppCompatActivity() {
                 binding.editTextUkuranwarnaEdit.setText(it.ukuranwarna.toString())
                 binding.editStokBarang.setText(it.stokBarang.toString())
                 stokBarang = it.stokBarang
-            }?: run {
+            } ?: run {
                 // Handle kasus ketika stok bernilai null
                 Toast.makeText(this, "Data stok tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
-        editViewModel.currentBarangIn.observe(this){barangIn->
-            barangIn?.let{
+        editViewModel.currentBarangIn.observe(this) { barangIn ->
+            barangIn?.let {
                 binding.editTextHargaBarangEdit.setText(HargaUtils.formatHarga(it.Harga_Modal))
                 binding.edtNamaTokoEdit.setText(it.Nama_Toko)
             } ?: run {
@@ -192,16 +203,18 @@ class EditData : AppCompatActivity() {
 
         // Validasi jumlah kombinasi tidak melebihi stok
         if (stokBarang != jumlahKombinasi) {
-            binding.editTextUkuranwarnaEdit.error = "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
+            binding.editTextUkuranwarnaEdit.error =
+                "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
             return
         }
         val selectedColors = colorAdapter.getSelectedColors().toSet()
-        val hargaBarang = binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
+        val hargaBarang =
+            binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
         val updatedBarang = editViewModel.currentBarang.value?.copy(
             nama_barang = binding.editTextNamaBarangEdit.text.toString(),
             id_barang = binding.editTextKodeBarangEdit.text.toString(),
             gambar = selectedImageUri?.toString() ?: ""
-        )?: run {
+        ) ?: run {
             Toast.makeText(this, "Data barang tidak valid", Toast.LENGTH_SHORT).show()
             return
         }
@@ -213,14 +226,14 @@ class EditData : AppCompatActivity() {
                 .trim() // Hapus spasi di awal dan akhir
                 .split(",")
                 .map { it.trim() }
-        )?: run {
+        ) ?: run {
             Toast.makeText(this, "Data stok tidak valid", Toast.LENGTH_SHORT).show()
             return
         }
         val updatedBarangMasuk = editViewModel.currentBarangIn.value?.copy(
             Harga_Modal = hargaBarang,
             Nama_Toko = binding.edtNamaTokoEdit.text.toString()
-        )?: run {
+        ) ?: run {
             Toast.makeText(this, "Data barang masuk tidak valid", Toast.LENGTH_SHORT).show()
             return
         }
@@ -229,7 +242,7 @@ class EditData : AppCompatActivity() {
             deleteImage(Uri.parse(it.gambar))
             editViewModel.updateWarna(it.id_barang, selectedColors.toList())
         }
-        if (updatedBarang != null && updatedStok != null && updatedBarangMasuk!=null) {
+        if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
             editViewModel.updateBarang(updatedBarang, updatedStok, updatedBarangMasuk)
         }
         editViewModel.loadBarang()
@@ -239,14 +252,15 @@ class EditData : AppCompatActivity() {
 
     private fun openCamera() {
         selectedImageUri?.let { deleteImage(it) }
-        val photoFile = File(getAppSpecificAlbumStorageDir(), "IMG_${System.currentTimeMillis()}.jpg").apply {
-            if (!parentFile.exists()) parentFile.mkdirs()
-            photoUri = FileProvider.getUriForFile(
-                this@EditData,
-                "$packageName.fileprovider",
-                this
-            )
-        }
+        val photoFile =
+            File(getAppSpecificAlbumStorageDir(), "IMG_${System.currentTimeMillis()}.jpg").apply {
+                if (!parentFile.exists()) parentFile.mkdirs()
+                photoUri = FileProvider.getUriForFile(
+                    this@EditData,
+                    "$packageName.fileprovider",
+                    this
+                )
+            }
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
@@ -254,15 +268,18 @@ class EditData : AppCompatActivity() {
         cameraLauncher.launch(cameraIntent)
     }
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            selectedImageUri = photoUri
-            binding.imageViewBarangEdit.setImageURI(selectedImageUri)
-            Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                val originalFile = uriToFile(photoUri!!, this) // Ubah URI ke File
+                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
+                selectedImageUri = Uri.fromFile(compressedFile)
+                binding.imageViewBarangEdit.setImageURI(selectedImageUri)
+            } else {
+                Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     private fun openGallery() {
         selectedImageUri?.let { deleteImage(it) }
@@ -270,11 +287,30 @@ class EditData : AppCompatActivity() {
         galleryLauncher.launch(intent)
     }
 
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-            selectedImageUri = result.data?.data
-            binding.imageViewBarangEdit.setImageURI(selectedImageUri)
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                val selectedUri = result.data?.data
+                val originalFile = uriToFile(selectedUri!!, this) // Ubah URI ke File
+                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
+                selectedImageUri = Uri.fromFile(compressedFile) // Ubah kembali ke URI
+                binding.imageViewBarangEdit.setImageURI(selectedImageUri)
+            }
         }
+
+    private fun saveImageToStorage() {
+        selectedImageUri?.let { uri ->
+            val savedUri = getImageUri(this) // Dapatkan lokasi penyimpanan
+            val inputStream = contentResolver.openInputStream(uri)
+            val outputStream = contentResolver.openOutputStream(savedUri!!)
+
+            inputStream?.copyTo(outputStream!!)
+            inputStream?.close()
+            outputStream?.close()
+
+
+            Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
+        } ?: Toast.makeText(this, "Tidak ada gambar untuk disimpan.", Toast.LENGTH_SHORT).show()
     }
 
     private fun deleteImage(imageUri: Uri) {
