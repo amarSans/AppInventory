@@ -21,6 +21,7 @@ import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
+import com.tugasmobile.inventory.ui.editdata.RincianFragment
 
 
 class DaftarBarang : Fragment() {
@@ -42,7 +43,7 @@ class DaftarBarang : Fragment() {
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
         adapterDaftarBarang = AdapterDaftarBarang(emptyList()) { barang ->
-            val intent = Intent(requireActivity(), MainActivity::class.java).apply {
+            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
                 putExtra("NAMA_BARANG", barang.namaBarang)
                 putExtra("STOK_BARANG", barang.stok)
                 putExtra("HARGA_BARANG", barang.harga)

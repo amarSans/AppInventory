@@ -9,5 +9,6 @@
     android:gravity="center"
     android:textSize="12sp"
     android:layout_marginEnd="8dp"
+    android:textColor="@color/light_text"
     android:background="@drawable/bacground_warna" />
 

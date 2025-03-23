@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterSizeColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
@@ -120,8 +121,13 @@ class RincianFragment : Fragment() {
         }
     }
     private fun loadImage(uri: Uri) {
+        Log.d("RincianFragment", "Memuat gambar dari URI: $uri")
         // Memuat gambar dari URI
-        binding.imageView3.setImageURI(uri)
+        Glide.with(this)
+            .load(uri)
+            .placeholder(R.drawable.baseline_image_24) // Gambar default jika gagal
+            .error(R.drawable.baseline_image_24) // Gambar jika error
+            .into(binding.imageView3)
     }
 
     override fun onDestroyView() {
