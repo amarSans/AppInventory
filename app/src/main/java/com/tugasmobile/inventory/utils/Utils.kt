@@ -25,66 +25,29 @@ private const val MAXIMAL_SIZE = 1000000 //1 MB
 private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 private const val TAG = "CameraImageUtils"
-fun getImageUri(context: Context): Uri {
-    var uri: Uri? = null
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "$timeStamp.jpg")
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/InventoryApp/")
-        }
-        uri = context.contentResolver.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            contentValues
-        )
-        Log.d(TAG, "URI untuk Android 10+: $uri")
-        // content://media/external/images/media/1000000062
-        // storage/emulated/0/Pictures/MyCamera/20230825_155303.jpg
+fun getImageFile(context: Context): File {
+    val dir = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "InventoryApp")
+    } else {
+        File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "InventoryApp")
     }
-    return uri ?: getImageUriForPreQ(context)
+    if (!dir.exists()) dir.mkdirs() // Buat folder jika belum ada
+
+    val imageFile = File(dir, "$timeStamp.jpg")
+    Log.d(TAG, "File untuk gambar: ${imageFile.absolutePath}")
+    return imageFile
 }
 
-private fun getImageUriForPreQ(context: Context): Uri {
-    val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    val imageFile = File(filesDir, "/InventoryApp/$timeStamp.jpg")
-    if (imageFile.parentFile?.exists() == false) {
-        val success = imageFile.parentFile?.mkdir()
-        Log.d(TAG, "Membuat folder InventoryApp: $success")
-    }
 
-    val uri = FileProvider.getUriForFile(
-            context,
-    "${BuildConfig.APPLICATION_ID}.fileprovider",
-    imageFile
-    )
-    Log.d(TAG, "URI untuk Android 9 ke bawah: $uri")
-    return uri
-    //content://com.dicoding.picodiploma.mycamera.fileprovider/my_images/MyCamera/20230825_133659.jpg
-}
-
-fun createCustomTempFile(context: Context): File {
-    val filesDir = context.externalCacheDir
-    val tempFile = File.createTempFile(timeStamp, ".jpg", filesDir)
-    Log.d(TAG, "File sementara dibuat: ${tempFile.absolutePath}")
-    return tempFile
-}
 
 fun uriToFile(imageUri: Uri, context: Context): File {
-    val myFile = createCustomTempFile(context)
-    Log.d(TAG, "Mengonversi URI ke File: $imageUri → ${myFile.absolutePath}")
-    try {
-        val inputStream = context.contentResolver.openInputStream(imageUri) as InputStream
-        val outputStream = FileOutputStream(myFile)
-        val buffer = ByteArray(1024)
-        var length: Int
-        while (inputStream.read(buffer).also { length = it } > 0) outputStream.write(buffer, 0, length)
-        outputStream.close()
-        inputStream.close()
-        Log.d(TAG, "Konversi berhasil: ${myFile.length()} bytes")
-    } catch (e: Exception) {
-        Log.e(TAG, "Gagal mengonversi URI ke File: ${e.message}", e)
+    val destFile = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "$timeStamp.jpg")
+    context.contentResolver.openInputStream(imageUri)?.use { input ->
+        FileOutputStream(destFile).use { output ->
+            input.copyTo(output)
+        }
     }
-    return myFile
+    return destFile
 }
 
 fun File.reduceFileImage(): File {

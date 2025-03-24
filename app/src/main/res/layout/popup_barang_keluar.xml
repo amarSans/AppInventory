@@ -92,17 +92,14 @@
             app:layout_constraintEnd_toStartOf="@+id/ppedt_stok_keluar"
             app:layout_constraintStart_toEndOf="@+id/pptv_stok_keluar"
             app:layout_constraintTop_toTopOf="@id/pptv_stok_keluar"
-            app:layout_constraintBottom_toBottomOf="@id/pptv_stok_keluar"
-            app:tint="@color/textColor" />
+            app:layout_constraintBottom_toBottomOf="@id/pptv_stok_keluar" />
 
         <TextView
             android:id="@+id/ppedt_stok_keluar"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:background="@drawable/tv_style_stok"
+            android:background="@drawable/edit_text_bacground"
             android:fontFamily="@font/poppins_semibold"
-            android:textColor="@color/textColor"
-            android:textColorHint="@color/hintColor"
             android:gravity="center"
             android:text="0"
             android:textSize="16sp"
@@ -123,7 +120,7 @@
             app:layout_constraintStart_toEndOf="@+id/ppedt_stok_keluar"
             app:layout_constraintTop_toTopOf="@id/ppedt_stok_keluar"
             app:layout_constraintBottom_toBottomOf="@id/ppedt_stok_keluar"
-            app:tint="@color/textColor" />
+             />
         <TextView
             android:id="@+id/tvwarna"
             android:layout_width="wrap_content"
@@ -173,8 +170,6 @@
             android:gravity="center"
             android:textSize="16sp"
             android:hint="@string/_00"
-            android:textColorHint="@color/hintColor"
-            android:textColor="@color/textColor"
             android:inputType="number"
             android:background="@drawable/edit_text_bacground"
             android:fontFamily="@font/poppins_semibold"

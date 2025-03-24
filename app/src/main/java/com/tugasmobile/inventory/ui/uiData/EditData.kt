@@ -15,9 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.picodiploma.mycamera.getImageUri
-import com.dicoding.picodiploma.mycamera.reduceFileImage
-import com.dicoding.picodiploma.mycamera.uriToFile
+import com.dicoding.picodiploma.mycamera.getImageFile
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
@@ -270,11 +268,10 @@ class EditData : AppCompatActivity() {
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
 
-                val originalFile = uriToFile(photoUri!!, this) // Ubah URI ke File
-                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
-                selectedImageUri = Uri.fromFile(compressedFile)
+                // Kompres gambar
+                selectedImageUri
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             } else {
                 Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
@@ -289,24 +286,17 @@ class EditData : AppCompatActivity() {
 
     private val galleryLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                val selectedUri = result.data?.data
-                val originalFile = uriToFile(selectedUri!!, this) // Ubah URI ke File
-                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
-                selectedImageUri = Uri.fromFile(compressedFile) // Ubah kembali ke URI
+            if (result.resultCode == RESULT_OK && result.data != null) {
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             }
         }
 
     private fun saveImageToStorage() {
         selectedImageUri?.let { uri ->
-            val savedUri = getImageUri(this) // Dapatkan lokasi penyimpanan
+            val fileName = "IMG_${System.currentTimeMillis()}.jpg"
+            val savedUri = getImageFile(this) // Dapatkan lokasi penyimpanan
             val inputStream = contentResolver.openInputStream(uri)
-            val outputStream = contentResolver.openOutputStream(savedUri!!)
 
-            inputStream?.copyTo(outputStream!!)
-            inputStream?.close()
-            outputStream?.close()
 
 
             Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
