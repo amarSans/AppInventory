@@ -24,6 +24,7 @@ import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.getCacheImageUri
 import com.tugasmobile.inventory.utils.getImageUri
 import com.tugasmobile.inventory.utils.reduceFileImage
 import com.tugasmobile.inventory.utils.uriToFile
@@ -66,24 +67,7 @@ class EditData : AppCompatActivity() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.buttonSave.setOnClickListener {
-            if (selectedImageUri != null) {
-                // Jika gambar belum ada di MediaStore, simpan dulu
-                val savedUri = if (selectedImageUri.toString().startsWith("content://media/")) {
-                    selectedImageUri // Sudah di MediaStore, tidak perlu menyimpan ulang
-                } else {
-                    saveImageToStorage(selectedImageUri!!) // Simpan ke MediaStore
-                }
-
-                if (savedUri != null) {
-                    selectedImageUri = savedUri // Simpan URI ke database
-                    saveChanges()
-                    Toast.makeText(this, "Gambar berhasil disimpan!", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Tidak ada gambar yang dipilih!", Toast.LENGTH_SHORT).show()
-            }
+            saveChanges()
         }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
 
@@ -271,12 +255,10 @@ class EditData : AppCompatActivity() {
 
 
     private fun openCamera() {
-        val uri = getImageUri(this)
+        val uri = getCacheImageUri(this)
         photoUri = uri
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-            addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         cameraLauncher.launch(cameraIntent)
     }
@@ -321,8 +303,10 @@ class EditData : AppCompatActivity() {
 
     private fun saveImageToStorage(imageUri: Uri): Uri? {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
+        val fileName = "IMG_${System.currentTimeMillis()}.jpg"
+
         val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
             put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
             put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
         }
@@ -351,11 +335,7 @@ class EditData : AppCompatActivity() {
         }
     }
 
-    private fun getAppSpecificAlbumStorageDir(): File {
-        return File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "InventoryApp").apply {
-            if (!exists()) mkdirs()
-        }
-    }
+
 
     private fun tambahStok() {
         stokBarang++
