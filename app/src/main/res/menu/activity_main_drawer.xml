@@ -22,6 +22,7 @@
             android:id="@+id/labels_item"
             android:title="tabel">
             <menu>
+                <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_tabel"
                     android:icon="@drawable/outline_data_table_24"
@@ -35,12 +36,14 @@
                     android:id="@+id/nav_history_barang"
                     android:icon="@drawable/rounded_deployed_code_history_24"
                     android:title="history barang" />
+                </group>
             </menu>
         </item>
         <item
             android:id="@+id/labels_setting"
             android:title="setting">
             <menu>
+                <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_setting"
                     android:icon="@drawable/baseline_settings_24"
@@ -50,7 +53,7 @@
                     android:id="@+id/nav_about"
                     android:icon="@drawable/baseline_info_24"
                     android:title="About" />
-
+                </group>
             </menu>
         </item>
 
