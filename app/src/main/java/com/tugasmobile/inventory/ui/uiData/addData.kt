@@ -5,12 +5,15 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -20,9 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import com.dicoding.picodiploma.mycamera.getImageFile
-import com.dicoding.picodiploma.mycamera.reduceFileImage
-import com.dicoding.picodiploma.mycamera.uriToFile
 import com.google.android.filament.BuildConfig
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.BarangIn
@@ -31,10 +31,8 @@ import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.utils.DateUtils
-import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.*
 import java.io.File
-import java.io.FileOutputStream
 
 class addData : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
@@ -44,7 +42,6 @@ class addData : AppCompatActivity() {
     private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
-    private lateinit var photoFile: File
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001 // Definisikan REQUEST_CODE_PERMISSIONS di sini
     }
@@ -78,37 +75,48 @@ class addData : AppCompatActivity() {
     }
 
     private fun openCamera() {
-        photoFile = getImageFile(this)
-        photoUri = FileProvider.getUriForFile(
-            this,
-            "${BuildConfig.APPLICATION_ID}.provider",
-            photoFile
-        )
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        }
-
-        cameraLauncher.launch(cameraIntent)
+            val uri = getCacheImageUri(this)
+            photoUri = uri
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            }
+                cameraLauncher.launch(cameraIntent)
     }
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val compressedFile = photoFile.reduceFileImage() // Kompres gambar
-            selectedImageUri = Uri.fromFile(compressedFile) // Ubah kembali ke URI
 
-            binding.imageViewBarang.setImageURI(selectedImageUri)
+            val imageFile = uriToFile(photoUri, this).reduceFileImage()
+            val savedUri = saveImageToStorage(Uri.fromFile(imageFile))
+            if (savedUri != null) {
+                selectedImageUri = savedUri
+                binding.imageViewBarang.setImageURI(selectedImageUri)
+
+            } else {
+                Log.e("CameraDebug", "Gagal menyimpan gambar ke MediaStore!")
+
+            }
         } else {
-            Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+            Log.w("CameraDebug", "Pengambilan gambar dibatalkan.")
+        }
+    }
+    private fun deleteTempImage(uri: Uri) {
+        try {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            if (cursor != null && cursor.moveToFirst()) {
+                contentResolver.delete(uri, null, null)
+                Log.d("CameraDebug", "Gambar sementara dihapus: $uri")
+            } else {
+                Log.w("CameraDebug", "Gambar tidak ditemukan di MediaStore: $uri")
+            }
+            cursor?.close()
+        } catch (e: Exception) {
+            Log.e("CameraDebug", "Gagal menghapus gambar sementara: ${e.message}")
         }
     }
 
-    private fun getAppSpecificAlbumStorageDir(): File {
-        val file = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "InventoryApp") // Membuat folder khusus di direktori aplikasi
-        if (!file.exists()) {
-            file.mkdirs() // Buat folder jika belum ada
-        }
-        return file
-    }
+
+
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
@@ -119,7 +127,7 @@ class addData : AppCompatActivity() {
             result.data?.data?.let { selectedUri ->
                 val originalFile = uriToFile(selectedUri, this) // Ubah URI ke File
                 val compressedFile = originalFile.reduceFileImage() // Kompres gambar
-                selectedImageUri = Uri.fromFile(compressedFile) // Ubah kembali ke URI
+                selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile)) // Ubah kembali ke URI
 
                 binding.imageViewBarang.setImageURI(selectedImageUri)
             } ?: run {
@@ -191,11 +199,8 @@ class addData : AppCompatActivity() {
         // Simpan ke selectedSizesList
         selectedSizesColorList = ukuranWarna.split(",").map { it.trim() }
 
-        val namaToko = binding.edtNamaToko.text.toString().trim()
-        if (namaToko.isEmpty()) {
-            binding.edtNamaToko.error = "Nama toko tidak boleh kosong"
-            return
-        }
+        val namaTokoPreview = binding.edtNamaToko.text.toString().trim()
+        val namaToko = if (namaTokoPreview.isEmpty()) "belum ada" else namaTokoPreview
 
         val itemBarang=ItemBarang(
             id_barang = kodeProduk,
@@ -230,26 +235,25 @@ class addData : AppCompatActivity() {
         Toast.makeText(this, "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         finish()
     }
-    private fun saveImageToStorage(): Uri? {
-        selectedImageUri?.let { uri ->
-            val contentValues = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_${System.currentTimeMillis()}.jpg")
-                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
-            }
+    private fun saveImageToStorage(imageUri: Uri): Uri? {
+        val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
+        val fileName = "IMG_${System.currentTimeMillis()}.jpg"
 
-            val imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-            imageUri?.let { savedUri ->
-                contentResolver.openOutputStream(savedUri)?.use { outputStream ->
-                    contentResolver.openInputStream(uri)?.use { inputStream ->
-                        inputStream.copyTo(outputStream)
-                    }
-                }
-                return savedUri // URI yang akan disimpan ke SQLite
-            }
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
         }
 
-        return null // Jika gagal menyimpan
+        val savedUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        savedUri?.let { uri ->
+            contentResolver.openOutputStream(uri)?.use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Simpan gambar yang sudah dikompres
+            }
+            return uri
+        }
+
+        return null
     }
 
 
@@ -261,15 +265,9 @@ class addData : AppCompatActivity() {
         binding.buttonAddStok.setOnClickListener { tambahStok() }
         binding.buttonRemoveStok.setOnClickListener { kurangiStok() }
         binding.buttonSave.setOnClickListener {
-            val savedUri = saveImageToStorage() // Simpan gambar ke storage dan dapatkan URI
-            if (savedUri != null) {
-                selectedImageUri=savedUri // Simpan URI ke SQLite
-                saveData()
-                Toast.makeText(this, "Gambar berhasil disimpan!", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show()
-            }
+            saveData()
         }
+
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.editTextDate.setText(DateUtils.getCurrentDate())

@@ -1,7 +1,11 @@
 package com.tugasmobile.inventory.ui.uiData
 
 import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,12 +19,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.picodiploma.mycamera.getImageFile
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.getImageUri
+import com.tugasmobile.inventory.utils.reduceFileImage
+import com.tugasmobile.inventory.utils.uriToFile
 import java.io.File
 
 class EditData : AppCompatActivity() {
@@ -60,8 +66,24 @@ class EditData : AppCompatActivity() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.buttonSave.setOnClickListener {
-            saveChanges()
-            saveImageToStorage()
+            if (selectedImageUri != null) {
+                // Jika gambar belum ada di MediaStore, simpan dulu
+                val savedUri = if (selectedImageUri.toString().startsWith("content://media/")) {
+                    selectedImageUri // Sudah di MediaStore, tidak perlu menyimpan ulang
+                } else {
+                    saveImageToStorage(selectedImageUri!!) // Simpan ke MediaStore
+                }
+
+                if (savedUri != null) {
+                    selectedImageUri = savedUri // Simpan URI ke database
+                    saveChanges()
+                    Toast.makeText(this, "Gambar berhasil disimpan!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Gagal menyimpan gambar", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Tidak ada gambar yang dipilih!", Toast.LENGTH_SHORT).show()
+            }
         }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
 
@@ -237,7 +259,7 @@ class EditData : AppCompatActivity() {
         }
 
         updatedBarang?.let {
-            deleteImage(Uri.parse(it.gambar))
+            deleteImage(this,Uri.parse(it.gambar))
             editViewModel.updateWarna(it.id_barang, selectedColors.toList())
         }
         if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
@@ -249,64 +271,83 @@ class EditData : AppCompatActivity() {
 
 
     private fun openCamera() {
-        selectedImageUri?.let { deleteImage(it) }
-        val photoFile =
-            File(getAppSpecificAlbumStorageDir(), "IMG_${System.currentTimeMillis()}.jpg").apply {
-                if (!parentFile.exists()) parentFile.mkdirs()
-                photoUri = FileProvider.getUriForFile(
-                    this@EditData,
-                    "$packageName.fileprovider",
-                    this
-                )
-            }
-
+        val uri = getImageUri(this)
+        photoUri = uri
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         cameraLauncher.launch(cameraIntent)
     }
 
-    private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
 
-                // Kompres gambar
-                selectedImageUri
-                binding.imageViewBarangEdit.setImageURI(selectedImageUri)
+            val imageFile = uriToFile(photoUri, this).reduceFileImage()
+
+            val savedUri = saveImageToStorage(Uri.fromFile(imageFile))
+            if (savedUri != null) {
+                selectedImageUri = savedUri
+                binding.imageViewBarangEdit.setImageURI(savedUri)
             } else {
-                Toast.makeText(this, "Pengambilan gambar dibatalkan", Toast.LENGTH_SHORT).show()
+                Log.e("CameraDebug", "Gagal menyimpan gambar ke MediaStore!")
+
             }
+        } else {
+            Log.w("CameraDebug", "Pengambilan gambar dibatalkan.")
         }
+    }
 
     private fun openGallery() {
-        selectedImageUri?.let { deleteImage(it) }
+        selectedImageUri?.let { deleteImage(this,it) }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
     }
 
-    private val galleryLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK && result.data != null) {
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+            result.data?.data?.let { selectedUri ->
+                val originalFile = uriToFile(selectedUri, this) // Ubah URI ke File
+                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
+                selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile)) // Ubah kembali ke URI
+
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
+            } ?: run {
+                Toast.makeText(this, "Gagal mendapatkan URI gambar", Toast.LENGTH_SHORT).show()
             }
         }
-
-    private fun saveImageToStorage() {
-        selectedImageUri?.let { uri ->
-            val fileName = "IMG_${System.currentTimeMillis()}.jpg"
-            val savedUri = getImageFile(this) // Dapatkan lokasi penyimpanan
-            val inputStream = contentResolver.openInputStream(uri)
-
-
-
-            Toast.makeText(this, "Gambar berhasil disimpan.", Toast.LENGTH_SHORT).show()
-        } ?: Toast.makeText(this, "Tidak ada gambar untuk disimpan.", Toast.LENGTH_SHORT).show()
     }
 
-    private fun deleteImage(imageUri: Uri) {
-        val fileToDelete = File(imageUri.path ?: return)
-        if (fileToDelete.exists() && fileToDelete.delete()) {
-            Log.d("EditActivity", "Gambar dihapus: ${fileToDelete.absolutePath}")
+    private fun saveImageToStorage(imageUri: Uri): Uri? {
+        val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "IMG_${System.currentTimeMillis()}.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
+        }
+
+        val savedUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        savedUri?.let { uri ->
+            contentResolver.openOutputStream(uri)?.use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Simpan gambar yang sudah dikompres
+            }
+            return uri
+        }
+
+        return null
+    }
+
+    private fun deleteImage(context: Context, imageUri: Uri) {
+        try {
+            val rowsDeleted = context.contentResolver.delete(imageUri, null, null)
+            if (rowsDeleted > 0) {
+                Log.d("EditActivity", "Gambar berhasil dihapus: $imageUri")
+            } else {
+                Log.w("EditActivity", "Gagal menghapus gambar atau gambar tidak ditemukan: $imageUri")
+            }
+        } catch (e: Exception) {
+            Log.e("EditActivity", "Error saat menghapus gambar: ${e.message}", e)
         }
     }
 
