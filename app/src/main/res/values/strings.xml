@@ -19,22 +19,25 @@
         <item>biru</item>
         <item>ungu</item>
         <item>coklat</item>
+        <item>abu-abu</item>
+        <item>krem</item>
     </string-array>
     <string-array name="daftar_warna">
         <item>#00000000</item>
-        <item>#838282</item> <!-- hitam -->
+        <item>#6D6D6D</item> <!-- hitam -->
         <item>#FFFAFA</item> <!-- putih -->
-        <item>#FFFF9A</item> <!-- kuning -->
+        <item>#FBFB46</item> <!-- kuning -->
         <item>#FF8183</item> <!-- merah -->
         <item>#A9FFAC</item> <!-- hijau -->
         <item>#5C8FFC</item> <!-- biru -->
         <item>#AB64A2</item> <!-- ungu -->
         <item>#E8BB88</item> <!-- coklat -->
+        <item>#A2A1A1</item> <!-- abu-abu -->
+        <item>#F3D3AC</item> <!-- krem -->
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!--bagian addData-->
     <string name="nama_barang">Nama Barang</string>
     <string name="masukkan_nama_barang">masukkan nama barang</string>
     <string name="kode_barang">Kode Barang</string>
