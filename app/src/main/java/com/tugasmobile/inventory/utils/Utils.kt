@@ -53,7 +53,7 @@ private fun getImageUriForPreQ(context: Context): Uri {
 
 }
 fun getCacheImageUri(context: Context): Uri {
-    val file = File(context.cacheDir, "temp_photo.jpg") // Buat file di cache
+    val file = File(context.cacheDir, "$timeStamp.jpg") // Buat file di cache
     return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
 }
 

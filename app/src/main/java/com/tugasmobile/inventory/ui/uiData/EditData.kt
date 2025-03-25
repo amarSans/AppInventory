@@ -17,18 +17,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.utils.HargaUtils
-import com.tugasmobile.inventory.utils.getCacheImageUri
-import com.tugasmobile.inventory.utils.getImageUri
-import com.tugasmobile.inventory.utils.reduceFileImage
-import com.tugasmobile.inventory.utils.uriToFile
-import java.io.File
+import com.tugasmobile.inventory.utils.*
 
 class EditData : AppCompatActivity() {
     private lateinit var binding: ActivityEditDataBinding
@@ -54,8 +48,9 @@ class EditData : AppCompatActivity() {
         setupObservers()
     }
     private fun openCamera() {
-        val uri = getCacheImageUri(this)
-        photoUri = uri
+
+        val uriedt = getCacheImageUri(this)
+        photoUri = uriedt
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
             putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
         }
@@ -67,9 +62,9 @@ class EditData : AppCompatActivity() {
             val imageFile = uriToFile(photoUri, this).reduceFileImage()
             val savedUri = saveImageToStorage(Uri.fromFile(imageFile))
             if (savedUri != null) {
-                selectedImageUri?.let { deleteImage(this, it) }
+                selectedImageUri=null
                 selectedImageUri = savedUri
-                binding.imageViewBarangEdit.setImageURI(savedUri)
+                binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             } else {
                 Log.e("CameraDebug", "Gagal menyimpan gambar ke MediaStore!")
 
@@ -90,7 +85,7 @@ class EditData : AppCompatActivity() {
             result.data?.data?.let { selectedUri ->
                 val originalFile = uriToFile(selectedUri, this) // Ubah URI ke File
                 val compressedFile = originalFile.reduceFileImage() // Kompres gambar
-
+                selectedImageUri = null
                 selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile)) // Ubah kembali ke URI
 
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
@@ -304,7 +299,7 @@ class EditData : AppCompatActivity() {
         }
 
         updatedBarang?.let {
-            deleteImage(this,Uri.parse(it.gambar))
+
             editViewModel.updateWarna(it.id_barang, selectedColors.toList())
         }
         if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
