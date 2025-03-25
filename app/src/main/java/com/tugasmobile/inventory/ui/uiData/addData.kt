@@ -100,20 +100,7 @@ class addData : AppCompatActivity() {
             Log.w("CameraDebug", "Pengambilan gambar dibatalkan.")
         }
     }
-    private fun deleteTempImage(uri: Uri) {
-        try {
-            val cursor = contentResolver.query(uri, null, null, null, null)
-            if (cursor != null && cursor.moveToFirst()) {
-                contentResolver.delete(uri, null, null)
-                Log.d("CameraDebug", "Gambar sementara dihapus: $uri")
-            } else {
-                Log.w("CameraDebug", "Gambar tidak ditemukan di MediaStore: $uri")
-            }
-            cursor?.close()
-        } catch (e: Exception) {
-            Log.e("CameraDebug", "Gagal menghapus gambar sementara: ${e.message}")
-        }
-    }
+
 
 
 
