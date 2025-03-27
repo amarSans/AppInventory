@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.Barang
+package com.tugasmobile.inventory.ui.main.barang
 
 import android.os.Bundle
 import android.text.Editable

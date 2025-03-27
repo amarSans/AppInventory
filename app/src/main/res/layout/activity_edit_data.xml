@@ -17,28 +17,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
-            app:layout_constraintBottom_toTopOf="@id/tvnamaBarang"
+            app:layout_constraintBottom_toTopOf="@id/tvkodebarang"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvnamaBarang"
-            style="@style/CustomTextViewStyle"
-            android:text="@string/nama_barang"
-            app:layout_constraintBottom_toTopOf="@id/editTextNamaBarangEdit"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
-            app:layout_constraintStart_toStartOf="@id/imgViewBack"
-            app:layout_constraintTop_toBottomOf="@+id/imgViewBack" />
-
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/editTextNamaBarangEdit"
-            style="@style/CustomEditTextStyle"
-            android:hint="@string/masukkan_nama_barang"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintBottom_toTopOf="@id/tvkodebarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
-            app:layout_constraintStart_toStartOf="@id/tvnamaBarang"
-            app:layout_constraintTop_toBottomOf="@+id/tvnamaBarang" />
 
         <TextView
             android:id="@+id/tvkodebarang"
@@ -46,18 +27,38 @@
             android:text="@string/kode_barang"
             app:layout_constraintBottom_toTopOf="@id/editTextKodeBarangEdit"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
-            app:layout_constraintStart_toStartOf="@id/editTextNamaBarangEdit"
-            app:layout_constraintTop_toBottomOf="@id/editTextNamaBarangEdit" />
+            app:layout_constraintStart_toStartOf="@id/imgViewBack"
+            app:layout_constraintTop_toBottomOf="@+id/imgViewBack" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextKodeBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_kode_barang"
             android:layout_marginEnd="10dp"
+            android:clickable="false"
+            app:layout_constraintBottom_toTopOf="@id/tvnmerekBarang"
+            app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
+            app:layout_constraintStart_toStartOf="@id/tvkodebarang"
+            app:layout_constraintTop_toBottomOf="@id/tvkodebarang" />
+
+        <TextView
+            android:id="@+id/tvnmerekBarang"
+            style="@style/CustomTextViewStyle"
+            android:text="@string/merek_barang"
+            app:layout_constraintBottom_toTopOf="@id/editTextNamaBarangEdit"
+            app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
+            app:layout_constraintStart_toStartOf="@id/imgViewBack"
+            app:layout_constraintTop_toBottomOf="@id/editTextKodeBarangEdit" />
+
+        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+            android:id="@+id/editTextNamaBarangEdit"
+            style="@style/CustomEditTextStyle"
+            android:hint="@string/masukkan_merek_barang"
+            android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
-            app:layout_constraintStart_toStartOf="@+id/tvkodebarang"
-            app:layout_constraintTop_toBottomOf="@id/tvkodebarang" />
+            app:layout_constraintStart_toStartOf="@id/tvnmerekBarang"
+            app:layout_constraintTop_toBottomOf="@id/tvnmerekBarang" />
 
         <TextView
             android:id="@+id/tvHargaBarang"
@@ -66,7 +67,7 @@
             app:layout_constraintBottom_toTopOf="@id/editTextHargaBarangEdit"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
             app:layout_constraintStart_toStartOf="@id/editTextKodeBarangEdit"
-            app:layout_constraintTop_toBottomOf="@id/editTextKodeBarangEdit" />
+            app:layout_constraintTop_toBottomOf="@id/editTextNamaBarangEdit" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextHargaBarangEdit"

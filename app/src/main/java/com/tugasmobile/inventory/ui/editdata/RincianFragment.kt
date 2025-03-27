@@ -56,7 +56,7 @@ class RincianFragment : Fragment() {
         rincianViewModel.setCurrentBarang(BarangId)
         rincianViewModel.currentBarang.observe(viewLifecycleOwner){ barang->
             barang?.let{
-                binding.tvNamaBarang.text = it.nama_barang
+                binding.tvNamaBarang.text = it.merek_barang
                 binding.tvKodeBarang.text = it.id_barang
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->

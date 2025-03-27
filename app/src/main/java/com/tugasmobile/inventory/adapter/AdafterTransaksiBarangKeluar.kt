@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.DaftarBarangKeluar
-import com.tugasmobile.inventory.ui.Barang.BarangKeluar
 
 class AdafterTransaksiBarangKeluar(private val data: List<DaftarBarangKeluar>) : RecyclerView.Adapter<AdafterTransaksiBarangKeluar.ViewHolder>() {
     var onTotalHargaUpdated: ((Int) -> Unit)? = null

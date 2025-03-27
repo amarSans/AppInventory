@@ -126,6 +126,7 @@ class EditData : AppCompatActivity() {
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
+        binding.editTextDate.setText(DateUtils.getCurrentDate())
         binding.buttonSave.setOnClickListener {
             saveChanges()
         }
@@ -239,7 +240,7 @@ class EditData : AppCompatActivity() {
     private fun setupObservers() {
         editViewModel.currentBarang.observe(this) { barang ->
             barang?.let {
-                binding.editTextNamaBarangEdit.setText(it.nama_barang)
+                binding.editTextNamaBarangEdit.setText(it.merek_barang)
                 binding.editTextKodeBarangEdit.setText(it.id_barang)
                 selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
@@ -271,6 +272,8 @@ class EditData : AppCompatActivity() {
     private fun saveChanges() {
         val stokBarangText = binding.editStokBarang.text.toString().trim()
         val stokBarang = stokBarangText.toIntOrNull() ?: 0
+        val tanggalupdate = binding.editTextDate.text.toString()
+        val kodeupdate=binding.editTextKodeBarangEdit.text.toString()
 
         val ukuranWarna = binding.editTextUkuranwarnaEdit.text.toString().trim()
         val jumlahKombinasi = if (ukuranWarna.isEmpty()) 0 else ukuranWarna.split(",").size
@@ -285,8 +288,8 @@ class EditData : AppCompatActivity() {
         val hargaBarang =
             binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
         val updatedBarang = editViewModel.currentBarang.value?.copy(
-            nama_barang = binding.editTextNamaBarangEdit.text.toString(),
-            id_barang = binding.editTextKodeBarangEdit.text.toString(),
+            merek_barang = binding.editTextNamaBarangEdit.text.toString(),
+            id_barang = kodeupdate,
             gambar = selectedImageUri?.toString() ?: ""
         ) ?: run {
             Toast.makeText(this, "Data barang tidak valid", Toast.LENGTH_SHORT).show()
@@ -306,6 +309,7 @@ class EditData : AppCompatActivity() {
         }
         val updatedBarangMasuk = editViewModel.currentBarangIn.value?.copy(
             Harga_Modal = hargaBarang,
+            Tgl_Masuk = tanggalupdate,
             Nama_Toko = binding.edtNamaTokoEdit.text.toString()
         ) ?: run {
             Toast.makeText(this, "Data barang masuk tidak valid", Toast.LENGTH_SHORT).show()

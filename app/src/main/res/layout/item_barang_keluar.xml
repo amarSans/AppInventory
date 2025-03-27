@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="50px"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="@string/nama_barang" />
+                android:text="@string/merek_barang" />
 
             <TextView
                 android:id="@+id/textViewProductCode"

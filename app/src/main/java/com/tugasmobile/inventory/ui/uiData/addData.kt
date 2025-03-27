@@ -22,8 +22,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import com.google.android.filament.BuildConfig
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.History
@@ -31,8 +29,11 @@ import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.ActivityAddDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.utils.*
-import java.io.File
+import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.getCacheImageUri
+import com.tugasmobile.inventory.utils.reduceFileImage
+import com.tugasmobile.inventory.utils.uriToFile
 
 class addData : AppCompatActivity() {
     private val viewModel: ViewModel by viewModels()
@@ -101,9 +102,6 @@ class addData : AppCompatActivity() {
         }
     }
 
-
-
-
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
@@ -123,7 +121,6 @@ class addData : AppCompatActivity() {
         }
     }
 
-
     fun generateKodeBarang(kodeBarang: String, checkExist: (String) -> Boolean): String {
         var kode: String
         do {
@@ -141,8 +138,6 @@ class addData : AppCompatActivity() {
 
     private fun saveData() {
         val gambarUri = selectedImageUri ?: getDefaultImageUri()
-
-
         val namaProduk = binding.editTextNamaBarang.text.toString().trim()
         if (namaProduk.isEmpty()) {
             binding.editTextNamaBarang.error = "Nama barang tidak boleh kosong"
@@ -191,7 +186,7 @@ class addData : AppCompatActivity() {
 
         val itemBarang=ItemBarang(
             id_barang = kodeProduk,
-            nama_barang = namaProduk,
+            merek_barang = namaProduk,
             gambar = gambarUri.toString()
         )
         val stok= Stok(

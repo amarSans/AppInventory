@@ -8,42 +8,42 @@
     <!-- Home Fragment -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.tugasmobile.inventory.ui.home.HomeFragment"
+        android:name="com.tugasmobile.inventory.ui.main.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <!-- DataBarangAkses Masuk Fragment -->
     <fragment
         android:id="@+id/nav_barang_masuk"
-        android:name="com.tugasmobile.inventory.ui.Barang.BarangMasuk"
+        android:name="com.tugasmobile.inventory.ui.main.barang.BarangMasuk"
         android:label="@string/barang_masuk"
         tools:layout="@layout/fragment_barang_masuk" />
 
     <!-- DataBarangAkses Keluar Fragment -->
     <fragment
         android:id="@+id/nav_barang_keluar"
-        android:name="com.tugasmobile.inventory.ui.Barang.BarangKeluar"
+        android:name="com.tugasmobile.inventory.ui.main.barang.BarangKeluar"
         android:label="Barang Keluar"
         tools:layout="@layout/fragment_barang_keluar" />
 
     <!-- Tabel DataBarangAkses Fragment -->
     <fragment
         android:id="@+id/nav_tabel"
-        android:name="com.tugasmobile.inventory.ui.daftarBarang.Tabel"
+        android:name="com.tugasmobile.inventory.ui.main.daftarBarang.Tabel"
         android:label="Tabel Barang"
         tools:layout="@layout/fragment_laporan" />
 
     <!-- Laporan Bulanan Fragment -->
     <fragment
         android:id="@+id/nav_daftar_barang"
-        android:name="com.tugasmobile.inventory.ui.daftarBarang.DaftarBarang"
+        android:name="com.tugasmobile.inventory.ui.main.daftarBarang.DaftarBarang"
         android:label="Daftar Barang"
         tools:layout="@layout/fragment_daftar_barang" />
 
     <!-- Laporan Harian Fragment -->
     <fragment
         android:id="@+id/nav_history_barang"
-        android:name="com.tugasmobile.inventory.ui.history.HistoryBarang"
+        android:name="com.tugasmobile.inventory.ui.main.history.HistoryBarang"
         android:label="History Barang"
         tools:layout="@layout/fragment_history_barang" />
 

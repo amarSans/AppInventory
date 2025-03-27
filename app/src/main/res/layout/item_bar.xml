@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/header_shape"
         android:gravity="center"
-        android:text="@string/nama_barang"
+        android:text="@string/merek_barang"
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 

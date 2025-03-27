@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_barang_masuk"
-    tools:context=".ui.Barang.BarangMasuk">
+    tools:context=".ui.main.barang.BarangMasuk">
 
     <Button
         android:id="@+id/btn_TamBar"

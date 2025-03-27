@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.setting.notifikasi
+package com.tugasmobile.inventory.ui.main.setting.notifikasi
 
 import android.app.AlarmManager
 import android.app.PendingIntent

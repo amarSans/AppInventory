@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.setting.notifikasi
+package com.tugasmobile.inventory.ui.main.setting.notifikasi
 
 import android.content.BroadcastReceiver
 import android.content.Context

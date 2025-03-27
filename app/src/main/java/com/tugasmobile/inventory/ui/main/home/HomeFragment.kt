@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.home
+package com.tugasmobile.inventory.ui.main.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

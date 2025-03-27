@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.setting.notifikasi
+package com.tugasmobile.inventory.ui.main.setting.notifikasi
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import com.tugasmobile.inventory.MainActivity
+import com.tugasmobile.inventory.ui.main.MainActivity
 import com.tugasmobile.inventory.R
 
 class NotificationHelper(private val context: Context) {

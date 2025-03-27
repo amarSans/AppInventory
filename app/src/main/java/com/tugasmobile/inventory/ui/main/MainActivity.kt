@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory
+package com.tugasmobile.inventory.ui.main
 
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.Menu
 import android.Manifest
 import android.content.Intent
 import android.os.Build
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -24,13 +23,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
-import com.tugasmobile.inventory.ui.Barang.BarangMasuk
+import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.editdata.RincianFragment
-import com.tugasmobile.inventory.ui.setting.SettingActivity
-import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
-import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
+import com.tugasmobile.inventory.ui.main.setting.SettingActivity
+import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.main.setting.notifikasi.NotificationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

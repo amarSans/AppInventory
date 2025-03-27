@@ -59,7 +59,7 @@ class BarangKeluarDialogFragment : DialogFragment() {
         BarangKeluarViewModel.currentBarang.observe(viewLifecycleOwner) { barang ->
             barang?.let {
                 val kodeBarangid = it.id_barang
-                val namaBarang = it.nama_barang
+                val namaBarang = it.merek_barang
                 val image=it.gambar
 
                 // Tampilkan data di UI

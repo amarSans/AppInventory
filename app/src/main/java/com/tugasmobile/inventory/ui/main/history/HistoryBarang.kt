@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.history
+package com.tugasmobile.inventory.ui.main.history
 
 import android.os.Bundle
 import android.util.Log

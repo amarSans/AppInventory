@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.tugasmobile.inventory.data.BarangIn
 import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.DataBarangAkses
@@ -40,7 +38,7 @@ class BrgDatabaseHelper(context: Context) :
         // Tabel Barang
         const val TABLE_BARANG = "barang"
         const val COLUMN_KODE_BARANG = "kode_barang"
-        const val COLUMN_NAMA_BARANG = "nama_barang"
+        const val COLUMN_MEREK_BARANG = "merek_barang"
         const val COLUMN_GAMBAR = "gambar"
 
         // Tabel Stok
@@ -86,7 +84,7 @@ class BrgDatabaseHelper(context: Context) :
         val createBarangTable = """
             CREATE TABLE $TABLE_BARANG (
                 $COLUMN_KODE_BARANG TEXT PRIMARY KEY,
-                $COLUMN_NAMA_BARANG TEXT NOT NULL,
+                $COLUMN_MEREK_BARANG TEXT NOT NULL,
                 $COLUMN_GAMBAR TEXT DEFAULT NULL
             )
         """.trimIndent()
@@ -168,7 +166,7 @@ class BrgDatabaseHelper(context: Context) :
         return try {
             val valuesBarang = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_NAMA_BARANG, barang.nama_barang)
+                put(COLUMN_MEREK_BARANG, barang.merek_barang)
                 put(COLUMN_GAMBAR, barang.gambar)
             }
             val barangId = db.insert(TABLE_BARANG, null, valuesBarang)
@@ -305,12 +303,12 @@ class BrgDatabaseHelper(context: Context) :
 
         val selectQuery = """
         SELECT $TABLE_BARANG.$COLUMN_KODE_BARANG, 
-               $TABLE_BARANG.$COLUMN_NAMA_BARANG,
+               $TABLE_BARANG.$COLUMN_MEREK_BARANG,
                $TABLE_BARANG_MASUK.$COLUMN_NAMA_TOKO
         FROM $TABLE_BARANG
         LEFT JOIN $TABLE_BARANG_MASUK 
         ON $TABLE_BARANG.$COLUMN_KODE_BARANG = $TABLE_BARANG_MASUK.$COLUMN_KODE_BARANG
-        WHERE $TABLE_BARANG.$COLUMN_NAMA_BARANG LIKE ? 
+        WHERE $TABLE_BARANG.$COLUMN_MEREK_BARANG LIKE ? 
            OR $TABLE_BARANG.$COLUMN_KODE_BARANG LIKE ? 
            OR $TABLE_BARANG_MASUK.$COLUMN_NAMA_TOKO LIKE ?
         GROUP BY $TABLE_BARANG.$COLUMN_KODE_BARANG
@@ -339,7 +337,7 @@ class BrgDatabaseHelper(context: Context) :
         val barangList = mutableListOf<DataBarangAkses>()
         val db = this.readableDatabase
         val query = """
-            SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG, 
+            SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_MEREK_BARANG, 
                    b.$COLUMN_GAMBAR, s.$COLUMN_STOK, s.$COLUMN_UKURAN_WARNA,
                    m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
             FROM $TABLE_BARANG b
@@ -353,7 +351,7 @@ class BrgDatabaseHelper(context: Context) :
                 val idBarang =
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
                 val namaBarang =
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAMA_BARANG)) ?: ""
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)) ?: ""
                 val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
                 val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
                 val ukuranwarna =
@@ -426,7 +424,7 @@ class BrgDatabaseHelper(context: Context) :
             // Update TABLE_BARANG (hanya nama, kode, dan gambar)
             val valuesBarang = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_NAMA_BARANG, barang.nama_barang)
+                put(COLUMN_MEREK_BARANG, barang.merek_barang)
                 put(COLUMN_GAMBAR, barang.gambar)
             }
             val resultBarang = db.update(
@@ -474,7 +472,7 @@ class BrgDatabaseHelper(context: Context) :
     fun getBarangById(id: String): Triple<ItemBarang?, Stok?, BarangIn?> {
         val db = this.readableDatabase
         val query = """
-            SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_NAMA_BARANG,
+            SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_MEREK_BARANG,
                b.$COLUMN_GAMBAR, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_UKURAN_WARNA,
                m.$COLUMN_ID_MASUK, m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
         FROM $TABLE_BARANG b
@@ -491,7 +489,7 @@ class BrgDatabaseHelper(context: Context) :
         cursor?.use {
             if (it.moveToFirst()) {
                 val idBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
-                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_BARANG)) ?: ""
+                val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)) ?: ""
                 val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
                 val idStok = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
                 val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK)) ?: 0

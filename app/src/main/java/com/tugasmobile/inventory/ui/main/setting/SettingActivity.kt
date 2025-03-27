@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.setting
+package com.tugasmobile.inventory.ui.main.setting
 
 import android.Manifest
 import android.app.TimePickerDialog
@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.databinding.ActivitySettingBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
 import java.util.Calendar
 
 class SettingActivity : AppCompatActivity() {
