@@ -6,6 +6,7 @@ import android.view.Menu
 import android.Manifest
 import android.content.Intent
 import android.os.Build
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         lifecycleScope.launch {
             val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
             val isDarkMode = withContext(Dispatchers.IO) {

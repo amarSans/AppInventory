@@ -21,7 +21,6 @@
         <item name="colorSecondaryVariant">@color/light_button</item>
         <item name="colorOnSecondary">@color/textColor</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/primaryColor</item>
         <item name="android:colorBackground">@color/light_background</item>
         <item name="colorOnBackground">@color/light_text</item>
         <item name="android:textColorPrimary">@color/dark_text</item>
@@ -41,7 +40,6 @@
         <item name="colorSecondaryVariant">@color/light_button</item>
         <item name="colorOnSecondary">@color/textColor</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/primaryColor</item>
         <item name="android:colorBackground">@color/light_background</item>
         <item name="colorOnBackground">@color/light_text</item>
         <item name="android:textColorPrimary">@color/light_text</item>
