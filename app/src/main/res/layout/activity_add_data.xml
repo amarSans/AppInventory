@@ -147,6 +147,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:hint="@string/_00"
             android:inputType="number"
+            android:enabled="false"
             android:textAlignment="center"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -234,11 +235,23 @@
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edit_text_ukuranwarna"
             style="@style/CustomEditTextStyle"
-            android:hint="masukkan ukuran warna"
+            android:hint="input ukuran warna"
+            android:enabled="false"
             app:layout_constraintBottom_toTopOf="@id/tvTime"
-            app:layout_constraintEnd_toEndOf="@id/iconCheck"
             app:layout_constraintStart_toStartOf="@id/edt_Ukuran"
-            app:layout_constraintTop_toBottomOf="@id/edt_Ukuran" />
+            app:layout_constraintTop_toBottomOf="@id/edt_Ukuran"
+            app:layout_constraintEnd_toStartOf="@id/remove_ukuranwarna"/>
+        <ImageView
+            android:id="@+id/remove_ukuranwarna"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/baseline_remove_24"
+            android:background="@drawable/edit_text_bacground"
+            app:layout_constraintStart_toEndOf="@id/edit_text_ukuranwarna"
+            app:layout_constraintTop_toTopOf="@id/edit_text_ukuranwarna"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text_ukuranwarna"
+            app:layout_constraintEnd_toEndOf="@id/iconCheck"
+            />
 
         <TextView
             android:id="@+id/tvTime"
@@ -255,7 +268,7 @@
             android:clickable="false"
             android:focusable="false"
             app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarna"
+            app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
             app:layout_constraintStart_toStartOf="@id/tvTime"
             app:layout_constraintTop_toBottomOf="@id/tvTime" />
 

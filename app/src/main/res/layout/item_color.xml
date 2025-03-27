@@ -12,6 +12,7 @@
     app:chipBackgroundColor="@color/hintColor"
     app:chipStrokeWidth="1dp"
     app:chipCornerRadius="16dp"
+    android:textColor="@color/textColor"
     app:chipStrokeColor="@color/textColor"
     android:clickable="true"
     android:focusable="true"/>

@@ -337,6 +337,20 @@ class addData : AppCompatActivity() {
             binding.edtUkuran.setText("")
             binding.spinnerWarna.setSelection(0)
         }
+        binding.removeUkuranwarna.setOnClickListener {
+            val currentText = binding.editTextUkuranwarna.text.toString()
+
+            if (currentText.isNotEmpty()) {
+                val listEntries = currentText.split(", ").toMutableList()
+                listEntries.removeLastOrNull()  // Hapus item terakhir jika ada
+
+                // Set teks baru setelah penghapusan
+                val updatedText = listEntries.joinToString(", ")
+                binding.editTextUkuranwarna.setText(updatedText)
+            } else {
+                Toast.makeText(this, "Tidak ada ukuran-warna untuk dihapus", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 

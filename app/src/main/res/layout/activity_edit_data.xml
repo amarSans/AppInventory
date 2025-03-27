@@ -227,16 +227,26 @@
             style="@style/CustomEditTextStyle"
             android:hint="masukkan ukuran warna"
             app:layout_constraintBottom_toTopOf="@id/tvTime"
-            app:layout_constraintEnd_toEndOf="@id/iconCheckEdit"
             app:layout_constraintStart_toStartOf="@id/edt_UkuranEdit"
-            app:layout_constraintTop_toBottomOf="@id/edt_UkuranEdit" />
-
+            app:layout_constraintTop_toBottomOf="@id/edt_UkuranEdit"
+            app:layout_constraintEnd_toStartOf="@id/remove_ukuranwarna"/>
+        <ImageView
+            android:id="@+id/remove_ukuranwarna"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/baseline_remove_24"
+            android:background="@drawable/edit_text_bacground"
+            app:layout_constraintStart_toEndOf="@id/edit_text_ukuranwarnaEdit"
+            app:layout_constraintTop_toTopOf="@id/edit_text_ukuranwarnaEdit"
+            app:layout_constraintBottom_toBottomOf="@id/edit_text_ukuranwarnaEdit"
+            app:layout_constraintEnd_toEndOf="@id/iconCheckEdit"
+            />
         <TextView
             android:id="@+id/tvTime"
             style="@style/CustomTextViewStyle"
             android:text="@string/waktu"
             app:layout_constraintBottom_toTopOf="@id/edit_text_date"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarnaEdit"
+            app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
             app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarnaEdit"
             app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarnaEdit" />
 
@@ -246,7 +256,7 @@
             android:clickable="false"
             android:focusable="false"
             app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarnaEdit"
+            app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
             app:layout_constraintStart_toStartOf="@id/tvTime"
             app:layout_constraintTop_toBottomOf="@id/tvTime" />
 
