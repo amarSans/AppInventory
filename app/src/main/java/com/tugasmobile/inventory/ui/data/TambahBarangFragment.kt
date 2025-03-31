@@ -14,17 +14,16 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.BarangIn
@@ -33,7 +32,6 @@ import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.FragmentTambahBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.data.addData.Companion
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 import com.tugasmobile.inventory.utils.getCacheImageUri
