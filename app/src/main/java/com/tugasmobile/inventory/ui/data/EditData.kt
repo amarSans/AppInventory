@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.uiData
+package com.tugasmobile.inventory.ui.data
 
 import android.app.Activity
 import android.content.ContentValues
@@ -56,7 +56,6 @@ class EditData : AppCompatActivity() {
         }
         cameraLauncher.launch(cameraIntent)
     }
-
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val imageFile = uriToFile(photoUri, this).reduceFileImage()
@@ -73,13 +72,11 @@ class EditData : AppCompatActivity() {
             Log.w("CameraDebug", "Pengambilan gambar dibatalkan.")
         }
     }
-
     private fun openGallery() {
         selectedImageUri?.let { deleteImage(this,it) }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
     }
-
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             result.data?.data?.let { selectedUri ->
@@ -94,7 +91,6 @@ class EditData : AppCompatActivity() {
             }
         }
     }
-
     private fun saveImageToStorage(imageUri: Uri): Uri? {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))
         val fileName = "IMG_${System.currentTimeMillis()}.jpg"
@@ -327,7 +323,6 @@ class EditData : AppCompatActivity() {
         finish()
     }
 
-
     private fun deleteImage(context: Context, imageUri: Uri) {
         try {
             val rowsDeleted = context.contentResolver.delete(imageUri, null, null)
@@ -340,8 +335,6 @@ class EditData : AppCompatActivity() {
             Log.e("EditActivity", "Error saat menghapus gambar: ${e.message}", e)
         }
     }
-
-
 
     private fun tambahStok() {
         stokBarang++

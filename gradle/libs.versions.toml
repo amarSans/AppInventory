@@ -29,6 +29,7 @@ media3CommonKtx = "1.5.1"
 firebaseCrashlyticsBuildtools = "3.0.3"
 screenshotValidationJunitEngine = "0.0.1-alpha09"
 androidxpreference = "1.2.1"
+preference = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -59,6 +60,7 @@ firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "fireb
 screenshot-validation-junit-engine = { group = "com.android.tools.screenshot", name = "screenshot-validation-junit-engine", version.ref = "screenshotValidationJunitEngine" }
 androidx-work = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidxpreference" }
+preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

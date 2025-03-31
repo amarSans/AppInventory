@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.uiData
+package com.tugasmobile.inventory.ui.data
 
 import android.Manifest
 import android.app.Activity
@@ -52,13 +52,7 @@ class addData : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityAddDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.edtNamaToko.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                binding.scrollView.postDelayed({
-                    binding.scrollView.smoothScrollTo(0, binding.edtNamaToko.bottom)
-                }, 200)
-            }
-        }
+
         val imgViewBack = binding.imgViewBack
         imgViewBack.setOnClickListener {
             finish()
@@ -238,9 +232,6 @@ class addData : AppCompatActivity() {
         return null
     }
 
-
-
-
     private fun setupUI() {
         // Inisialisasi UI dan tombol untuk stok dan warna
         // Serta set onClickListener pada tombol kamera dan galeri
@@ -347,10 +338,6 @@ class addData : AppCompatActivity() {
             }
         }
     }
-
-
-
-
 
     private fun tambahStok() {
         stokBarang += 1

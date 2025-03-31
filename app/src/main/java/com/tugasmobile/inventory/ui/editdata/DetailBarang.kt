@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.uiData.EditData
+import com.tugasmobile.inventory.ui.data.EditData
 
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding

@@ -1,128 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.data.addData">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.data.TambahStokFragment"
+    android:layout_margin="20dp">
         <ImageView
             android:id="@+id/imgViewBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
-            app:layout_constraintBottom_toTopOf="@id/tvkodebarang"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_marginBottom="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvkodebarang"/>
+        <ImageView
+            android:id="@+id/img_tambahstok"
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:src="@drawable/baseline_image_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvkodebarang"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"/>
         <TextView
             android:id="@+id/tvkodebarang"
             style="@style/CustomTextViewStyle"
             android:text="@string/kode_barang"
-            app:layout_constraintBottom_toTopOf="@id/editTextKodeBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/imgViewBack"
-            app:layout_constraintTop_toBottomOf="@+id/imgViewBack" />
-
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/editTextKodeBarang"
-            style="@style/CustomEditTextStyle"
-            android:layout_marginEnd="10dp"
-            android:hint="@string/masukkan_kode_barang"
-            app:layout_constraintBottom_toTopOf="@id/tvnmerekBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/tvkodebarang"
-            app:layout_constraintTop_toBottomOf="@id/tvkodebarang" />
-
-        <TextView
-            android:id="@+id/tvnmerekBarang"
-            style="@style/CustomTextViewStyle"
-            android:text="@string/merek_barang"
-            app:layout_constraintBottom_toTopOf="@id/editTextNamaBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/editTextKodeBarang"
-            app:layout_constraintTop_toBottomOf="@id/editTextKodeBarang" />
-
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/editTextNamaBarang"
-            style="@style/CustomEditTextStyle"
-            android:layout_marginEnd="10dp"
-            android:hint="@string/masukkan_merek_barang"
-            app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/tvnmerekBarang"
-            app:layout_constraintTop_toBottomOf="@id/tvnmerekBarang" />
-
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgViewBack"
+            app:layout_constraintBottom_toTopOf="@id/img_tambahstok"/>
         <TextView
             android:id="@+id/tvHargaBarang"
             style="@style/CustomTextViewStyle"
             android:text="@string/harga_barang"
-            app:layout_constraintBottom_toTopOf="@id/editTextHargaBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/editTextNamaBarang"
-            app:layout_constraintTop_toBottomOf="@id/editTextNamaBarang" />
-
+            app:layout_constraintBottom_toTopOf="@id/editTextHargaBarangEdit"
+            app:layout_constraintEnd_toEndOf="@id/tvkodebarang"
+            app:layout_constraintStart_toStartOf="@id/tvkodebarang"
+            app:layout_constraintTop_toBottomOf="@id/img_tambahstok" />
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/editTextHargaBarang"
+            android:id="@+id/editTextHargaBarangEdit"
             style="@style/CustomEditTextStyle"
-            android:layout_marginEnd="10dp"
             android:hint="@string/masukkan_harga_barang"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@id/tvstokBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
+            app:layout_constraintBottom_toTopOf="@id/button_add_stok"
+            app:layout_constraintEnd_toEndOf="@id/tvHargaBarang"
             app:layout_constraintStart_toStartOf="@id/tvHargaBarang"
             app:layout_constraintTop_toBottomOf="@id/tvHargaBarang" />
-
-        <ImageView
-            android:id="@+id/imageViewBarang"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:background="@color/hintColor"
-            android:scaleType="centerCrop"
-            android:src="@drawable/baseline_image_24"
-            app:layout_constraintBottom_toTopOf="@id/buttonCamera"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/editTextNamaBarang"
-            app:layout_constraintTop_toBottomOf="@id/imgViewBack" />
-
-        <Button
-            android:id="@+id/buttonCamera"
-            style="@style/CustomButtonStyle"
-            android:layout_marginEnd="4dp"
-            android:text="@string/camera"
-            app:layout_constraintBottom_toBottomOf="@id/editTextHargaBarang"
-            app:layout_constraintEnd_toStartOf="@id/buttonGallery"
-            app:layout_constraintStart_toStartOf="@id/imageViewBarang"
-            app:layout_constraintTop_toBottomOf="@id/imageViewBarang" />
-
-        <Button
-            android:id="@+id/buttonGallery"
-            style="@style/CustomButtonStyle"
-            android:layout_marginStart="4dp"
-            android:text="@string/gallery"
-            app:layout_constraintBottom_toBottomOf="@id/buttonCamera"
-            app:layout_constraintEnd_toEndOf="@id/imageViewBarang"
-            app:layout_constraintStart_toEndOf="@id/buttonCamera"
-            app:layout_constraintTop_toTopOf="@id/buttonCamera" />
-
-        <TextView
-            android:id="@+id/tvstokBarang"
-            style="@style/CustomTextViewStyle"
-            android:text="@string/stok_barang"
-            app:layout_constraintBottom_toTopOf="@id/button_add_stok"
-            app:layout_constraintEnd_toEndOf="@id/buttonGallery"
-            app:layout_constraintStart_toStartOf="@id/editTextHargaBarang"
-            app:layout_constraintTop_toBottomOf="@id/editTextHargaBarang" />
-
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/button_add_stok"
             android:layout_width="wrap_content"
@@ -134,9 +61,8 @@
             app:icon="@drawable/baseline_add_24"
             app:layout_constraintBottom_toTopOf="@id/tvukuranwarna"
             app:layout_constraintEnd_toStartOf="@id/edit_stok_barang"
-            app:layout_constraintStart_toStartOf="@id/tvstokBarang"
-            app:layout_constraintTop_toBottomOf="@id/tvstokBarang" />
-
+            app:layout_constraintStart_toStartOf="@id/tvkodebarang"
+            app:layout_constraintTop_toBottomOf="@id/editTextHargaBarangEdit" />
         <EditText
             android:id="@+id/edit_stok_barang"
             android:layout_width="0dp"
@@ -155,7 +81,6 @@
             app:layout_constraintEnd_toEndOf="@id/button_remove_stok"
             app:layout_constraintStart_toEndOf="@id/button_add_stok"
             app:layout_constraintTop_toTopOf="@id/button_add_stok" />
-
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/button_remove_stok"
             android:layout_width="wrap_content"
@@ -165,10 +90,9 @@
             android:layout_marginStart="8dp"
             app:icon="@drawable/baseline_remove_24"
             app:layout_constraintBottom_toBottomOf="@id/edit_stok_barang"
-            app:layout_constraintEnd_toEndOf="@id/buttonGallery"
+            app:layout_constraintEnd_toEndOf="@id/editTextHargaBarangEdit"
             app:layout_constraintStart_toEndOf="@id/edit_stok_barang"
             app:layout_constraintTop_toTopOf="@id/edit_stok_barang" />
-
         <TextView
             android:id="@+id/tvukuranwarna"
             style="@style/CustomTextViewStyle"
@@ -177,7 +101,6 @@
             app:layout_constraintEnd_toEndOf="@id/button_remove_stok"
             app:layout_constraintStart_toStartOf="@id/button_add_stok"
             app:layout_constraintTop_toBottomOf="@id/button_add_stok" />
-
         <EditText
             android:id="@+id/edt_Ukuran"
             android:layout_width="wrap_content"
@@ -195,7 +118,6 @@
             app:layout_constraintEnd_toStartOf="@id/spinnerWarna"
             app:layout_constraintStart_toStartOf="@id/tvukuranwarna"
             app:layout_constraintTop_toBottomOf="@id/tvukuranwarna" />
-
         <Spinner
             android:id="@+id/spinnerWarna"
             android:layout_width="0dp"
@@ -207,7 +129,6 @@
             app:layout_constraintEnd_toStartOf="@id/iconClose"
             app:layout_constraintStart_toEndOf="@id/edt_Ukuran"
             app:layout_constraintTop_toTopOf="@id/edt_Ukuran" />
-
         <ImageView
             android:id="@+id/iconClose"
             android:layout_width="35dp"
@@ -219,7 +140,6 @@
             app:layout_constraintEnd_toStartOf="@id/iconCheck"
             app:layout_constraintStart_toEndOf="@id/spinnerWarna"
             app:layout_constraintTop_toTopOf="@id/spinnerWarna" />
-
         <ImageView
             android:id="@+id/iconCheck"
             android:layout_width="35dp"
@@ -230,13 +150,12 @@
             app:layout_constraintEnd_toEndOf="@id/tvukuranwarna"
             app:layout_constraintStart_toEndOf="@id/iconClose"
             app:layout_constraintTop_toTopOf="@id/iconClose" />
-
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edit_text_ukuranwarna"
             style="@style/CustomEditTextStyle"
             android:hint="input ukuran warna"
             android:enabled="false"
-            app:layout_constraintBottom_toTopOf="@id/tvTime"
+            app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
             app:layout_constraintStart_toStartOf="@id/edt_Ukuran"
             app:layout_constraintTop_toBottomOf="@id/edt_Ukuran"
             app:layout_constraintEnd_toStartOf="@id/remove_ukuranwarna"/>
@@ -251,58 +170,33 @@
             app:layout_constraintBottom_toBottomOf="@id/edit_text_ukuranwarna"
             app:layout_constraintEnd_toEndOf="@id/iconCheck"
             />
-
-        <TextView
-            android:id="@+id/tvTime"
-            style="@style/CustomTextViewStyle"
-            android:text="@string/waktu"
-            app:layout_constraintBottom_toTopOf="@id/edit_text_date"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarna"
-            app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarna"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarna" />
-
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/edit_text_date"
-            style="@style/CustomEditTextStyle"
-            android:clickable="false"
-            android:focusable="false"
-            app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
-            app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
-            app:layout_constraintStart_toStartOf="@id/tvTime"
-            app:layout_constraintTop_toBottomOf="@id/tvTime" />
-
         <TextView
             android:id="@+id/tvnamaToko"
             style="@style/CustomTextViewStyle"
             android:text="@string/nama_toko"
-            app:layout_constraintBottom_toTopOf="@id/edt_nama_toko"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_date"
-            app:layout_constraintStart_toStartOf="@id/edit_text_date"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_date" />
+            app:layout_constraintBottom_toTopOf="@id/edt_nama_tokoEdit"
+            app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
+            app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarna"
+            app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarna" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/edt_nama_toko"
+            android:id="@+id/edt_nama_tokoEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_nama_toko"
-            app:layout_constraintBottom_toTopOf="@id/button_save"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_date"
+            app:layout_constraintBottom_toTopOf="@id/btnsave"
+            app:layout_constraintEnd_toEndOf="@id/tvnamaToko"
             app:layout_constraintStart_toStartOf="@id/tvnamaToko"
             app:layout_constraintTop_toBottomOf="@id/tvnamaToko" />
 
-
         <Button
-            android:id="@+id/button_save"
+            android:id="@+id/btnsave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_semibold"
             android:text="@string/save"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edt_nama_toko" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
 
+
+</androidx.constraintlayout.widget.ConstraintLayout>

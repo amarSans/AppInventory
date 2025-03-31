@@ -18,8 +18,8 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterBarangMasuk
 import com.tugasmobile.inventory.databinding.FragmentBarangMasukBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.data.DataActivity
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
-import com.tugasmobile.inventory.ui.uiData.addData
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -52,7 +52,7 @@ class BarangMasuk : Fragment() {
             startActivity(intent)  // Mulai Activity dengan data
         }
         binding.btnTamBar.setOnClickListener {
-            val intent = Intent(requireContext(), addData::class.java)
+            val intent = Intent(requireContext(), DataActivity::class.java)
             startActivity(intent)
         }
         binding.recyclerViewLaporan.adapter = adapterDaftarBarang

@@ -7,14 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.util.Log
-import com.tugasmobile.inventory.data.BarangIn
-import com.tugasmobile.inventory.data.BarangOut
-import com.tugasmobile.inventory.data.DataBarangAkses
-import com.tugasmobile.inventory.data.DataSearch
-import com.tugasmobile.inventory.data.History
-import com.tugasmobile.inventory.data.ItemBarang
-import com.tugasmobile.inventory.data.SettingData
-import com.tugasmobile.inventory.data.Stok
+import com.tugasmobile.inventory.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -296,6 +289,77 @@ class BrgDatabaseHelper(context: Context) :
         }
         return id
     }
+    fun isBarangExist(kodeBarang: String): Boolean {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM barang WHERE kode_barang = ?", arrayOf(kodeBarang))
+
+        var exists = false
+        if (cursor.moveToFirst()) {
+            exists = cursor.getInt(0) > 0 // Jika jumlah barang > 0, berarti ada
+        }
+        cursor.close()
+        return exists
+    }
+    fun updateStok(update: StokUpdate): Int {
+        val db = this.writableDatabase
+        var rowsAffected = 0
+
+        db.beginTransaction()
+        try {
+            // Update harga jual jika ada
+            update.hargaJualBaru?.let {
+                val values = ContentValues().apply { put(COLUMN_HARGA_JUAL, it) }
+                val updatedRows = db.update(
+                    TABLE_BARANG_MASUK, values,
+                    "$COLUMN_KODE_BARANG = ?",
+                    arrayOf(update.kodeBarang)
+                )
+                rowsAffected += updatedRows
+            }
+
+            // Update ukuran warna jika ada
+            update.ukuranWarnaBaru?.let {
+                val values = ContentValues().apply { put(COLUMN_UKURAN_WARNA, it) }
+                val updatedRows = db.update(
+                    TABLE_STOK, values,
+                    "$COLUMN_KODE_BARANG = ?",
+                    arrayOf(update.kodeBarang)
+                )
+                rowsAffected += updatedRows
+            }
+
+            // Update nama toko jika ada
+            update.namaTokoBaru?.let {
+                val values = ContentValues().apply { put(COLUMN_NAMA_TOKO, it) }
+                val updatedRows = db.update(
+                    TABLE_BARANG_MASUK, values,
+                    "$COLUMN_KODE_BARANG = ?",
+                    arrayOf(update.kodeBarang)
+                )
+                rowsAffected += updatedRows
+            }
+            update.stokBaru?.let {
+                val values = ContentValues().apply { put(COLUMN_STOK, it) }
+                val updatedRows = db.update(
+                    TABLE_STOK, values,
+                    "$COLUMN_KODE_BARANG = ?",
+                    arrayOf(update.kodeBarang)
+                )
+                rowsAffected += updatedRows
+            }
+
+
+            db.setTransactionSuccessful() // Jika semua update sukses, commit perubahan
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            db.endTransaction()
+        }
+
+        return rowsAffected
+    }
+
+
 
     fun searchBarang(query: String): List<DataSearch> {
         val resultList = mutableListOf<DataSearch>()
@@ -329,7 +393,6 @@ class BrgDatabaseHelper(context: Context) :
         }
 
         cursor.close()
-        db.close()
         return resultList
     }
 

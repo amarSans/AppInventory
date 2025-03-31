@@ -5,10 +5,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,14 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inventory.NoActionBar"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.data.DataActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.main.setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.uiData.EditData"
-            android:theme="@style/Theme.Inventory.NoActionBar"
-            android:exported="false" />
+            android:name=".ui.data.EditData"
+            android:exported="false"
+            android:theme="@style/Theme.Inventory.NoActionBar" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -44,11 +46,14 @@
             android:exported="false"
             android:theme="@style/Theme.Inventory.NoActionBar" />
         <activity
-            android:name=".ui.uiData.addData"
+            android:name=".ui.data.addData"
             android:exported="false"
             android:theme="@style/Theme.Inventory.NoActionBar" />
-        <receiver android:name=".ui.main.setting.notifikasi.NotificationReceiver"
-            android:exported="false"/>
+
+        <receiver
+            android:name=".ui.main.setting.notifikasi.NotificationReceiver"
+            android:exported="false" />
+
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
@@ -60,7 +65,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

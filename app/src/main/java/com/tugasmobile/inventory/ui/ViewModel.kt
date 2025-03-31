@@ -16,6 +16,7 @@ import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.ItemNotifikasi
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
+import com.tugasmobile.inventory.data.StokUpdate
 import com.tugasmobile.inventory.database.BrgDatabaseHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,6 +59,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _historyData = MutableLiveData<List<History>>()
     val allHistory: LiveData<List<History>> get() = _historyData
 
+    private val _barangExist = MutableLiveData<Boolean>()
+    val barangExist: LiveData<Boolean> get() = _barangExist
+
     init {
         loadBarang()
         loadSetting()
@@ -75,7 +79,7 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("ViewModel", "Gagal memuat history: ${e.message}", e)
+                
             }
         }
     }
@@ -111,13 +115,27 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun cekBarangExist(kodeBarang: String) {
 
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val exists = databaseHelper.isBarangExist(kodeBarang)
+            
+            _barangExist.postValue(exists)
+        }
+    }
     fun insertBarangKeluar(barangOut: BarangOut) {
         viewModelScope.launch(Dispatchers.IO) {
            databaseHelper.insertBarangKeluar(barangOut)
             loadBarang()
         }
     }
+    fun updatestok(update: StokUpdate){
+        Log.d("UpdateStok", "Dipanggil dengan: $update")
+        databaseHelper.updateStok(update)
+        loadBarang()
+    }
+
 
     fun insertInputBarang(barang:ItemBarang, stok:Stok, barangIn: BarangIn){
         databaseHelper.insertInputBarang(barang,stok,barangIn)
@@ -126,6 +144,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun searchBarang(query: String) {
         val results = databaseHelper.searchBarang(query)
         _dataSearch.value = results
+    }
+    fun cekKodeBarang(kode: String): Boolean {
+        val results = databaseHelper.searchBarang(kode)
+        return results.isNotEmpty() // Jika ada hasil berarti kode sudah ada
     }
 
     fun deleteBarang(id: String) {
