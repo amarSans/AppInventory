@@ -156,8 +156,11 @@ class TambahBarangFragment : Fragment() {
                 NewItemViewModel.cekKodeBarangAda(kode)
             }
         }
-        var karakteristik = binding.editKarakterikstik.text.toString().trim()
-
+        val karakteristik = if (binding.editKarakterikstik.text.toString().trim().isEmpty()) {
+            "Belum diisi"
+        } else {
+            binding.editKarakterikstik.text.toString().trim()
+        }
         val hargaProdukText = binding.editTextHargaBarang.text.toString().replace(".", "").trim()
         if (hargaProdukText.isEmpty()) {
             binding.editTextHargaBarang.error = "Harga barang tidak boleh kosong"
@@ -373,7 +376,7 @@ class TambahBarangFragment : Fragment() {
         binding.editStokBarang.setText(stokBarang.toString())
     }
     private fun updateKarakteristikText() {
-        val karakteristik = if (selectedItems.isEmpty()) "Belum diisi" else selectedItems.joinToString(", ")
+        val karakteristik = selectedItems.joinToString(", ")
         Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik") // 🔥 Debugging
         binding.editKarakterikstik.setText(karakteristik)
     }

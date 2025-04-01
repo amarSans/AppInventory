@@ -52,7 +52,6 @@ class HomeDataFragment : Fragment() {
 
         dataViewModel.cekBarangExist(kode)
         dataViewModel.barangExist.observe(viewLifecycleOwner) { hasilPencarian ->
-            dataViewModel.barangExist.removeObservers(viewLifecycleOwner)
 
             if (hasilPencarian) {
                 generateKodeBarang(callback)

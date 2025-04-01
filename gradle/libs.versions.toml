@@ -10,6 +10,7 @@ material = "1.12.0"
 mockitokotlin="5.4.0"
 mockitoinline="5.0.0"
 mockito = "5.14.1"
+flexbox = "3.0.0"
 constraintlayout = "2.2.1"
 lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
@@ -61,7 +62,7 @@ screenshot-validation-junit-engine = { group = "com.android.tools.screenshot", n
 androidx-work = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
 androidx-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidxpreference" }
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
-
+google-flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

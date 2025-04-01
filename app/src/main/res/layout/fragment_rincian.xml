@@ -45,7 +45,6 @@
             <TextView
                 android:id="@+id/tv_kode_barang"
                 style="@style/CustomTextViewStyle"
-                app:layout_constraintHeight_default="wrap"
                 android:text="@string/kode_barang"
                 app:layout_constraintBottom_toTopOf="@id/rv_ukuran_warna_sendal"
                 app:layout_constraintEnd_toEndOf="@id/tv_nama_barang"
@@ -55,7 +54,6 @@
             <TextView
                 android:id="@+id/tv_stok"
                 style="@style/CustomTextViewStyle"
-                app:layout_constraintHeight_default="wrap"
                 android:text="@string/_00"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="@id/tv_nama_barang"
@@ -66,7 +64,6 @@
             <TextView
                 android:id="@+id/tv_nama_toko"
                 style="@style/CustomTextViewStyle"
-                app:layout_constraintHeight_default="wrap"
                 android:gravity="end"
                 android:text="@string/nama_toko"
                 app:layout_constraintEnd_toEndOf="@id/tv_stok"
@@ -84,6 +81,16 @@
                 app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
                 app:layout_constraintEnd_toEndOf="@id/tv_nama_toko"
                 app:layout_constraintTop_toBottomOf="@id/tv_kode_barang"/>
+            <TextView
+                android:id="@+id/tvrincinkarakteristik"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edit_text_bacground"
+                app:layout_constraintStart_toStartOf="@id/rv_ukuran_warna_sendal"
+                app:layout_constraintEnd_toEndOf="@id/rv_ukuran_warna_sendal"
+                app:layout_constraintTop_toBottomOf="@id/rv_ukuran_warna_sendal"
+                app:layout_constraintBottom_toTopOf="@id/tv_harga_barang"/>
             <TextView
                 android:id="@+id/tv_harga_barang"
                 android:layout_width="match_parent"

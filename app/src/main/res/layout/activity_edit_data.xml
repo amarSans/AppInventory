@@ -165,6 +165,7 @@
             android:id="@+id/tvukuranwarna"
             style="@style/CustomTextViewStyle"
             android:text="ukuran dan warna"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toTopOf="@id/edt_UkuranEdit"
             app:layout_constraintEnd_toEndOf="@id/button_remove_stokEdit"
             app:layout_constraintStart_toStartOf="@id/button_add_stokEdit"
@@ -227,7 +228,7 @@
             android:id="@+id/edit_text_ukuranwarnaEdit"
             style="@style/CustomEditTextStyle"
             android:hint="masukkan ukuran warna"
-            app:layout_constraintBottom_toTopOf="@id/tv_karakteristik"
+            app:layout_constraintBottom_toTopOf="@id/tv_karakteristikedit"
             app:layout_constraintStart_toStartOf="@id/edt_UkuranEdit"
             app:layout_constraintTop_toBottomOf="@id/edt_UkuranEdit"
             app:layout_constraintEnd_toStartOf="@id/remove_ukuranwarna"/>
@@ -243,39 +244,47 @@
             app:layout_constraintEnd_toEndOf="@id/iconCheckEdit"
             />
         <TextView
-            android:id="@+id/tv_karakteristik"
+            android:id="@+id/tv_karakteristikedit"
             style="@style/CustomTextViewStyle"
-            android:text="@string/waktu"
-            app:layout_constraintBottom_toTopOf="@id/edit_karakterikstik"
+            android:text="karakteristik"
+            app:layout_constraintBottom_toTopOf="@id/edit_karakterikstikedit"
             app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
             app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarnaEdit"
             app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarnaEdit" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/edit_karakterikstik"
+            android:id="@+id/edit_karakterikstikedit"
             style="@style/CustomEditTextStyle"
-            android:clickable="false"
-            android:focusable="false"
+            android:hint="masukkan_karakteristik"
             app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
+            app:layout_constraintEnd_toStartOf="@id/btncharater"
+            app:layout_constraintStart_toStartOf="@id/tv_karakteristikedit"
+            app:layout_constraintTop_toBottomOf="@id/tv_karakteristikedit" />
+        <ImageView
+            android:id="@+id/btncharater"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/edit_text_bacground"
+            app:layout_constraintStart_toEndOf="@id/edit_karakterikstikedit"
+            app:layout_constraintTop_toTopOf="@id/edit_karakterikstikedit"
+            app:layout_constraintBottom_toBottomOf="@id/edit_karakterikstikedit"
             app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
-            app:layout_constraintStart_toStartOf="@id/tv_karakteristik"
-            app:layout_constraintTop_toBottomOf="@id/tv_karakteristik" />
-
+            android:src="@drawable/baseline_add_24"/>
         <TextView
             android:id="@+id/tvnamaToko"
             style="@style/CustomTextViewStyle"
             android:text="@string/nama_toko"
             app:layout_constraintBottom_toTopOf="@id/edt_nama_tokoEdit"
-            app:layout_constraintEnd_toEndOf="@id/edit_karakterikstik"
-            app:layout_constraintStart_toStartOf="@id/edit_karakterikstik"
-            app:layout_constraintTop_toBottomOf="@id/edit_karakterikstik" />
+            app:layout_constraintEnd_toEndOf="@id/btncharater"
+            app:layout_constraintStart_toStartOf="@id/edit_karakterikstikedit"
+            app:layout_constraintTop_toBottomOf="@id/edit_karakterikstikedit" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edt_nama_tokoEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_nama_toko"
             app:layout_constraintBottom_toTopOf="@id/button_save"
-            app:layout_constraintEnd_toEndOf="@id/edit_karakterikstik"
+            app:layout_constraintEnd_toEndOf="@id/btncharater"
             app:layout_constraintStart_toStartOf="@id/tvnamaToko"
             app:layout_constraintTop_toBottomOf="@id/tvnamaToko" />
 

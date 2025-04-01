@@ -57,12 +57,23 @@
     <string name="save">Save</string>
 
     <string-array name="karakteristik_barang">
-        <item>Sneakers</item>
-        <item>Sepatu Formal</item>
-        <item>Sandals</item>
-        <item>Boots</item>
-        <item>Sepatu Olahraga</item>
-        <item>Flip Flops</item>
+        <item>Bayi</item>
+        <item>Anak-anak</item>
+        <item>Dewasa</item>
+        <item>Orang Tua</item>
+        <item>Laki-laki</item>
+        <item>Perempuan</item>
+        <item>Sandal Jepit</item>
+        <item>Sandal Tali</item>
+        <item>Sandal Sosok</item>
+        <item>Sandal Papan</item>
+        <item>Sandal Kodog</item>
+        <item>Sandal Pesta</item>
+        <item>Sepatu Sandal</item>
+        <item>Sepatu Teplet</item>
+        <item>Kulit</item>
+        <item>Plastik</item>
+        <item>Spon</item>
     </string-array>
     <string name="belum_diisi">belum disi</string>
 

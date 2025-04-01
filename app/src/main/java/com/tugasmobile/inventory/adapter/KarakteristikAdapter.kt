@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
+import com.tugasmobile.inventory.databinding.ItemKarakteristikCheckboxBinding
 
 class KarakteristikAdapter(
     private val karakteristikList: List<String>,
@@ -14,15 +15,13 @@ class KarakteristikAdapter(
     private val onItemChecked: (MutableSet<String>) -> Unit
 ) : RecyclerView.Adapter<KarakteristikAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val checkBox: CheckBox = view.findViewById(R.id.checkboxItem)
-
+    inner class ViewHolder(private val binding: ItemKarakteristikCheckboxBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
-            checkBox.text = item
-            checkBox.isChecked = selectedItems.contains(item)
+            binding.chipItem.text = item
+            binding.chipItem.isChecked = selectedItems.contains(item)
 
-            checkBox.setOnCheckedChangeListener(null) // Hindari callback ganda
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
+            binding.chipItem.setOnCheckedChangeListener(null) // Hindari callback ganda
+            binding.chipItem.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     selectedItems.add(item)
                 } else {
@@ -36,8 +35,8 @@ class KarakteristikAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_karakteristik_checkbox, parent, false)
-        return ViewHolder(view)
+        val binding = ItemKarakteristikCheckboxBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

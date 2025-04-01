@@ -22,6 +22,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.*
 
 class EditData : AppCompatActivity() {
@@ -31,6 +32,8 @@ class EditData : AppCompatActivity() {
     private var stokBarang = 0
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
+    private var selectedItems = mutableSetOf<String>()
+
     private lateinit var colorAdapter: AdapterColorIn
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -124,6 +127,20 @@ class EditData : AppCompatActivity() {
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.buttonSave.setOnClickListener {
             saveChanges()
+        }
+        binding.btncharater.setOnClickListener {
+             selectedItems = binding.editKarakterikstikedit.text.toString()
+                .split(", ") // Pecah string jadi list berdasarkan koma
+                .filter { it.isNotBlank() } // Hapus item kosong
+                .toMutableSet()
+
+            val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
+                selectedItems.clear()
+                selectedItems.addAll(updatedItems)
+                Log.d("KarakteristikFragment", "Selected Items Setelah Dialog Ditutup: $selectedItems")
+                updateKarakteristikText()
+            }
+            dialog.show(supportFragmentManager, "KarakteristikBottomSheet")
         }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
 
@@ -237,6 +254,10 @@ class EditData : AppCompatActivity() {
             barang?.let {
                 binding.editTextNamaBarangEdit.setText(it.merek_barang)
                 binding.editTextKodeBarangEdit.setText(it.id_barang)
+                binding.editKarakterikstikedit.setText(
+                    if (it.karakteristik == "Belum diisi") "" else it.karakteristik
+                )
+
                 selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             } ?: run {
@@ -246,8 +267,12 @@ class EditData : AppCompatActivity() {
         }
         editViewModel.currentStok.observe(this) { stok ->
             stok?.let {
+                if (it.stokBarang == 0) {
+                    binding.editTextUkuranwarnaEdit.setText("")
+                    binding.editStokBarang.setText("")
+                } else{
                 binding.editTextUkuranwarnaEdit.setText(it.ukuranwarna.toString())
-                binding.editStokBarang.setText(it.stokBarang.toString())
+                binding.editStokBarang.setText(it.stokBarang.toString())}
                 stokBarang = it.stokBarang
             } ?: run {
                 // Handle kasus ketika stok bernilai null
@@ -269,6 +294,11 @@ class EditData : AppCompatActivity() {
         val stokBarang = stokBarangText.toIntOrNull() ?: 0
         val tanggalupdate = DateUtils.getCurrentDate()
         val kodeupdate=binding.editTextKodeBarangEdit.text.toString()
+        val karakteristik = if (binding.editKarakterikstikedit.text.toString().trim().isEmpty()) {
+            "Belum diisi"
+        } else {
+            binding.editKarakterikstikedit.text.toString().trim()
+        }
 
         val ukuranWarna = binding.editTextUkuranwarnaEdit.text.toString().trim()
         val jumlahKombinasi = if (ukuranWarna.isEmpty()) 0 else ukuranWarna.split(",").size
@@ -285,6 +315,7 @@ class EditData : AppCompatActivity() {
         val updatedBarang = editViewModel.currentBarang.value?.copy(
             merek_barang = binding.editTextNamaBarangEdit.text.toString(),
             id_barang = kodeupdate,
+            karakteristik = karakteristik,
             gambar = selectedImageUri?.toString() ?: ""
         ) ?: run {
             Toast.makeText(this, "Data barang tidak valid", Toast.LENGTH_SHORT).show()
@@ -334,7 +365,11 @@ class EditData : AppCompatActivity() {
             Log.e("EditActivity", "Error saat menghapus gambar: ${e.message}", e)
         }
     }
-
+    private fun updateKarakteristikText() {
+        val karakteristik = selectedItems.joinToString(", ")
+        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik") // 🔥 Debugging
+        binding.editKarakterikstikedit.setText(karakteristik)
+    }
     private fun tambahStok() {
         stokBarang++
         binding.editStokBarang.setText(stokBarang.toString())

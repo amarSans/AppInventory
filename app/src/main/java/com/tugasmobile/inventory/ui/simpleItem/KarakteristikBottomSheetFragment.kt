@@ -5,7 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.KarakteristikAdapter
@@ -20,7 +24,8 @@ class KarakteristikBottomSheetFragment(
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentKarakteristikBottomSheetBinding.inflate(inflater, container, false)
+
+        binding= FragmentKarakteristikBottomSheetBinding.inflate(inflater,container,false)
         return binding.root
     }
 
@@ -37,7 +42,12 @@ class KarakteristikBottomSheetFragment(
             selectedItems.addAll(updatedItems)
         }
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
+            flexDirection = FlexDirection.ROW // Item ditampilkan dalam baris
+            justifyContent = JustifyContent.FLEX_START // Item berbaris dari kiri ke kanan
+        }
+
+        binding.recyclerView.layoutManager = flexboxLayoutManager
     }
     private fun setupButton() {
         binding.btnSimpan.setOnClickListener {

@@ -254,7 +254,7 @@
         <TextView
             android:id="@+id/tv_karakteristik"
             style="@style/CustomTextViewStyle"
-            android:text="karakterisitik"
+            android:text="karakteristik"
             app:layout_constraintBottom_toTopOf="@id/edit_karakterikstik"
             app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarna"
             app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarna"
@@ -278,8 +278,6 @@
             app:layout_constraintBottom_toBottomOf="@id/edit_karakterikstik"
             app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
             android:src="@drawable/baseline_add_24"/>
-
-
         <TextView
             android:id="@+id/tvnamaToko"
             style="@style/CustomTextViewStyle"

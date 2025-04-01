@@ -58,6 +58,7 @@ class RincianFragment : Fragment() {
             barang?.let{
                 binding.tvNamaBarang.text = it.merek_barang
                 binding.tvKodeBarang.text = it.id_barang
+                binding.tvrincinkarakteristik.text=it.karakteristik
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
                     // Menyimpan URI untuk digunakan setelah izin diberikan

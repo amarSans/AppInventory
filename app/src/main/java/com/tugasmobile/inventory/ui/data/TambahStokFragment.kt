@@ -182,13 +182,17 @@ class TambahStokFragment : Fragment() {
         }
         NewStokViewModel.currentStok.observe(viewLifecycleOwner) { stok ->
             stok?.let {
+                if (it.stokBarang == 0) {
+                    binding.editTextUkuranwarna.setText("")
+                    binding.editStokBarang.setText("")
+                } else{
                 binding.editTextUkuranwarna.setText(
                     it.ukuranwarna.toString()
                         .replace("[", "") // Hapus semua tanda "["
                         .replace("]", "") // Hapus semua tanda "]"
                         .trim() // Hapus spasi di awal dan akhir
                 )
-                binding.editStokBarang.setText(it.stokBarang.toString())
+                binding.editStokBarang.setText(it.stokBarang.toString())}
                 stokBarang = it.stokBarang
             } ?: run {
                 Toast.makeText(requireContext(), "Data stok tidak ditemukan", Toast.LENGTH_SHORT)
@@ -217,7 +221,6 @@ class TambahStokFragment : Fragment() {
         val ukuranWarnaList =
             if (ukuranWarna.isEmpty()) emptyList() else ukuranWarna.split(",").map { it.trim() }
         val jumlahKombinasi = ukuranWarnaList.size
-
         if (stokBarang != jumlahKombinasi) {
             binding.editTextUkuranwarna.error =
                 "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"

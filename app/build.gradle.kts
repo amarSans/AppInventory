@@ -80,6 +80,6 @@ dependencies {
     androidTestImplementation(libs.mockito.kotlin)
     implementation(libs.glide)
     implementation(libs.androidx.work)
-    
+    implementation(libs.google.flexbox)
 
 }
