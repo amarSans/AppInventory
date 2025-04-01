@@ -150,9 +150,7 @@ class BarangKeluarDialogFragment : DialogFragment() {
                         waktu = DateUtils.getCurrentDate(),
                         kodeBarang = kodeBarang,
                         stok = stokKeluar.toString(),
-                        ukuranWarna = ukuranWarnaTerpilih.joinToString(","),
-                        harga = harga_history,
-                        jenisData = false
+                        jenisData = "stokkeluar"
                     )
                     simpanDatabase(barangOut,history)
                     listener?.onBarangKeluarSaved(

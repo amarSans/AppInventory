@@ -69,8 +69,6 @@ class BrgDatabaseHelper(context: Context) :
         const val COLUMN_WAKTU_HISTORY = "waktu"
         const val COLUMN_KODE_BARANG_HISTORY = "kode_barang"
         const val COLUMN_STOK_HISTORY = "stok"
-        const val COLUMN_UKURAN_WARNA_HISTORY = "ukuran_warna"
-        const val COLUMN_HARGA_HISTORY = "harga"
         const val COLUMN_JENIS_DATA_HISTORY = "jenis_data"
     }
 
@@ -132,9 +130,7 @@ class BrgDatabaseHelper(context: Context) :
                 $COLUMN_WAKTU_HISTORY TEXT,
                 $COLUMN_KODE_BARANG_HISTORY TEXT,
                 $COLUMN_STOK_HISTORY TEXT,
-                $COLUMN_UKURAN_WARNA_HISTORY TEXT,
-                $COLUMN_HARGA_HISTORY TEXT,
-                $COLUMN_JENIS_DATA_HISTORY INTEGER
+                $COLUMN_JENIS_DATA_HISTORY TEXT
             )
         """.trimIndent()
 
@@ -630,9 +626,7 @@ class BrgDatabaseHelper(context: Context) :
                 put(COLUMN_WAKTU_HISTORY, item.waktu)
                 put(COLUMN_KODE_BARANG_HISTORY, item.kodeBarang)
                 put(COLUMN_STOK_HISTORY, item.stok)
-                put(COLUMN_UKURAN_WARNA_HISTORY, item.ukuranWarna)
-                put(COLUMN_HARGA_HISTORY, item.harga)
-                put(COLUMN_JENIS_DATA_HISTORY, if (item.jenisData) 1 else 0)
+                put(COLUMN_JENIS_DATA_HISTORY, item.jenisData)
             }
             db.insert(TABLE_HISTORY, null, values)
             db.close()
@@ -653,21 +647,14 @@ class BrgDatabaseHelper(context: Context) :
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG_HISTORY))
                 val historystok =
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STOK_HISTORY))
-                val historyukuranWarna = cursor.getString(
-                    cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA_HISTORY)
-                )
-                val historyharga =
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_HARGA_HISTORY))
                 val historyjenisData =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_JENIS_DATA_HISTORY)) == 1
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_JENIS_DATA_HISTORY))
 
                 val history = History(
                     idhistory,
                     historwaktu,
                     historykodeBarang,
                     historystok,
-                    historyukuranWarna,
-                    historyharga,
                     historyjenisData
                 )
                 items.add(history)

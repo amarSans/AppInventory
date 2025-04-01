@@ -5,54 +5,54 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.History
 
-class AdapterHistoryBarang (private var historyDataBarang: List<History>):
-    RecyclerView.Adapter<AdapterHistoryBarang.ListViewHolder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ListViewHolder {
-        val view: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_history_barang,parent,false)
-        Log.d("AdapterHistoryBarang", "ViewHolder dibuat")
-        return ListViewHolder(view)
+class AdapterHistoryBarang (private var historyList: List<History>) :
+    RecyclerView.Adapter<AdapterHistoryBarang.HistoryViewHolder>() {
+
+    class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvHistoryText: TextView = itemView.findViewById(R.id.tvHistoryText)
+        val tvHistoryDate: TextView = itemView.findViewById(R.id.tvHistoryDate)
+        val chatBubble: LinearLayout = itemView.findViewById(R.id.chatBubble)
     }
-    override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val history=historyDataBarang[position]
-        Log.d("AdapterHistoryBarang", "Mengikat data ke ViewHolder: $history")
-        holder.apply {
-            time.text = history.waktu
-            kode.text = history.kodeBarang
-            stok.text = history.stok
-            ukuranWarna.text = history.ukuranWarna
-            harga.text = "Rp. ${history.harga}"
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_history_barang, parent, false)
+        return HistoryViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
+        val item = historyList[position]
+
+        val message = when (item.jenisData) {
+            "barangmasuk" -> "Barang ${item.kodeBarang} baru dimasukkan dengan stok awal ${item.stok} pcs."
+            "stokmasuk" -> "Stok ${item.kodeBarang} bertambah sebanyak ${item.stok} pcs."
+            "stokkeluar" -> "Stok ${item.kodeBarang} berkurang sebanyak ${item.stok} pcs."
+            "barangdihapus" -> "Barang ${item.kodeBarang} telah dihapus dari database."
+            else -> "Transaksi tidak diketahui."
         }
+        holder.tvHistoryText.text = message
+        holder.tvHistoryDate.text = item.waktu
 
-        // Menentukan warna berdasarkan jenisData
-        val textColor = if (history.jenisData) Color.GREEN else Color.RED
-        arrayOf(holder.time, holder.kode, holder.stok, holder.ukuranWarna, holder.harga).forEach {
-            it.setTextColor(textColor)
+        // Mengubah warna bubble berdasarkan jenis transaksi
+        val context = holder.itemView.context
+        when (item.jenisData) {
+            "barangmasuk" -> holder.chatBubble.setBackgroundResource(R.drawable.bg_chat_bubble_blue)  // Biru
+            "stokmasuk" -> holder.chatBubble.setBackgroundResource(R.drawable.bg_chat_bubble_green)  // Hijau
+            "stokkeluar" -> holder.chatBubble.setBackgroundResource(R.drawable.bg_chat_bubble_orange)  // Oranye
+            "barangdihapus" -> holder.chatBubble.setBackgroundResource(R.drawable.bg_chat_bubble_red)  // Merah
         }
-
     }
 
-    override fun getItemCount(): Int =historyDataBarang.size
-    class ListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val time: TextView =itemView.findViewById(R.id.item_time_history)
-        val kode: TextView =itemView.findViewById(R.id.item_kode_history)
-        val stok: TextView =itemView.findViewById(R.id.item_stok_history)
-        val ukuranWarna: TextView =itemView.findViewById(R.id.item_ukuran_warna_history)
-        val harga: TextView =itemView.findViewById(R.id.item_harga_history)
-    }
 
+    override fun getItemCount(): Int = historyList.size
     fun setItems(newItems: List<History>) {
-        Log.d("AdapterHistoryBarang", "Data di-update: ${newItems.size} item")
-        historyDataBarang = newItems
-        notifyDataSetChanged()
+        historyList = newItems
+        notifyDataSetChanged() // Memberitahu RecyclerView bahwa datanya berubah
     }
-
 }

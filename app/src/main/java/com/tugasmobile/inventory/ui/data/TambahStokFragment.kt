@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
+import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.StokUpdate
 import com.tugasmobile.inventory.databinding.FragmentTambahStokBinding
 import com.tugasmobile.inventory.ui.ViewModel
@@ -245,7 +246,14 @@ class TambahStokFragment : Fragment() {
             namaTokoBaru = namaToko,
             stokBaru = stokBarang
         )
-
+        val history= History(
+            id = 0,
+            waktu = DateUtils.getCurrentDate(),
+            kodeBarang = currentStok.id_barang,
+            stok = stokBarang.toString(),
+            jenisData = "stokmasuk"
+        )
+        NewStokViewModel.insertHistory(history)
         NewStokViewModel.updatestok(updatedStok)
 
         NewStokViewModel.loadBarang()

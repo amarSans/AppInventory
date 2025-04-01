@@ -9,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
+import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.data.EditData
+import com.tugasmobile.inventory.utils.DateUtils
 
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding
@@ -77,9 +79,28 @@ class DetailBarang : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-    private fun deleteBarang(){
-        detailBarangViewModel.deleteBarang(barangId)
-        finish()
+    private fun deleteBarang() {
+        val itemBarang = detailBarangViewModel.currentBarang.value
+        val stok = detailBarangViewModel.currentStok.value
+
+        if (itemBarang != null) {
+            val history = History(
+                id = 0,
+                waktu = DateUtils.getCurrentDate(),
+                kodeBarang = itemBarang.id_barang,  // Ambil kode barang sebelum dihapus
+                stok = stok?.stokBarang.toString() ?: "0",  // Ambil stok sebelum dihapus
+                jenisData = "barangdihapus"
+            )
+
+            // Simpan history sebelum menghapus barang
+            detailBarangViewModel.insertHistory(history)
+
+            // Hapus barang dari database
+            detailBarangViewModel.deleteBarang(barangId)
+
+            // Tutup activity setelah menghapus
+            finish()
+        }
     }
 
 }

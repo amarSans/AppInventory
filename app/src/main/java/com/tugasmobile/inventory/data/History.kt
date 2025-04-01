@@ -5,7 +5,5 @@ data class History(
     val waktu: String,
     val kodeBarang: String,
     val stok: String,
-    val ukuranWarna: String,
-    val harga: String,
-    val jenisData: Boolean
+    val jenisData: String
 )

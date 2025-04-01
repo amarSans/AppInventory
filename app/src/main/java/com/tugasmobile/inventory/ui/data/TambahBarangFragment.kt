@@ -145,8 +145,8 @@ class TambahBarangFragment : Fragment() {
     }
     private fun saveData() {
         val gambarUri = selectedImageUri ?: getDefaultImageUri()
-        val namaProduk = binding.editTextNamaBarang.text.toString().trim()
-        if (namaProduk.isEmpty()) {
+        val merekProduk = binding.editTextNamaBarang.text.toString().trim()
+        if (merekProduk.isEmpty()) {
             binding.editTextNamaBarang.error = "Nama barang tidak boleh kosong"
             return
         }
@@ -198,7 +198,7 @@ class TambahBarangFragment : Fragment() {
 
         val itemBarang= ItemBarang(
             id_barang = kodeProduk,
-            merek_barang = namaProduk,
+            merek_barang = merekProduk,
             karakteristik = karakteristik,
             gambar = gambarUri.toString()
         )
@@ -215,15 +215,13 @@ class TambahBarangFragment : Fragment() {
             Harga_Modal = hargaProduk,
             Nama_Toko =namaToko
         )
-        val harga_history = HargaUtils.formatHarga(hargaProduk)
+
         val history= History(
             id = 0,
             waktu = DateUtils.getCurrentDate(),
             kodeBarang = kodeProduk,
             stok = stokBarang.toString(),
-            ukuranWarna = ukuranWarna,
-            harga = harga_history,
-            jenisData = true
+            jenisData = "barangmasuk"
         )
         NewItemViewModel.insertHistory(history)
         NewItemViewModel.insertInputBarang(itemBarang,stok,barangIn)
