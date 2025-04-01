@@ -241,6 +241,7 @@ class TambahStokFragment : Fragment() {
             kodeBarang = currentStok.id_barang,
             ukuranWarnaBaru = ukuranWarnaList.joinToString(","),
             hargaJualBaru = hargaBarang,
+            tanggalMasukBaru = DateUtils.getCurrentDate(),
             namaTokoBaru = namaToko,
             stokBaru = stokBarang
         )

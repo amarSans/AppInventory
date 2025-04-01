@@ -319,6 +319,15 @@ class BrgDatabaseHelper(context: Context) :
                 )
                 rowsAffected += updatedRows
             }
+            update.tanggalMasukBaru?.let{
+                val values = ContentValues().apply { put(COLUMN_TANGGAL_MASUK, it) }
+                val updatedRows = db.update(
+                    TABLE_BARANG_MASUK, values,
+                    "$COLUMN_KODE_BARANG = ?",
+                    arrayOf(update.kodeBarang)
+                )
+                rowsAffected += updatedRows
+            }
 
             // Update ukuran warna jika ada
             update.ukuranWarnaBaru?.let {
@@ -636,7 +645,6 @@ class BrgDatabaseHelper(context: Context) :
         val items = mutableListOf<History>()
         if (cursor.moveToFirst()) {
             do {
-
                 val idhistory =
                     cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_HISTORY))
                 val historwaktu =
