@@ -32,6 +32,7 @@ import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.FragmentTambahBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 import com.tugasmobile.inventory.utils.getCacheImageUri
@@ -46,6 +47,7 @@ class TambahBarangFragment : Fragment() {
     private var stokBarang = 0
     private val NewItemViewModel:ViewModel by viewModels()
 
+    private val selectedItems = mutableSetOf<String>()
     private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
@@ -154,6 +156,8 @@ class TambahBarangFragment : Fragment() {
                 NewItemViewModel.cekKodeBarangAda(kode)
             }
         }
+        var karakteristik = binding.editKarakterikstik.text.toString().trim()
+
         val hargaProdukText = binding.editTextHargaBarang.text.toString().replace(".", "").trim()
         if (hargaProdukText.isEmpty()) {
             binding.editTextHargaBarang.error = "Harga barang tidak boleh kosong"
@@ -183,7 +187,7 @@ class TambahBarangFragment : Fragment() {
             binding.editTextUkuranwarna.error = "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
             return
         }
-        // Simpan ke selectedSizesList
+
         selectedSizesColorList = ukuranWarna.split(",").map { it.trim() }
 
         val namaTokoPreview = binding.edtNamaToko.text.toString().trim()
@@ -192,6 +196,7 @@ class TambahBarangFragment : Fragment() {
         val itemBarang= ItemBarang(
             id_barang = kodeProduk,
             merek_barang = namaProduk,
+            karakteristik = karakteristik,
             gambar = gambarUri.toString()
         )
         val stok= Stok(
@@ -252,7 +257,15 @@ class TambahBarangFragment : Fragment() {
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
-        binding.editTextDate.setText(DateUtils.getCurrentDate())
+        binding.btncharater.setOnClickListener {
+            val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
+                selectedItems.clear()
+                selectedItems.addAll(updatedItems)
+                Log.d("KarakteristikFragment", "Selected Items Setelah Dialog Ditutup: $selectedItems")
+                updateKarakteristikText()
+            }
+            dialog.show(parentFragmentManager, "KarakteristikBottomSheet")
+        }
         setupSpinners()
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)
         binding.editStokBarang.addTextChangedListener(object : TextWatcher {
@@ -359,6 +372,12 @@ class TambahBarangFragment : Fragment() {
         }
         binding.editStokBarang.setText(stokBarang.toString())
     }
+    private fun updateKarakteristikText() {
+        val karakteristik = if (selectedItems.isEmpty()) "Belum diisi" else selectedItems.joinToString(", ")
+        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik") // 🔥 Debugging
+        binding.editKarakterikstik.setText(karakteristik)
+    }
+
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001

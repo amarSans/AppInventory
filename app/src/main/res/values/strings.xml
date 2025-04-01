@@ -56,6 +56,16 @@
     <string name="masukkan_nama_toko">input nama toko</string>
     <string name="save">Save</string>
 
+    <string-array name="karakteristik_barang">
+        <item>Sneakers</item>
+        <item>Sepatu Formal</item>
+        <item>Sandals</item>
+        <item>Boots</item>
+        <item>Sepatu Olahraga</item>
+        <item>Flip Flops</item>
+    </string-array>
+    <string name="belum_diisi">belum disi</string>
+
     <!--bagian button sheet-->
     <string name="bayi">Bayi</string>
     <string name="_19">19</string>

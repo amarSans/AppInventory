@@ -8,5 +8,6 @@ data class DataBarangAkses(
     val ukuranwarna: List<String>,
     val waktu: String,
     var nama_toko: String,
-    var gambar: String
+    var gambar: String,
+    var karakteristik: String
 );

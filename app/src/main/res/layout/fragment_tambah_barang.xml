@@ -235,7 +235,7 @@
             style="@style/CustomEditTextStyle"
             android:hint="input ukuran warna"
             android:enabled="false"
-            app:layout_constraintBottom_toTopOf="@id/tvTime"
+            app:layout_constraintBottom_toTopOf="@id/tv_karakteristik"
             app:layout_constraintStart_toStartOf="@id/edt_Ukuran"
             app:layout_constraintTop_toBottomOf="@id/edt_Ukuran"
             app:layout_constraintEnd_toStartOf="@id/remove_ukuranwarna"/>
@@ -252,39 +252,49 @@
             />
 
         <TextView
-            android:id="@+id/tvTime"
+            android:id="@+id/tv_karakteristik"
             style="@style/CustomTextViewStyle"
-            android:text="@string/waktu"
-            app:layout_constraintBottom_toTopOf="@id/edit_text_date"
+            android:text="karakterisitik"
+            app:layout_constraintBottom_toTopOf="@id/edit_karakterikstik"
             app:layout_constraintEnd_toEndOf="@id/edit_text_ukuranwarna"
             app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarna"
             app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarna" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
-            android:id="@+id/edit_text_date"
+            android:id="@+id/edit_karakterikstik"
             style="@style/CustomEditTextStyle"
-            android:clickable="false"
-            android:focusable="false"
+            android:hint="masukkan_karakteristik"
             app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
+            app:layout_constraintEnd_toStartOf="@id/btncharater"
+            app:layout_constraintStart_toStartOf="@id/tv_karakteristik"
+            app:layout_constraintTop_toBottomOf="@id/tv_karakteristik" />
+        <ImageView
+            android:id="@+id/btncharater"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/edit_text_bacground"
+            app:layout_constraintStart_toEndOf="@id/edit_karakterikstik"
+            app:layout_constraintTop_toTopOf="@id/edit_karakterikstik"
+            app:layout_constraintBottom_toBottomOf="@id/edit_karakterikstik"
             app:layout_constraintEnd_toEndOf="@id/remove_ukuranwarna"
-            app:layout_constraintStart_toStartOf="@id/tvTime"
-            app:layout_constraintTop_toBottomOf="@id/tvTime" />
+            android:src="@drawable/baseline_add_24"/>
+
 
         <TextView
             android:id="@+id/tvnamaToko"
             style="@style/CustomTextViewStyle"
             android:text="@string/nama_toko"
             app:layout_constraintBottom_toTopOf="@id/edt_nama_toko"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_date"
-            app:layout_constraintStart_toStartOf="@id/edit_text_date"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_date" />
+            app:layout_constraintEnd_toEndOf="@id/edit_karakterikstik"
+            app:layout_constraintStart_toStartOf="@id/edit_karakterikstik"
+            app:layout_constraintTop_toBottomOf="@id/edit_karakterikstik" />
 
         <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edt_nama_toko"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_nama_toko"
             app:layout_constraintBottom_toTopOf="@id/button_save"
-            app:layout_constraintEnd_toEndOf="@id/edit_text_date"
+            app:layout_constraintEnd_toEndOf="@id/btncharater"
             app:layout_constraintStart_toStartOf="@id/tvnamaToko"
             app:layout_constraintTop_toBottomOf="@id/tvnamaToko" />
 

@@ -122,7 +122,6 @@ class EditData : AppCompatActivity() {
 
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
-        binding.editTextDate.setText(DateUtils.getCurrentDate())
         binding.buttonSave.setOnClickListener {
             saveChanges()
         }
@@ -268,7 +267,7 @@ class EditData : AppCompatActivity() {
     private fun saveChanges() {
         val stokBarangText = binding.editStokBarang.text.toString().trim()
         val stokBarang = stokBarangText.toIntOrNull() ?: 0
-        val tanggalupdate = binding.editTextDate.text.toString()
+        val tanggalupdate = DateUtils.getCurrentDate()
         val kodeupdate=binding.editTextKodeBarangEdit.text.toString()
 
         val ukuranWarna = binding.editTextUkuranwarnaEdit.text.toString().trim()
