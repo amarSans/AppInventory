@@ -256,6 +256,7 @@
             android:id="@+id/edit_karakterikstikedit"
             style="@style/CustomEditTextStyle"
             android:hint="masukkan_karakteristik"
+            android:enabled="false"
             app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
             app:layout_constraintEnd_toStartOf="@id/btncharater"
             app:layout_constraintStart_toStartOf="@id/tv_karakteristikedit"
