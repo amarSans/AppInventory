@@ -31,6 +31,8 @@ firebaseCrashlyticsBuildtools = "3.0.3"
 screenshotValidationJunitEngine = "0.0.1-alpha09"
 androidxpreference = "1.2.1"
 preference = "1.2.1"
+lottie = "6.1.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -63,6 +65,8 @@ androidx-work = { module = "androidx.work:work-runtime-ktx", version.ref = "andr
 androidx-preference = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidxpreference" }
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 google-flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

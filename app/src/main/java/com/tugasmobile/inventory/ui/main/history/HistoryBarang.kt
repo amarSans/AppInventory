@@ -29,6 +29,8 @@ class HistoryBarang : Fragment() {
     private var _binding: FragmentHistoryBarangBinding? = null
     private var selectedJenisData: String? = null
     private val binding get() = _binding!!
+    private lateinit var imgNoData: View
+    private lateinit var recyclerViewHistory: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +41,10 @@ class HistoryBarang : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        imgNoData = view.findViewById(R.id.lottie_empty)
+        recyclerViewHistory = view.findViewById(R.id.recycler_history)
+
+        applyFilter()
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 
@@ -94,6 +100,13 @@ class HistoryBarang : Fragment() {
 
             // Update adapter dengan data yang sudah difilter
             adapterHistory.setItems(filteredList.reversed())
+            if (filteredList.isEmpty()) {
+                imgNoData.visibility = View.VISIBLE  // Tampilkan gambar stok kosong
+                recyclerViewHistory.visibility = View.GONE  // Sembunyikan RecyclerView
+            } else {
+                imgNoData.visibility = View.GONE  // Sembunyikan gambar stok kosong
+                recyclerViewHistory.visibility = View.VISIBLE  // Tampilkan RecyclerView
+            }
         }
     }
 
