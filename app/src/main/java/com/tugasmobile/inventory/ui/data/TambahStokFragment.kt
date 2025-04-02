@@ -31,6 +31,7 @@ class TambahStokFragment : Fragment() {
     private lateinit var colorAdapter: AdapterColorIn
     private var selectedImageUri: Uri? = null
     private var stokBarang = 0
+    private var stokhistory =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -183,6 +184,7 @@ class TambahStokFragment : Fragment() {
         }
         NewStokViewModel.currentStok.observe(viewLifecycleOwner) { stok ->
             stok?.let {
+                stokhistory = it.stokBarang
                 if (it.stokBarang == 0) {
                     binding.editTextUkuranwarna.setText("")
                     binding.editStokBarang.setText("")
@@ -246,11 +248,12 @@ class TambahStokFragment : Fragment() {
             namaTokoBaru = namaToko,
             stokBaru = stokBarang
         )
+        stokhistory= stokBarang-stokhistory
         val history= History(
             id = 0,
             waktu = DateUtils.getCurrentDate(),
             kodeBarang = currentStok.id_barang,
-            stok = stokBarang.toString(),
+            stok = stokhistory.toString(),
             jenisData = "stokmasuk"
         )
         NewStokViewModel.insertHistory(history)
