@@ -77,4 +77,6 @@ class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>
     }
 
 
+
+
 }

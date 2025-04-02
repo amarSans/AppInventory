@@ -25,6 +25,7 @@ class NotificationHelper(private val context: Context) {
 
     fun sendNotification( stok: Int) {
         val intent = Intent(context, MainActivity::class.java)
+        intent.putExtra("filter_stock", "stok_rendah")
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)

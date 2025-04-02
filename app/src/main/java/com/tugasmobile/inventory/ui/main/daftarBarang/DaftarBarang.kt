@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
+import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
@@ -27,6 +28,7 @@ class DaftarBarang : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapterDaftarBarang: AdapterDaftarBarang
     private lateinit var barangViewModel: ViewModel
+    private var filterStock: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,6 +39,9 @@ class DaftarBarang : Fragment() {
 
         // Inisialisasi ViewModel
         barangViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+
+        filterStock = arguments?.getString("filter_stock")
+
 
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
@@ -54,10 +59,17 @@ class DaftarBarang : Fragment() {
         binding.recyclerViewLaporan.layoutManager =
             GridLayoutManager(requireContext(), 2) // 2 kolom
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
-            adapterDaftarBarang.updateLaporanList(listBarang)
+            if (filterStock == null) {
+                adapterDaftarBarang.updateLaporanList(listBarang)
+            } else {
+                // Jika tidak ada filter stok atau filter stok sudah dibatalkan, tampilkan semua barang
+                applyStockFilter(listBarang)
+            }
         }
+
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -70,6 +82,13 @@ class DaftarBarang : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_filter -> {
+                        if(filterStock!=null){
+                            barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
+                                adapterDaftarBarang.updateLaporanList(listBarang)  // Update RecyclerView tanpa filter
+                            }
+                            filterStock = null
+                        }
+
                         showFilterMenu(requireActivity().findViewById(R.id.action_filter))
                         true
                     }
@@ -79,8 +98,6 @@ class DaftarBarang : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
-
 
 
     private fun showFilterMenu(view: View) {
@@ -96,9 +113,16 @@ class DaftarBarang : Fragment() {
                 R.id.filter_nama_az -> adapterDaftarBarang.sortByNama(ascending = true)
                 R.id.filter_nama_za -> adapterDaftarBarang.sortByNama(ascending = false)
             }
+
             true
         }
         popup.show()
+    }
+
+    private fun applyStockFilter(listBarang: List<DataBarangAkses>) {
+        val filteredList = listBarang.filter { it.stok <= 2 }  // Ambil hanya stok <= 2
+        adapterDaftarBarang.updateLaporanList(filteredList) // Update RecyclerView
+
     }
 
     override fun onResume() {

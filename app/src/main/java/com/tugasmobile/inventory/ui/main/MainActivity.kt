@@ -27,6 +27,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.main.daftarBarang.DaftarBarang
 import com.tugasmobile.inventory.ui.main.setting.SettingActivity
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.NotificationHelper
@@ -117,6 +118,18 @@ class MainActivity : AppCompatActivity() {
         // Buat Notifikasi Channel
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()
+        val filterStock = intent.getStringExtra("filter_stock")
+
+        if (filterStock != null) {
+            val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+            // Buat bundle untuk mengirim filterStock ke DaftarBarang
+            val bundle = Bundle().apply {
+                putString("filter_stock", filterStock)
+            }
+
+            navController.navigate(R.id.nav_daftar_barang, bundle)
+        }
 
     }
 

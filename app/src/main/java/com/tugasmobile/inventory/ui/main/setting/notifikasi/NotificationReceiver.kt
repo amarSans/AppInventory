@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler.resetDismissedNotificationStatus
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -15,6 +16,7 @@ class NotificationReceiver : BroadcastReceiver() {
             notificationHelper.createNotificationChannel() // Pastikan channel dibuat
             notificationHelper.sendNotification(lowStockCount)
             saveLastNotificationTime(context)
+            resetDismissedNotificationStatus(context)
         }
 
     }
@@ -26,7 +28,9 @@ class NotificationReceiver : BroadcastReceiver() {
         val prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putLong("last_notification_time", System.currentTimeMillis())
-        editor.apply() // Gunakan apply() untuk menyimpan secara asinkron
+        editor.apply()
     }
+
+
 
 }

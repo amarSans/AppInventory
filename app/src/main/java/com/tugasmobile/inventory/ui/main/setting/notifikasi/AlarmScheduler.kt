@@ -21,11 +21,6 @@ object AlarmScheduler {
         val databaseHelper = BrgDatabaseHelper(context)
         val jadwal = databaseHelper.getSetting()
         if (jadwal != null && jadwal.isNotifEnabled) {
-            Log.d(
-                TAG,
-                "Data dari database: startDay=${jadwal.startDay}, endDay=${jadwal.endDay}, notifTime=${jadwal.notifTime}, isNotifEnabled=${jadwal.isNotifEnabled}"
-            )
-
             val hariMulai = jadwal.startDay // Contoh: "Senin"
             val hariBerakhir = jadwal.endDay // Contoh: "Selasa"
 
@@ -36,32 +31,38 @@ object AlarmScheduler {
                 TAG,
                 "Konversi hari: hariMulai=$hariMulaiIndex, hariBerakhir=$hariBerakhirIndex, hariIni=$hariIniIndex"
             )
+            // Cek jika notifikasi sudah dihapus
+            val prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE)
+            val dismissedTime = prefs.getLong("dismissed_notification_time", 0)
+            val currentTime = System.currentTimeMillis()
 
-            // Cek apakah hari ini masih dalam rentang
+            // Jika notifikasi dihapus dalam 24 jam terakhir, batalkan penjadwalan
+            if (dismissedTime > 0 && (currentTime - dismissedTime) < 86400000) {
+                Log.d(TAG, "Notifikasi sudah dihapus hari ini, tidak menjadwalkan ulang.")
+                resetDismissedNotificationStatus(context)
+                return
+            }
+
             if (isWithinSchedule(hariIniIndex, hariMulaiIndex, hariBerakhirIndex)) {
                 val waktuMillis = getNextNotificationTime(jadwal.notifTime)
-                Log.d(TAG, "Notifikasi dijadwalkan pada: ${formatMillisToTime(waktuMillis)}")
                 setAlarm(context, waktuMillis)
                 if (!isNotificationShownToday(context)) {
                     setAlarm(context, waktuMillis)
-                } else {
-                    Log.d(TAG, "Notifikasi sudah muncul hari ini, tidak menjadwalkan ulang")
                 }
             } else {
-                Log.d(TAG, "Hari ini di luar rentang, notifikasi dibatalkan")
                 cancelNotification(context)
             }
 
 
         }
     }
-    fun resetNotificationStatus(context: Context) {
+    fun resetDismissedNotificationStatus(context: Context) {
         val prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE)
         val editor = prefs.edit()
-        editor.remove("last_notification_time") // Hapus waktu terakhir notifikasi muncul
+        editor.remove("dismissed_notification_time") // Hapus status penghapusan notifikasi
         editor.apply()
-        Log.d(TAG, "Status notifikasi di-reset")
     }
+
     private fun isNotificationShownToday(context: Context): Boolean {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val lastNotificationTime = prefs.getLong(KEY_LAST_NOTIFICATION_TIME, 0)
