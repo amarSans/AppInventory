@@ -116,11 +116,8 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun cekBarangExist(kodeBarang: String) {
-
-
         viewModelScope.launch(Dispatchers.IO) {
             val exists = databaseHelper.isBarangExist(kodeBarang)
-            
             _barangExist.postValue(exists)
         }
     }
@@ -144,10 +141,6 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     fun searchBarang(query: String) {
         val results = databaseHelper.searchBarang(query)
         _dataSearch.value = results
-    }
-    fun cekKodeBarang(kode: String): Boolean {
-        val results = databaseHelper.searchBarang(kode)
-        return results.isNotEmpty() // Jika ada hasil berarti kode sudah ada
     }
 
     fun deleteBarang(id: String) {

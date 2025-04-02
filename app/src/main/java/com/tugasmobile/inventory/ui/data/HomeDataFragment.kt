@@ -38,7 +38,6 @@ class HomeDataFragment : Fragment() {
                     cekDanPindahFragment(kodeBarang)
                 }
             } else {
-                
                 cekDanPindahFragment(kodeBarang)
             }
         }
@@ -63,7 +62,6 @@ class HomeDataFragment : Fragment() {
 
     // === CEK DAN PINDAH FRAGMENT ===
     private fun cekDanPindahFragment(kodeBarang: String) {
-
         dataViewModel.cekBarangExist(kodeBarang)
         dataViewModel.barangExist.observe(viewLifecycleOwner) { hasilPencarian ->
             dataViewModel.barangExist.removeObservers(viewLifecycleOwner)
