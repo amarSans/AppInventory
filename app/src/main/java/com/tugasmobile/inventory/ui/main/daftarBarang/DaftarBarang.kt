@@ -73,6 +73,7 @@ class DaftarBarang : Fragment() {
                         showFilterMenu(requireActivity().findViewById(R.id.action_filter))
                         true
                     }
+
                     else -> false
                 }
             }
@@ -84,7 +85,7 @@ class DaftarBarang : Fragment() {
 
     private fun showFilterMenu(view: View) {
         val popup = PopupMenu(requireContext(), view)
-        popup.menuInflater.inflate(R.menu.menu_filter, popup.menu)
+        popup.menuInflater.inflate(R.menu.menu_filter_daftarbarang, popup.menu)
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {

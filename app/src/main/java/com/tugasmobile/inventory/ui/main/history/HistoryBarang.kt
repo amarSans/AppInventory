@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,6 +27,7 @@ class HistoryBarang : Fragment() {
     private lateinit var adapterHistory: AdapterHistoryBarang
     private var allHistoryItems: List<History> = listOf()
     private var _binding: FragmentHistoryBarangBinding? = null
+    private var selectedJenisData: String? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -39,13 +41,15 @@ class HistoryBarang : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
-                menuInflater.inflate(R.menu.menu_main, menu)
-                menu.findItem(R.id.action_filter)?.isVisible = false
+
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
+                    R.id.action_filter -> {
+                        showFilterMenu(requireActivity().findViewById(R.id.action_filter))
+                        true
+                    }
                     R.id.action_settings -> {
 
                         true
@@ -78,5 +82,60 @@ class HistoryBarang : Fragment() {
         super.onDestroyView()
         _binding = null // Bersihkan binding saat fragment dihancurkan
     }
+    private fun applyFilter() {
+        historyViewModel.allHistory.observe(viewLifecycleOwner) { historyList ->
+            val filteredList = if (selectedJenisData != null) {
+                // Filter data berdasarkan jenis data yang dipilih
+                historyList.filter { it.jenisData == selectedJenisData }
+            } else {
+                // Jika tidak ada filter, tampilkan semua data
+                historyList
+            }
+
+            // Update adapter dengan data yang sudah difilter
+            adapterHistory.setItems(filteredList.reversed())
+        }
+    }
+
+    private fun showFilterMenu(view: View) {
+        val popupMenu = PopupMenu(requireContext(), view)  // Gunakan icon view dari menuItem
+        val inflater = popupMenu.menuInflater
+        inflater.inflate(R.menu.menu_filter_history, popupMenu.menu)  // filter_menu adalah menu XML yang akan berisi pilihan filter
+
+        // Menangani item menu yang dipilih di popup
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_filter_barangmasuk -> {
+                    selectedJenisData = "barangmasuk"
+                    applyFilter()
+                    true
+                }
+                R.id.action_filter_stokmasuk -> {
+                    selectedJenisData = "stokmasuk"
+                    applyFilter()
+                    true
+                }
+                R.id.action_filter_stokkeluar -> {
+                    selectedJenisData = "stokkeluar"
+                    applyFilter()
+                    true
+                }
+                R.id.action_filter_barangdihapus -> {
+                    selectedJenisData = "barangdihapus"
+                    applyFilter()
+                    true
+                }
+                R.id.action_filter_reset -> {
+                    // Reset filter untuk menampilkan semua data
+                    selectedJenisData = null  // Hapus filter yang diterapkan
+                    applyFilter()  // Memanggil applyFilter untuk menampilkan semua data
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()  // Menampilkan PopupMenu
+    }
+
 
 }
