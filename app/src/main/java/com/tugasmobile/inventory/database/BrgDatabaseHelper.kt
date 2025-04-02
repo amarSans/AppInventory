@@ -11,6 +11,9 @@ import com.tugasmobile.inventory.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class BrgDatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -634,6 +637,7 @@ class BrgDatabaseHelper(context: Context) :
     }
 
     fun getAllHistoryItems(): List<History> {
+        deleteOldHistory()
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM ${TABLE_HISTORY}", null)
         val items = mutableListOf<History>()
@@ -662,6 +666,36 @@ class BrgDatabaseHelper(context: Context) :
         }
         cursor.close()
         return items
+    }
+
+    fun deleteOldHistory() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val db = writableDatabase
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val thirtyDaysAgo = Calendar.getInstance().apply {
+                add(Calendar.DAY_OF_YEAR, -30) // Ambil tanggal 30 hari yang lalu
+            }.time
+
+            val cursor = db.rawQuery("SELECT $COLUMN_ID_HISTORY, $COLUMN_WAKTU_HISTORY FROM $TABLE_HISTORY", null)
+
+            if (cursor.moveToFirst()) {
+                do {
+                    val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_HISTORY))
+                    val historyDateStr = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WAKTU_HISTORY))
+
+                    try {
+                        val historyDate = dateFormat.parse(historyDateStr)
+                        if (historyDate != null && historyDate.before(thirtyDaysAgo)) {
+                            db.delete(TABLE_HISTORY, "$COLUMN_ID_HISTORY = ?", arrayOf(id.toString()))
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } while (cursor.moveToNext())
+            }
+            cursor.close()
+            db.close()
+        }
     }
 
 
