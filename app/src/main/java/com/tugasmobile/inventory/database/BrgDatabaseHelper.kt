@@ -694,7 +694,6 @@ class BrgDatabaseHelper(context: Context) :
                 } while (cursor.moveToNext())
             }
             cursor.close()
-            db.close()
         }
     }
 
