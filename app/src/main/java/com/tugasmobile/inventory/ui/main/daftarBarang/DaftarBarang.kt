@@ -59,11 +59,11 @@ class DaftarBarang : Fragment() {
         binding.recyclerViewLaporan.layoutManager =
             GridLayoutManager(requireContext(), 2) // 2 kolom
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
-            if (filterStock == null) {
-                adapterDaftarBarang.updateLaporanList(listBarang)
+            if (filterStock != null) {
+                applyStockFilter(listBarang)
             } else {
                 // Jika tidak ada filter stok atau filter stok sudah dibatalkan, tampilkan semua barang
-                applyStockFilter(listBarang)
+                adapterDaftarBarang.updateLaporanList(listBarang)
             }
         }
 
@@ -86,7 +86,8 @@ class DaftarBarang : Fragment() {
                             barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
                                 adapterDaftarBarang.updateLaporanList(listBarang)  // Update RecyclerView tanpa filter
                             }
-                            filterStock = null
+                            filterStock=null
+                            arguments?.remove("filter_stock")
                         }
 
                         showFilterMenu(requireActivity().findViewById(R.id.action_filter))
