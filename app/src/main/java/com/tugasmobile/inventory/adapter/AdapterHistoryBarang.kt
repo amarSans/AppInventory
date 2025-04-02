@@ -40,7 +40,7 @@ class AdapterHistoryBarang (private var historyList: List<History>) :
         holder.tvHistoryDate.text = item.waktu
 
         // Mengubah warna bubble berdasarkan jenis transaksi
-        val context = holder.itemView.context
+
         when (item.jenisData) {
             "barangmasuk" -> holder.chatBubble.setBackgroundResource(R.drawable.bg_chat_bubble_blue)  // Biru
             "stokmasuk" -> holder.chatBubble.setBackgroundResource(R.drawable.bg_chat_bubble_green)  // Hijau

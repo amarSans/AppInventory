@@ -58,12 +58,7 @@ class BarangMasuk : Fragment() {
         binding.recyclerViewLaporan.adapter = adapterDaftarBarang
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())// 2 kolom
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
-            Log.d("BarangMasuk", "Data diterima: ${listBarang.size} item")
-            val sortedList = listBarang.sortedByDescending {
-                val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                format.parse(it.waktu)?.time ?: 0
-            }
-            adapterDaftarBarang.updateLaporanList(sortedList)
+            adapterDaftarBarang.updateLaporanList(listBarang.reversed())
         }
         return binding.root
     }

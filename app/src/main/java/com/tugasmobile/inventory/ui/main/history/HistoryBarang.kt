@@ -66,7 +66,7 @@ class HistoryBarang : Fragment() {
             historyList.forEach { history ->
                 Log.d("HistoryBarangFragment", "History: $history")
             }
-            adapterHistory.setItems(historyList) // Update data di adapter
+            adapterHistory.setItems(historyList.reversed()) // Update data di adapter
         }
 
         // Muat data history
