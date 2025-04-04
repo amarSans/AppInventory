@@ -14,6 +14,7 @@ import com.tugasmobile.inventory.data.DataSearch
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.ItemNotifikasi
+import com.tugasmobile.inventory.data.SearchData
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.data.StokUpdate
@@ -61,6 +62,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _barangExist = MutableLiveData<Boolean>()
     val barangExist: LiveData<Boolean> get() = _barangExist
+
+    private val _searchResults = MutableLiveData<List<SearchData>>()
+    val searchResults: LiveData<List<SearchData>> get() = _searchResults
+
 
     init {
         loadBarang()
@@ -185,6 +190,23 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     }
     fun insertHistory(history: History) {
         databaseHelper.insertHistory(history)
+    }
+
+    fun search(keyword: String) {
+        // Ganti dengan fungsi yang sesuai
+        _searchResults.value = databaseHelper.searchFlexible(keyword)
+    }
+
+    fun searchFlexible(keyword: String): List<SearchData> {
+        return databaseHelper.searchFlexible(keyword)
+    }
+
+    fun searchByKarakteristik(keyword: String): List<SearchData> {
+        return databaseHelper.searchByKarakteristik(keyword)
+    }
+
+    fun searchByKodeBarang(kodeBarang: String): SearchData? {
+        return databaseHelper.searchByKodeBarang(kodeBarang)
     }
 
 }

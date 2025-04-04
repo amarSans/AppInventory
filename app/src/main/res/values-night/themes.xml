@@ -3,7 +3,7 @@
     <style name="Theme.Inventory" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/primaryColornight</item>
-        <item name="colorPrimaryVariant">@color/dark_background</item>
+        <item name="colorPrimaryVariant">@color/primaryColornight</item>
         <item name="colorOnPrimary">@color/dark_text</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/dark_button</item>
@@ -24,7 +24,7 @@
 
         <!-- Warna tombol -->
         <item name="android:colorButtonNormal">@color/dark_button</item>
-        <item name="android:textColorPrimaryInverse">@color/dark_button_text</item>
+        <item name="android:textColorPrimaryInverse">@color/textColor</item>
 
 
     </style>

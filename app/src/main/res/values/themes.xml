@@ -1,9 +1,21 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Inventory" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="android:textColorPrimary">@color/dark_text</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryColor</item>
+        <item name="colorOnPrimary">@color/dark_text</item>
+        <item name="android:statusBarColor">@color/primaryColor</item><!--mengubah semua warna hurf tombol termasuk edttext-->
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/light_button</item>
+        <item name="colorSecondaryVariant">@color/light_button</item>
+        <item name="colorOnSecondary">@color/textColor</item>
+        <!-- Status bar color. -->
+        <item name="android:colorBackground">@color/light_background</item>
+        <item name="colorOnBackground">@color/light_text</item>
+        <item name="android:textColorPrimary">@color/light_text</item>
         <item name="android:textColorHint">@color/hintColornight</item>
         <item name="android:textColorSecondary">@color/dark_text</item>
+
     </style>
 
     <style name="Theme.Inventory.NoActionBar">
@@ -15,6 +27,7 @@
     <style name="Theme.Inventory.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
+        <item name="android:statusBarColor">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/textColor</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_button</item>
@@ -25,7 +38,7 @@
         <item name="colorOnBackground">@color/light_text</item>
         <item name="android:textColorPrimary">@color/dark_text</item>
         <item name="android:textColorHint">@color/hintColornight</item>
-        <item name="android:textColorSecondary">@color/dark_text</item>
+        <item name="android:textColorSecondary">@color/dark_background</item>
     </style>
 
     <style name="Theme.Inventory.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
@@ -35,6 +48,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/dark_text</item><!--mengubah semua warna hurf tombol termasuk edttext-->
+        <item name="android:statusBarColor">@color/primaryColor</item><!--mengubah semua warna hurf tombol termasuk edttext-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_button</item>
         <item name="colorSecondaryVariant">@color/light_button</item>

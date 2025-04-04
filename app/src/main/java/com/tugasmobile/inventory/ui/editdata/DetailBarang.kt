@@ -1,12 +1,16 @@
 package com.tugasmobile.inventory.ui.editdata
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.History
@@ -25,6 +29,10 @@ class DetailBarang : AppCompatActivity() {
         binding = ActivityDetailBarangBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        val typedValue = TypedValue()
+        theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true)
+        window.statusBarColor = typedValue.data
+
 
         detailBarangViewModel=  ViewModelProvider(this).get(ViewModel::class.java)
         barangId = intent.getStringExtra("ID_BARANG") ?: ""

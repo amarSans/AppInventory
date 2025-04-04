@@ -4,8 +4,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
+import android.util.Log
+import android.view.MenuItem
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -27,10 +31,12 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.editdata.RincianFragment
 import com.tugasmobile.inventory.ui.main.daftarBarang.DaftarBarang
 import com.tugasmobile.inventory.ui.main.setting.SettingActivity
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.NotificationHelper
+import com.tugasmobile.inventory.ui.search.SearchActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001
+        private const val SEARCH_REQUEST_CODE = 1001
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,13 +100,12 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_setting -> {
-                    // Pindah ke SettingActivity
                     val intent = Intent(this, SettingActivity::class.java)
                     startActivity(intent)
-                    // Tutup drawer setelah berpindah
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+
                 else -> {
                     // Biarkan NavigationUI menangani item lainnya
                     NavigationUI.onNavDestinationSelected(menuItem, navController)
@@ -183,12 +189,47 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_search -> {
+                val intent = Intent(this, SearchActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
+
         return true
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == SEARCH_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val kodeBarang = data?.getStringExtra("SELECTED_KODE_BARANG")
+            if (kodeBarang != null) {
+                openRincianFragment(kodeBarang)
+            }
+        }
+    }
+
+    private fun openRincianFragment(kodeBarang: String) {
+        val fragment = RincianFragment().apply {
+            arguments = Bundle().apply {
+                putString("KODE_BARANG", kodeBarang)
+            }
+        }
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment_content_main, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)

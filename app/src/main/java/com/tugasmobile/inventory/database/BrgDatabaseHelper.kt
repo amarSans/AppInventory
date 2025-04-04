@@ -622,6 +622,93 @@ class BrgDatabaseHelper(context: Context) :
         }
     }
 
+    fun searchFlexible(keyword: String): List<SearchData> {
+        val db = readableDatabase
+        val listBarang = mutableListOf<SearchData>()
+
+        if (keyword.isBlank()) return listBarang
+
+        // Pisahkan keyword per kata, misalnya: "sandal kulit merah"
+        val words = keyword.trim().lowercase().split("\\s+".toRegex())
+
+        // Buat query LIKE untuk tiap kata dan tiap kolom
+        val conditions = mutableListOf<String>()
+        val args = mutableListOf<String>()
+
+        for (word in words) {
+            val likeWord = "%$word%"
+            // Per kolom
+            conditions.add("LOWER(REPLACE(barang.kode_barang, ' ', '')) LIKE ?")
+            args.add(likeWord)
+
+            conditions.add("LOWER(REPLACE(${COLUMN_MEREK_BARANG}, ' ', '')) LIKE ?")
+            args.add(likeWord)
+
+            conditions.add("LOWER(REPLACE(${COLUMN_KARAKTERISTIK}, ' ', '')) LIKE ?")
+            args.add(likeWord)
+
+        }
+
+        val whereClause = conditions.joinToString(" OR ")
+
+        val query = """
+        SELECT * FROM $TABLE_BARANG 
+        LEFT JOIN $TABLE_BARANG_MASUK ON $TABLE_BARANG.$COLUMN_KODE_BARANG = $TABLE_BARANG_MASUK.$COLUMN_KODE_BARANG
+        WHERE $whereClause
+    """
+        val cursor = db.rawQuery(query, args.toTypedArray())
+        while (cursor.moveToNext()) {
+            listBarang.add(
+                SearchData(
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK))
+                )
+            )
+        }
+        cursor.close()
+        return listBarang
+    }
+
+    fun searchByKarakteristik(keyword: String): List<SearchData> {
+        val db = readableDatabase
+        val query = """
+        SELECT * FROM $TABLE_BARANG 
+        WHERE $COLUMN_KARAKTERISTIK LIKE ?
+    """
+        val cursor = db.rawQuery(query, arrayOf("%$keyword%"))
+
+        val listBarang = mutableListOf<SearchData>()
+        while (cursor.moveToNext()) {
+            listBarang.add(
+                SearchData(
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK))
+                )
+            )
+        }
+        cursor.close()
+        return listBarang
+    }
+
+    fun searchByKodeBarang(kodeBarang: String): SearchData? {
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_BARANG WHERE $COLUMN_KODE_BARANG = ?"
+        val cursor = db.rawQuery(query, arrayOf(kodeBarang))
+
+        var barang: SearchData? = null
+        if (cursor.moveToFirst()) {
+            barang = SearchData(
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK))
+            )
+        }
+        cursor.close()
+        return barang
+    }
+
     fun insertHistory(item: History) {
         CoroutineScope(Dispatchers.IO).launch {
             val db = writableDatabase

@@ -7,6 +7,11 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/baseline_search_24"
+        android:title="Cari"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_filter"
         android:title="Filter"
         android:icon="@drawable/baseline_filter_list_24"
