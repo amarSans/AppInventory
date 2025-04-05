@@ -97,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_setting -> {
@@ -125,16 +126,18 @@ class MainActivity : AppCompatActivity() {
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()
         val filterStock = intent.getStringExtra("filter_stock")
-
         if (filterStock != null) {
-            val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-            // Buat bundle untuk mengirim filterStock ke DaftarBarang
             val bundle = Bundle().apply {
                 putString("filter_stock", filterStock)
             }
-
             navController.navigate(R.id.nav_daftar_barang, bundle)
+        }
+        val query=intent.getStringExtra("QUERY_KEY")
+        if (query != null) {
+            val bundle=Bundle().apply {
+                putString("QUERY_KEY",query)
+            }
+            navController.navigate(R.id.nav_daftar_barang,bundle)
         }
 
     }

@@ -6,7 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.daftarBarang.DaftarBarang">
 
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/box_empty" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLaporan"
         android:layout_width="0dp"

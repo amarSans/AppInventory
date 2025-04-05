@@ -2,7 +2,6 @@ package com.tugasmobile.inventory.ui.main.daftarBarang
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
 import com.tugasmobile.inventory.data.DataBarangAkses
@@ -29,6 +28,7 @@ class DaftarBarang : Fragment() {
     private lateinit var adapterDaftarBarang: AdapterDaftarBarang
     private lateinit var barangViewModel: ViewModel
     private var filterStock: String? = null
+    private var query: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,25 +40,11 @@ class DaftarBarang : Fragment() {
         // Inisialisasi ViewModel
         barangViewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
-        filterStock = arguments?.getString("filter_stock")
+        handleIncomingData()
 
-
-        // Inisialisasi RecyclerView dan Adapter
-        binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
-        adapterDaftarBarang = AdapterDaftarBarang(emptyList()) { barang ->
-            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
-                putExtra("NAMA_BARANG", barang.namaBarang)
-                putExtra("STOK_BARANG", barang.stok)
-                putExtra("HARGA_BARANG", barang.harga)
-                putExtra("ID_BARANG", barang.id)
-            }
-            startActivity(intent)  // Mulai Activity dengan data
-        }
-
-        binding.recyclerViewLaporan.adapter = adapterDaftarBarang
-        binding.recyclerViewLaporan.layoutManager =
-            GridLayoutManager(requireContext(), 2) // 2 kolom
+        setupRecyclerView()
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
+
             if (filterStock != null) {
                 applyStockFilter(listBarang)
             } else {
@@ -73,6 +59,26 @@ class DaftarBarang : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { allData ->
+            // Lakukan filter jika ada query
+            val filteredData = if (!query.isNullOrEmpty()) {
+                allData.filter { barang ->
+                    barang.id.contains(query!!, ignoreCase = true) ||
+                            barang.karakteristik.contains(query!!, ignoreCase = true) ||
+                            barang.nama_toko.contains(query!!, ignoreCase = true)
+                }
+            } else {
+                allData
+            }
+
+            if (filteredData.isEmpty()) {
+                emptydata()
+            } else {
+                binding.lottieEmpty.visibility = View.GONE
+                binding.recyclerViewLaporan.visibility = View.VISIBLE
+                adapterDaftarBarang.updateLaporanList(filteredData)
+            }
+        }
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
@@ -99,6 +105,35 @@ class DaftarBarang : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+    private fun handleIncomingData() {
+        val args = arguments
+        filterStock = args?.getString("filter_stock")
+        query = args?.getString("QUERY_KEY")
+        if (filterStock != null||query!=null) {
+            arguments?.remove("QUERY_KEY")
+            arguments?.remove("filter_stock")
+        }
+    }
+
+    private fun setupRecyclerView() {
+        adapterDaftarBarang = AdapterDaftarBarang(emptyList()) { barang ->
+            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
+                putExtra("NAMA_BARANG", barang.namaBarang)
+                putExtra("STOK_BARANG", barang.stok)
+                putExtra("HARGA_BARANG", barang.harga)
+                putExtra("ID_BARANG", barang.id)
+            }
+            startActivity(intent)
+        }
+        binding.recyclerViewLaporan.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            adapter = adapterDaftarBarang
+        }
+    }
+    private fun emptydata(){
+        binding.lottieEmpty.visibility=View.VISIBLE
+        binding.recyclerViewLaporan.visibility=View.GONE
+    }
 
 
     private fun showFilterMenu(view: View) {
@@ -122,7 +157,13 @@ class DaftarBarang : Fragment() {
 
     private fun applyStockFilter(listBarang: List<DataBarangAkses>) {
         val filteredList = listBarang.filter { it.stok <= 2 }  // Ambil hanya stok <= 2
-        adapterDaftarBarang.updateLaporanList(filteredList) // Update RecyclerView
+        if (filteredList.isEmpty()) {
+            emptydata()
+        } else {
+            binding.lottieEmpty.visibility = View.GONE
+            binding.recyclerViewLaporan.visibility = View.VISIBLE
+            adapterDaftarBarang.updateLaporanList(filteredList)
+        } // Update RecyclerView
 
     }
 
