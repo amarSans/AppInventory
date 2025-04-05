@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001
-        private const val SEARCH_REQUEST_CODE = 1001
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +102,17 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_setting -> {
                     val intent = Intent(this, SettingActivity::class.java)
                     startActivity(intent)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.nav_home -> {
+                    navController.popBackStack(R.id.nav_home, false)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+
+                R.id.nav_daftar_barang -> {
+                    navController.navigate(R.id.nav_daftar_barang)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
@@ -209,41 +219,10 @@ class MainActivity : AppCompatActivity() {
 
         return true
     }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == SEARCH_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val kodeBarang = data?.getStringExtra("SELECTED_KODE_BARANG")
-            if (kodeBarang != null) {
-                openRincianFragment(kodeBarang)
-            }
-        }
-    }
-
-    private fun openRincianFragment(kodeBarang: String) {
-        val fragment = RincianFragment().apply {
-            arguments = Bundle().apply {
-                putString("KODE_BARANG", kodeBarang)
-            }
-        }
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_fragment_content_main, fragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null) // Agar bisa kembali ke fragment sebelumnya dengan tombol back
-            .commit()
-    }
-
 
 }

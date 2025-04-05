@@ -99,7 +99,7 @@ class SearchActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("QUERY_KEY", query)
                 startActivity(intent)
-                finish()
+
             }
         }
 
@@ -117,17 +117,12 @@ class SearchActivity : AppCompatActivity() {
             putExtra("ID_BARANG", barang.id)
         }
         startActivity(intent)
-        finish() // Kembali ke MainActivity
+
     }
 
     private fun filterQuery(query: String): String {
-        // Pecah query berdasarkan spasi
         val keywords = query.lowercase().split(" ")
-
-        // Ambil semua nama barang dari hasil pencarian ViewModel (pastikan udah dipanggil)
         val resultList = searchViewModel.searchResults.value ?: emptyList()
-
-        // Simpan semua nama yang dikenali dalam lowercase
         val recognizedWords = resultList.flatMap {
             listOfNotNull(
                 it.id,
