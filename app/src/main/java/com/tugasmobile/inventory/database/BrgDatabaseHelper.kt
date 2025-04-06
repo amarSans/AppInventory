@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.util.Log
 import com.tugasmobile.inventory.data.*
+import com.tugasmobile.inventory.utils.DateUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -903,7 +904,8 @@ class BrgDatabaseHelper(context: Context) :
     fun getLastThreeHistories(): List<History> {
         val historyList = mutableListOf<History>()
         val db = readableDatabase
-        val query = "SELECT * FROM $TABLE_HISTORY ORDER BY $COLUMN_ID_HISTORY DESC LIMIT 3"
+        val today = DateUtils.getCurrentDate()
+        val query = "SELECT * FROM $TABLE_HISTORY WHERE $COLUMN_WAKTU_HISTORY LIKE '$today%' ORDER BY $COLUMN_ID_HISTORY DESC"
         val cursor = db.rawQuery(query, null)
 
         if (cursor.moveToFirst()) {

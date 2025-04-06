@@ -38,7 +38,7 @@
                 android:text="14:23"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                android:textColor="#009688"
+                android:textColor="?attr/colorPrimary"
                 android:gravity="center_vertical" />
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -321,7 +321,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewAktivitas"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
+                android:nestedScrollingEnabled="true"
+                android:overScrollMode="ifContentScrolls"
+                android:scrollbars="vertical"
                 tools:listitem="@layout/item_aktivitas_home" />
 
             <TextView

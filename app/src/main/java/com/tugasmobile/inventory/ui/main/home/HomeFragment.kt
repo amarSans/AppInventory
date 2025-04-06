@@ -160,29 +160,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    fun onTambahBarangClick(view: View) {
-        findNavController().navigate(R.id.action_homeFragment_to_addFragment)
-    }
-
-    fun onKeluarkanBarangClick(view: View) {
-        findNavController().navigate(R.id.action_homeFragment_to_barangKeluarFragment)
-    }
-
-    fun onRiwayatClick(view: View) {
-        findNavController().navigate(R.id.action_homeFragment_to_riwayatFragment)
-    }
-
-    fun onCariBarangClick(view: View) {
-        findNavController().navigate(R.id.action_homeFragment_to_daftarBarangFragment)
-    }
-
-
-
-
-    override fun onResume() {
-        super.onResume()
-
-    }
 
 
     override fun onDestroyView() {
