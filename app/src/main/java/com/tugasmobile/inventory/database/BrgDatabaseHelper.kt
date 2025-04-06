@@ -20,7 +20,7 @@ class BrgDatabaseHelper(context: Context) :
 
     companion object {
         private const val DATABASE_NAME = "Inventaris.db"
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 3
 
         @Volatile
         private var INSTANCE: BrgDatabaseHelper? = null
@@ -39,7 +39,7 @@ class BrgDatabaseHelper(context: Context) :
         const val COLUMN_GAMBAR = "gambar"
 
         // Tabel Stok
-        const val TABLE_STOK = "stok"
+        const val TABLE_STOK = "table_stok"
         const val COLUMN_ID_STOK = "id_stok"
         const val COLUMN_UKURAN_WARNA = "ukuran_warna"
         const val COLUMN_STOK = "stok"
@@ -153,6 +153,22 @@ class BrgDatabaseHelper(context: Context) :
         db.execSQL("DROP TABLE IF EXISTS $TABLE_BARANG_KELUAR")
         onCreate(db)
     }
+
+    override fun onConfigure(db: SQLiteDatabase) {
+        super.onConfigure(db)
+        db.setForeignKeyConstraintsEnabled(true)
+    }
+
+    override fun onOpen(db: SQLiteDatabase) {
+        super.onOpen(db)
+        val cursor = db.rawQuery("PRAGMA foreign_keys;", null)
+        if (cursor.moveToFirst()) {
+            val isEnabled = cursor.getInt(0) == 1
+            Log.d("DB_FOREIGN_KEY", "Foreign keys enabled: $isEnabled")
+        }
+        cursor.close()
+    }
+
 
     fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn) {
         val db = this.writableDatabase
@@ -291,9 +307,11 @@ class BrgDatabaseHelper(context: Context) :
         }
         return id
     }
+
     fun isBarangExist(kodeBarang: String): Boolean {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT COUNT(*) FROM barang WHERE kode_barang = ?", arrayOf(kodeBarang))
+        val cursor =
+            db.rawQuery("SELECT COUNT(*) FROM barang WHERE kode_barang = ?", arrayOf(kodeBarang))
 
         var exists = false
         if (cursor.moveToFirst()) {
@@ -302,6 +320,7 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
         return exists
     }
+
     fun updateStok(update: StokUpdate): Int {
         val db = this.writableDatabase
         var rowsAffected = 0
@@ -318,7 +337,7 @@ class BrgDatabaseHelper(context: Context) :
                 )
                 rowsAffected += updatedRows
             }
-            update.tanggalMasukBaru?.let{
+            update.tanggalMasukBaru?.let {
                 val values = ContentValues().apply { put(COLUMN_TANGGAL_MASUK, it) }
                 val updatedRows = db.update(
                     TABLE_BARANG_MASUK, values,
@@ -369,6 +388,7 @@ class BrgDatabaseHelper(context: Context) :
 
         return rowsAffected
     }
+
     fun searchBarang(query: String): List<DataSearch> {
         val resultList = mutableListOf<DataSearch>()
         val db = this.readableDatabase
@@ -423,7 +443,8 @@ class BrgDatabaseHelper(context: Context) :
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
                 val namaBarang =
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)) ?: ""
-                val karakteristik =cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK)) ?: ""
+                val karakteristik =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK)) ?: ""
                 val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
                 val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
                 val ukuranwarna =
@@ -564,7 +585,8 @@ class BrgDatabaseHelper(context: Context) :
             if (it.moveToFirst()) {
                 val idBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
                 val namaBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)) ?: ""
-                val karakteristik = it.getString(it.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK)) ?: ""
+                val karakteristik =
+                    it.getString(it.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK)) ?: ""
                 val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
                 val idStok = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
                 val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK)) ?: 0
@@ -763,17 +785,25 @@ class BrgDatabaseHelper(context: Context) :
                 add(Calendar.DAY_OF_YEAR, -30) // Ambil tanggal 30 hari yang lalu
             }.time
 
-            val cursor = db.rawQuery("SELECT $COLUMN_ID_HISTORY, $COLUMN_WAKTU_HISTORY FROM $TABLE_HISTORY", null)
+            val cursor = db.rawQuery(
+                "SELECT $COLUMN_ID_HISTORY, $COLUMN_WAKTU_HISTORY FROM $TABLE_HISTORY",
+                null
+            )
 
             if (cursor.moveToFirst()) {
                 do {
                     val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_HISTORY))
-                    val historyDateStr = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WAKTU_HISTORY))
+                    val historyDateStr =
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WAKTU_HISTORY))
 
                     try {
                         val historyDate = dateFormat.parse(historyDateStr)
                         if (historyDate != null && historyDate.before(thirtyDaysAgo)) {
-                            db.delete(TABLE_HISTORY, "$COLUMN_ID_HISTORY = ?", arrayOf(id.toString()))
+                            db.delete(
+                                TABLE_HISTORY,
+                                "$COLUMN_ID_HISTORY = ?",
+                                arrayOf(id.toString())
+                            )
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -782,6 +812,124 @@ class BrgDatabaseHelper(context: Context) :
             }
             cursor.close()
         }
+    }
+
+    fun getBarangStokTertinggi(): String? {
+        val db = this.readableDatabase
+        val query = """
+        SELECT 
+            b.$COLUMN_MEREK_BARANG AS nama_barang,
+            s.$COLUMN_STOK AS stok
+        FROM $TABLE_STOK s
+        JOIN $TABLE_BARANG b
+        ON s.$COLUMN_KODE_BARANG = b.$COLUMN_KODE_BARANG
+        ORDER BY s.$COLUMN_STOK DESC
+        LIMIT 1
+    """.trimIndent()
+
+        val cursor = db.rawQuery(query, null)
+        var result: String? = null
+
+        if (cursor.moveToFirst()) {
+            val nama = cursor.getString(cursor.getColumnIndexOrThrow("nama_barang"))
+            val stok = cursor.getInt(cursor.getColumnIndexOrThrow("stok"))
+            result = "Stok tertinggi: $nama - $stok pasang"
+        }
+
+        cursor.close()
+        return result
+    }
+
+    fun getTotalBarang(): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT COUNT(*) FROM $TABLE_BARANG", null)
+        var total = 0
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0)
+        }
+        cursor.close()
+        return total
+    }
+
+    fun getStokRendah(threshold: Int = 2): Int {
+        val db = readableDatabase
+        val cursor = db.rawQuery(
+            """
+    SELECT COUNT(DISTINCT s.$COLUMN_KODE_BARANG)
+    FROM $TABLE_STOK s
+    INNER JOIN $TABLE_BARANG b ON s.$COLUMN_KODE_BARANG = b.$COLUMN_KODE_BARANG
+    WHERE s.$COLUMN_STOK <= ?
+    """.trimIndent(), arrayOf(threshold.toString())
+        )
+
+        var total = 0
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0)
+        }
+        cursor.close()
+        return total
+    }
+
+    fun getBarangDenganStokTerdekatHabis(limit: Int = 5): List<DataBarangHampirHabisHome> {
+        val list = mutableListOf<DataBarangHampirHabisHome>()
+        val db = readableDatabase
+        val query = """
+        SELECT b.$COLUMN_MEREK_BARANG, s.$COLUMN_STOK, b.$COLUMN_GAMBAR
+        FROM $TABLE_STOK s
+        JOIN $TABLE_BARANG b ON s.$COLUMN_KODE_BARANG = b.$COLUMN_KODE_BARANG
+        WHERE s.$COLUMN_STOK <= 2
+        ORDER BY s.$COLUMN_STOK ASC
+        LIMIT ?
+    """
+        val cursor = db.rawQuery(query, arrayOf(limit.toString()))
+        if (cursor.moveToFirst()) {
+            do {
+                val nama = cursor.getString(0)
+                val stok = cursor.getInt(1)
+                val gambar = cursor.getString(2) ?: "" // Bisa berupa URL atau URI path lokal
+                list.add(
+                    DataBarangHampirHabisHome(
+                        imageUrl = gambar,
+                        namaBarang = nama,
+                        stok = stok
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return list
+    }
+
+    fun getLastThreeHistories(): List<History> {
+        val historyList = mutableListOf<History>()
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_HISTORY ORDER BY $COLUMN_ID_HISTORY DESC LIMIT 3"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_HISTORY))
+                val waktu = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_WAKTU_HISTORY))
+                val kodeBarang =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG_HISTORY))
+                val stok = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_STOK_HISTORY))
+                val jenisData =
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_JENIS_DATA_HISTORY))
+
+                historyList.add(
+                    History(
+                        id = id,
+                        waktu = waktu,
+                        kodeBarang = kodeBarang,
+                        stok = stok,
+                        jenisData = jenisData
+                    )
+                )
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        return historyList
     }
 
 
