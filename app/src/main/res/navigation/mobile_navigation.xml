@@ -10,7 +10,26 @@
         android:id="@+id/nav_home"
         android:name="com.tugasmobile.inventory.ui.main.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_barang_masuk"
+            app:destination="@id/nav_barang_masuk" />
+
+        <!-- Arahkan ke fragment barang keluar -->
+        <action
+            android:id="@+id/action_nav_home_to_nav_barang_keluar"
+            app:destination="@id/nav_barang_keluar" />
+
+        <!-- Arahkan ke history -->
+        <action
+            android:id="@+id/action_nav_home_to_nav_history_barang"
+            app:destination="@id/nav_history_barang" />
+
+        <!-- Arahkan ke daftar barang -->
+        <action
+            android:id="@+id/action_nav_home_to_nav_daftar_barang"
+            app:destination="@id/nav_daftar_barang" />
+    </fragment>
 
     <!-- DataBarangAkses Masuk Fragment -->
     <fragment

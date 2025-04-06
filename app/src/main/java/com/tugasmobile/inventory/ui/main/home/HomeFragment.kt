@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterBarangHampirHabisHome
@@ -65,8 +66,12 @@ class HomeFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
         updateTanggalWaktu()
-        homeViewModel.dataTertinggi.observe(viewLifecycleOwner) { hasil ->
-            binding.stokTertinggi.text = hasil
+        homeViewModel.dataTertinggi.observe(viewLifecycleOwner) { stok ->
+            if (!stok.isNullOrEmpty()) {
+                binding.stokTertinggi.text = "Stok sandal tertinggi: $stok"
+            } else {
+                binding.stokTertinggi.text = "Belum ada data stok tersedia"
+            }
         }
         homeViewModel.getDataTertinggi()
         homeViewModel.totalBarang.observe(viewLifecycleOwner) { total ->
@@ -82,7 +87,18 @@ class HomeFragment : Fragment() {
         binding.rvBarangHampirHabis.adapter = AdapterHampirHabis
 
         homeViewModel.barangHampirHabis.observe(viewLifecycleOwner) {
-            AdapterHampirHabis.updateData(it)
+            homeViewModel.barangHampirHabis.observe(viewLifecycleOwner) { list ->
+                if (list.isNotEmpty()) {
+                    AdapterHampirHabis.updateData(it)
+                    binding.rvBarangHampirHabis.visibility = View.VISIBLE
+                    binding.tvKosongBarangHabis.visibility = View.GONE
+                } else {
+                    binding.rvBarangHampirHabis.visibility = View.GONE
+                    binding.tvKosongBarangHabis.visibility = View.VISIBLE
+                }
+            }
+
+
         }
 
         homeViewModel.loadBarangHampirHabis()
@@ -102,6 +118,22 @@ class HomeFragment : Fragment() {
                 binding.tvKosongAktivitas.visibility = View.VISIBLE
             }
         }
+        binding.menuBarangMasuk.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_barang_masuk)
+        }
+
+        binding.menuBarangKeluar.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_barang_keluar)
+        }
+
+        binding.menuRiwayat.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_history_barang)
+        }
+
+        binding.menuDaftarBarang.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_nav_daftar_barang)
+        }
+
 
     }
     private fun updateTanggalWaktu() {
@@ -128,6 +160,22 @@ class HomeFragment : Fragment() {
             }
         }
     }
+    fun onTambahBarangClick(view: View) {
+        findNavController().navigate(R.id.action_homeFragment_to_addFragment)
+    }
+
+    fun onKeluarkanBarangClick(view: View) {
+        findNavController().navigate(R.id.action_homeFragment_to_barangKeluarFragment)
+    }
+
+    fun onRiwayatClick(view: View) {
+        findNavController().navigate(R.id.action_homeFragment_to_riwayatFragment)
+    }
+
+    fun onCariBarangClick(view: View) {
+        findNavController().navigate(R.id.action_homeFragment_to_daftarBarangFragment)
+    }
+
 
 
 

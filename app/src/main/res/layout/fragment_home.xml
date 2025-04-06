@@ -98,6 +98,14 @@
             android:text="⚠️ Barang Hampir Habis:"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
+        <TextView
+            android:id="@+id/tvKosongBarangHabis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✔️ Tidak ada barang yang hampir habis"
+            android:layout_marginBottom="8dp"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBarangHampirHabis"
@@ -193,6 +201,7 @@
 
 
             <LinearLayout
+                android:id="@+id/menuBarangMasuk"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -218,6 +227,7 @@
 
 
             <LinearLayout
+                android:id="@+id/menuBarangKeluar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -243,6 +253,7 @@
 
             <!-- Item 3: Riwayat -->
             <LinearLayout
+                android:id="@+id/menuRiwayat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -268,6 +279,7 @@
 
             <!-- Item 4: Cari Barang -->
             <LinearLayout
+                android:id="@+id/menuDaftarBarang"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
