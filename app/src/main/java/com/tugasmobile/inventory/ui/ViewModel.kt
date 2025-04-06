@@ -66,6 +66,10 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
     private val _searchResults = MutableLiveData<List<SearchData>>()
     val searchResults: LiveData<List<SearchData>> get() = _searchResults
 
+    private val _dataTertinggi = MutableLiveData<String?>()
+    val dataTertinggi: LiveData<String?> = _dataTertinggi
+
+
 
     init {
         loadBarang()
@@ -197,16 +201,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _searchResults.value = databaseHelper.searchFlexible(keyword)
     }
 
-    fun searchFlexible(keyword: String): List<SearchData> {
-        return databaseHelper.searchFlexible(keyword)
-    }
-
-    fun searchByKarakteristik(keyword: String): List<SearchData> {
-        return databaseHelper.searchByKarakteristik(keyword)
-    }
-
-    fun searchByKodeBarang(kodeBarang: String): SearchData? {
-        return databaseHelper.searchByKodeBarang(kodeBarang)
+    fun getDataTertinggi() {
+        val hasil = databaseHelper.getBarangStokTertinggi()
+        _dataTertinggi.value = hasil
     }
 
 }

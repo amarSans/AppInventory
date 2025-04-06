@@ -9,8 +9,10 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -26,6 +28,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
@@ -81,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                 AlarmScheduler.scheduleNotification(this)
             }
         }
-
+        val appBarLayout: AppBarLayout = findViewById(R.id.appBarLayout)
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -95,7 +98,13 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.nav_home -> binding.appBarMain.toolbar.visibility = View.GONE
 
+                else ->  binding.appBarMain.toolbar.visibility = View.VISIBLE
+            }
+        }
 
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -151,6 +160,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
 
     private fun checkPermissions() {
