@@ -20,10 +20,18 @@
     <color name="dark_button">#00ADB5</color>
     <color name="dark_button_text">#222831</color>
 
+    <color name="bg_item_menu">#EEEEEE</color> <!-- Light mode -->
+
     <!-- Warna untuk Mode Terang -->
     <color name="light_appbar">#EEEEEE</color>
     <color name="light_background">#F5F5F5</color>
     <color name="light_text">#222831</color>
     <color name="light_button">#008C99</color>
     <color name="light_button_text">#FFFFFF</color>
+
+    <color name="item_waktu_bg">#FAFAFA</color>
+    <color name="item_waktu_stroke">#DDDDDD</color>
+
+    <color name="item_brg_bg">#FFFDE7</color> <!-- kuning muda -->
+    <color name="item_brg_stroke">#FFEB3B</color> <!-- kuning terang -->
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_item_menu">#2C2C2C</color>
+    <color name="item_waktu_bg">#2A2A2A</color> <!-- abu gelap -->
+    <color name="item_waktu_stroke">#555555</color> <!-- abu medium -->
+    <color name="item_brg_bg">#4E4400</color> <!-- coklat gelap-kuning tua -->
+    <color name="item_brg_stroke">#FFD600</color> <!-- kuning emas -->
+
+</resources>
