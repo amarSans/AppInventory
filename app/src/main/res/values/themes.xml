@@ -63,4 +63,11 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+    <!-- themes.xml -->
+    <style name="Theme.Inventory.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">#D5FFFCFC</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
 </resources>

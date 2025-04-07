@@ -64,4 +64,9 @@
         <item name="colorSecondaryVariant">@color/dark_button</item>
         <item name="colorOnSecondary">@color/textColornight</item>
     </style>
+    <style name="Theme.Inventory.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">#D5FFFCFC</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

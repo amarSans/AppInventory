@@ -693,44 +693,6 @@ class BrgDatabaseHelper(context: Context) :
         return listBarang
     }
 
-    fun searchByKarakteristik(keyword: String): List<SearchData> {
-        val db = readableDatabase
-        val query = """
-        SELECT * FROM $TABLE_BARANG 
-        WHERE $COLUMN_KARAKTERISTIK LIKE ?
-    """
-        val cursor = db.rawQuery(query, arrayOf("%$keyword%"))
-
-        val listBarang = mutableListOf<SearchData>()
-        while (cursor.moveToNext()) {
-            listBarang.add(
-                SearchData(
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK))
-                )
-            )
-        }
-        cursor.close()
-        return listBarang
-    }
-
-    fun searchByKodeBarang(kodeBarang: String): SearchData? {
-        val db = readableDatabase
-        val query = "SELECT * FROM $TABLE_BARANG WHERE $COLUMN_KODE_BARANG = ?"
-        val cursor = db.rawQuery(query, arrayOf(kodeBarang))
-
-        var barang: SearchData? = null
-        if (cursor.moveToFirst()) {
-            barang = SearchData(
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)),
-                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK))
-            )
-        }
-        cursor.close()
-        return barang
-    }
 
     fun insertHistory(item: History) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -852,15 +814,17 @@ class BrgDatabaseHelper(context: Context) :
         return total
     }
 
-    fun getStokRendah(threshold: Int = 2): Int {
+    fun getStokRendah(): Int {
         val db = readableDatabase
         val cursor = db.rawQuery(
             """
-    SELECT COUNT(DISTINCT s.$COLUMN_KODE_BARANG)
-    FROM $TABLE_STOK s
-    INNER JOIN $TABLE_BARANG b ON s.$COLUMN_KODE_BARANG = b.$COLUMN_KODE_BARANG
-    WHERE s.$COLUMN_STOK <= ?
-    """.trimIndent(), arrayOf(threshold.toString())
+        SELECT COUNT(*) FROM (
+            SELECT s.$COLUMN_KODE_BARANG, SUM(s.$COLUMN_STOK) as total_stok
+            FROM $TABLE_STOK s
+            GROUP BY s.$COLUMN_KODE_BARANG
+            HAVING total_stok <= 2
+        )
+        """.trimIndent(), null
         )
 
         var total = 0

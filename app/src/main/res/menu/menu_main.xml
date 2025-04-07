@@ -8,7 +8,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/baseline_search_24"
+        android:icon="@drawable/baseline_search_appbar"
         android:title="Cari"
         app:showAsAction="ifRoom" />
     <item

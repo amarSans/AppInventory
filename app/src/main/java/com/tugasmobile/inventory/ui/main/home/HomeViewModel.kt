@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.tugasmobile.inventory.data.DataBarangHampirHabisHome
 import com.tugasmobile.inventory.data.History
+import com.tugasmobile.inventory.data.SearchData
 import com.tugasmobile.inventory.database.BrgDatabaseHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,9 @@ class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseH
     private val _historyTerbaru = MutableLiveData<List<History>>()
     val historyTerbaru: LiveData<List<History>> = _historyTerbaru
 
+    private val _searchResults = MutableLiveData<List<SearchData>>()
+    val searchResults: LiveData<List<SearchData>> = _searchResults
+
     fun loadLastThreeHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = databaseHelper.getLastThreeHistories()
@@ -52,9 +56,9 @@ class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseH
     }
 
     // Fungsi ambil stok rendah
-    fun getStokRendah(threshold: Int = 5) {
+    fun getStokRendah() {
         viewModelScope.launch(Dispatchers.IO) {
-            val total = databaseHelper.getStokRendah(threshold) // Buat juga ini
+            val total = databaseHelper.getStokRendah() // Buat juga ini
             _stokRendah.postValue(total)
         }
     }
@@ -62,5 +66,12 @@ class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseH
     fun getDataTertinggi() {
         val hasil = databaseHelper.getBarangStokTertinggi()
         _dataTertinggi.value = hasil
+    }
+
+    fun search(query: String) {
+        viewModelScope.launch {
+            val results = databaseHelper.searchFlexible(query)
+            _searchResults.postValue(results)
+        }
     }
 }

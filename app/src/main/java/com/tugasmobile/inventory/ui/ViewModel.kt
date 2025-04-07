@@ -201,9 +201,5 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         _searchResults.value = databaseHelper.searchFlexible(keyword)
     }
 
-    fun getDataTertinggi() {
-        val hasil = databaseHelper.getBarangStokTertinggi()
-        _dataTertinggi.value = hasil
-    }
 
 }

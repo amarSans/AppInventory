@@ -54,20 +54,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-            val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
-            val isDarkMode = withContext(Dispatchers.IO) {
-                sharedPreferences.getBoolean("dark_mode", false)
-            }
 
-            withContext(Dispatchers.Main) {
-                if (isDarkMode) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-            }
-        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -1,19 +1,20 @@
 package com.tugasmobile.inventory.ui.search
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import android.widget.SearchView
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
                 finish()
             }
         })
+
         searchViewModel = ViewModelProvider(this)[ViewModel::class.java]
         val searchEditText = findViewById<TextInputEditText>(R.id.editTextSearch)
         recyclerView = findViewById(R.id.recyclerView)
@@ -53,6 +55,9 @@ class SearchActivity : AppCompatActivity() {
         }
         searchViewModel.searchResults.observe(this) { results ->
             adapter.updateList(results)
+            val controller = AnimationUtils.loadLayoutAnimation(this, R.anim.layout_fade_in)
+            binding.recyclerView.layoutAnimation = controller
+            binding.recyclerView.scheduleLayoutAnimation()
             recyclerView.visibility = if (results.isNotEmpty()) View.VISIBLE else View.GONE
         }
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -102,6 +107,7 @@ class SearchActivity : AppCompatActivity() {
 
             }
         }
+        setupHideKeyboardWhenTouchOutside()
 
         // Tambahkan animasi masuk
         findViewById<View>(android.R.id.content).animate().alpha(1f).setDuration(200).start()
@@ -109,6 +115,23 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchBarang(query: String) {
         searchViewModel.search(query)
+    }
+    private fun setupHideKeyboardWhenTouchOutside() {
+        binding.searchBar.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                // Penting: agar aksesibilitas tetap jalan
+                v.performClick()
+
+                if (binding.editTextSearch.isFocused) {
+                    binding.editTextSearch.clearFocus()
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(binding.editTextSearch.windowToken, 0)
+                }
+            }
+            false
+        }
+
+
     }
 
 

@@ -14,12 +14,17 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:name=".ui.simpleItem.InventoryApp"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Inventory.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Inventory.NoActionBar"/>
         <activity
             android:name=".ui.search.SearchActivity"
             android:exported="false" />
@@ -48,20 +53,17 @@
             android:name=".ui.editdata.DetailBarang"
             android:exported="false"
             android:theme="@style/Theme.Inventory.NoActionBar" />
-        <activity
-            android:name=".ui.data.addData"
-            android:exported="false"
-            android:theme="@style/Theme.Inventory.NoActionBar" />
+
 
         <receiver
             android:name=".ui.main.setting.notifikasi.NotificationReceiver"
             android:exported="false" />
 
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.simpleItem.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Inventory.NoActionBar">
+            android:theme="@style/Theme.Inventory.Splash"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
