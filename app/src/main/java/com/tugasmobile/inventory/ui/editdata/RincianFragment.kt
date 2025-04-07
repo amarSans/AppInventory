@@ -2,6 +2,7 @@ package com.tugasmobile.inventory.ui.editdata
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterSizeColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
@@ -37,7 +39,7 @@ class RincianFragment : Fragment() {
     ): View {
         rincianViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         _binding = FragmentRincianBinding.inflate(inflater,container,false)
-        val root:View=binding.root
+
         BarangId = arguments?.getString("ID_BARANG") ?: ""
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
         val colorValues = resources.getStringArray(R.array.daftar_warna)
@@ -58,7 +60,7 @@ class RincianFragment : Fragment() {
             barang?.let{
                 binding.tvNamaBarang.text = it.merek_barang
                 binding.tvKodeBarang.text = it.id_barang
-                binding.tvrincinkarakteristik.text=it.karakteristik
+                tampilkanKarakteristik(it.karakteristik)
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
                     // Menyimpan URI untuk digunakan setelah izin diberikan
@@ -92,8 +94,28 @@ class RincianFragment : Fragment() {
                 binding.tvNamaToko.text = it.Nama_Toko
             }
         }
-        return root  // Inflate the layout for this fragment
+        return binding.root // Inflate the layout for this fragment
     }
+    private fun tampilkanKarakteristik(karakteristikText: String) {
+        val chipGroup = binding.tvrincinkarakteristik
+        chipGroup.removeAllViews() // Bersihkan sebelum isi ulang
+
+        val karakteristikList = karakteristikText.split(",").map { it.trim() }
+
+        for (karakter in karakteristikList) {
+            val chip = Chip(requireContext()).apply {
+                text = karakter
+                isClickable = false
+                isCheckable = false
+                chipBackgroundColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), android.R.color.darker_gray)
+                )
+                setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
+            }
+            chipGroup.addView(chip)
+        }
+    }
+
     private fun checkPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

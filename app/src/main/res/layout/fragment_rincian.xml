@@ -1,122 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp">
 
-    tools:context=".ui.editdata.RincianFragment">
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
-        android:scrollbars="vertical"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:spacing="12dp"
+        android:gravity="center_horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constrain1"
+        <!-- Gambar -->
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/baseline_image_24"
+            android:contentDescription="Gambar Barang" />
+
+        <!-- Nama Barang -->
+        <TextView
+            android:id="@+id/tv_nama_barang"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Barang"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnBackground"
+            android:gravity="center" />
+
+        <!-- Nama Toko -->
+        <TextView
+            android:id="@+id/tv_kode_barang"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Toko"
+            android:textColor="?attr/colorOnBackground" />
+
+        <!-- Kode dan Stok -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                app:layout_constraintBottom_toTopOf="@id/tv_nama_barang"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
-            <TextView
-                android:id="@+id/tv_nama_barang"
-                android:layout_marginTop="17dp"
-                style="@style/CustomTextViewStyle"
-                android:text="Nama Barang"
-                app:layout_constraintHeight_default="wrap"
-                app:layout_constraintStart_toStartOf="@id/imageView3"
-                app:layout_constraintTop_toBottomOf="@id/imageView3"
-                app:layout_constraintEnd_toStartOf="@id/tv_stok"
-                app:layout_constraintBottom_toTopOf="@id/tv_kode_barang"
-                />
-
-            <TextView
-                android:id="@+id/tv_kode_barang"
-                style="@style/CustomTextViewStyle"
-                android:text="@string/kode_barang"
-                app:layout_constraintBottom_toTopOf="@id/rv_ukuran_warna_sendal"
-                app:layout_constraintEnd_toEndOf="@id/tv_nama_barang"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
-                app:layout_constraintTop_toBottomOf="@+id/tv_nama_barang" />
-
-            <TextView
-                android:id="@+id/tv_stok"
-                style="@style/CustomTextViewStyle"
-                android:text="@string/_00"
-                android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="@id/tv_nama_barang"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tv_nama_barang"
-                app:layout_constraintTop_toTopOf="@+id/tv_nama_barang" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/tv_nama_toko"
-                style="@style/CustomTextViewStyle"
-                android:gravity="end"
-                android:text="@string/nama_toko"
-                app:layout_constraintEnd_toEndOf="@id/tv_stok"
-                app:layout_constraintBottom_toBottomOf="@id/tv_kode_barang"
-                app:layout_constraintStart_toEndOf="@id/tv_kode_barang"
-                app:layout_constraintTop_toTopOf="@id/tv_kode_barang" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_ukuran_warna_sendal"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginStart="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/tv_harga_barang"
-                app:layout_constraintStart_toStartOf="@id/tv_nama_barang"
-                app:layout_constraintEnd_toEndOf="@id/tv_nama_toko"
-                app:layout_constraintTop_toBottomOf="@id/tv_kode_barang"/>
-            <TextView
-                android:id="@+id/tvrincinkarakteristik"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edit_text_bacground"
-                app:layout_constraintStart_toStartOf="@id/rv_ukuran_warna_sendal"
-                app:layout_constraintEnd_toEndOf="@id/rv_ukuran_warna_sendal"
-                app:layout_constraintTop_toBottomOf="@id/rv_ukuran_warna_sendal"
-                app:layout_constraintBottom_toTopOf="@id/tv_harga_barang"/>
-            <TextView
-                android:id="@+id/tv_harga_barang"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:layout_marginTop="20dp"
-                android:text="@string/harga_barang"
-                app:layout_constraintStart_toStartOf="@id/rv_ukuran_warna_sendal"
-                app:layout_constraintEnd_toEndOf="@id/rv_ukuran_warna_sendal"
-                app:layout_constraintBottom_toTopOf="@id/tv_harga"
-                app:layout_constraintTop_toBottomOf="@id/rv_ukuran_warna_sendal"
-                android:textSize="24sp" />
+                android:layout_weight="@integer/material_motion_duration_short_1"
+                android:text="Kode Barang" />
 
             <TextView
-                android:id="@+id/tv_harga"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_stok"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:gravity="right"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semibold"
-                android:gravity="center_vertical"
-                android:text="@string/_500000"
-                android:textSize="35sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tv_harga_barang"
-                app:layout_constraintStart_toStartOf="@id/tv_harga_barang"
-                app:layout_constraintTop_toBottomOf="@id/tv_harga_barang"/>
+                android:layout_weight="@integer/material_motion_duration_short_1"
+                android:text="Stok: 10" />
+        </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-</FrameLayout>
+        <!-- Harga -->
+        <TextView
+            android:id="@+id/tv_harga"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:text="Rp 99.000"
+            android:textColor="?attr/colorOnSecondary"
+            android:paddingTop="4dp" />
+
+        <!-- Ukuran & Warna (RecyclerView Horizontal) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ukuran dan Warna"
+            android:textStyle="bold"
+            android:paddingTop="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_ukuran_warna_sendal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="8dp"
+            android:paddingBottom="4dp"
+            android:scrollbars="none"
+            android:clipToPadding="false"
+            android:orientation="horizontal" />
+
+        <!-- Karakteristik Barang (gunakan ChipGroup Horizontal) -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Karakteristik"
+            android:textStyle="bold"
+            android:paddingTop="8dp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/tvrincinkarakteristik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:chipSpacing="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp" />
+    </LinearLayout>
+</ScrollView>
