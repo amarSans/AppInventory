@@ -19,10 +19,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val logo = findViewById<ImageView>(R.id.logoImage)
-        val animation = AnimationUtils.loadAnimation(this, R.anim.bounce)
-        logo.startAnimation(animation)
-
+        // Delay ke MainActivity selama 2 detik
         Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()

@@ -20,7 +20,6 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.data.EditData
 import com.tugasmobile.inventory.utils.DateUtils
 

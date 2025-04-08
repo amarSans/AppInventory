@@ -20,22 +20,18 @@
             android:title="Barang Keluar" />
         <item
             android:id="@+id/labels_item"
-            android:title="tabel">
+            android:title="Gudang Barang">
             <menu>
                 <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_tabel"
-                    android:icon="@drawable/outline_data_table_24"
-                    android:title="tabel barang" />
 
-                <item
-                    android:id="@+id/nav_daftar_barang"
-                    android:icon="@drawable/sharp_box_24"
-                    android:title="Daftar Barang" />
-                <item
-                    android:id="@+id/nav_history_barang"
-                    android:icon="@drawable/rounded_deployed_code_history_24"
-                    android:title="history barang" />
+                    <item
+                        android:id="@+id/nav_daftar_barang"
+                        android:icon="@drawable/sharp_box_24"
+                        android:title="Daftar Barang" />
+                    <item
+                        android:id="@+id/nav_history_barang"
+                        android:icon="@drawable/rounded_deployed_code_history_24"
+                        android:title="history barang" />
                 </group>
             </menu>
         </item>
@@ -44,15 +40,15 @@
             android:title="setting">
             <menu>
                 <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_setting"
-                    android:icon="@drawable/baseline_settings_24"
-                    android:title="Setting" />
+                    <item
+                        android:id="@+id/nav_setting"
+                        android:icon="@drawable/baseline_settings_24"
+                        android:title="Setting" />
 
-                <item
-                    android:id="@+id/nav_about"
-                    android:icon="@drawable/baseline_info_24"
-                    android:title="About" />
+                    <item
+                        android:id="@+id/nav_about"
+                        android:icon="@drawable/baseline_info_24"
+                        android:title="About" />
                 </group>
             </menu>
         </item>

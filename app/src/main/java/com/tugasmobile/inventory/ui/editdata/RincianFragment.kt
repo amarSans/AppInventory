@@ -23,7 +23,6 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterSizeColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.HargaUtils
 
 

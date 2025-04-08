@@ -26,7 +26,6 @@ import com.tugasmobile.inventory.adapter.AdapterDataSearch
 import com.tugasmobile.inventory.data.SearchData
 import com.tugasmobile.inventory.databinding.ActivitySearchBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
 import com.tugasmobile.inventory.ui.main.MainActivity
 

@@ -45,12 +45,6 @@
         android:label="Barang Keluar"
         tools:layout="@layout/fragment_barang_keluar" />
 
-    <!-- Tabel DataBarangAkses Fragment -->
-    <fragment
-        android:id="@+id/nav_tabel"
-        android:name="com.tugasmobile.inventory.ui.main.daftarBarang.Tabel"
-        android:label="Tabel Barang"
-        tools:layout="@layout/fragment_laporan" />
 
     <!-- Laporan Bulanan Fragment -->
     <fragment

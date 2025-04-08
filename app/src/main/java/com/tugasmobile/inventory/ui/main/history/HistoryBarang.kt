@@ -19,7 +19,6 @@ import com.tugasmobile.inventory.adapter.AdapterHistoryBarang
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.FragmentHistoryBarangBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 
 
 class HistoryBarang : Fragment() {

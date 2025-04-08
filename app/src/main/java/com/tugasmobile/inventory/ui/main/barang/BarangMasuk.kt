@@ -19,7 +19,6 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterBarangMasuk
 import com.tugasmobile.inventory.databinding.FragmentBarangMasukBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.data.DataActivity
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
 import com.tugasmobile.inventory.ui.main.home.HomeViewModel

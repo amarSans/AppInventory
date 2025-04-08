@@ -28,7 +28,6 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.main.setting.SettingActivity
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.NotificationHelper
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_barang_masuk, R.id.nav_barang_keluar,
-                R.id.nav_tabel, R.id.nav_daftar_barang, R.id.nav_history_barang,
+                R.id.nav_daftar_barang, R.id.nav_history_barang,
                 R.id.nav_setting, R.id.nav_about
             ), drawerLayout
         )

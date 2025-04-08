@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 
 class HomeDataFragment : Fragment() {
     private val dataViewModel: DataViewModel by viewModels {

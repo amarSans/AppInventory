@@ -20,7 +20,6 @@ import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
 import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
 
 

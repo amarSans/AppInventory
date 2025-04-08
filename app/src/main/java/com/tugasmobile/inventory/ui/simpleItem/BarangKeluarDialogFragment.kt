@@ -18,7 +18,6 @@ import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.PopupBarangKeluarBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.main.barang.BarangViewModel
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
