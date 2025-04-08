@@ -17,10 +17,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
+import com.tugasmobile.inventory.ui.CameraActivity
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.*
@@ -51,30 +53,37 @@ class EditData : AppCompatActivity() {
         setupObservers()
     }
     private fun openCamera() {
-
-        val uriedt = getCacheImageUri(this)
-        photoUri = uriedt
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        }
-        cameraLauncher.launch(cameraIntent)
+        val intent = Intent(this, CameraActivity::class.java)
+        cameraLauncher.launch(intent)
     }
+
+
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            val imageFile = uriToFile(photoUri, this).reduceFileImage()
-            val savedUri = saveImageToStorage(Uri.fromFile(imageFile))
-            if (savedUri != null) {
-                selectedImageUri=null
-                selectedImageUri = savedUri
-                binding.imageViewBarangEdit.setImageURI(selectedImageUri)
-            } else {
-                Log.e("CameraDebug", "Gagal menyimpan gambar ke MediaStore!")
+            val uriString = result.data?.getStringExtra("imageUri")
+            val photoUri = uriString?.let { Uri.parse(it) }
 
+            if (photoUri != null) {
+                val imageFile = uriToFile(photoUri, this).reduceFileImage()
+                val savedUri = saveImageToStorage(Uri.fromFile(imageFile))
+                if (savedUri != null) {
+                    selectedImageUri = savedUri
+                    binding.imageViewBarangEdit.setImageURI(selectedImageUri)
+                    if (imageFile.exists()) {
+                        imageFile.delete()
+                        Log.d("CameraDebug", "File cache berhasil dihapus.")
+                    }
+                } else {
+                    Log.e("CameraDebug", "Gagal menyimpan gambar ke MediaStore!")
+                }
+            } else {
+                Log.e("CameraDebug", "URI hasil kamera null.")
             }
         } else {
             Log.w("CameraDebug", "Pengambilan gambar dibatalkan.")
         }
     }
+
     private fun openGallery() {
         selectedImageUri?.let { deleteImage(this,it) }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
