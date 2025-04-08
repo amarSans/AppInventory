@@ -11,15 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterBarangMasuk
 import com.tugasmobile.inventory.databinding.FragmentBarangMasukBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.data.DataActivity
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
+import com.tugasmobile.inventory.ui.main.home.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -28,7 +31,9 @@ class BarangMasuk : Fragment() {
     private var _binding: FragmentBarangMasukBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapterDaftarBarang: AdapterBarangMasuk
-    private lateinit var barangViewModel: ViewModel
+    private val barangViewModel: BarangViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +43,7 @@ class BarangMasuk : Fragment() {
         _binding = FragmentBarangMasukBinding.inflate(inflater, container, false)
 
         // Inisialisasi ViewModel
-        barangViewModel = ViewModelProvider(this).get(ViewModel::class.java)
+
 
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())

@@ -31,12 +31,11 @@ import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.FragmentTambahBarangBinding
-import com.tugasmobile.inventory.ui.CameraActivity
-import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.camera.CameraActivity
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
-import com.tugasmobile.inventory.utils.getCacheImageUri
 import com.tugasmobile.inventory.utils.reduceFileImage
 import com.tugasmobile.inventory.utils.uriToFile
 
@@ -46,7 +45,9 @@ class TambahBarangFragment : Fragment() {
     private var kodeBarang: String? = null
     private lateinit var binding: FragmentTambahBarangBinding
     private var stokBarang = 0
-    private val NewItemViewModel:ViewModel by viewModels()
+    private val NewItemViewModel:DataViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
 
     private val selectedItems = mutableSetOf<String>()
     private lateinit var selectedSizesColorList: List<String>

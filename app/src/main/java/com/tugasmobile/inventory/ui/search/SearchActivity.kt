@@ -13,8 +13,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterDataSearch
 import com.tugasmobile.inventory.data.SearchData
 import com.tugasmobile.inventory.databinding.ActivitySearchBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
 import com.tugasmobile.inventory.ui.main.MainActivity
@@ -30,7 +33,9 @@ import com.tugasmobile.inventory.ui.main.MainActivity
 class SearchActivity : AppCompatActivity() {
     private lateinit var adapter: AdapterDataSearch
     private lateinit var recyclerView: RecyclerView
-    private lateinit var searchViewModel: ViewModel
+    private val searchViewModel: SearchViewModel  by viewModels {
+        InventoryViewModelFactory.getInstance(this.application)
+    }
     private lateinit var binding: ActivitySearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +51,6 @@ class SearchActivity : AppCompatActivity() {
             }
         })
 
-        searchViewModel = ViewModelProvider(this)[ViewModel::class.java]
         val searchEditText = findViewById<TextInputEditText>(R.id.editTextSearch)
         recyclerView = findViewById(R.id.recyclerView)
 

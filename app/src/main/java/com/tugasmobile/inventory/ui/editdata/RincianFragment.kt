@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.google.android.material.chip.Chip
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterSizeColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.HargaUtils
 
@@ -29,7 +31,9 @@ class RincianFragment : Fragment() {
     private var _binding:FragmentRincianBinding?=null
     private val binding get() = _binding!!
     private var gambarUri: Uri? = null
-    private lateinit var rincianViewModel: ViewModel
+    private val rincianViewModel:DetailViewModel  by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     private var BarangId:String=""
     private val REQUEST_CODE_READ_EXTERNAL_STORAGE = 1
 
@@ -37,7 +41,6 @@ class RincianFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        rincianViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         _binding = FragmentRincianBinding.inflate(inflater,container,false)
 
         BarangId = arguments?.getString("ID_BARANG") ?: ""

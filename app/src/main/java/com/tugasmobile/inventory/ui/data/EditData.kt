@@ -16,20 +16,21 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
-import com.tugasmobile.inventory.ui.CameraActivity
-import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.camera.CameraActivity
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.*
 
 class EditData : AppCompatActivity() {
     private lateinit var binding: ActivityEditDataBinding
-    private lateinit var editViewModel: ViewModel
+    private val editViewModel: DataViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(this.application)
+    }
     private var barangId: String = ""
     private var stokBarang = 0
     private var selectedImageUri: Uri? = null
@@ -42,7 +43,6 @@ class EditData : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        editViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         barangId = intent.getStringExtra("ID_BARANG") ?: ""
         if (barangId.isNotEmpty()) editViewModel.setCurrentBarang(barangId)
         val imgViewBack = binding.imgViewBack

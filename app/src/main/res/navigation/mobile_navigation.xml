@@ -55,7 +55,7 @@
     <!-- Laporan Bulanan Fragment -->
     <fragment
         android:id="@+id/nav_daftar_barang"
-        android:name="com.tugasmobile.inventory.ui.main.daftarBarang.DaftarBarang"
+        android:name="com.tugasmobile.inventory.ui.main.barang.DaftarBarang"
         android:label="Daftar Barang"
         tools:layout="@layout/fragment_daftar_barang" />
 

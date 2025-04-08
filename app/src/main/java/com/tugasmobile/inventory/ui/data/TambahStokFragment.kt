@@ -17,6 +17,7 @@ import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.StokUpdate
 import com.tugasmobile.inventory.databinding.FragmentTambahStokBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
@@ -27,7 +28,9 @@ private const val ARG_KODE_BARANG = "kodeBarang"
 class TambahStokFragment : Fragment() {
     private var kodeBarang: String? = null
     private lateinit var binding: FragmentTambahStokBinding
-    private val NewStokViewModel: ViewModel by viewModels()
+    private val NewStokViewModel: DataViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     private lateinit var colorAdapter: AdapterColorIn
     private var selectedImageUri: Uri? = null
     private var stokBarang = 0

@@ -17,7 +17,9 @@ import com.tugasmobile.inventory.adapter.AdapterColorOut
 import com.tugasmobile.inventory.data.BarangOut
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.PopupBarangKeluarBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.main.barang.BarangViewModel
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +29,9 @@ import kotlinx.coroutines.launch
 class BarangKeluarDialogFragment : DialogFragment() {
     private var _binding: PopupBarangKeluarBinding? = null
     private var listener: BarangKeluarListener? = null
-    private val BarangKeluarViewModel: ViewModel by viewModels()
+    private val BarangKeluarViewModel: BarangViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     private val binding get() = _binding!!
     private lateinit var colorAdapter: AdapterColorOut
     override fun onCreateView(

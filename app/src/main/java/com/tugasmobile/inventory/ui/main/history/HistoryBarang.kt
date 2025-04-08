@@ -18,14 +18,16 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterHistoryBarang
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.FragmentHistoryBarangBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 
 
 class HistoryBarang : Fragment() {
 
-    private val historyViewModel: ViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     private lateinit var adapterHistory: AdapterHistoryBarang
-    private var allHistoryItems: List<History> = listOf()
     private var _binding: FragmentHistoryBarangBinding? = null
     private var selectedJenisData: String? = null
     private val binding get() = _binding!!

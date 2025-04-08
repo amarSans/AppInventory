@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +21,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdafterTransaksiBarangKeluar
 import com.tugasmobile.inventory.data.DaftarBarangKeluar
 import com.tugasmobile.inventory.databinding.FragmentBarangKeluarBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.simpleItem.BarangKeluarDialogFragment
 import com.tugasmobile.inventory.utils.HargaUtils
@@ -27,7 +29,9 @@ import com.tugasmobile.inventory.utils.HargaUtils
 class BarangKeluar : Fragment() {
     private var _binding: FragmentBarangKeluarBinding? = null
     private val binding get() = _binding!!
-    private lateinit var barangKeluarViewModel: ViewModel
+    private val barangKeluarViewModel: BarangViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     private lateinit var autoCompleteAdapter: ArrayAdapter<String>
     private val daftarBarangKeluar = mutableListOf<DaftarBarangKeluar>()
     private lateinit var adapterTransaksi: AdafterTransaksiBarangKeluar
@@ -60,7 +64,7 @@ class BarangKeluar : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        setupViewModel()
+
         setupRecyclerView()
         setupAutoCompleteTextView()
         observeSearchResults()
@@ -74,9 +78,7 @@ class BarangKeluar : Fragment() {
     }
 
 
-    private fun setupViewModel() {
-        barangKeluarViewModel = ViewModelProvider(this).get(ViewModel::class.java)
-    }
+
 
     private fun setupRecyclerView() {
         adapterTransaksi = AdafterTransaksiBarangKeluar(daftarBarangKeluar)
@@ -169,6 +171,7 @@ class BarangKeluar : Fragment() {
             }
             false
         }
+
     }
 
     private fun showBarangKeluarDialog(kode: String) {
@@ -205,10 +208,12 @@ class BarangKeluar : Fragment() {
         binding.uangDibayar.text.clear()
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
 
 

@@ -12,9 +12,8 @@ import com.tugasmobile.inventory.database.BrgDatabaseHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseHelper)
+class HomeViewModel(application: Application,  private val dbHelper: BrgDatabaseHelper)
     : AndroidViewModel(application) {
-    private val databaseHelper = BrgDatabaseHelper.getInstance(application)
 
     private val _totalBarang = MutableLiveData<Int>()
     val totalBarang: LiveData<Int> = _totalBarang
@@ -37,7 +36,7 @@ class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseH
 
     fun loadLastThreeHistory() {
         viewModelScope.launch(Dispatchers.IO) {
-            val data = databaseHelper.getLastThreeHistories()
+            val data = dbHelper.getLastThreeHistories()
             _historyTerbaru.postValue(data)
         }
     }
@@ -50,7 +49,7 @@ class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseH
     // Fungsi ambil total barang
     fun getTotalBarang() {
         viewModelScope.launch(Dispatchers.IO) {
-            val total = databaseHelper.getTotalBarang() // Buat fungsi ini di DBHelper
+            val total = dbHelper.getTotalBarang() // Buat fungsi ini di DBHelper
             _totalBarang.postValue(total)
         }
     }
@@ -58,19 +57,19 @@ class HomeViewModel(application: Application, private val dbHelper: BrgDatabaseH
     // Fungsi ambil stok rendah
     fun getStokRendah() {
         viewModelScope.launch(Dispatchers.IO) {
-            val total = databaseHelper.getStokRendah() // Buat juga ini
+            val total = dbHelper.getStokRendah() // Buat juga ini
             _stokRendah.postValue(total)
         }
     }
 
     fun getDataTertinggi() {
-        val hasil = databaseHelper.getBarangStokTertinggi()
+        val hasil = dbHelper.getBarangStokTertinggi()
         _dataTertinggi.value = hasil
     }
 
     fun search(query: String) {
         viewModelScope.launch {
-            val results = databaseHelper.searchFlexible(query)
+            val results = dbHelper.searchFlexible(query)
             _searchResults.postValue(results)
         }
     }

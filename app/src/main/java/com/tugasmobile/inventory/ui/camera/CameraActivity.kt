@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui
+package com.tugasmobile.inventory.ui.camera
 
 // CameraActivity.kt
 import android.Manifest
@@ -18,8 +18,6 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
 class CameraActivity : AppCompatActivity() {
 

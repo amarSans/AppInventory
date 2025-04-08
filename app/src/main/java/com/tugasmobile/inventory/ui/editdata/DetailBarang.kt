@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -18,13 +19,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.data.EditData
 import com.tugasmobile.inventory.utils.DateUtils
 
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding
-    private lateinit var detailBarangViewModel:ViewModel
+    private val detailBarangViewModel:DetailViewModel  by viewModels {
+        InventoryViewModelFactory.getInstance(this.application)
+    }
+
     private var barangId:String =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +42,6 @@ class DetailBarang : AppCompatActivity() {
         window.statusBarColor = typedValue.data
 
 
-        detailBarangViewModel=  ViewModelProvider(this).get(ViewModel::class.java)
         barangId = intent.getStringExtra("ID_BARANG") ?: ""
         if (barangId.isNotEmpty()) detailBarangViewModel.setCurrentBarang(barangId)
         detailBarangViewModel.setCurrentBarang(barangId)

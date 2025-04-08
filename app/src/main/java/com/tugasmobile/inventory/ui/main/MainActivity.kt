@@ -4,24 +4,18 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
 import android.widget.Toast
-import android.widget.Toolbar
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -32,20 +26,19 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
 import com.tugasmobile.inventory.ui.ViewModel
-import com.tugasmobile.inventory.ui.editdata.RincianFragment
-import com.tugasmobile.inventory.ui.main.daftarBarang.DaftarBarang
 import com.tugasmobile.inventory.ui.main.setting.SettingActivity
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.NotificationHelper
 import com.tugasmobile.inventory.ui.search.SearchActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mainViewModel: ViewModel
+    private val mainViewModel: MainViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(this.application)
+    }
+
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     companion object {
@@ -59,7 +52,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        mainViewModel = ViewModelProvider(this).get(ViewModel::class.java)
         mainViewModel.loadSetting() // Memuat data pengaturan
 
 
@@ -105,11 +97,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.nav_daftar_barang -> {
-                    navController.navigate(R.id.nav_daftar_barang)
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                    true
-                }
+
 
                 else -> {
                     // Biarkan NavigationUI menangani item lainnya

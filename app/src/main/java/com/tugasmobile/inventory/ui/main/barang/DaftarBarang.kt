@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.main.daftarBarang
+package com.tugasmobile.inventory.ui.main.barang
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +19,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterDaftarBarang
 import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.databinding.FragmentDaftarBarangBinding
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
 
@@ -26,7 +28,9 @@ class DaftarBarang : Fragment() {
     private var _binding: FragmentDaftarBarangBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapterDaftarBarang: AdapterDaftarBarang
-    private lateinit var barangViewModel: ViewModel
+    private val barangViewModel: BarangViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(requireActivity().application)
+    }
     private var filterStock: String? = null
     private var query: String? = null
     override fun onCreateView(
@@ -36,9 +40,6 @@ class DaftarBarang : Fragment() {
     ): View {
 
         _binding = FragmentDaftarBarangBinding.inflate(inflater, container, false)
-
-        // Inisialisasi ViewModel
-        barangViewModel = ViewModelProvider(this).get(ViewModel::class.java)
 
         handleIncomingData()
 

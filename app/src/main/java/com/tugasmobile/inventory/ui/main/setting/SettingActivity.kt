@@ -3,7 +3,6 @@ package com.tugasmobile.inventory.ui.main.setting
 import android.Manifest
 import android.app.TimePickerDialog
 import android.content.ContentUris
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -16,22 +15,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.databinding.ActivitySettingBinding
-import com.tugasmobile.inventory.ui.ViewModel
+import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
-import com.tugasmobile.inventory.ui.main.setting.sync.syncImagesWithProgress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class SettingActivity : AppCompatActivity() {
-    private val SettingViewModel: ViewModel by viewModels()
+    private val SettingViewModel: SettingViewModel by viewModels {
+        InventoryViewModelFactory.getInstance(this.application)
+    }
     private lateinit var binding: ActivitySettingBinding
     private val requestNotificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->

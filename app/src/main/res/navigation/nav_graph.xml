@@ -39,6 +39,6 @@
 
     <fragment
         android:id="@+id/daftarBarangFragment"
-        android:name="com.tugasmobile.inventory.ui.main.daftarBarang.DaftarBarang"
+        android:name="com.tugasmobile.inventory.ui.main.barang.DaftarBarang"
         android:label="Daftar Barang" />
 </navigation>
