@@ -32,6 +32,10 @@ screenshotValidationJunitEngine = "0.0.1-alpha09"
 androidxpreference = "1.2.1"
 preference = "1.2.1"
 lottie = "6.1.0"
+cameraView = "1.4.2"
+cameraCore = "1.4.2"
+cameraLifecycle = "1.4.2"
+cameraCamera2 = "1.4.2"
 
 
 [libraries]
@@ -66,6 +70,10 @@ androidx-preference = { group = "androidx.preference", name = "preference-ktx", 
 preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
 google-flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCamera2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

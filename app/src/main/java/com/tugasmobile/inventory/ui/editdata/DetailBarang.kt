@@ -2,13 +2,16 @@ package com.tugasmobile.inventory.ui.editdata
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
@@ -102,12 +105,31 @@ class DetailBarang : AppCompatActivity() {
 
             // Simpan history sebelum menghapus barang
             detailBarangViewModel.insertHistory(history)
-
+            itemBarang.gambar.let { gambarUriString ->
+                val gambarUri = Uri.parse(gambarUriString)
+                val isDeleted = deleteImageFromStorage(gambarUri)
+                if (isDeleted) {
+                    Log.d("DeleteBarang", "Gambar berhasil dihapus.")
+                } else {
+                    Log.w("DeleteBarang", "Gagal menghapus gambar.")
+                }
+            }
             // Hapus barang dari database
             detailBarangViewModel.deleteBarang(barangId)
 
             // Tutup activity setelah menghapus
             finish()
+        }
+
+
+    }
+    fun deleteImageFromStorage(imageUri: Uri): Boolean {
+        return try {
+            val rowsDeleted = this.contentResolver.delete(imageUri, null, null)
+            rowsDeleted > 0
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
         }
     }
 

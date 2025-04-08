@@ -897,6 +897,23 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
         return historyList
     }
+    fun ambilSemuaUriDariDatabase(): List<String> {
+        val uriList = mutableListOf<String>()
+        val db = this.readableDatabase
+        val query = "SELECT $COLUMN_GAMBAR FROM $TABLE_BARANG WHERE $COLUMN_GAMBAR IS NOT NULL"
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val uri = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR))
+                uriList.add(uri)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return uriList
+    }
 
 
 }

@@ -200,6 +200,9 @@ class ViewModel(application: Application) : AndroidViewModel(application) {
         // Ganti dengan fungsi yang sesuai
         _searchResults.value = databaseHelper.searchFlexible(keyword)
     }
+    fun ambilSemuaUriDariDatabase():List<String> {
+        return databaseHelper.ambilSemuaUriDariDatabase()
+    }
 
 
 }

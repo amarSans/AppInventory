@@ -2,21 +2,32 @@ package com.tugasmobile.inventory.ui.main.setting
 
 import android.Manifest
 import android.app.TimePickerDialog
+import android.content.ContentUris
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.tugasmobile.inventory.data.ItemBarang
 import com.tugasmobile.inventory.data.SettingData
 import com.tugasmobile.inventory.databinding.ActivitySettingBinding
 import com.tugasmobile.inventory.ui.ViewModel
 import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.main.setting.sync.syncImagesWithProgress
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class SettingActivity : AppCompatActivity() {
@@ -140,6 +151,16 @@ class SettingActivity : AppCompatActivity() {
 
             finish()
         }
+        binding.btnSync.setOnClickListener {
+            lifecycleScope.launch {
+                val semuaBarang = withContext(Dispatchers.IO) {
+                    SettingViewModel.ambilSemuaUriDariDatabase() // suspend function
+                }
+                syncGambarDenganDatabase(semuaBarang)
+                Toast.makeText(this@SettingActivity, "Sinkronisasi selesai", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     private fun checkNotificationPermission() {
@@ -149,6 +170,46 @@ class SettingActivity : AppCompatActivity() {
             ) {
                 // Minta izin notifikasi
                 requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+    private fun syncGambarDenganDatabase(barangList: List<String>) {
+        val databaseUris = barangList.mapNotNull { uriString ->
+            try {
+                Uri.parse(uriString)
+            } catch (e: Exception) {
+                null
+            }
+        }
+
+        val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val projection = arrayOf(
+            MediaStore.Images.Media._ID,
+            MediaStore.Images.Media.DISPLAY_NAME
+        )
+        val selection = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
+        val selectionArgs = arrayOf("%InventoryApp%")
+
+        val resolver = this.contentResolver
+        val cursor = resolver.query(
+            collection,
+            projection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        cursor?.use {
+            val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+
+            while (it.moveToNext()) {
+                val id = it.getLong(idColumn)
+                val uri = ContentUris.withAppendedId(collection, id)
+
+                if (!databaseUris.contains(uri)) {
+                    resolver.delete(uri, null, null)
+                    Log.d("SyncGambar", "Gambar $uri dihapus karena tidak ada di DB.")
+                }
             }
         }
     }
