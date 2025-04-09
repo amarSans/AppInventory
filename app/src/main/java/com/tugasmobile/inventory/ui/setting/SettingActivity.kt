@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.main.setting
+package com.tugasmobile.inventory.ui.setting
 
 import android.Manifest
 import android.app.TimePickerDialog
@@ -18,9 +18,12 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.tugasmobile.inventory.data.SettingData
+import com.tugasmobile.inventory.database.BrgDatabaseHelper
 import com.tugasmobile.inventory.databinding.ActivitySettingBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.setting.transferData.exportData
+import com.tugasmobile.inventory.ui.setting.transferData.importData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -44,12 +47,21 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val switchmode=binding.switchMode
         val switchNotif = binding.switchNotif
         val spinnerHariMulai = binding.spinnerHariMulai
         val spinnerHariAkhir = binding.spinnerHariAkhir
         val btnPilihJam = binding.btnPilihJam
         val txtJamDipilih = binding.txtJamDipilih
+
+        binding.btnExport.setOnClickListener {
+            SettingViewModel.exportDatabase(this)
+        }
+
+        binding.btnImport.setOnClickListener {
+            SettingViewModel.importDatabase(this)
+        }
 
         val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)
         val isDarkMode = sharedPreferences.getBoolean("dark_mode", false)

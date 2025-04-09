@@ -1,10 +1,10 @@
-package com.tugasmobile.inventory.ui.main.setting.notifikasi
+package com.tugasmobile.inventory.ui.setting.notifikasi
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler.resetDismissedNotificationStatus
+import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler.resetDismissedNotificationStatus
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {

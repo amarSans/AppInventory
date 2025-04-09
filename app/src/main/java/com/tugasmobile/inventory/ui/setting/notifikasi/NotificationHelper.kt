@@ -1,4 +1,4 @@
-package com.tugasmobile.inventory.ui.main.setting.notifikasi
+package com.tugasmobile.inventory.ui.setting.notifikasi
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

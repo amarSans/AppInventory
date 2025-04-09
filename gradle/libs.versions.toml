@@ -36,6 +36,8 @@ cameraView = "1.4.2"
 cameraCore = "1.4.2"
 cameraLifecycle = "1.4.2"
 cameraCamera2 = "1.4.2"
+gson = "2.10.1"
+
 
 
 [libraries]
@@ -74,6 +76,8 @@ androidx-camera-view = { group = "androidx.camera", name = "camera-view", versio
 androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "cameraCore" }
 androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCamera2" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

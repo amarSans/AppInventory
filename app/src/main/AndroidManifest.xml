@@ -19,6 +19,7 @@
     <application
         android:name=".ui.simpleItem.InventoryApp"
         android:allowBackup="true"
+        android:requestLegacyExternalStorage="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -41,7 +42,7 @@
             android:name=".ui.data.DataActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.setting.SettingActivity"
+            android:name=".ui.setting.SettingActivity"
             android:exported="false" />
         <activity
             android:name=".ui.data.EditData"
@@ -64,7 +65,7 @@
             android:theme="@style/Theme.Inventory.NoActionBar" />
 
         <receiver
-            android:name=".ui.main.setting.notifikasi.NotificationReceiver"
+            android:name=".ui.setting.notifikasi.NotificationReceiver"
             android:exported="false" />
 
         <activity

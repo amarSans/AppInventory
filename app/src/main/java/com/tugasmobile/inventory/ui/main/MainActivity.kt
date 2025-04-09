@@ -28,9 +28,9 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
-import com.tugasmobile.inventory.ui.main.setting.SettingActivity
-import com.tugasmobile.inventory.ui.main.setting.notifikasi.AlarmScheduler
-import com.tugasmobile.inventory.ui.main.setting.notifikasi.NotificationHelper
+import com.tugasmobile.inventory.ui.setting.SettingActivity
+import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
+import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
 import com.tugasmobile.inventory.ui.search.SearchActivity
 
 class MainActivity : AppCompatActivity() {

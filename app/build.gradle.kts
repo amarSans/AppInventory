@@ -86,6 +86,8 @@ dependencies {
     implementation(libs.androidx.work)
     implementation(libs.google.flexbox)
     implementation(libs.lottie)
+    implementation(libs.gson)
+
 
 
 }
