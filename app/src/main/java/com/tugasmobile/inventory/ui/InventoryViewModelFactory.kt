@@ -10,6 +10,7 @@ import com.tugasmobile.inventory.ui.main.MainViewModel
 import com.tugasmobile.inventory.ui.main.barang.BarangViewModel
 import com.tugasmobile.inventory.ui.main.history.HistoryViewModel
 import com.tugasmobile.inventory.ui.main.home.HomeViewModel
+import com.tugasmobile.inventory.ui.main.monitoring.MonitoringViewModel
 import com.tugasmobile.inventory.ui.setting.SettingViewModel
 import com.tugasmobile.inventory.ui.search.SearchViewModel
 
@@ -29,6 +30,7 @@ class InventoryViewModelFactory private constructor(
             SearchViewModel::class.java -> SearchViewModel(application, dbHelper) as T
             DetailViewModel::class.java -> DetailViewModel(application, dbHelper) as T
             DataViewModel::class.java -> DataViewModel(application, dbHelper) as T
+            MonitoringViewModel::class.java -> MonitoringViewModel(application, dbHelper) as T
             SettingViewModel::class.java -> SettingViewModel(application, dbHelper) as T
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

@@ -8,6 +8,12 @@
     <string name="menu_laporan">Laporan</string>
     <!-- Strings used for fragments for navigation -->
 
+    <string-array name="filterOption">
+        <item>Terbaru</item>
+        <item>30 Hari</item>
+        <item>60 Hari</item>
+        <item>1 Tahun Lebih</item>
+    </string-array>
 
     <string-array name="daftar_nama_warna">
         <item>kosong</item>
