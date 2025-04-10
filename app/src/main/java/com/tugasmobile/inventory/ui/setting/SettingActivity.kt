@@ -193,21 +193,33 @@ class SettingActivity : AppCompatActivity() {
         }
 
         val collection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val resolver = this.contentResolver
         val projection = arrayOf(
             MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DISPLAY_NAME
         )
-        val selection = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
-        val selectionArgs = arrayOf("%InventoryApp%")
+        val cursor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Android 10 ke atas - bisa pakai RELATIVE_PATH
+            val selection = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
+            val selectionArgs = arrayOf("%InventoryApp%")
 
-        val resolver = this.contentResolver
-        val cursor = resolver.query(
-            collection,
-            projection,
-            selection,
-            selectionArgs,
-            null
-        )
+            resolver.query(
+                collection,
+                projection,
+                selection,
+                selectionArgs,
+                null
+            )
+        } else {
+            // Android 9 ke bawah - fallback tanpa RELATIVE_PATH
+            resolver.query(
+                collection,
+                projection,
+                null,
+                null,
+                null
+            )
+        }
 
         cursor?.use {
             val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)

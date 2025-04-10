@@ -1,11 +1,14 @@
 package com.tugasmobile.inventory.ui.main
 
-import android.content.pm.PackageManager
-import android.os.Bundle
-import android.view.Menu
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -15,7 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -28,10 +30,11 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.databinding.ActivityMainBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.main.barang.BarangMasuk
+import com.tugasmobile.inventory.ui.search.SearchActivity
 import com.tugasmobile.inventory.ui.setting.SettingActivity
 import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
 import com.tugasmobile.inventory.ui.setting.notifikasi.NotificationHelper
-import com.tugasmobile.inventory.ui.search.SearchActivity
+
 
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels {
@@ -42,6 +45,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 1001
+        private const val REQUEST_MANAGE_ALL_FILES = 1002
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home, R.id.nav_barang_masuk, R.id.nav_barang_keluar,
-                R.id.nav_daftar_barang, R.id.nav_history_barang,
+                R.id.nav_monitoring, R.id.nav_daftar_barang, R.id.nav_history_barang,
                 R.id.nav_setting, R.id.nav_about
             ), drawerLayout
         )
@@ -138,31 +143,55 @@ class MainActivity : AppCompatActivity() {
     private fun checkPermissions() {
         val permissionsNeeded = mutableListOf<String>()
 
-        // Cek izin untuk penyimpanan dan kamera
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_PERMISSIONS)
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE), REQUEST_CODE_PERMISSIONS)
-        }
-        // Cek izin notifikasi (hanya untuk Android 13 ke atas)
+        // Android 13 ke atas: izin notifikasi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-        if (permissionsNeeded.isNotEmpty()) {
-            // Hanya meminta izin jika ada izin yang belum diberikan
-            ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), REQUEST_CODE_PERMISSIONS)
+
+        // Android 11 ke atas (API 30+): izin akses penuh ke file
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                try {
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION).apply {
+                        data = Uri.parse("package:$packageName")
+                    }
+                    startActivityForResult(intent, REQUEST_MANAGE_ALL_FILES)
+                } catch (e: Exception) {
+                    val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                    startActivityForResult(intent, REQUEST_MANAGE_ALL_FILES)
+                }
+            }
+        } else {
+            // Android 10 ke bawah: izin baca/tulis storage
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         }
 
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsNeeded.toTypedArray(), REQUEST_CODE_PERMISSIONS)
+        }
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_MANAGE_ALL_FILES) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    Toast.makeText(this, "Izin akses semua file diberikan", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Izin akses semua file ditolak", Toast.LENGTH_SHORT).show()
+                    finish() // atau beri peringatan lain
+                }
+            }
+        }
+    }
+
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
