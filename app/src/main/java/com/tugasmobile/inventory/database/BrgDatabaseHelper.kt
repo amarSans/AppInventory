@@ -38,6 +38,7 @@ class BrgDatabaseHelper(context: Context) :
         const val COLUMN_MEREK_BARANG = "merek_barang"
         const val COLUMN_KARAKTERISTIK = "karakteristik"
         const val COLUMN_GAMBAR = "gambar"
+        const val COLUMN_LAST_UPDATE = "last_update"
 
         // Tabel Stok
         const val TABLE_STOK = "table_stok"
@@ -82,7 +83,8 @@ class BrgDatabaseHelper(context: Context) :
                 $COLUMN_KODE_BARANG TEXT PRIMARY KEY,
                 $COLUMN_MEREK_BARANG TEXT NOT NULL,
                 $COLUMN_KARAKTERISTIK TEXT DEFAULT NULL,
-                $COLUMN_GAMBAR TEXT DEFAULT NULL
+                $COLUMN_GAMBAR TEXT DEFAULT NULL,
+                $COLUMN_LAST_UPDATE TEXT DEFAULT NULL
             )
         """.trimIndent()
 
@@ -200,6 +202,11 @@ class BrgDatabaseHelper(context: Context) :
             }
             val barangMasukId = db.insert(TABLE_BARANG_MASUK, null, valuesBarangMasuk)
             if (barangMasukId == -1L) throw Exception("Gagal menyimpan barang masuk")
+            val updateLastUpdate =ContentValues().apply {
+                put(COLUMN_LAST_UPDATE,barangIn.Tgl_Masuk)
+            }
+            db.update(TABLE_BARANG, updateLastUpdate, "$COLUMN_KODE_BARANG = ?", arrayOf(barang.id_barang))
+
             db.setTransactionSuccessful()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -300,6 +307,15 @@ class BrgDatabaseHelper(context: Context) :
             }
 
             stokCursor.close()
+            val updateLastUpdate = ContentValues().apply {
+                put(COLUMN_LAST_UPDATE, barangOut.Tgl_Keluar)
+            }
+            db.update(
+                TABLE_BARANG,
+                updateLastUpdate,
+                "$COLUMN_KODE_BARANG = ?",
+                arrayOf(barangOut.id_barang)
+            )
             db.setTransactionSuccessful()
         } catch (e: Exception) {
             Log.e("BarangKeluar", "Error: ${e.message}")
@@ -911,8 +927,43 @@ class BrgDatabaseHelper(context: Context) :
         }
 
         cursor.close()
-        db.close()
         return uriList
+    }
+
+    fun getBarangTertinggal(database: SQLiteDatabase): List<BarangMonitor> {
+        val list = mutableListOf<BarangMonitor>()
+
+        val query = """
+        SELECT 
+            b.$COLUMN_KODE_BARANG,
+            b.$COLUMN_MEREK_BARANG,
+            s.$COLUMN_STOK,
+            b.$COLUMN_LAST_UPDATE
+        FROM $TABLE_BARANG b
+        LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
+        ORDER BY b.$COLUMN_LAST_UPDATE ASC
+    """.trimIndent()
+
+        val cursor = database.rawQuery(query, null)
+
+        while (cursor.moveToNext()) {
+            val kode = cursor.getString(0)
+            val merek = cursor.getString(1)
+            val stok = cursor.getInt(2)
+            val lastUpdate = cursor.getString(3)
+
+            list.add(
+                BarangMonitor(
+                    kodeBarang = kode,
+                    merekBarang = merek,
+                    stok = stok,
+                    lastUpdate = lastUpdate
+                )
+            )
+        }
+
+        cursor.close()
+        return list
     }
 
 

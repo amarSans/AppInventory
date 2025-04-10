@@ -60,6 +60,12 @@
         android:label="History Barang"
         tools:layout="@layout/fragment_history_barang" />
 
+    <fragment
+        android:id="@+id/nav_monitoring"
+        android:name="com.tugasmobile.inventory.ui.main.monitoring.MonitoringFragment"
+        android:label="Monitorin"
+        tools:layout="@layout/fragment_monitoring"
+        />
     <!-- Lainnya Fragment -->
     <!--<fragment
         android:id="@+id/nav_setting"

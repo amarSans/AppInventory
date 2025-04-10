@@ -23,15 +23,18 @@
             android:title="Gudang Barang">
             <menu>
                 <group android:checkableBehavior="single">
-
                     <item
                         android:id="@+id/nav_daftar_barang"
-                        android:icon="@drawable/sharp_box_24"
+                        android:icon="@drawable/baseline_format_list_bulleted_24"
                         android:title="Daftar Barang" />
                     <item
                         android:id="@+id/nav_history_barang"
                         android:icon="@drawable/rounded_deployed_code_history_24"
                         android:title="history barang" />
+                    <item
+                        android:id="@+id/nav_monitoring"
+                        android:icon="@drawable/baseline_insert_invitation_24"
+                        android:title="Monitoring Barang"/>
                 </group>
             </menu>
         </item>

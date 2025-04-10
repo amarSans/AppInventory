@@ -206,6 +206,7 @@ class TambahStokFragment : Fragment() {
         }
         NewStokViewModel.currentBarangIn.observe(viewLifecycleOwner) { barangIn ->
             barangIn?.let {
+                it.Tgl_Masuk=DateUtils.getCurrentDate()
                 binding.editTextHargaBarangEdit.setText(HargaUtils.formatHarga(it.Harga_Modal))
                 binding.edtNamaTokoEdit.setText(it.Nama_Toko)
             } ?: run {
