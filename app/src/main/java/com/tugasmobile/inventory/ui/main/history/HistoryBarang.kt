@@ -16,7 +16,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterHistoryBarang
-import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.FragmentHistoryBarangBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 

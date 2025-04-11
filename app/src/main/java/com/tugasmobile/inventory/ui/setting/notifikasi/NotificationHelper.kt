@@ -18,7 +18,7 @@ class NotificationHelper(private val context: Context) {
 
     fun createNotificationChannel() {
         val manager = context.getSystemService(NotificationManager::class.java)
-        val channel = NotificationChannel(CHANNEL_ID, "Pemberitahuan Stok", NotificationManager.IMPORTANCE_DEFAULT)
+        val channel = NotificationChannel(CHANNEL_ID, "Pemberitahuan Stok", NotificationManager.IMPORTANCE_LOW)
         manager.createNotificationChannel(channel)
 
     }
