@@ -1,7 +1,6 @@
 package com.tugasmobile.inventory.ui.editdata
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +11,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.ViewModelProvider
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding

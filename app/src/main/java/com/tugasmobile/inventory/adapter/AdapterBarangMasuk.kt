@@ -5,13 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.DataBarangAkses
 import com.tugasmobile.inventory.utils.AnimationHelper
-import com.tugasmobile.inventory.utils.HargaUtils
 
 class AdapterBarangMasuk(private var listDataBarangAkses: List<DataBarangAkses>, private val itemClickListener: (DataBarangAkses) -> Unit):
     RecyclerView.Adapter<AdapterBarangMasuk.ListViewHolder>() {

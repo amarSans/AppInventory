@@ -1,8 +1,6 @@
 package com.tugasmobile.inventory.ui.main.monitoring
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.data.BarangMonitor

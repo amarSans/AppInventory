@@ -11,8 +11,8 @@ import com.tugasmobile.inventory.ui.main.barang.BarangViewModel
 import com.tugasmobile.inventory.ui.main.history.HistoryViewModel
 import com.tugasmobile.inventory.ui.main.home.HomeViewModel
 import com.tugasmobile.inventory.ui.main.monitoring.MonitoringViewModel
-import com.tugasmobile.inventory.ui.setting.SettingViewModel
 import com.tugasmobile.inventory.ui.search.SearchViewModel
+import com.tugasmobile.inventory.ui.setting.SettingViewModel
 
 class InventoryViewModelFactory private constructor(
     private val application: Application

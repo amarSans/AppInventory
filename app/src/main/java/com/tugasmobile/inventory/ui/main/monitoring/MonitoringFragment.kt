@@ -2,21 +2,18 @@ package com.tugasmobile.inventory.ui.main.monitoring
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
-import com.tugasmobile.inventory.databinding.FragmentHomeBinding
 import com.tugasmobile.inventory.databinding.FragmentMonitoringBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
-import com.tugasmobile.inventory.ui.main.home.HomeViewModel
 
 
 class MonitoringFragment : Fragment() {

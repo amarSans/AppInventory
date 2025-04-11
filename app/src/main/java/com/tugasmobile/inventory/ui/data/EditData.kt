@@ -21,11 +21,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
-import com.tugasmobile.inventory.ui.camera.CameraActivity
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
-import com.tugasmobile.inventory.utils.AnimationHelper
+import com.tugasmobile.inventory.ui.camera.CameraActivity
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
-import com.tugasmobile.inventory.utils.*
+import com.tugasmobile.inventory.utils.AnimationHelper
+import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.reduceFileImage
+import com.tugasmobile.inventory.utils.uriToFile
 
 class EditData : AppCompatActivity() {
     private lateinit var binding: ActivityEditDataBinding
