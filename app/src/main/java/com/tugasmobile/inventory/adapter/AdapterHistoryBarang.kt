@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.History
+import com.tugasmobile.inventory.utils.AnimationHelper
 
 class AdapterHistoryBarang (private var historyList: List<History>) :
     RecyclerView.Adapter<AdapterHistoryBarang.HistoryViewHolder>() {
@@ -49,6 +50,7 @@ class AdapterHistoryBarang (private var historyList: List<History>) :
         }
 
         holder.imgBubble.setImageResource(iconRes)
+        AnimationHelper.animateRecyclerItem(holder.itemView,position)
     }
 
     override fun getItemCount(): Int = historyList.size
