@@ -207,7 +207,8 @@ class TambahBarangFragment : Fragment() {
             id_barang = kodeProduk,
             merek_barang = merekProduk,
             karakteristik = karakteristik,
-            gambar = gambarUri.toString()
+            gambar = gambarUri.toString(),
+            lastUpdate = DateUtils.getCurrentDate()
         )
         val stok= Stok(
             idStok = 0,

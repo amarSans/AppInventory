@@ -596,7 +596,7 @@ class BrgDatabaseHelper(context: Context) :
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_MEREK_BARANG,b.$COLUMN_KARAKTERISTIK,
-               b.$COLUMN_GAMBAR, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_UKURAN_WARNA,
+               b.$COLUMN_GAMBAR, b.$COLUMN_LAST_UPDATE, s.$COLUMN_ID_STOK, s.$COLUMN_STOK, s.$COLUMN_UKURAN_WARNA,
                m.$COLUMN_ID_MASUK, m.$COLUMN_TANGGAL_MASUK, m.$COLUMN_HARGA_JUAL, m.$COLUMN_NAMA_TOKO
         FROM $TABLE_BARANG b
         LEFT JOIN $TABLE_STOK s ON b.$COLUMN_KODE_BARANG = s.$COLUMN_KODE_BARANG
@@ -616,6 +616,7 @@ class BrgDatabaseHelper(context: Context) :
                 val karakteristik =
                     it.getString(it.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK)) ?: ""
                 val gambarUri = Uri.parse(it.getString(it.getColumnIndexOrThrow(COLUMN_GAMBAR)))
+                val lastupdate=it.getString(it.getColumnIndexOrThrow(COLUMN_LAST_UPDATE)) ?: ""
                 val idStok = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
                 val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK)) ?: 0
                 val ukuranwarna =
@@ -627,8 +628,8 @@ class BrgDatabaseHelper(context: Context) :
                 val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO)) ?: ""
 
                 // Inisialisasi objek
-                itemBarang = ItemBarang(idBarang, namaBarang, karakteristik, gambarUri.toString())
-                stok = Stok(idStok, idBarang, stokJumlah, ukuranwarna)
+                itemBarang = ItemBarang(idBarang, namaBarang, karakteristik, gambarUri.toString(),lastupdate)
+                stok = Stok(idStok, idBarang,ukuranwarna, stokJumlah )
                 barangIn = BarangIn(idMasuk, idBarang, tanggalMasuk, hargaJual, namaToko)
             }
         }

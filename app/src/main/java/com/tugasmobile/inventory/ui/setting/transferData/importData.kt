@@ -1,8 +1,12 @@
 package com.tugasmobile.inventory.ui.setting.transferData
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
@@ -65,16 +69,19 @@ fun importData(context: Context, database: SQLiteDatabase) {
             if (srcFile.exists()) {
                 srcFile.copyTo(destFile, overwrite = true)
             }
-
-            val newImagePath = destFile.absolutePath
+            val newUri = addImageToMediaStore(context, destFile)
+            val newImagePath = newUri.toString()
 
             // Simpan ke database
-            val stmt = database.compileStatement("INSERT INTO $TABLE_BARANG VALUES (?, ?, ?, ?)")
+            val stmt = database.compileStatement("INSERT INTO $TABLE_BARANG VALUES (?, ?, ?, ?, ?)")
             stmt.bindString(1, item.id_barang)
             stmt.bindString(2, item.merek_barang)
             stmt.bindString(3, item.karakteristik)
             stmt.bindString(4, newImagePath)
+            stmt.bindString(5,item.lastUpdate)
             stmt.executeInsert()
+
+            srcFile.delete()
         }
 
         // 2. Stok
@@ -84,11 +91,12 @@ fun importData(context: Context, database: SQLiteDatabase) {
 
 // Simpan ke database
         for (stok in stokList) {
+            Log.d("IMPORT_STOK", "ID: ${stok.idStok}, Kode: ${stok.id_barang}, UkuranWarna: ${stok.ukuranwarna}, Stok: ${stok.stokBarang}")
             val stmt = database.compileStatement("INSERT INTO $TABLE_STOK VALUES (?, ?, ?, ?)")
             stmt.bindLong(1, stok.idStok)
             stmt.bindString(2, stok.id_barang)
-            stmt.bindLong(3, stok.stokBarang.toLong())
-            stmt.bindString(4, stok.ukuranwarna)
+            stmt.bindString(3, stok.ukuranwarna)
+            stmt.bindLong(4, stok.stokBarang.toLong())
             stmt.executeInsert()
         }
 
@@ -148,3 +156,21 @@ fun importData(context: Context, database: SQLiteDatabase) {
         database.endTransaction()
     }
 }
+fun addImageToMediaStore(context: Context, imageFile: File): Uri? {
+    val values = ContentValues().apply {
+        put(MediaStore.Images.Media.DISPLAY_NAME, imageFile.name)
+        put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
+    }
+
+    val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+
+    uri?.let {
+        context.contentResolver.openOutputStream(it)?.use { output ->
+            imageFile.inputStream().copyTo(output)
+        }
+    }
+
+    return uri
+}
+

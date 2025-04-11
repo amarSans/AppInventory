@@ -36,7 +36,7 @@
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_kode_barang"
             android:layout_marginEnd="10dp"
-            android:clickable="true"
+            android:enabled="false"
             app:layout_constraintBottom_toTopOf="@id/tvnmerekBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarangEdit"
             app:layout_constraintStart_toStartOf="@id/tvkodebarang"

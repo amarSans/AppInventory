@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.tugasmobile.inventory.data.BarangIn
@@ -56,7 +57,8 @@ fun exportData(context: Context, database: SQLiteDatabase) {
                     id_barang = cursorBarang.getString(0),
                     merek_barang = cursorBarang.getString(1),
                     karakteristik = cursorBarang.getString(2),
-                    gambar = newImagePath
+                    gambar = newImagePath,
+                    lastUpdate = cursorBarang.getString(4)
                 )
             )
         }
@@ -67,12 +69,13 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         val stokList = mutableListOf<Stok>()
         val cursorStok = database.rawQuery("SELECT * FROM $TABLE_STOK", null)
         while (cursorStok.moveToNext()) {
+
             stokList.add(
                 Stok(
                     idStok = cursorStok.getLong(0),
                     id_barang = cursorStok.getString(1),
-                    stokBarang = cursorStok.getInt(2),
-                    ukuranwarna = cursorStok.getString(3)
+                    ukuranwarna = cursorStok.getString(2),
+                    stokBarang = cursorStok.getInt(3)
                 )
             )
         }
