@@ -33,6 +33,7 @@ import com.tugasmobile.inventory.data.Stok
 import com.tugasmobile.inventory.databinding.FragmentTambahBarangBinding
 import com.tugasmobile.inventory.ui.camera.CameraActivity
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
+import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
@@ -73,6 +74,7 @@ class TambahBarangFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        AnimationHelper.animateItems(binding.constraintTambahbarang,requireContext())
         binding.imgViewBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }

@@ -2,7 +2,6 @@ package com.tugasmobile.inventory.ui.main.barang
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,7 +12,6 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterBarangMasuk
@@ -21,9 +19,7 @@ import com.tugasmobile.inventory.databinding.FragmentBarangMasukBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.data.DataActivity
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
-import com.tugasmobile.inventory.ui.main.home.HomeViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.tugasmobile.inventory.utils.AnimationHelper
 
 class BarangMasuk : Fragment() {
 
@@ -42,7 +38,7 @@ class BarangMasuk : Fragment() {
         _binding = FragmentBarangMasukBinding.inflate(inflater, container, false)
 
         // Inisialisasi ViewModel
-
+        AnimationHelper.animateItems(binding.fragmentBarangMasuk,requireContext())
 
         // Inisialisasi RecyclerView dan Adapter
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())

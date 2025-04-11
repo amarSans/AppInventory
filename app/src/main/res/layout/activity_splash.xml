@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         app:lottie_autoPlay="true"
-        app:lottie_loop="true"
+        app:lottie_loop="false"
         app:lottie_rawRes="@raw/box" />
     <TextView
         android:id="@+id/tvSplashText"

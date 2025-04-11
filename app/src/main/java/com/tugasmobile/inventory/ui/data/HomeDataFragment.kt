@@ -1,12 +1,17 @@
 package com.tugasmobile.inventory.ui.data
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -27,7 +32,6 @@ class HomeDataFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home_data, container, false)
         requireActivity().window.statusBarColor =
             ContextCompat.getColor(requireContext(), R.color.dark_background)
-
         val edtKode = view.findViewById<EditText>(R.id.edt_kode)
         val btnCekKode = view.findViewById<Button>(R.id.btn_kode)
 
@@ -75,6 +79,7 @@ class HomeDataFragment : Fragment() {
             }
         }
     }
+
 
     // === PINDAH FRAGMENT ===
     private fun pindahKeFragment(fragment: Fragment) {

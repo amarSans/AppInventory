@@ -23,6 +23,7 @@ import com.tugasmobile.inventory.adapter.AdapterColorIn
 import com.tugasmobile.inventory.databinding.ActivityEditDataBinding
 import com.tugasmobile.inventory.ui.camera.CameraActivity
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
+import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.*
 
@@ -43,6 +44,7 @@ class EditData : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        AnimationHelper.animateItems(binding.constraintEdit,this)
         barangId = intent.getStringExtra("ID_BARANG") ?: ""
         if (barangId.isNotEmpty()) editViewModel.setCurrentBarang(barangId)
         val imgViewBack = binding.imgViewBack

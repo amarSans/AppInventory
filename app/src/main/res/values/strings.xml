@@ -27,9 +27,13 @@
         <item>coklat</item>
         <item>abu-abu</item>
         <item>krem</item>
+        <item>oranye</item>
+        <item>perak</item>
+        <item>pink</item> <!-- tambahan -->
     </string-array>
+
     <string-array name="daftar_warna">
-        <item>#00000000</item>
+        <item>#00000000</item> <!-- kosong -->
         <item>#6D6D6D</item> <!-- hitam -->
         <item>#FFFAFA</item> <!-- putih -->
         <item>#FBFB46</item> <!-- kuning -->
@@ -40,7 +44,11 @@
         <item>#E8BB88</item> <!-- coklat -->
         <item>#A2A1A1</item> <!-- abu-abu -->
         <item>#F3D3AC</item> <!-- krem -->
+        <item>#FFA500</item> <!-- oranye -->
+        <item>#C0C0C0</item> <!-- perak -->
+        <item>#FFC0CB</item> <!-- pink -->
     </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -63,24 +71,71 @@
     <string name="save">Save</string>
 
     <string-array name="karakteristik_barang">
+        <!-- Usia -->
         <item>Bayi</item>
         <item>Anak-anak</item>
         <item>Dewasa</item>
         <item>Orang Tua</item>
+
+        <!-- Gender -->
         <item>Laki-laki</item>
         <item>Perempuan</item>
+        <item>Unisex</item>
+
+        <!-- Jenis Alas Kaki -->
         <item>Sandal Jepit</item>
         <item>Sandal Tali</item>
-        <item>Sandal Sosok</item>
-        <item>Sandal Papan</item>
-        <item>Sandal Kodog</item>
+        <item>Sandal Selop</item>
         <item>Sandal Pesta</item>
+        <item>Sandal Kodog</item>
+        <item>Sandal Papan</item>
+        <item>Sandal Sosok</item>
         <item>Sepatu Sandal</item>
         <item>Sepatu Teplet</item>
-        <item>Kulit</item>
+        <item>Sepatu Slip On</item>
+        <item>Sepatu Sneakers</item>
+        <item>Sepatu Boots</item>
+        <item>Sepatu Formal</item>
+        <item>Sepatu Safety</item>
+        <item>Sepatu Pantofel</item>
+        <item>Sepatu Lari</item>
+        <item>Sepatu Hiking</item>
+        <item>Sepatu Futsal</item>
+        <item>Sepatu Sekolah</item>
+        <item>Sepatu Wedges</item>
+        <item>Sepatu Hak Tinggi</item>
+        <item>Sepatu Flat</item>
+        <item>Sepatu Kulit</item>
+        <item>Slip On Muslimah</item>
+
+        <!-- Bahan -->
+        <item>Kulit Asli</item>
+        <item>Kulit Sintetis</item>
         <item>Plastik</item>
+        <item>Karet</item>
         <item>Spon</item>
+        <item>Kanvas</item>
+        <item>Jeans</item>
+        <item>Rajut</item>
+        <item>Kain</item>
+        <item>Mesh</item>
+        <item>Suede</item>
+        <item>Beludru</item>
+
+        <!-- Kegunaan / Karakter Tambahan -->
+        <item>Anti Air</item>
+        <item>Anti Slip</item>
+        <item>Ringan</item>
+        <item>Nyaman Dipakai</item>
+        <item>Outdoor</item>
+        <item>Indoor</item>
+        <item>Kasual</item>
+        <item>Formal</item>
+        <item>Elegan</item>
+        <item>Sporty</item>
+        <item>Trendy</item>
     </string-array>
+
     <string name="belum_diisi">belum disi</string>
 
     <!--bagian button sheet-->

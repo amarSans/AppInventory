@@ -18,12 +18,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.tugasmobile.inventory.data.SettingData
-import com.tugasmobile.inventory.database.BrgDatabaseHelper
 import com.tugasmobile.inventory.databinding.ActivitySettingBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.setting.notifikasi.AlarmScheduler
-import com.tugasmobile.inventory.ui.setting.transferData.exportData
-import com.tugasmobile.inventory.ui.setting.transferData.importData
+import com.tugasmobile.inventory.utils.AnimationHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,7 +45,7 @@ class SettingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        AnimationHelper.animateItems(binding.linearLayoutSetting,this)
         val switchmode=binding.switchMode
         val switchNotif = binding.switchNotif
         val spinnerHariMulai = binding.spinnerHariMulai

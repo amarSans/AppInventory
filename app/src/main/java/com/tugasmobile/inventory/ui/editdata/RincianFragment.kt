@@ -23,6 +23,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.adapter.AdapterSizeColorUI
 import com.tugasmobile.inventory.databinding.FragmentRincianBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
+import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.HargaUtils
 
 
@@ -41,7 +42,7 @@ class RincianFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRincianBinding.inflate(inflater,container,false)
-
+        AnimationHelper.animateItems(binding.linearLayoutRincian,requireContext())
         BarangId = arguments?.getString("ID_BARANG") ?: ""
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
         val colorValues = resources.getStringArray(R.array.daftar_warna)

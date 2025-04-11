@@ -1,7 +1,16 @@
 package com.tugasmobile.inventory.ui.main.home
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,15 +23,13 @@ import com.tugasmobile.inventory.adapter.AdapterBarangHampirHabisHome
 import com.tugasmobile.inventory.adapter.AdapterHistoryBarang
 import com.tugasmobile.inventory.databinding.FragmentHomeBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
+import com.tugasmobile.inventory.ui.search.SearchActivity
+import com.tugasmobile.inventory.utils.AnimationHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import java.text.SimpleDateFormat
-import java.util.*
-import android.content.Context
-import android.content.Intent
-import android.view.MotionEvent
-import android.view.inputmethod.InputMethodManager
-import com.tugasmobile.inventory.ui.search.SearchActivity
+import java.util.Calendar
+import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -46,6 +53,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnimationHelper.animateItems(binding.linearLayoutHome,requireContext())
         setupMenu()
         setupUI()
         observeData()

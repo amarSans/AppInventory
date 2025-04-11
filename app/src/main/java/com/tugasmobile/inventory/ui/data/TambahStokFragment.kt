@@ -18,6 +18,7 @@ import com.tugasmobile.inventory.data.History
 import com.tugasmobile.inventory.data.StokUpdate
 import com.tugasmobile.inventory.databinding.FragmentTambahStokBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
+import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 
@@ -55,6 +56,7 @@ class TambahStokFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnimationHelper.animateItems(binding.constrainttambahstok,requireContext())
         binding.imgViewBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
