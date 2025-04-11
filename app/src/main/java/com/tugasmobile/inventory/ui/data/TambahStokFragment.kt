@@ -194,7 +194,7 @@ class TambahStokFragment : Fragment() {
                     binding.editStokBarang.setText("")
                 } else{
                 binding.editTextUkuranwarna.setText(
-                    it.ukuranwarna.toString()
+                    it.ukuranwarna
                         .replace("[", "") // Hapus semua tanda "["
                         .replace("]", "") // Hapus semua tanda "]"
                         .trim() // Hapus spasi di awal dan akhir

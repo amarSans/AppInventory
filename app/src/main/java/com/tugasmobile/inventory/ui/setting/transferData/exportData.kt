@@ -72,7 +72,7 @@ fun exportData(context: Context, database: SQLiteDatabase) {
                     idStok = cursorStok.getLong(0),
                     id_barang = cursorStok.getString(1),
                     stokBarang = cursorStok.getInt(2),
-                    ukuranwarna = cursorStok.getString(3)?.split("||") ?: emptyList()
+                    ukuranwarna = cursorStok.getString(3)
                 )
             )
         }

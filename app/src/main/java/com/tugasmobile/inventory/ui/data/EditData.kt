@@ -285,7 +285,7 @@ class EditData : AppCompatActivity() {
                     binding.editTextUkuranwarnaEdit.setText("")
                     binding.editStokBarang.setText("")
                 } else{
-                binding.editTextUkuranwarnaEdit.setText(it.ukuranwarna.toString())
+                binding.editTextUkuranwarnaEdit.setText(it.ukuranwarna)
                 binding.editStokBarang.setText(it.stokBarang.toString())}
                 stokBarang = it.stokBarang
             } ?: run {
@@ -338,11 +338,6 @@ class EditData : AppCompatActivity() {
         val updatedStok = editViewModel.currentStok.value?.copy(
             stokBarang = binding.editStokBarang.text.toString().toIntOrNull() ?: 0,
             ukuranwarna = binding.editTextUkuranwarnaEdit.text.toString()
-                .replace("[", "") // Hapus semua tanda "["
-                .replace("]", "") // Hapus semua tanda "]"
-                .trim() // Hapus spasi di awal dan akhir
-                .split(",")
-                .map { it.trim() }
         ) ?: run {
             Toast.makeText(this, "Data stok tidak valid", Toast.LENGTH_SHORT).show()
             return

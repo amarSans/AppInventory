@@ -43,6 +43,11 @@ class BarangKeluarDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         HargaUtils.setupHargaTextWatcher(binding.ppedtHargaBeli)
+        val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
+        val colorValues = resources.getStringArray(R.array.daftar_warna)
+        val colorMap = colorNames.indices.associate { index ->
+            colorNames[index] to colorValues[index]
+        }
 
         binding.ppimgButtonAdd.setOnClickListener {
             val currentStock = binding.ppedtStokKeluar.text.toString().toIntOrNull() ?: 0
@@ -88,13 +93,28 @@ class BarangKeluarDialogFragment : DialogFragment() {
 
         BarangKeluarViewModel.currentStok.observe(viewLifecycleOwner) { barang ->
             barang?.let {
-                val ukuranWarnaBarang = it.ukuranwarna
+                val ukuranWarnaString = it.ukuranwarna
+
+                // Split data jadi list dan trim setiap item
+                val ukuranWarnaList = ukuranWarnaString
+                    .split(",")
+                    .map { item -> item.trim() }
+
+                val warnaFromDb = ukuranWarnaList.map { item ->
+                    item.split(" ").last().trim()
+                }
+
+                val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
+
                 colorAdapter = AdapterColorOut(requireContext())
                 binding.pprvUkuranwarnaSendal.layoutManager =
                     LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                 binding.pprvUkuranwarnaSendal.adapter = colorAdapter
-                if (ukuranWarnaBarang.isNotEmpty()) {
-                    setupRecyclerViewUkuranWarna(ukuranWarnaBarang)
+
+                if (ukuranWarnaList.isNotEmpty() && selectedColorValues.isNotEmpty()) {
+                    colorAdapter.updateColors(ukuranWarnaList, selectedColorValues)
+                } else {
+                    colorAdapter.updateColors(emptyList(), emptyList())
                 }
             }
         }

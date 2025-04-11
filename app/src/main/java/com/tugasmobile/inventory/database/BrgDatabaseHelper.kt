@@ -199,7 +199,7 @@ class BrgDatabaseHelper(context: Context) :
 
             val valuesStok = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna.joinToString(","))
+                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna)
                 put(COLUMN_STOK, stok.stokBarang)
             }
             val stokId = db.insert(TABLE_STOK, null, valuesStok)
@@ -559,7 +559,7 @@ class BrgDatabaseHelper(context: Context) :
 
             val valuesStok = ContentValues().apply {
                 put(COLUMN_STOK, stok.stokBarang)
-                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna.joinToString(","))
+                put(COLUMN_UKURAN_WARNA, stok.ukuranwarna)
             }
             val resultStok = db.update(
                 TABLE_STOK,
@@ -619,8 +619,7 @@ class BrgDatabaseHelper(context: Context) :
                 val idStok = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_STOK))
                 val stokJumlah = it.getInt(it.getColumnIndexOrThrow(COLUMN_STOK)) ?: 0
                 val ukuranwarna =
-                    it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")
-                        ?: emptyList()
+                    it.getString(it.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?: ""
                 val idMasuk = it.getLong(it.getColumnIndexOrThrow(COLUMN_ID_MASUK))
                 val tanggalMasuk =
                     it.getString(it.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK)) ?: ""

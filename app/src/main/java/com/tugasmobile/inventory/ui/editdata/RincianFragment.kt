@@ -71,10 +71,10 @@ class RincianFragment : Fragment() {
         }}
         rincianViewModel.currentStok.observe(viewLifecycleOwner) { stok ->
             stok?.let {
-                val teksLengkap = it.ukuranwarna.map { item -> item.trim() }
+                val teksLengkap = it.ukuranwarna.split(",").map { it.trim() }
                 binding.tvStok.text = it.stokBarang.toString()
-                val warnaFromDb = it.ukuranwarna.map { item ->
-                    item.split(" ").last().trim() // Ambil bagian terakhir (warna)
+                val warnaFromDb = teksLengkap.map { item ->
+                    item.split(" ").last().trim()
                 }
                 val selectedColorValues = warnaFromDb.mapNotNull { colorMap[it] }
                 Log.d("RincianFragment", "Data ukuranwarna dikirim ke adapter: $teksLengkap")

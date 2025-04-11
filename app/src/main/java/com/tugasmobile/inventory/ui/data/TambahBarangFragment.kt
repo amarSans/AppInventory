@@ -51,7 +51,6 @@ class TambahBarangFragment : Fragment() {
     }
 
     private val selectedItems = mutableSetOf<String>()
-    private lateinit var selectedSizesColorList: List<String>
     private var selectedImageUri: Uri? = null
     private lateinit var photoUri: Uri
 
@@ -201,8 +200,6 @@ class TambahBarangFragment : Fragment() {
             return
         }
 
-        selectedSizesColorList = ukuranWarna.split(",").map { it.trim() }
-
         val namaTokoPreview = binding.edtNamaToko.text.toString().trim()
         val namaToko = if (namaTokoPreview.isEmpty()) "belum ada" else namaTokoPreview
 
@@ -216,7 +213,7 @@ class TambahBarangFragment : Fragment() {
             idStok = 0,
             id_barang = kodeProduk,
             stokBarang = stokBarang,
-            ukuranwarna = selectedSizesColorList,
+            ukuranwarna = ukuranWarna,
         )
         val barangIn = BarangIn(
             IdBrgMasuk = 0,

@@ -88,7 +88,7 @@ fun importData(context: Context, database: SQLiteDatabase) {
             stmt.bindLong(1, stok.idStok)
             stmt.bindString(2, stok.id_barang)
             stmt.bindLong(3, stok.stokBarang.toLong())
-            stmt.bindString(4, stok.ukuranwarna.joinToString("||"))
+            stmt.bindString(4, stok.ukuranwarna)
             stmt.executeInsert()
         }
 
