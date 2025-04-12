@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
@@ -24,10 +25,10 @@ import java.io.File
 
 fun importData(context: Context, database: SQLiteDatabase) {
     val backupDir = File(
-        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS,),
         "BackupInventoryMuammar"
     )
-    val imageBackupDir = File(backupDir, "images")
+    val imageBackupDir = File(backupDir, "InventoryApp")
     val jsonFile = File(backupDir, "data.json")
 
     if (!jsonFile.exists()) {
@@ -64,7 +65,10 @@ fun importData(context: Context, database: SQLiteDatabase) {
             val fileName = File(oldPath).name
             val srcFile = File(imageBackupDir, fileName)
             val destFile = File(imageTargetDir, fileName)
-
+            Log.d("IMPORT_GAMBAR", "oldPath: $oldPath")
+            Log.d("IMPORT_GAMBAR", "fileName: $fileName")
+            Log.d("IMPORT_GAMBAR", "srcFile path: ${srcFile.absolutePath}")
+            Log.d("IMPORT_GAMBAR", "srcFile exists: ${srcFile.exists()}")
             // Salin gambar
             if (srcFile.exists()) {
                 srcFile.copyTo(destFile, overwrite = true)
@@ -91,7 +95,6 @@ fun importData(context: Context, database: SQLiteDatabase) {
 
 // Simpan ke database
         for (stok in stokList) {
-            Log.d("IMPORT_STOK", "ID: ${stok.idStok}, Kode: ${stok.id_barang}, UkuranWarna: ${stok.ukuranwarna}, Stok: ${stok.stokBarang}")
             val stmt = database.compileStatement("INSERT INTO $TABLE_STOK VALUES (?, ?, ?, ?)")
             stmt.bindLong(1, stok.idStok)
             stmt.bindString(2, stok.id_barang)
@@ -160,7 +163,13 @@ fun addImageToMediaStore(context: Context, imageFile: File): Uri? {
     val values = ContentValues().apply {
         put(MediaStore.Images.Media.DISPLAY_NAME, imageFile.name)
         put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Untuk Android 10 ke atas, gunakan RELATIVE_PATH
+            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
+        } else {
+            // Untuk Android 9 ke bawah, gunakan _data (deprecated tapi masih jalan)
+            put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
+        }
     }
 
     val uri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)

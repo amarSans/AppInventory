@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">inventory</string>
+    <string name="app_name">InventaTA</string>
     <string name="nav_header_title">Mode User</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>

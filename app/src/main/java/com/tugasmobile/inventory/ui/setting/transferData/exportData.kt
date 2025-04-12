@@ -25,7 +25,7 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
         "BackupInventoryMuammar"
     )
-    val imageDir = File(backupDir, "images")
+    val imageDir = File(backupDir, "InventoryApp")
     if (!imageDir.exists()) imageDir.mkdirs()
 
     val allData = mutableMapOf<String, Any>()
