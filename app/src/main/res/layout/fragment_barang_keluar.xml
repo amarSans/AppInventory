@@ -165,6 +165,7 @@
 
         <Button
             android:id="@+id/btn_barang_keluar"
+            style="@style/StyleButtonSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="barang keluar"

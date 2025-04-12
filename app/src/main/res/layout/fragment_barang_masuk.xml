@@ -10,6 +10,7 @@
 
     <Button
         android:id="@+id/btn_TamBar"
+        style="@style/StyleButtonSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/sharp_box_24"

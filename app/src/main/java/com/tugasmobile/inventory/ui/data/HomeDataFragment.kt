@@ -9,6 +9,9 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 
@@ -49,7 +52,7 @@ class HomeDataFragment : Fragment() {
         val kode = "SND" + (1000..9999).random()
 
         dataViewModel.cekBarangExist(kode)
-        dataViewModel.barangExist.observe(viewLifecycleOwner) { hasilPencarian ->
+        dataViewModel.barangExist.observeOnce(viewLifecycleOwner) { hasilPencarian ->
 
             if (hasilPencarian) {
                 generateKodeBarang(callback)
@@ -62,7 +65,7 @@ class HomeDataFragment : Fragment() {
     // === CEK DAN PINDAH FRAGMENT ===
     private fun cekDanPindahFragment(kodeBarang: String) {
         dataViewModel.cekBarangExist(kodeBarang)
-        dataViewModel.barangExist.observe(viewLifecycleOwner) { hasilPencarian ->
+        dataViewModel.barangExist.observeOnce(viewLifecycleOwner) { hasilPencarian ->
             dataViewModel.barangExist.removeObservers(viewLifecycleOwner)
             if (hasilPencarian) {
                 pindahKeFragment(TambahStokFragment.newInstance(kodeBarang))
@@ -80,5 +83,14 @@ class HomeDataFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
+    fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+        observe(lifecycleOwner, object : Observer<T> {
+            override fun onChanged(value: T) {
+                removeObserver(this)
+                observer.onChanged(value)
+            }
+        })
+    }
+
 
 }

@@ -38,7 +38,7 @@ class EditData : AppCompatActivity() {
     private var barangId: String = ""
     private var stokBarang = 0
     private var selectedImageUri: Uri? = null
-    private lateinit var photoUri: Uri
+    private var previousImageUri: Uri? = null
     private var selectedItems = mutableSetOf<String>()
 
     private lateinit var colorAdapter: AdapterColorIn
@@ -58,6 +58,7 @@ class EditData : AppCompatActivity() {
         setupObservers()
     }
     private fun openCamera() {
+        previousImageUri=selectedImageUri
         val intent = Intent(this, CameraActivity::class.java)
         cameraLauncher.launch(intent)
     }
@@ -90,7 +91,7 @@ class EditData : AppCompatActivity() {
     }
 
     private fun openGallery() {
-        selectedImageUri?.let { deleteImage(this,it) }
+        previousImageUri=selectedImageUri
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)
     }
@@ -106,7 +107,9 @@ class EditData : AppCompatActivity() {
             } ?: run {
                 Toast.makeText(this, "Gagal mendapatkan URI gambar", Toast.LENGTH_SHORT).show()
             }
-        }
+        }  else {
+        // Jika pengguna membatalkan pengeditan, kembalikan gambar lama
+    }
     }
     private fun saveImageToStorage(imageUri: Uri): Uri? {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri))

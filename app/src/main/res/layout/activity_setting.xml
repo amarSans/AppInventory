@@ -16,22 +16,23 @@
             android:id="@+id/imgViewBackSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/baseline_arrow_back_ios_new_24" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
-            android:text="Setting"
-            android:textSize="20sp" />
+            android:text="Pengaturan Aplikasi"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:gravity="start"
             android:text="Export dan Import"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -43,16 +44,16 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginBottom="16dp"
-            android:padding="16dp">
+            android:layout_marginBottom="24dp"
+            android:padding="8dp">
 
             <Button
                 android:id="@+id/btnExport"
                 android:layout_width="0dp"
                 android:layout_weight="1"
+                style="@style/StyleButtonSave"
                 android:layout_height="wrap_content"
-                android:text="Export"
-                android:drawablePadding="8dp" />
+                android:text="Export" />
 
             <Space
                 android:layout_width="16dp"
@@ -60,20 +61,19 @@
 
             <Button
                 android:id="@+id/btnImport"
+                style="@style/StyleButtonSave"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Import"
-                android:drawablePadding="8dp" />
+                android:text="Import" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:gravity="start"
-            android:text="syncronasi"
-            android:textSize="16sp" />
+            android:text="Sinkronisasi Data"
+            android:textSize="14sp" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -83,30 +83,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="24dp">
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_semibold"
                 android:gravity="start"
-                android:text="Sinkronisasi"
+                android:text="Sinkronisasi Sekarang"
                 android:textSize="16sp" />
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btnSync"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="@style/StyleButtonSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sinkronisasi Data"
-                android:icon="@drawable/baseline_sync_24"/>
+                android:text="Sinkronkan"/>
         </LinearLayout>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:gravity="start"
-            android:text="Tampilan"
-            android:textSize="16sp" />
+            android:text="Tampilan Aplikasi"
+            android:textSize="14sp"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -115,7 +113,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:orientation="horizontal"
             android:paddingVertical="8dp">
 
@@ -124,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Mode_dark"
+                android:text="Mode Gelap"
                 android:textSize="16sp" />
 
             <androidx.appcompat.widget.SwitchCompat
@@ -139,9 +137,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
-            android:gravity="start"
-            android:text="Notifikasi"
-            android:textSize="16sp" />
+            android:text="Pengaturan Notifikasi"
+            android:textSize="14sp"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -233,7 +230,8 @@
             android:paddingVertical="8dp"
             android:text="Jam Notifikasi"
             android:textSize="16sp" />
-        <com.google.android.material.button.MaterialButton
+        <Button
+            style="@style/StyleButtonSave"
             android:id="@+id/btnPilihJam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

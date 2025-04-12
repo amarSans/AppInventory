@@ -293,9 +293,9 @@
 
         <Button
             android:id="@+id/button_save"
+            style="@style/StyleButtonSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_semibold"
             android:text="@string/save"
             android:textStyle="bold"
