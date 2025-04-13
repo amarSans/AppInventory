@@ -24,7 +24,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- TextView untuk menampilkan nama item -->
         <TextView
             android:id="@+id/item_name"
             android:layout_width="0dp"
@@ -37,7 +36,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="8dp"/>
 
-        <!-- TextView untuk menampilkan kode item -->
         <TextView
             android:id="@+id/item_code"
             android:layout_width="0dp"
@@ -49,7 +47,6 @@
             app:layout_constraintEnd_toEndOf="@id/item_name"
             android:layout_marginTop="4dp"/>
 
-        <!-- ImageView untuk menampilkan ikon waktu -->
         <ImageView
             android:id="@+id/item_time_icon"
             android:layout_width="20dp"
@@ -59,7 +56,6 @@
             app:layout_constraintTop_toBottomOf="@id/item_code"
             android:layout_marginTop="8dp"/>
 
-        <!-- TextView untuk menampilkan waktu -->
         <TextView
             android:id="@+id/item_time"
             android:layout_width="wrap_content"

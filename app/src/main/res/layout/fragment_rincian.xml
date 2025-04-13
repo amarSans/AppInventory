@@ -13,7 +13,6 @@
         android:spacing="12dp"
         android:gravity="center_horizontal">
 
-        <!-- Gambar -->
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="400dp"
@@ -22,7 +21,6 @@
             android:background="@drawable/baseline_image_24"
             android:contentDescription="Gambar Barang" />
 
-        <!-- Nama Barang -->
         <TextView
             android:id="@+id/tv_nama_barang"
             style="@style/TextAppearance.Material3.HeadlineSmall"
@@ -33,7 +31,6 @@
             android:textColor="?attr/colorOnBackground"
             android:gravity="center" />
 
-        <!-- Nama Toko -->
         <TextView
             android:id="@+id/tv_kode_barang"
             style="@style/TextAppearance.Material3.BodyLarge"
@@ -42,7 +39,6 @@
             android:text="Nama Toko"
             android:textColor="?attr/colorOnBackground" />
 
-        <!-- Kode dan Stok -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,7 +63,6 @@
                 android:text="Stok: 10" />
         </LinearLayout>
 
-        <!-- Harga -->
         <TextView
             android:id="@+id/tv_harga"
             style="@style/TextAppearance.Material3.TitleMedium"
@@ -78,7 +73,6 @@
             android:textColor="?attr/colorOnSecondary"
             android:paddingTop="4dp" />
 
-        <!-- Ukuran & Warna (RecyclerView Horizontal) -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +92,6 @@
             android:clipToPadding="false"
             android:orientation="horizontal" />
 
-        <!-- Karakteristik Barang (gunakan ChipGroup Horizontal) -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:padding="12dp">
 
-    <!-- Baris filter horizontal -->
     <LinearLayout
         android:id="@+id/llFilterRow"
         android:layout_width="0dp"
@@ -32,7 +31,6 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- Garis pembatas -->
     <View
         android:id="@+id/garis"
         android:layout_width="0dp"
@@ -42,7 +40,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMonitoring"
         android:layout_width="0dp"
@@ -55,7 +52,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Text jika kosong -->
     <TextView
         android:id="@+id/tvKosong"
         android:layout_width="wrap_content"

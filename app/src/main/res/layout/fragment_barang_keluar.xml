@@ -51,14 +51,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Include Layout yang akan ikut bergulir -->
+
                     <include
                         android:id="@+id/itembarr"
                         layout="@layout/item_bar_out"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
-                    <!-- RecyclerView untuk data laporan -->
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewBarangKeluar"
                         android:layout_width="wrap_content"
