@@ -27,11 +27,11 @@ class AdapterBarangMasuk(private var listDataBarangAkses: List<DataBarangAkses>,
         holder.kode.text = laporan.id
         holder.time.text = laporan.waktu
         Glide.with(holder.itemView.context)
-            .load(laporan.gambar) // Gantilah dengan path gambar dari database
+            .load(laporan.gambar)
             .into(holder.gambar)
 
         holder.itemView.setOnClickListener {
-            itemClickListener(laporan)  // Panggil listener dengan data barang
+            itemClickListener(laporan)
         }
         AnimationHelper.animateRecyclerItem(holder.itemView,position)
 

@@ -63,58 +63,58 @@ class HistoryBarang : Fragment() {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-        // Setup RecyclerView
+
 
         adapterHistory=AdapterHistoryBarang(emptyList())
         binding.recyclerHistory.adapter = adapterHistory
         binding.recyclerHistory.layoutManager = LinearLayoutManager(requireContext())
 
-        // Observe data dari ViewModel
+
         historyViewModel.allHistory.observe(viewLifecycleOwner) { historyList ->
             Log.d("HistoryBarangFragment", "Data diterima dari ViewModel: ${historyList.size} item")
             historyList.forEach { history ->
                 Log.d("HistoryBarangFragment", "History: $history")
             }
-            adapterHistory.setItems(historyList.reversed()) // Update data di adapter
+            adapterHistory.setItems(historyList.reversed())
         }
 
-        // Muat data history
+
         historyViewModel.loadHistory()
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Bersihkan binding saat fragment dihancurkan
+        _binding = null
     }
     private fun applyFilter() {
         historyViewModel.allHistory.observe(viewLifecycleOwner) { historyList ->
             val filteredList = if (selectedJenisData != null) {
-                // Filter data berdasarkan jenis data yang dipilih
+
                 historyList.filter { it.jenisData == selectedJenisData }
             } else {
-                // Jika tidak ada filter, tampilkan semua data
+
                 historyList
             }
 
-            // Update adapter dengan data yang sudah difilter
+
             adapterHistory.setItems(filteredList.reversed())
             if (filteredList.isEmpty()) {
-                imgNoData.visibility = View.VISIBLE  // Tampilkan gambar stok kosong
-                recyclerViewHistory.visibility = View.GONE  // Sembunyikan RecyclerView
+                imgNoData.visibility = View.VISIBLE
+                recyclerViewHistory.visibility = View.GONE
             } else {
-                imgNoData.visibility = View.GONE  // Sembunyikan gambar stok kosong
-                recyclerViewHistory.visibility = View.VISIBLE  // Tampilkan RecyclerView
+                imgNoData.visibility = View.GONE
+                recyclerViewHistory.visibility = View.VISIBLE
             }
         }
     }
 
     private fun showFilterMenu(view: View) {
-        val popupMenu = PopupMenu(requireContext(), view)  // Gunakan icon view dari menuItem
+        val popupMenu = PopupMenu(requireContext(), view)
         val inflater = popupMenu.menuInflater
-        inflater.inflate(R.menu.menu_filter_history, popupMenu.menu)  // filter_menu adalah menu XML yang akan berisi pilihan filter
+        inflater.inflate(R.menu.menu_filter_history, popupMenu.menu)
 
-        // Menangani item menu yang dipilih di popup
+
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_filter_barangmasuk -> {
@@ -138,15 +138,15 @@ class HistoryBarang : Fragment() {
                     true
                 }
                 R.id.action_filter_reset -> {
-                    // Reset filter untuk menampilkan semua data
-                    selectedJenisData = null  // Hapus filter yang diterapkan
-                    applyFilter()  // Memanggil applyFilter untuk menampilkan semua data
+
+                    selectedJenisData = null
+                    applyFilter()
                     true
                 }
                 else -> false
             }
         }
-        popupMenu.show()  // Menampilkan PopupMenu
+        popupMenu.show()
     }
 
 

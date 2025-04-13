@@ -17,16 +17,16 @@ class KarakteristikAdapter(
             binding.chipItem.text = item
             binding.chipItem.isChecked = selectedItems.contains(item)
 
-            binding.chipItem.setOnCheckedChangeListener(null) // Hindari callback ganda
+            binding.chipItem.setOnCheckedChangeListener(null)
             binding.chipItem.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     selectedItems.add(item)
                 } else {
                     selectedItems.remove(item)
                 }
-                Log.d("KarakteristikAdapter", "Updated Selected Items: $selectedItems") // 🔥 Debugging
+                Log.d("KarakteristikAdapter", "Updated Selected Items: $selectedItems")
 
-                onItemChecked(HashSet(selectedItems)) // 🔥 Kirim data terbaru ke Fragment
+                onItemChecked(HashSet(selectedItems))
             }
         }
     }

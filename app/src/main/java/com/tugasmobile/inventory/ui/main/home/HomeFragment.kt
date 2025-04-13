@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
         }
         view.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                v.performClick() // <- ini penting untuk aksesibilitas
+                v.performClick()
                 if (binding.editTextSearchHome.isFocused) {
                     binding.editTextSearchHome.clearFocus()
                     val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

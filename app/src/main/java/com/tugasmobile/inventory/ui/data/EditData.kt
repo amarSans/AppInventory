@@ -99,17 +99,17 @@ class EditData : AppCompatActivity() {
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             result.data?.data?.let { selectedUri ->
-                val originalFile = uriToFile(selectedUri, this) // Ubah URI ke File
-                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
+                val originalFile = uriToFile(selectedUri, this)
+                val compressedFile = originalFile.reduceFileImage()
                 selectedImageUri = null
-                selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile)) // Ubah kembali ke URI
+                selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile))
 
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             } ?: run {
                 Toast.makeText(this, "Gagal mendapatkan URI gambar", Toast.LENGTH_SHORT).show()
             }
         }  else {
-        // Jika pengguna membatalkan pengeditan, kembalikan gambar lama
+
     }
     }
     private fun saveImageToStorage(imageUri: Uri): Uri? {
@@ -125,7 +125,7 @@ class EditData : AppCompatActivity() {
         val savedUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
         savedUri?.let { uri ->
             contentResolver.openOutputStream(uri)?.use { outputStream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Simpan gambar yang sudah dikompres
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
             }
             return uri
         }
@@ -148,8 +148,8 @@ class EditData : AppCompatActivity() {
         }
         binding.btncharater.setOnClickListener {
              selectedItems = binding.editKarakterikstikedit.text.toString()
-                .split(", ") // Pecah string jadi list berdasarkan koma
-                .filter { it.isNotBlank() } // Hapus item kosong
+                .split(", ")
+                .filter { it.isNotBlank() }
                 .toMutableSet()
 
             val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
@@ -162,20 +162,20 @@ class EditData : AppCompatActivity() {
         }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
 
-        // Tambahkan listener untuk memantau perubahan stok
+
         binding.editStokBarang.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Ambil nilai stok
+
                 val stokBarangText = s?.toString()?.trim() ?: ""
                 val stokBarang = stokBarangText.toIntOrNull() ?: 0
 
-                // Ambil teks yang sudah ada di EditText (ukuran dan warna yang sudah dipilih)
+
                 val currentText = binding.editTextUkuranwarnaEdit.text.toString()
                 val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
 
-                // Nonaktifkan tombol check jika stok sudah sama dengan jumlah kombinasi
+
                 binding.iconCheckEdit.isEnabled = stokBarang > jumlahKombinasi
             }
 
@@ -201,23 +201,23 @@ class EditData : AppCompatActivity() {
         val daftarUkuran = resources.getStringArray(R.array.daftar_ukuran_valid).toSet()
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
 
-        // Inisialisasi adapter untuk Spinner warna
+
         val warnaAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, warnaList)
         warnaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerWarnaEdit.adapter = warnaAdapter
 
-        // Listener untuk icon close
+
         binding.iconCloseEdit.setOnClickListener {
-            binding.edtUkuranEdit.setText("") // Reset Spinner ukuran
-            binding.spinnerWarnaEdit.setSelection(0)  // Reset Spinner warna
+            binding.edtUkuranEdit.setText("")
+            binding.spinnerWarnaEdit.setSelection(0)
         }
 
-        // Listener untuk icon check
+
         binding.iconCheckEdit.setOnClickListener {
             val selectedUkuranText = binding.edtUkuranEdit.text.toString().trim()
             val selectedWarna = binding.spinnerWarnaEdit.selectedItem as String
 
-            // Pengecekan ukuran
+
             if (selectedUkuranText.isEmpty()) {
                 binding.edtUkuranEdit.error = "Ukuran tidak boleh kosong"
                 return@setOnClickListener
@@ -234,15 +234,15 @@ class EditData : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Ambil nilai stok
+
             val stokBarangText = binding.editStokBarang.text.toString().trim()
             val stokBarang = stokBarangText.toIntOrNull() ?: 0
 
-            // Ambil teks yang sudah ada di EditText (ukuran dan warna yang sudah dipilih)
+
             val currentText = binding.editTextUkuranwarnaEdit.text.toString()
             val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
 
-            // Pengecekan apakah stok sudah sama dengan jumlah kombinasi
+
             if (stokBarang == jumlahKombinasi) {
                 Toast.makeText(
                     this,
@@ -252,20 +252,20 @@ class EditData : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Gabungkan ukuran dan warna
+
             val newEntry = "$selectedUkuran $selectedWarna"
 
-            // Tambahkan entri baru ke EditText (dipisahkan koma jika sudah ada data)
+
             val updatedText = if (currentText.isEmpty()) {
                 newEntry
             } else {
                 "$currentText, $newEntry"
             }
 
-            // Set teks ke EditText
+
             binding.editTextUkuranwarnaEdit.setText(updatedText)
 
-            // Reset Spinner
+
             binding.edtUkuranEdit.setText("")
             binding.spinnerWarnaEdit.setSelection(0)
         }
@@ -275,9 +275,9 @@ class EditData : AppCompatActivity() {
             if (currentText.isNotEmpty()) {
                 val listEntries = currentText.split(",").map { it.trim() }.toMutableList()
 
-                listEntries.removeLastOrNull()  // Hapus item terakhir jika ada
+                listEntries.removeLastOrNull()
 
-                // Set teks baru setelah penghapusan
+
                 val updatedText = listEntries.joinToString(", ")
                 binding.editTextUkuranwarnaEdit.setText(updatedText)
             } else {
@@ -297,7 +297,7 @@ class EditData : AppCompatActivity() {
                 selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
                 binding.imageViewBarangEdit.setImageURI(selectedImageUri)
             } ?: run {
-                // Handle kasus ketika barang bernilai null
+
                 Toast.makeText(this, "Data barang tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
@@ -311,7 +311,7 @@ class EditData : AppCompatActivity() {
                 binding.editStokBarang.setText(it.stokBarang.toString())}
                 stokBarang = it.stokBarang
             } ?: run {
-                // Handle kasus ketika stok bernilai null
+
                 Toast.makeText(this, "Data stok tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
@@ -320,7 +320,7 @@ class EditData : AppCompatActivity() {
                 binding.editTextHargaBarangEdit.setText(HargaUtils.formatHarga(it.Harga_Modal))
                 binding.edtNamaTokoEdit.setText(it.Nama_Toko)
             } ?: run {
-                // Handle kasus ketika barangIn bernilai null
+
                 Toast.makeText(this, "Data barang masuk tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
@@ -339,7 +339,7 @@ class EditData : AppCompatActivity() {
         val ukuranWarna = binding.editTextUkuranwarnaEdit.text.toString().trim()
         val jumlahKombinasi = if (ukuranWarna.isEmpty()) 0 else ukuranWarna.split(",").size
 
-        // Validasi jumlah kombinasi tidak melebihi stok
+
         if (stokBarang != jumlahKombinasi) {
             binding.editTextUkuranwarnaEdit.error =
                 "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
@@ -373,11 +373,7 @@ class EditData : AppCompatActivity() {
             return
         }
 
-        /*updatedBarang?.let {
-
-            editViewModel.updateWarna(it.id_barang, selectedColors.toList())
-        }*/
-        if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
+                if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
             editViewModel.updateBarang(updatedBarang, updatedStok, updatedBarangMasuk)
         }
         editViewModel.loadBarang()
@@ -398,7 +394,7 @@ class EditData : AppCompatActivity() {
     }
     private fun updateKarakteristikText() {
         val karakteristik = selectedItems.joinToString(", ")
-        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik") // 🔥 Debugging
+        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik")
         binding.editKarakterikstikedit.setText(karakteristik)
     }
     private fun tambahStok() {

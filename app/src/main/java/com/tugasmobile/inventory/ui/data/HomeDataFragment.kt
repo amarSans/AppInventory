@@ -47,7 +47,7 @@ class HomeDataFragment : Fragment() {
         return view
     }
 
-    // === GENERATE KODE BARANG ===
+
     private fun generateKodeBarang(callback: (String) -> Unit) {
         val kode = "SND" + (1000..9999).random()
 
@@ -62,7 +62,7 @@ class HomeDataFragment : Fragment() {
         }
     }
 
-    // === CEK DAN PINDAH FRAGMENT ===
+
     private fun cekDanPindahFragment(kodeBarang: String) {
         dataViewModel.cekBarangExist(kodeBarang)
         dataViewModel.barangExist.observeOnce(viewLifecycleOwner) { hasilPencarian ->
@@ -76,7 +76,7 @@ class HomeDataFragment : Fragment() {
     }
 
 
-    // === PINDAH FRAGMENT ===
+
     private fun pindahKeFragment(fragment: Fragment) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)

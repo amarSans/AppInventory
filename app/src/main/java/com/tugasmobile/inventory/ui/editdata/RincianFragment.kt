@@ -48,15 +48,15 @@ class RincianFragment : Fragment() {
         val colorMap = colorNames.indices.associate { index ->
             colorNames[index] to colorValues[index]
         }
-// Inisialisasi RecyclerView dan Adapter
-        val recyclerView: RecyclerView = binding.rvUkuranWarnaSendal // Sesuaikan dengan ID RecyclerView Anda
+
+        val recyclerView: RecyclerView = binding.rvUkuranWarnaSendal
         val colorAdapter = AdapterSizeColorUI(requireContext())
         recyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = colorAdapter
 
         checkPermission()
 
-        // Gunakan barangId untuk memuat detail barang
+
         rincianViewModel.setCurrentBarang(BarangId)
         rincianViewModel.currentBarang.observe(viewLifecycleOwner){ barang->
             barang?.let{
@@ -65,7 +65,7 @@ class RincianFragment : Fragment() {
                 tampilkanKarakteristik(it.karakteristik)
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
-                    // Menyimpan URI untuk digunakan setelah izin diberikan
+
                     loadImage(uri)
             }
         }}
@@ -83,7 +83,7 @@ class RincianFragment : Fragment() {
                 if (teksLengkap.isNotEmpty() && selectedColorValues.isNotEmpty()) {
                     colorAdapter.updateColors(teksLengkap, selectedColorValues)
                 } else {
-                    // Handle jika data kosong
+
                     colorAdapter.updateColors(emptyList(), emptyList())
                     Toast.makeText(requireContext(), "Tidak ada data warna yang valid", Toast.LENGTH_SHORT).show()
                 }
@@ -96,11 +96,11 @@ class RincianFragment : Fragment() {
                 binding.tvNamaToko.text = it.Nama_Toko
             }
         }
-        return binding.root // Inflate the layout for this fragment
+        return binding.root
     }
     private fun tampilkanKarakteristik(karakteristikText: String) {
         val chipGroup = binding.tvrincinkarakteristik
-        chipGroup.removeAllViews() // Bersihkan sebelum isi ulang
+        chipGroup.removeAllViews()
 
         val karakteristikList = karakteristikText.split(",").map { it.trim() }
 
@@ -135,23 +135,23 @@ class RincianFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_READ_EXTERNAL_STORAGE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Izin diberikan, lakukan tindakan yang memerlukan izin
+
                 rincianViewModel.currentDataBarangMasuk.value?.gambar?.let { gambar ->
                     loadImage(Uri.parse(gambar))
                 }
             } else {
-                // Izin ditolak, berikan penjelasan atau tampilkan pesan kepada pengguna
+
                 Toast.makeText(requireContext(), "Izin diperlukan untuk mengakses gambar", Toast.LENGTH_SHORT).show()
             }
         }
     }
     private fun loadImage(uri: Uri) {
         Log.d("RincianFragment", "Memuat gambar dari URI: $uri")
-        // Memuat gambar dari URI
+
         Glide.with(this)
             .load(uri)
-            .placeholder(R.drawable.baseline_image_24) // Gambar default jika gagal
-            .error(R.drawable.baseline_image_24) // Gambar jika error
+            .placeholder(R.drawable.baseline_image_24)
+            .error(R.drawable.baseline_image_24)
             .into(binding.imageView3)
     }
 
@@ -161,7 +161,7 @@ class RincianFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        // Memuat ulang data saat fragment kembali ke tampilan
+
         rincianViewModel.setCurrentBarang(BarangId)
     }
 

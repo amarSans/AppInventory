@@ -21,8 +21,8 @@ object AlarmScheduler {
         val databaseHelper = BrgDatabaseHelper(context)
         val jadwal = databaseHelper.getSetting()
         if (jadwal != null && jadwal.isNotifEnabled) {
-            val hariMulai = jadwal.startDay // Contoh: "Senin"
-            val hariBerakhir = jadwal.endDay // Contoh: "Selasa"
+            val hariMulai = jadwal.startDay
+            val hariBerakhir = jadwal.endDay
 
             val hariMulaiIndex = convertDayToIndex(hariMulai)
             val hariBerakhirIndex = convertDayToIndex(hariBerakhir)
@@ -31,12 +31,12 @@ object AlarmScheduler {
                 TAG,
                 "Konversi hari: hariMulai=$hariMulaiIndex, hariBerakhir=$hariBerakhirIndex, hariIni=$hariIniIndex"
             )
-            // Cek jika notifikasi sudah dihapus
+
             val prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE)
             val dismissedTime = prefs.getLong("dismissed_notification_time", 0)
             val currentTime = System.currentTimeMillis()
 
-            // Jika notifikasi dihapus dalam 24 jam terakhir, batalkan penjadwalan
+
             if (dismissedTime > 0 && (currentTime - dismissedTime) < 86400000) {
                 Log.d(TAG, "Notifikasi sudah dihapus hari ini, tidak menjadwalkan ulang.")
                 resetDismissedNotificationStatus(context)
@@ -59,7 +59,7 @@ object AlarmScheduler {
     fun resetDismissedNotificationStatus(context: Context) {
         val prefs = context.getSharedPreferences("NotificationPrefs", Context.MODE_PRIVATE)
         val editor = prefs.edit()
-        editor.remove("dismissed_notification_time") // Hapus status penghapusan notifikasi
+        editor.remove("dismissed_notification_time")
         editor.apply()
     }
 
@@ -141,7 +141,7 @@ object AlarmScheduler {
             "kamis" -> Calendar.THURSDAY
             "jumat" -> Calendar.FRIDAY
             "sabtu" -> Calendar.SATURDAY
-            else -> -1 // Invalid
+            else -> -1
         }
     }
 

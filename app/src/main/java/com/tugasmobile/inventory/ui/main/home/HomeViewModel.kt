@@ -18,7 +18,7 @@ class HomeViewModel(application: Application,  private val dbHelper: BrgDatabase
     private val _totalBarang = MutableLiveData<Int>()
     val totalBarang: LiveData<Int> = _totalBarang
 
-    // LiveData untuk stok rendah
+
     private val _stokRendah = MutableLiveData<Int>()
     val stokRendah: LiveData<Int> = _stokRendah
 
@@ -46,18 +46,18 @@ class HomeViewModel(application: Application,  private val dbHelper: BrgDatabase
             _barangHampirHabis.value = data
     }
 
-    // Fungsi ambil total barang
+
     fun getTotalBarang() {
         viewModelScope.launch(Dispatchers.IO) {
-            val total = dbHelper.getTotalBarang() // Buat fungsi ini di DBHelper
+            val total = dbHelper.getTotalBarang()
             _totalBarang.postValue(total)
         }
     }
 
-    // Fungsi ambil stok rendah
+
     fun getStokRendah() {
         viewModelScope.launch(Dispatchers.IO) {
-            val total = dbHelper.getStokRendah() // Buat juga ini
+            val total = dbHelper.getStokRendah()
             _stokRendah.postValue(total)
         }
     }

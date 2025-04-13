@@ -37,10 +37,10 @@ class BarangMasuk : Fragment() {
 
         _binding = FragmentBarangMasukBinding.inflate(inflater, container, false)
 
-        // Inisialisasi ViewModel
+
         AnimationHelper.animateItems(binding.fragmentBarangMasuk,requireContext())
 
-        // Inisialisasi RecyclerView dan Adapter
+
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
         adapterDaftarBarang = AdapterBarangMasuk(emptyList()) { barang ->
             val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
@@ -49,14 +49,14 @@ class BarangMasuk : Fragment() {
                 putExtra("TIME_BARANG", barang.harga)
                 putExtra("ID_BARANG", barang.id)
             }
-            startActivity(intent)  // Mulai Activity dengan data
+            startActivity(intent)
         }
         binding.btnTamBar.setOnClickListener {
             val intent = Intent(requireContext(), DataActivity::class.java)
             startActivity(intent)
         }
         binding.recyclerViewLaporan.adapter = adapterDaftarBarang
-        binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())// 2 kolom
+        binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
             adapterDaftarBarang.updateLaporanList(listBarang.reversed())
         }

@@ -43,7 +43,7 @@ class BrgDatabaseHelper(context: Context) :
             }
         }
 
-        // Tabel Barang
+
         const val TABLE_BARANG = "barang"
         const val COLUMN_KODE_BARANG = "kode_barang"
         const val COLUMN_MEREK_BARANG = "merek_barang"
@@ -51,20 +51,20 @@ class BrgDatabaseHelper(context: Context) :
         const val COLUMN_GAMBAR = "gambar"
         const val COLUMN_LAST_UPDATE = "last_update"
 
-        // Tabel Stok
+
         const val TABLE_STOK = "table_stok"
         const val COLUMN_ID_STOK = "id_stok"
         const val COLUMN_UKURAN_WARNA = "ukuran_warna"
         const val COLUMN_STOK = "stok"
 
-        // Tabel Barang Masuk
+
         const val TABLE_BARANG_MASUK = "barang_masuk"
         const val COLUMN_ID_MASUK = "id_masuk"
         const val COLUMN_TANGGAL_MASUK = "tanggal_masuk"
         const val COLUMN_HARGA_JUAL = "harga_jual"
         const val COLUMN_NAMA_TOKO = "nama_toko"
 
-        // Tabel Barang Keluar
+
         const val TABLE_BARANG_KELUAR = "barang_keluar"
         const val COLUMN_ID_KELUAR = "id_keluar"
         const val COLUMN_TANGGAL_KELUAR = "tanggal_keluar"
@@ -72,7 +72,7 @@ class BrgDatabaseHelper(context: Context) :
         const val COLUMN_STOK_KELUAR = "stok_keluar"
         const val COLUMN_HARGA_BELI = "harga_beli"
 
-        //tabel setting
+
         const val TABLE_SETTINGS = "settings"
         const val COLUMN_ID = "id"
         const val COLUMN_NOTIF_ENABLED = "notif_enabled"
@@ -233,7 +233,7 @@ class BrgDatabaseHelper(context: Context) :
         try {
             db.beginTransaction()
 
-            // 1. Insert data ke tabel barang_keluar
+
             val values = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barangOut.id_barang)
                 put(COLUMN_UKURAN_WARNA_KELUAR, barangOut.ukuran_warna)
@@ -247,7 +247,7 @@ class BrgDatabaseHelper(context: Context) :
                 throw Exception("Gagal memasukkan data barang keluar")
             }
 
-            // 2. Kurangi stok di tabel stok
+
             val stokCursor = db.rawQuery(
                 "SELECT $COLUMN_STOK, $COLUMN_UKURAN_WARNA FROM $TABLE_STOK WHERE $COLUMN_KODE_BARANG = ?",
                 arrayOf(barangOut.id_barang)
@@ -261,13 +261,13 @@ class BrgDatabaseHelper(context: Context) :
                     )
                 )
 
-                // Kurangi stok
+
                 val newStok = currentStok - barangOut.stok_keluar
                 if (newStok < 0) {
                     throw Exception("Stok tidak mencukupi")
                 }
 
-                // Update stok
+
                 val updateValues = ContentValues().apply {
                     put(COLUMN_STOK, newStok)
                 }
@@ -278,7 +278,7 @@ class BrgDatabaseHelper(context: Context) :
                     arrayOf(barangOut.id_barang)
                 )
 
-                // 3. Hapus ukuran jika ada
+
                 if (barangOut.ukuran_warna.isNotEmpty()) {
                     val currentUkuranList =
                         currentUkuranWarna.split(",").map { it.trim() }.toMutableList()
@@ -287,7 +287,7 @@ class BrgDatabaseHelper(context: Context) :
                     for (ukuran in ukuranToRemove) {
                         val index = currentUkuranList.indexOf(ukuran)
                         if (index != -1) {
-                            currentUkuranList.removeAt(index) // Hapus hanya satu elemen yang cocok
+                            currentUkuranList.removeAt(index)
                         }
                     }
 
@@ -303,7 +303,7 @@ class BrgDatabaseHelper(context: Context) :
                     )
                     if (newStok == 0) {
                         val resetValues = ContentValues().apply {
-                            put(COLUMN_UKURAN_WARNA, "0 kosong") // Set "0 kosong" jika stok habis
+                            put(COLUMN_UKURAN_WARNA, "0 kosong")
                         }
                         db.update(
                             TABLE_STOK,
@@ -343,7 +343,7 @@ class BrgDatabaseHelper(context: Context) :
 
         var exists = false
         if (cursor.moveToFirst()) {
-            exists = cursor.getInt(0) > 0 // Jika jumlah barang > 0, berarti ada
+            exists = cursor.getInt(0) > 0
         }
         cursor.close()
         return exists
@@ -355,7 +355,7 @@ class BrgDatabaseHelper(context: Context) :
 
         db.beginTransaction()
         try {
-            // Update harga jual jika ada
+
             update.hargaJualBaru?.let {
                 val values = ContentValues().apply { put(COLUMN_HARGA_JUAL, it) }
                 val updatedRows = db.update(
@@ -375,7 +375,7 @@ class BrgDatabaseHelper(context: Context) :
                 rowsAffected += updatedRows
             }
 
-            // Update ukuran warna jika ada
+
             update.ukuranWarnaBaru?.let {
                 val values = ContentValues().apply { put(COLUMN_UKURAN_WARNA, it) }
                 val updatedRows = db.update(
@@ -386,7 +386,7 @@ class BrgDatabaseHelper(context: Context) :
                 rowsAffected += updatedRows
             }
 
-            // Update nama toko jika ada
+
             update.namaTokoBaru?.let {
                 val values = ContentValues().apply { put(COLUMN_NAMA_TOKO, it) }
                 val updatedRows = db.update(
@@ -407,7 +407,7 @@ class BrgDatabaseHelper(context: Context) :
             }
 
 
-            db.setTransactionSuccessful() // Jika semua update sukses, commit perubahan
+            db.setTransactionSuccessful()
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -442,7 +442,7 @@ class BrgDatabaseHelper(context: Context) :
                 val merekBarang = cursor.getString(1) ?: ""
                 val namaToko = cursor.getString(2) ?: ""
 
-                // Format hasil: "Kode Barang - Nama Barang (Nama Toko)"
+
                 val dataSearch = DataSearch(idBarang, merekBarang, namaToko)
                 resultList.add(dataSearch)
             } while (cursor.moveToNext())
@@ -513,27 +513,11 @@ class BrgDatabaseHelper(context: Context) :
         return exists
     }
 
-    /*fun updateWarna(barangId: String, newColors: List<String>): Int {
-        val db = this.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_UKURAN_WARNA, newColors.joinToString(","))
-        }
 
-        // Mengupdate warna berdasarkan ID
-        val result = db.update(
-            TABLE_STOK,
-            values,
-            "$COLUMN_KODE_BARANG = ?",
-            arrayOf(barangId)
-        )
-
-        db.close()
-        return result
-    }*/
 
     fun deleteBarang(id: String): Int {
         val db = this.writableDatabase
-        // Menghapus barang berdasarkan ID
+
         val result = db.delete(TABLE_BARANG, "$COLUMN_KODE_BARANG = ?", arrayOf(id))
 
         return result
@@ -543,7 +527,7 @@ class BrgDatabaseHelper(context: Context) :
         val db = this.writableDatabase
         db.beginTransaction()
         try {
-            // Update TABLE_BARANG (hanya nama, kode, dan gambar)
+
             val valuesBarang = ContentValues().apply {
                 put(COLUMN_KODE_BARANG, barang.id_barang)
                 put(COLUMN_MEREK_BARANG, barang.merek_barang)
@@ -608,7 +592,7 @@ class BrgDatabaseHelper(context: Context) :
         var barangIn: BarangIn? = null
         val cursor: Cursor? = db.rawQuery(query, arrayOf(id))
 
-        // Memeriksa apakah cursor tidak null dan memiliki data
+
         cursor?.use {
             if (it.moveToFirst()) {
                 val idBarang = it.getString(it.getColumnIndexOrThrow(COLUMN_KODE_BARANG)) ?: ""
@@ -627,7 +611,7 @@ class BrgDatabaseHelper(context: Context) :
                 val hargaJual = it.getInt(it.getColumnIndexOrThrow(COLUMN_HARGA_JUAL)) ?: 0
                 val namaToko = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA_TOKO)) ?: ""
 
-                // Inisialisasi objek
+
                 itemBarang = ItemBarang(idBarang, namaBarang, karakteristik, gambarUri.toString(),lastupdate)
                 stok = Stok(idStok, idBarang,ukuranwarna, stokJumlah )
                 barangIn = BarangIn(idMasuk, idBarang, tanggalMasuk, hargaJual, namaToko)
@@ -639,7 +623,7 @@ class BrgDatabaseHelper(context: Context) :
     fun saveSetting(setting: SettingData) {
         val db = writableDatabase
         val values = ContentValues().apply {
-            put(COLUMN_ID, 1) // Hanya satu baris data
+            put(COLUMN_ID, 1)
             put(COLUMN_NOTIF_ENABLED, if (setting.isNotifEnabled) 1 else 0)
             put(COLUMN_NOTIF_TIME, setting.notifTime)
             put(COLUMN_START_DAY, setting.startDay)
@@ -678,16 +662,16 @@ class BrgDatabaseHelper(context: Context) :
 
         if (keyword.isBlank()) return listBarang
 
-        // Pisahkan keyword per kata, misalnya: "sandal kulit merah"
+
         val words = keyword.trim().lowercase().split("\\s+".toRegex())
 
-        // Buat query LIKE untuk tiap kata dan tiap kolom
+
         val conditions = mutableListOf<String>()
         val args = mutableListOf<String>()
 
         for (word in words) {
             val likeWord = "%$word%"
-            // Per kolom
+
             conditions.add("LOWER(REPLACE(barang.kode_barang, ' ', '')) LIKE ?")
             args.add(likeWord)
 
@@ -772,7 +756,7 @@ class BrgDatabaseHelper(context: Context) :
             val db = writableDatabase
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val thirtyDaysAgo = Calendar.getInstance().apply {
-                add(Calendar.DAY_OF_YEAR, -30) // Ambil tanggal 30 hari yang lalu
+                add(Calendar.DAY_OF_YEAR, -30)
             }.time
 
             val cursor = db.rawQuery(
@@ -878,7 +862,7 @@ class BrgDatabaseHelper(context: Context) :
             do {
                 val nama = cursor.getString(0)
                 val stok = cursor.getInt(1)
-                val gambar = cursor.getString(2) ?: "" // Bisa berupa URL atau URI path lokal
+                val gambar = cursor.getString(2) ?: ""
                 list.add(
                     DataBarangHampirHabisHome(
                         imageUrl = gambar,

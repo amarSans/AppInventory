@@ -62,7 +62,7 @@ class TambahStokFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         kodeBarang?.let {
-            NewStokViewModel.loadBarang()  // Pastikan data dipanggil sesuai kode barang
+            NewStokViewModel.loadBarang()
         }
 
         setupObservers()
@@ -213,9 +213,9 @@ class TambahStokFragment : Fragment() {
                 } else{
                 binding.editTextUkuranwarna.setText(
                     it.ukuranwarna
-                        .replace("[", "") // Hapus semua tanda "["
-                        .replace("]", "") // Hapus semua tanda "]"
-                        .trim() // Hapus spasi di awal dan akhir
+                        .replace("[", "")
+                        .replace("]", "")
+                        .trim()
                 )
                 binding.editStokBarang.setText(it.stokBarang.toString())}
                 stokBarang = it.stokBarang

@@ -1,6 +1,6 @@
 package com.tugasmobile.inventory.ui.camera
 
-// CameraActivity.kt
+
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager

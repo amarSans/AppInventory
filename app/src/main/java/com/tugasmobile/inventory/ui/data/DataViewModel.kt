@@ -95,7 +95,5 @@ class DataViewModel (application: Application, private val dbHelper: BrgDatabase
         val barangList = _Data_barangMasukList.value ?: return 0
         return barangList.count { it.stok <= 2 }
     }
-    /*fun updateWarna(barangId: String, newColors: List<String>) {
-        dbHelper.updateWarna(barangId, newColors)
-    }*/
+
 }

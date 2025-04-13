@@ -41,8 +41,8 @@ class KarakteristikBottomSheetFragment(
         }
         binding.recyclerView.adapter = adapter
         val flexboxLayoutManager = FlexboxLayoutManager(requireContext()).apply {
-            flexDirection = FlexDirection.ROW // Item ditampilkan dalam baris
-            justifyContent = JustifyContent.FLEX_START // Item berbaris dari kiri ke kanan
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
         }
 
         binding.recyclerView.layoutManager = flexboxLayoutManager
@@ -50,7 +50,7 @@ class KarakteristikBottomSheetFragment(
     private fun setupButton() {
         binding.btnSimpan.setOnClickListener {
             Log.d("KarakteristikBottomSheet", "Selected Items Sebelum Dikirim: $selectedItems")
-            onSelectionChanged(HashSet(selectedItems)) // 🔥 Kirim hasil ke Fragment utama
+            onSelectionChanged(HashSet(selectedItems))
             dismiss()
         }
     }

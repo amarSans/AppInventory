@@ -70,14 +70,14 @@ class BarangKeluarDialogFragment : DialogFragment() {
                 val namaBarang = it.merek_barang
                 val image=it.gambar
 
-                // Tampilkan data di UI
+
                 binding.ppKodeBarang.text = "Kode: $kodeBarangid"
                 binding.ppNamaBarang.text = "Nama: $namaBarang"
-                // Tampilkan gambar menggunakan Glide
+
                 Glide.with(requireContext())
-                    .load(image) // Pastikan image ini berupa URL atau path yang valid
-                    .placeholder(R.drawable.baseline_account_circle_24) // Gambar sementara saat loading
-                    .error(R.drawable.baseline_account_circle_24) // Gambar jika gagal memuat
+                    .load(image)
+                    .placeholder(R.drawable.baseline_account_circle_24)
+                    .error(R.drawable.baseline_account_circle_24)
                     .into(binding.ppImageView)
 
             }
@@ -95,7 +95,7 @@ class BarangKeluarDialogFragment : DialogFragment() {
             barang?.let {
                 val ukuranWarnaString = it.ukuranwarna
 
-                // Split data jadi list dan trim setiap item
+
                 val ukuranWarnaList = ukuranWarnaString
                     .split(",")
                     .map { item -> item.trim() }
@@ -158,7 +158,7 @@ class BarangKeluarDialogFragment : DialogFragment() {
                         return@observe
                     }
 
-                    // Jika stok cukup, lanjutkan penyimpanan
+
                     val barangOut = BarangOut(
                         IdBrgKeluar = 0,
                         id_barang = kodeBarang,
@@ -213,7 +213,7 @@ class BarangKeluarDialogFragment : DialogFragment() {
             colorNames.indices.associate { index -> colorNames[index] to colorValues[index] }
 
         val warnaOnly = warnaBarang.map { item ->
-            item.split(" ").last().trim() // Ambil bagian terakhir (warna)
+            item.split(" ").last().trim()
         }
 
         val selectedColorValues = warnaOnly.mapNotNull { colorMap[it] }
@@ -231,7 +231,7 @@ class BarangKeluarDialogFragment : DialogFragment() {
 
     private fun updateStock(change: Int) {
         val currentStock = binding.ppedtStokKeluar.text.toString().toInt()
-        val newStock = (currentStock + change).coerceAtLeast(0) // Biar stok tidak negatif
+        val newStock = (currentStock + change).coerceAtLeast(0)
         binding.ppedtStokKeluar.text = newStock.toString()
     }
 

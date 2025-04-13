@@ -25,7 +25,7 @@ class AdapterColorIn(
 
     override fun onBindViewHolder(holder: ColorViewHolder, position: Int) {
         holder.bind(colorNames[position], colorValues[position])
-        val colorName = colorNames[position] // Ambil nama warna untuk posisi saat ini
+        val colorName = colorNames[position]
         holder.bind(colorName, colorValues[position])
         holder.checkBoxColor.isChecked = selectedColors.contains(colorName)
     }
@@ -48,9 +48,9 @@ class AdapterColorIn(
             val backgroundDrawable = checkBoxColor.background as? LayerDrawable
             val colorLayer = backgroundDrawable?.findDrawableByLayerId(R.id.color_layer)
             colorLayer?.setTint(Color.parseColor(colorValue))
-            checkBoxColor.setOnCheckedChangeListener(null) // Hapus listener yang ada
+            checkBoxColor.setOnCheckedChangeListener(null)
             checkBoxColor.isChecked = selectedColors.contains(colorName)
-            // Mengatur listener untuk menambahkan atau menghapus warna yang dipilih
+
             checkBoxColor.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     selectedColors.add(colorName)

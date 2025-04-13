@@ -49,19 +49,19 @@ class DetailBarang : AppCompatActivity() {
 
             }
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, rincianFragment)  // Gunakan ID container dari layout
+                .replace(R.id.fragment_container, rincianFragment)
                 .commit()
         }
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-// Menambahkan ikon back
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_ios_new_24) // Gunakan icon yang diinginkan
 
-// Aksi klik pada tombol back
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_ios_new_24)
+
+
         toolbar.setNavigationOnClickListener {
-            onBackPressed() // Kembali ke activity sebelumnya
+            onBackPressed()
         }
 
 
@@ -96,12 +96,12 @@ class DetailBarang : AppCompatActivity() {
             val history = History(
                 id = 0,
                 waktu = DateUtils.getCurrentDate(),
-                kodeBarang = itemBarang.id_barang,  // Ambil kode barang sebelum dihapus
-                stok = stok?.stokBarang.toString() ?: "0",  // Ambil stok sebelum dihapus
+                kodeBarang = itemBarang.id_barang,
+                stok = stok?.stokBarang.toString() ?: "0",
                 jenisData = "barangdihapus"
             )
 
-            // Simpan history sebelum menghapus barang
+
             detailBarangViewModel.insertHistory(history)
             itemBarang.gambar.let { gambarUriString ->
                 val gambarUri = Uri.parse(gambarUriString)
@@ -112,10 +112,10 @@ class DetailBarang : AppCompatActivity() {
                     Log.w("DeleteBarang", "Gagal menghapus gambar.")
                 }
             }
-            // Hapus barang dari database
+
             detailBarangViewModel.deleteBarang(barangId)
 
-            // Tutup activity setelah menghapus
+
             finish()
         }
 

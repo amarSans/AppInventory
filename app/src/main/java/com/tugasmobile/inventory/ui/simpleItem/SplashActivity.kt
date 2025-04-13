@@ -25,11 +25,10 @@ class SplashActivity : AppCompatActivity() {
                     startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     finish()
-                },10 ) // Splash screen 3 detik
+                },10 )
             }
         })
 
-        // Delay ke MainActivity selama 2 detik
 
     }
 }

@@ -73,7 +73,7 @@ class BarangKeluar : Fragment() {
         setupClearButton()
         HargaUtils.setupHargaTextWatcher(binding.uangDibayar)
         binding.btnBarangKeluar.setOnClickListener {
-            resetUI() // Reset semua tampilan data
+            resetUI()
         }
     }
 
@@ -153,7 +153,7 @@ class BarangKeluar : Fragment() {
         val dibayar = dibayarText.toIntOrNull() ?: 0
         val kembalian = dibayar - totalBayar
 
-        // Format kembalian sebagai Rupiah
+
         binding.kembalian.text = "Rp. ${HargaUtils.formatHarga(kembalian)}"
     }
 
@@ -193,18 +193,18 @@ class BarangKeluar : Fragment() {
         dialog.show(parentFragmentManager, "BarangKeluarDialog")
     }
     private fun resetUI() {
-        // Reset AutoCompleteTextView
+
         binding.autoCompleteBarang.text.clear()
 
-        // Reset RecyclerView
+
         daftarBarangKeluar.clear()
         adapterTransaksi.notifyDataSetChanged()
 
-        // Reset TextView untuk total bayar dan kembalian
+
         binding.totalBayar.text = "0"
         binding.kembalian.text = "0"
 
-        // Reset EditText untuk uang dibayar
+
         binding.uangDibayar.text.clear()
     }
 

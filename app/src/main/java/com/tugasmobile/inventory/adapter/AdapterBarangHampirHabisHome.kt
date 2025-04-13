@@ -11,7 +11,7 @@ import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.DataBarangHampirHabisHome
 
 class AdapterBarangHampirHabisHome(
-    private var listBarang: List<DataBarangHampirHabisHome> // Pair<namaBarang, stok>
+    private var listBarang: List<DataBarangHampirHabisHome>
 ) : RecyclerView.Adapter<AdapterBarangHampirHabisHome.BarangViewHolder>() {
 
     inner class BarangViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,7 +32,7 @@ class AdapterBarangHampirHabisHome(
         holder.tvSisaStok.text = "Sisa: ${item.stok}"
         Glide.with(holder.itemView.context)
             .load(item.imageUrl)
-            .placeholder(R.drawable.baseline_image_24) // default jika gambar loading
+            .placeholder(R.drawable.baseline_image_24)
             .into(holder.imageBarang)
     }
     fun updateData(newList: List<DataBarangHampirHabisHome>) {

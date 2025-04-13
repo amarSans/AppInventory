@@ -28,11 +28,11 @@ class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>
         val formattedHarga = HargaUtils.formatHarga(laporan.harga)
         holder.price.text = "Rp. ${formattedHarga}"
         Glide.with(holder.itemView.context)
-            .load(laporan.gambar) // Gantilah dengan path gambar dari database
+            .load(laporan.gambar)
             .into(holder.gambar)
 
         holder.itemView.setOnClickListener {
-            itemClickListener(laporan)  // Panggil listener dengan data barang
+            itemClickListener(laporan)
         }
         AnimationHelper.animateRecyclerItem(holder.itemView,position)
 
@@ -58,7 +58,7 @@ class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>
         notifyDataSetChanged()
     }
 
-    // Fungsi sorting berdasarkan harga
+
     fun sortByHarga(ascending: Boolean) {
         listDataBarangAkses = if (ascending) {
             listDataBarangAkses.sortedBy { it.harga }.toMutableList()
@@ -68,7 +68,7 @@ class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>
         notifyDataSetChanged()
     }
 
-    // Fungsi sorting berdasarkan nama barang
+
     fun sortByNama(ascending: Boolean) {
         listDataBarangAkses = if (ascending) {
             listDataBarangAkses.sortedBy { it.namaBarang }.toMutableList()

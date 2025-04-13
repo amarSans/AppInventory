@@ -14,7 +14,7 @@ class AdapterHistoryBarang (private var historyList: List<History>) :
     RecyclerView.Adapter<AdapterHistoryBarang.HistoryViewHolder>() {
 
     class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgBubble: ImageView = itemView.findViewById(R.id.imageViewAktifitas) // ganti dengan id dari ImageView di item_aktivitas.xml
+        val imgBubble: ImageView = itemView.findViewById(R.id.imageViewAktifitas)
         val tvJenisAktivitas: TextView = itemView.findViewById(R.id.tvJenisAktivitas)
         val tvDetailAktivitas: TextView = itemView.findViewById(R.id.tvDetailAktivitas)
     }
@@ -28,7 +28,7 @@ class AdapterHistoryBarang (private var historyList: List<History>) :
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         val item = historyList[position]
 
-        // Set judul
+
         val jenisTransaksi = when (item.jenisData) {
             "barangmasuk" -> "Barang Masuk"
             "stokmasuk" -> "Stok Masuk"
@@ -40,13 +40,13 @@ class AdapterHistoryBarang (private var historyList: List<History>) :
         holder.tvJenisAktivitas.text = "$jenisTransaksi: ${item.kodeBarang}"
         holder.tvDetailAktivitas.text = "Jumlah: ${item.stok} - ${item.waktu}"
 
-        // Ganti gambar bubble sesuai jenis
+
         val iconRes = when (item.jenisData) {
             "barangmasuk" -> R.drawable.bg_chat_bubble_blue
             "stokmasuk" -> R.drawable.bg_chat_bubble_green
             "stokkeluar" -> R.drawable.bg_chat_bubble_orange
             "barangdihapus" -> R.drawable.bg_chat_bubble_red
-            else -> R.drawable.bacground_warna // default
+            else -> R.drawable.bacground_warna
         }
 
         holder.imgBubble.setImageResource(iconRes)

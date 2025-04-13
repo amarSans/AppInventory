@@ -45,10 +45,10 @@ class AdapterColorOut(
         holder.chip.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 if (!selectedColors.contains(colorName)) {
-                    selectedColors.add(colorName) // Tambahkan jika dipilih
+                    selectedColors.add(colorName)
                 }
             } else {
-                selectedColors.remove(colorName) // Hapus jika tidak dipilih
+                selectedColors.remove(colorName)
             }
 
         }

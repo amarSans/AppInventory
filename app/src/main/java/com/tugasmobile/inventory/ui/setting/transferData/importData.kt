@@ -43,7 +43,6 @@ fun importData(context: Context, database: SQLiteDatabase) {
 
         database.beginTransaction()
 
-        // Kosongkan dulu tabel
         database.execSQL("DELETE FROM $TABLE_BARANG")
         database.execSQL("DELETE FROM $TABLE_STOK")
         database.execSQL("DELETE FROM $TABLE_BARANG_MASUK")
@@ -56,7 +55,6 @@ fun importData(context: Context, database: SQLiteDatabase) {
         )
         if (!imageTargetDir.exists()) imageTargetDir.mkdirs()
 
-        // 1. Barang
         val barangJson = gson.toJson(allData["barang"])
         val barangListType = object : TypeToken<List<ItemBarang>>() {}.type
         val barangList: List<ItemBarang> = gson.fromJson(barangJson, barangListType)
@@ -69,14 +67,12 @@ fun importData(context: Context, database: SQLiteDatabase) {
             Log.d("IMPORT_GAMBAR", "fileName: $fileName")
             Log.d("IMPORT_GAMBAR", "srcFile path: ${srcFile.absolutePath}")
             Log.d("IMPORT_GAMBAR", "srcFile exists: ${srcFile.exists()}")
-            // Salin gambar
             if (srcFile.exists()) {
                 srcFile.copyTo(destFile, overwrite = true)
             }
             val newUri = addImageToMediaStore(context, destFile)
             val newImagePath = newUri.toString()
 
-            // Simpan ke database
             val stmt = database.compileStatement("INSERT INTO $TABLE_BARANG VALUES (?, ?, ?, ?, ?)")
             stmt.bindString(1, item.id_barang)
             stmt.bindString(2, item.merek_barang)
@@ -88,12 +84,10 @@ fun importData(context: Context, database: SQLiteDatabase) {
             srcFile.delete()
         }
 
-        // 2. Stok
         val stokJson = gson.toJson(allData["stok"])
         val stokListType = object : TypeToken<List<Stok>>() {}.type
         val stokList: List<Stok> = gson.fromJson(stokJson, stokListType)
 
-// Simpan ke database
         for (stok in stokList) {
             val stmt = database.compileStatement("INSERT INTO $TABLE_STOK VALUES (?, ?, ?, ?)")
             stmt.bindLong(1, stok.idStok)
@@ -103,7 +97,6 @@ fun importData(context: Context, database: SQLiteDatabase) {
             stmt.executeInsert()
         }
 
-        // 3. Barang Masuk
         val masukJson = gson.toJson(allData["barang_masuk"])
         val masukListType = object : TypeToken<List<BarangIn>>() {}.type
         val masukList: List<BarangIn> = gson.fromJson(masukJson, masukListType)
@@ -118,7 +111,6 @@ fun importData(context: Context, database: SQLiteDatabase) {
             stmt.executeInsert()
         }
 
-        // 4. Barang Keluar
         val keluarJson = gson.toJson(allData["barang_keluar"])
         val keluarListType = object : TypeToken<List<BarangOut>>() {}.type
         val keluarList: List<BarangOut> = gson.fromJson(keluarJson, keluarListType)
@@ -134,7 +126,6 @@ fun importData(context: Context, database: SQLiteDatabase) {
             stmt.executeInsert()
         }
 
-        // 5. History
         val historyJson = gson.toJson(allData["story"])
         val historyListType = object : TypeToken<List<History>>() {}.type
         val historyList: List<History> = gson.fromJson(historyJson, historyListType)
@@ -164,10 +155,8 @@ fun addImageToMediaStore(context: Context, imageFile: File): Uri? {
         put(MediaStore.Images.Media.DISPLAY_NAME, imageFile.name)
         put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // Untuk Android 10 ke atas, gunakan RELATIVE_PATH
             put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
         } else {
-            // Untuk Android 9 ke bawah, gunakan _data (deprecated tapi masih jalan)
             put(MediaStore.Images.Media.DATA, imageFile.absolutePath)
         }
     }

@@ -56,10 +56,10 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        mainViewModel.loadSetting() // Memuat data pengaturan
+        mainViewModel.loadSetting()
 
 
-        // Observasi perubahan data
+
         mainViewModel.settingData.observe(this) { setting ->
             if (setting != null) {
                 AlarmScheduler.scheduleNotification(this)
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
 
                 else -> {
-                    // Biarkan NavigationUI menangani item lainnya
+
                     NavigationUI.onNavDestinationSelected(menuItem, navController)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("toastMessage", "Data berhasil ditambahkan")
         fragment.arguments = bundle
 
-        // Buat Notifikasi Channel
+
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()
         val filterStock = intent.getStringExtra("filter_stock")
@@ -143,14 +143,14 @@ class MainActivity : AppCompatActivity() {
     private fun checkPermissions() {
         val permissionsNeeded = mutableListOf<String>()
 
-        // Android 13 ke atas: izin notifikasi
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
 
-        // Android 11 ke atas (API 30+): izin akses penuh ke file
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 try {
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } else {
-            // Android 10 ke bawah: izin baca/tulis storage
+
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Izin akses semua file diberikan", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "Izin akses semua file ditolak", Toast.LENGTH_SHORT).show()
-                    finish() // atau beri peringatan lain
+                    finish()
                 }
             }
         }
@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         menuInflater.inflate(R.menu.menu_main, menu)
 
         return true

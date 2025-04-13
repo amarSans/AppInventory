@@ -86,28 +86,24 @@ class SettingActivity : AppCompatActivity() {
         }
         val daysOfWeek = arrayOf("Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu")
 
-        // Adapter untuk Spinner
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, daysOfWeek)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        // Atur adapter ke Spinner
         spinnerHariMulai.adapter = adapter
         spinnerHariAkhir.adapter = adapter
         SettingViewModel.loadSetting()
 
         SettingViewModel.settingData.observe(this) { setting ->
             if (setting != null) {
-                // Tampilkan data di UI
                 switchNotif.isChecked = setting.isNotifEnabled
                 txtJamDipilih.text = "${setting.notifTime}"
                 spinnerHariMulai.setSelection(daysOfWeek.indexOf(setting.startDay))
                 spinnerHariAkhir.setSelection(daysOfWeek.indexOf(setting.endDay))
             } else {
-                // Jika data null, atur nilai default
                 switchNotif.isChecked = false
-                txtJamDipilih.text = "08:00" // Nilai default
-                spinnerHariMulai.setSelection(0) // Nilai default: Senin
-                spinnerHariAkhir.setSelection(0) // Nilai default: Rabu
+                txtJamDipilih.text = "08:00"
+                spinnerHariMulai.setSelection(0)
+                spinnerHariAkhir.setSelection(0)
             }
         }
 
@@ -122,14 +118,11 @@ class SettingActivity : AppCompatActivity() {
             }
         }
 
-        // Atur listener untuk tombol Pilih Jam
         btnPilihJam.setOnClickListener {
-            // Tampilkan TimePickerDialog
             val calendar = Calendar.getInstance()
             val timePickerDialog = TimePickerDialog(
                 this,
                 { _, hourOfDay, minute ->
-                    // Simpan jam yang dipilih dan tampilkan di TextView
                     txtJamDipilih.text = "${String.format("%02d:%02d", hourOfDay, minute)}"
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
@@ -149,11 +142,9 @@ class SettingActivity : AppCompatActivity() {
             SettingViewModel.saveSetting(settingData)
 
             Toast.makeText(this, "Pengaturan Disimpan", Toast.LENGTH_SHORT).show()
-            // Jadwalkan Notifikasi Ulang
             if (isNotifEnabled) {
                 AlarmScheduler.rescheduleNotification(this)
             } else {
-                // Jika notifikasi dinonaktifkan, batalkan notifikasi
                 AlarmScheduler.cancelNotification(this)
             }
 
@@ -162,7 +153,7 @@ class SettingActivity : AppCompatActivity() {
         binding.btnSync.setOnClickListener {
             lifecycleScope.launch {
                 val semuaBarang = withContext(Dispatchers.IO) {
-                    SettingViewModel.ambilSemuaUriDariDatabase() // suspend function
+                    SettingViewModel.ambilSemuaUriDariDatabase()
                 }
                 syncGambarDenganDatabase(semuaBarang)
                 Toast.makeText(this@SettingActivity, "Sinkronisasi selesai", Toast.LENGTH_SHORT).show()
@@ -176,7 +167,6 @@ class SettingActivity : AppCompatActivity() {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED
             ) {
-                // Minta izin notifikasi
                 requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
@@ -197,7 +187,6 @@ class SettingActivity : AppCompatActivity() {
             MediaStore.Images.Media.DISPLAY_NAME
         )
         val cursor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            // Android 10 ke atas - bisa pakai RELATIVE_PATH
             val selection = "${MediaStore.Images.Media.RELATIVE_PATH} LIKE ?"
             val selectionArgs = arrayOf("%InventoryApp%")
 
@@ -209,7 +198,6 @@ class SettingActivity : AppCompatActivity() {
                 null
             )
         } else {
-            // Android 9 ke bawah - fallback tanpa RELATIVE_PATH
             resolver.query(
                 collection,
                 projection,

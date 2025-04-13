@@ -60,7 +60,7 @@ class TambahBarangFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            kodeBarang = it.getString(ARG_KODE_BARANG) // Ambil kode barang dari arguments
+            kodeBarang = it.getString(ARG_KODE_BARANG)
         }
         checkPermissions()
     }
@@ -131,9 +131,9 @@ class TambahBarangFragment : Fragment() {
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK && result.data != null) {
             result.data?.data?.let { selectedUri ->
-                val originalFile = uriToFile(selectedUri, requireContext()) // Ubah URI ke File
-                val compressedFile = originalFile.reduceFileImage() // Kompres gambar
-                selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile)) // Ubah kembali ke URI
+                val originalFile = uriToFile(selectedUri, requireContext())
+                val compressedFile = originalFile.reduceFileImage()
+                selectedImageUri = saveImageToStorage(Uri.fromFile(compressedFile))
 
                 binding.imageViewBarang.setImageURI(selectedImageUri)
             } ?: run {
@@ -151,7 +151,7 @@ class TambahBarangFragment : Fragment() {
         return kode
     }
     private fun getDefaultImageUri(): Uri {
-        val drawableResourceId = R.drawable.baseline_image_24 // ID gambar default
+        val drawableResourceId = R.drawable.baseline_image_24
         return Uri.parse("android.resource://${requireContext().packageName}/$drawableResourceId")
     }
     private fun saveData() {
@@ -251,7 +251,7 @@ class TambahBarangFragment : Fragment() {
         val savedUri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
         savedUri?.let { uri ->
             requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream) // Simpan gambar yang sudah dikompres
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
             }
             return uri
         }
@@ -283,15 +283,15 @@ class TambahBarangFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Ambil nilai stok
+
                 val stokBarangText = s?.toString()?.trim() ?: ""
                 val stokBarang = stokBarangText.toIntOrNull() ?: 0
 
-                // Ambil teks yang sudah ada di EditText (ukuran dan warna yang sudah dipilih)
+
                 val currentText = binding.editTextUkuranwarna.text.toString()
                 val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
 
-                // Nonaktifkan tombol check jika stok sudah sama dengan jumlah kombinasi
+
                 binding.iconCheck.isEnabled = stokBarang > jumlahKombinasi
             }
 
@@ -317,18 +317,18 @@ class TambahBarangFragment : Fragment() {
         val daftarUkuran = resources.getStringArray(R.array.daftar_ukuran_valid).toSet()
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
         binding.spinnerWarna.prompt = "Pilih Warna"
-        // Inisialisasi adapter untuk Spinner warna
+
         val warnaAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, warnaList)
         warnaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerWarna.adapter = warnaAdapter
 
-        // Listener untuk icon close
+
         binding.iconClose.setOnClickListener {
-            binding.edtUkuran.setText("") // Reset Spinner ukuran
-            binding.spinnerWarna.setSelection(0)  // Reset Spinner warna
+            binding.edtUkuran.setText("")
+            binding.spinnerWarna.setSelection(0)
         }
 
-        // Listener untuk icon check
+
         binding.iconCheck.setOnClickListener {
             val selectedUkuranText = binding.edtUkuran.text.toString().trim()
             val selectedWarna = binding.spinnerWarna.selectedItem as String
@@ -347,30 +347,30 @@ class TambahBarangFragment : Fragment() {
                 Toast.makeText(requireContext(), "Pilih warna dulu", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // Gabungkan ukuran dan warna
+
 
             val newEntry = "$selectedUkuran $selectedWarna"
 
-            // Ambil teks yang sudah ada di EditText
+
             val currentText = binding.editTextUkuranwarna.text.toString()
             val jumlahKombinasi = if (currentText.isEmpty()) 0 else currentText.split(",").size
 
-            // Pengecekan apakah stok sudah sama dengan jumlah kombinasi
+
             if (stokBarang == jumlahKombinasi) {
                 Toast.makeText(requireContext(), "Tambahkan stok jika ingin menambahkan ukuran dan warna", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            // Tambahkan entri baru ke EditText (dipisahkan koma jika sudah ada data)
+
             val updatedText = if (currentText.isEmpty()) {
                 newEntry
             } else {
                 "$currentText, $newEntry"
             }
 
-            // Set teks ke EditText
+
             binding.editTextUkuranwarna.setText(updatedText)
 
-            // Reset Spinner
+
             binding.edtUkuran.setText("")
             binding.spinnerWarna.setSelection(0)
         }
@@ -379,9 +379,9 @@ class TambahBarangFragment : Fragment() {
 
             if (currentText.isNotEmpty()) {
                 val listEntries = currentText.split(", ").toMutableList()
-                listEntries.removeLastOrNull()  // Hapus item terakhir jika ada
+                listEntries.removeLastOrNull()
 
-                // Set teks baru setelah penghapusan
+
                 val updatedText = listEntries.joinToString(", ")
                 binding.editTextUkuranwarna.setText(updatedText)
             } else {
@@ -403,7 +403,7 @@ class TambahBarangFragment : Fragment() {
     }
     private fun updateKarakteristikText() {
         val karakteristik = selectedItems.joinToString(", ")
-        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik") // 🔥 Debugging
+        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik")
         binding.editKarakterikstik.setText(karakteristik)
     }
 

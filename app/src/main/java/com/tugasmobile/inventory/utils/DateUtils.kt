@@ -17,10 +17,10 @@ object DateUtils {
             val currentDate = format.parse(getCurrentDate())
 
             val diff = currentDate.time - lastUpdateDate.time
-            (diff / (1000 * 60 * 60 * 24)).toInt() // Konversi millis ke hari
+            (diff / (1000 * 60 * 60 * 24)).toInt()
         } catch (e: Exception) {
             e.printStackTrace()
-            -1 // Jika parsing gagal
+            -1
         }
     }
 

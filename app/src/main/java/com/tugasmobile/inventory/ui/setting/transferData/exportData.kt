@@ -4,7 +4,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.tugasmobile.inventory.data.BarangIn
@@ -31,7 +30,6 @@ fun exportData(context: Context, database: SQLiteDatabase) {
     val allData = mutableMapOf<String, Any>()
 
     try {
-        // 1. Export Tabel Barang
         val itemList = mutableListOf<ItemBarang>()
         val cursorBarang = database.rawQuery("SELECT * FROM $TABLE_BARANG", null)
         while (cursorBarang.moveToNext()) {
@@ -65,7 +63,6 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         cursorBarang.close()
         allData["barang"] = itemList
 
-        // 2. Tabel Stok
         val stokList = mutableListOf<Stok>()
         val cursorStok = database.rawQuery("SELECT * FROM $TABLE_STOK", null)
         while (cursorStok.moveToNext()) {
@@ -82,7 +79,6 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         cursorStok.close()
         allData["stok"] = stokList
 
-        // 3. Barang Masuk
         val masukList = mutableListOf<BarangIn>()
         val cursorMasuk = database.rawQuery("SELECT * FROM $TABLE_BARANG_MASUK", null)
         while (cursorMasuk.moveToNext()) {
@@ -99,7 +95,6 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         cursorMasuk.close()
         allData["barang_masuk"] = masukList
 
-        // 4. Barang Keluar
         val keluarList = mutableListOf<BarangOut>()
         val cursorKeluar = database.rawQuery("SELECT * FROM $TABLE_BARANG_KELUAR", null)
         while (cursorKeluar.moveToNext()) {
@@ -117,7 +112,6 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         cursorKeluar.close()
         allData["barang_keluar"] = keluarList
 
-        // 5. History / Story
         val historyList = mutableListOf<History>()
         val cursorHistory = database.rawQuery("SELECT * FROM $TABLE_HISTORY", null)
         while (cursorHistory.moveToNext()) {
@@ -134,7 +128,6 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         cursorHistory.close()
         allData["story"] = historyList
 
-        // 6. Simpan ke file JSON
         val gson = Gson()
         val jsonData = gson.toJson(allData)
         val jsonFile = File(backupDir, "data.json")

@@ -13,7 +13,7 @@ class NotificationReceiver : BroadcastReceiver() {
         if (context != null) {
             val lowStockCount = getLowStockCountFromSharedPreferences(context)
             val notificationHelper = NotificationHelper(context)
-            notificationHelper.createNotificationChannel() // Pastikan channel dibuat
+            notificationHelper.createNotificationChannel()
             notificationHelper.sendNotification(lowStockCount)
             saveLastNotificationTime(context)
             resetDismissedNotificationStatus(context)

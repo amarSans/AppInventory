@@ -19,17 +19,17 @@ object HargaUtils {
                 if (s.isNullOrEmpty()) return
                 editText.removeTextChangedListener(this)
                 try {
-                    val cleanString = s.toString().replace(".", "") // Hilangkan titik sebelumnya
+                    val cleanString = s.toString().replace(".", "")
                     val parsed = cleanString.toLong()
                     val formatted = formatHarga(parsed.toInt())
 
                     editText.setText(formatted)
-                    editText.setSelection(formatted.length) // Geser cursor ke akhir
+                    editText.setSelection(formatted.length)
                 } catch (e: NumberFormatException) {
                     e.printStackTrace()
                 }
 
-                editText.addTextChangedListener(this) // Tambahkan kembali listener
+                editText.addTextChangedListener(this)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

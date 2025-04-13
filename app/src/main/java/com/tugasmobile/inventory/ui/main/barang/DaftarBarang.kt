@@ -47,7 +47,7 @@ class DaftarBarang : Fragment() {
             if (filterStock != null) {
                 applyStockFilter(listBarang)
             } else {
-                // Jika tidak ada filter stok atau filter stok sudah dibatalkan, tampilkan semua barang
+
                 adapterDaftarBarang.updateLaporanList(listBarang)
             }
         }
@@ -59,7 +59,7 @@ class DaftarBarang : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { allData ->
-            // Lakukan filter jika ada query
+
             val filteredData = if (!query.isNullOrEmpty()) {
                 allData.filter { barang ->
                     barang.id.contains(query!!, ignoreCase = true) ||
@@ -81,7 +81,7 @@ class DaftarBarang : Fragment() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
-                menuInflater.inflate(R.menu.menu_main, menu)// Tambahkan menu hanya di sini
+                menuInflater.inflate(R.menu.menu_main, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -89,7 +89,7 @@ class DaftarBarang : Fragment() {
                     R.id.action_filter -> {
                         if(filterStock!=null){
                             barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
-                                adapterDaftarBarang.updateLaporanList(listBarang)  // Update RecyclerView tanpa filter
+                                adapterDaftarBarang.updateLaporanList(listBarang)
                             }
                             filterStock=null
                             arguments?.remove("filter_stock")
@@ -155,14 +155,14 @@ class DaftarBarang : Fragment() {
     }
 
     private fun applyStockFilter(listBarang: List<DataBarangAkses>) {
-        val filteredList = listBarang.filter { it.stok <= 2 }  // Ambil hanya stok <= 2
+        val filteredList = listBarang.filter { it.stok <= 2 }
         if (filteredList.isEmpty()) {
             emptydata()
         } else {
             binding.lottieEmpty.visibility = View.GONE
             binding.recyclerViewLaporan.visibility = View.VISIBLE
             adapterDaftarBarang.updateLaporanList(filteredList)
-        } // Update RecyclerView
+        }
 
     }
 

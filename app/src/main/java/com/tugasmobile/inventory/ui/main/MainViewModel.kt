@@ -23,10 +23,8 @@ class MainViewModel(application: Application, private val dbHelper: BrgDatabaseH
     fun loadSetting() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Ambil data pengaturan dari database
                 val setting = dbHelper.getSetting()
 
-                // Perbarui LiveData di thread utama
                 withContext(Dispatchers.Main) {
                     _settingData.value = setting
                 }

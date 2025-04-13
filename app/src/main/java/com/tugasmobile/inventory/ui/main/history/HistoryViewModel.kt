@@ -20,10 +20,10 @@ class HistoryViewModel(application: Application, private val dbHelper: BrgDataba
     fun loadHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                // Ambil data pengaturan dari database
+
                 val history = dbHelper.getAllHistoryItems()
 
-                // Perbarui LiveData di thread utama
+
                 withContext(Dispatchers.Main) {
                     _historyData.value = history
                 }

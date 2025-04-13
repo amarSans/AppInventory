@@ -40,7 +40,7 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Log.d("SearchActivity", "onCreate called")
-        // Tombol kembali
+
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
@@ -86,7 +86,7 @@ class SearchActivity : AppCompatActivity() {
                 val query = binding.editTextSearch.text.toString().trim()
                 val filterQuery = filterQuery(query)
                 if (filterQuery.isNotEmpty()) {
-                    // Pindah Activity dengan data pencarian
+
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("QUERY_KEY", query)
                     startActivity(intent)
@@ -109,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
         }
         setupHideKeyboardWhenTouchOutside()
 
-        // Tambahkan animasi masuk
+
         findViewById<View>(android.R.id.content).animate().alpha(1f).setDuration(200).start()
     }
 
@@ -119,7 +119,7 @@ class SearchActivity : AppCompatActivity() {
     private fun setupHideKeyboardWhenTouchOutside() {
         binding.searchBar.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                // Penting: agar aksesibilitas tetap jalan
+
                 v.performClick()
 
                 if (binding.editTextSearch.isFocused) {
@@ -156,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
             }
         }.distinct()
 
-        // Bandingkan tiap kata dari query, hanya simpan yang dikenali
+
         val filteredWords = keywords.filter { keyword ->
             recognizedWords.any { it.contains(keyword) || keyword.contains(it) }
         }
