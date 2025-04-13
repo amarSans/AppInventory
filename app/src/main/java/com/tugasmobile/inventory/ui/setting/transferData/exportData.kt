@@ -23,7 +23,7 @@ import java.io.File
 fun exportData(context: Context, database: SQLiteDatabase) {
     val backupDir = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-        "BackupInventoryMuammar"
+        "BackupInventaTa"
     )
     val imageDir = File(backupDir, "InventoryApp")
     if (!imageDir.exists()) imageDir.mkdirs()

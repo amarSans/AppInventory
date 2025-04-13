@@ -26,7 +26,7 @@ import java.io.File
 fun importData(context: Context, database: SQLiteDatabase) {
     val backupDir = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS,),
-        "BackupInventoryMuammar"
+        "BackupInventaTa"
     )
     val imageBackupDir = File(backupDir, "InventoryApp")
     val jsonFile = File(backupDir, "data.json")
