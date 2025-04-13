@@ -115,15 +115,7 @@ class DaftarBarang : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapterDaftarBarang = AdapterDaftarBarang(emptyList()) { barang ->
-            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
-                putExtra("NAMA_BARANG", barang.namaBarang)
-                putExtra("STOK_BARANG", barang.stok)
-                putExtra("HARGA_BARANG", barang.harga)
-                putExtra("ID_BARANG", barang.id)
-            }
-            startActivity(intent)
-        }
+        adapterDaftarBarang = AdapterDaftarBarang(requireContext(),emptyList())
         binding.recyclerViewLaporan.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = adapterDaftarBarang

@@ -20,6 +20,7 @@ import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.data.DataActivity
 import com.tugasmobile.inventory.ui.editdata.DetailBarang
 import com.tugasmobile.inventory.utils.AnimationHelper
+import com.tugasmobile.inventory.utils.PerformClickUtils
 
 class BarangMasuk : Fragment() {
 
@@ -42,18 +43,13 @@ class BarangMasuk : Fragment() {
 
 
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())
-        adapterDaftarBarang = AdapterBarangMasuk(emptyList()) { barang ->
-            val intent = Intent(requireActivity(), DetailBarang::class.java).apply {
-                putExtra("NAMA_BARANG", barang.namaBarang)
-                putExtra("KODE_BARANG", barang.id)
-                putExtra("TIME_BARANG", barang.harga)
-                putExtra("ID_BARANG", barang.id)
-            }
-            startActivity(intent)
-        }
+        adapterDaftarBarang = AdapterBarangMasuk(requireContext(),emptyList())
         binding.btnTamBar.setOnClickListener {
-            val intent = Intent(requireContext(), DataActivity::class.java)
-            startActivity(intent)
+            PerformClickUtils.preventMultipleClick {
+                val intent = Intent(requireContext(), DataActivity::class.java)
+                startActivity(intent)
+            }
+
         }
         binding.recyclerViewLaporan.adapter = adapterDaftarBarang
         binding.recyclerViewLaporan.layoutManager = LinearLayoutManager(requireContext())

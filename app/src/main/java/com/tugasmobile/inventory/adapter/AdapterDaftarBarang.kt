@@ -1,5 +1,7 @@
 package com.tugasmobile.inventory.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.DataBarangAkses
+import com.tugasmobile.inventory.ui.editdata.DetailBarang
 import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.PerformClickUtils
 
-class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>, private val itemClickListener: (DataBarangAkses) -> Unit):
-    RecyclerView.Adapter<AdapterDaftarBarang.ListViewHolder>() {
+class AdapterDaftarBarang(
+    private val context: Context,
+    private var listDataBarangAkses: List<DataBarangAkses>
+) : RecyclerView.Adapter<AdapterDaftarBarang.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -22,17 +28,23 @@ class AdapterDaftarBarang(private var listDataBarangAkses: List<DataBarangAkses>
         return ListViewHolder(view)
     }
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val laporan=listDataBarangAkses[position]
-        holder.name.text= laporan.namaBarang
-        holder.stok.text = laporan.stok.toString()
-        val formattedHarga = HargaUtils.formatHarga(laporan.harga)
+        val itemdatabarang=listDataBarangAkses[position]
+        holder.name.text= itemdatabarang.namaBarang
+        holder.stok.text = itemdatabarang.stok.toString()
+        val formattedHarga = HargaUtils.formatHarga(itemdatabarang.harga)
         holder.price.text = "Rp. ${formattedHarga}"
         Glide.with(holder.itemView.context)
-            .load(laporan.gambar)
+            .load(itemdatabarang.gambar)
             .into(holder.gambar)
 
         holder.itemView.setOnClickListener {
-            itemClickListener(laporan)
+            PerformClickUtils.preventMultipleClick {
+                val intent = Intent(context, DetailBarang::class.java).apply {
+                    putExtra("ID_BARANG", itemdatabarang.id)
+                }
+                context.startActivity(intent)
+            }
+
         }
         AnimationHelper.animateRecyclerItem(holder.itemView,position)
 

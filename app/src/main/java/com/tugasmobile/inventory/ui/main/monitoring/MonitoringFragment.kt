@@ -22,7 +22,7 @@ class MonitoringFragment : Fragment() {
     private val monitoringViewModel: MonitoringViewModel by viewModels {
         InventoryViewModelFactory.getInstance(requireActivity().application)
     }
-    private lateinit var adapter : MonitoringAdapter
+    private lateinit var adapter : AdapterMonitoring
     private lateinit var filterOptions: Array<String>
 
 
@@ -34,13 +34,7 @@ class MonitoringFragment : Fragment() {
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        adapter = MonitoringAdapter { barang ->
-            // Aksi jika item diklik (misalnya buka Detail)
-            val intent = Intent(requireContext(), DetailBarang::class.java).apply {
-                putExtra("ID_BARANG", barang.kodeBarang)
-            }
-            startActivity(intent)
-        }
+        adapter = AdapterMonitoring (requireContext(), emptyList())
         binding.rvMonitoring.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMonitoring.adapter = adapter
         filterOptions = resources.getStringArray(R.array.filterOption)
@@ -58,7 +52,7 @@ class MonitoringFragment : Fragment() {
             binding.tvKosong.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
 
-        monitoringViewModel.loadBarangTertingal() // Ambil data awal
+        monitoringViewModel.loadBarangTertingal()
     }
     private fun setupSpinner() {
         val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, filterOptions)

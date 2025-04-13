@@ -1,5 +1,7 @@
 package com.tugasmobile.inventory.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,10 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tugasmobile.inventory.R
 import com.tugasmobile.inventory.data.DataBarangAkses
+import com.tugasmobile.inventory.ui.editdata.DetailBarang
 import com.tugasmobile.inventory.utils.AnimationHelper
+import com.tugasmobile.inventory.utils.PerformClickUtils
 
-class AdapterBarangMasuk(private var listDataBarangAkses: List<DataBarangAkses>, private val itemClickListener: (DataBarangAkses) -> Unit):
-    RecyclerView.Adapter<AdapterBarangMasuk.ListViewHolder>() {
+class AdapterBarangMasuk(
+    private val context: Context,
+    private var listDataBarangAkses: List<DataBarangAkses>
+) : RecyclerView.Adapter<AdapterBarangMasuk.ListViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -31,10 +37,15 @@ class AdapterBarangMasuk(private var listDataBarangAkses: List<DataBarangAkses>,
             .into(holder.gambar)
 
         holder.itemView.setOnClickListener {
-            itemClickListener(laporan)
+            PerformClickUtils.preventMultipleClick {
+                val intent = Intent(context, DetailBarang::class.java).apply {
+                    putExtra("ID_BARANG", laporan.id)
+                }
+                context.startActivity(intent)
+            }
+
         }
         AnimationHelper.animateRecyclerItem(holder.itemView,position)
-
     }
 
     override fun getItemCount(): Int =listDataBarangAkses.size

@@ -38,6 +38,7 @@ import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.FormatAngkaUtils
 import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.PerformClickUtils
 import com.tugasmobile.inventory.utils.reduceFileImage
 import com.tugasmobile.inventory.utils.uriToFile
 
@@ -86,7 +87,7 @@ class TambahBarangFragment : Fragment() {
     private fun checkPermissions() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                TambahBarangFragment.REQUEST_CODE_PERMISSIONS
+                REQUEST_CODE_PERMISSIONS
             )
         }
     }
@@ -269,13 +270,16 @@ class TambahBarangFragment : Fragment() {
         binding.buttonCamera.setOnClickListener { openCamera() }
         binding.buttonGallery.setOnClickListener { openGallery() }
         binding.btncharater.setOnClickListener {
-            val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
-                selectedItems.clear()
-                selectedItems.addAll(updatedItems)
-                Log.d("KarakteristikFragment", "Selected Items Setelah Dialog Ditutup: $selectedItems")
-                updateKarakteristikText()
+            PerformClickUtils.preventMultipleClick {
+                val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
+                    selectedItems.clear()
+                    selectedItems.addAll(updatedItems)
+                    Log.d("KarakteristikFragment", "Selected Items Setelah Dialog Ditutup: $selectedItems")
+                    updateKarakteristikText()
+                }
+                dialog.show(parentFragmentManager, "KarakteristikBottomSheet")
             }
-            dialog.show(parentFragmentManager, "KarakteristikBottomSheet")
+
         }
         setupSpinners()
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarang)

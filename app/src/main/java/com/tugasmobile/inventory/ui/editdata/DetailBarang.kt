@@ -17,14 +17,15 @@ import com.tugasmobile.inventory.databinding.ActivityDetailBarangBinding
 import com.tugasmobile.inventory.ui.InventoryViewModelFactory
 import com.tugasmobile.inventory.ui.data.EditData
 import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.PerformClickUtils
 
 class DetailBarang : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBarangBinding
-    private val detailBarangViewModel:DetailViewModel  by viewModels {
+    private val detailBarangViewModel: DetailViewModel by viewModels {
         InventoryViewModelFactory.getInstance(this.application)
     }
 
-    private var barangId:String =""
+    private var barangId: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -68,26 +69,31 @@ class DetailBarang : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_detail,menu)
+        menuInflater.inflate(R.menu.menu_detail, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_edit -> {
-                val intent = Intent(this, EditData::class.java).apply {
-                    putExtra("ID_BARANG", barangId)
+                PerformClickUtils.preventMultipleClick {
+                    val intent = Intent(this, EditData::class.java).apply {
+                        putExtra("ID_BARANG", barangId)
+                    }
+                    startActivity(intent)
                 }
-                startActivity(intent)
                 true
             }
+
             R.id.action_delete -> {
                 deleteBarang()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
+
     private fun deleteBarang() {
         val itemBarang = detailBarangViewModel.currentBarang.value
         val stok = detailBarangViewModel.currentStok.value
@@ -118,9 +124,8 @@ class DetailBarang : AppCompatActivity() {
 
             finish()
         }
-
-
     }
+
     fun deleteImageFromStorage(imageUri: Uri): Boolean {
         return try {
             val rowsDeleted = this.contentResolver.delete(imageUri, null, null)

@@ -28,6 +28,7 @@ import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.DateUtils
 import com.tugasmobile.inventory.utils.FormatAngkaUtils
 import com.tugasmobile.inventory.utils.HargaUtils
+import com.tugasmobile.inventory.utils.PerformClickUtils
 import com.tugasmobile.inventory.utils.reduceFileImage
 import com.tugasmobile.inventory.utils.uriToFile
 
@@ -147,18 +148,21 @@ class EditData : AppCompatActivity() {
             saveChanges()
         }
         binding.btncharater.setOnClickListener {
-             selectedItems = binding.editKarakterikstikedit.text.toString()
-                .split(", ")
-                .filter { it.isNotBlank() }
-                .toMutableSet()
+            PerformClickUtils.preventMultipleClick {
+                selectedItems = binding.editKarakterikstikedit.text.toString()
+                    .split(", ")
+                    .filter { it.isNotBlank() }
+                    .toMutableSet()
 
-            val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
-                selectedItems.clear()
-                selectedItems.addAll(updatedItems)
-                Log.d("KarakteristikFragment", "Selected Items Setelah Dialog Ditutup: $selectedItems")
-                updateKarakteristikText()
+                val dialog = KarakteristikBottomSheetFragment(selectedItems) { updatedItems ->
+                    selectedItems.clear()
+                    selectedItems.addAll(updatedItems)
+                    Log.d("KarakteristikFragment", "Selected Items Setelah Dialog Ditutup: $selectedItems")
+                    updateKarakteristikText()
+                }
+                dialog.show(supportFragmentManager, "KarakteristikBottomSheet")
             }
-            dialog.show(supportFragmentManager, "KarakteristikBottomSheet")
+
         }
         HargaUtils.setupHargaTextWatcher(binding.editTextHargaBarangEdit)
 
