@@ -36,6 +36,7 @@ import com.tugasmobile.inventory.ui.camera.CameraActivity
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.FormatAngkaUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 import com.tugasmobile.inventory.utils.reduceFileImage
 import com.tugasmobile.inventory.utils.uriToFile
@@ -52,7 +53,9 @@ class TambahBarangFragment : Fragment() {
 
     private val selectedItems = mutableSetOf<String>()
     private var selectedImageUri: Uri? = null
-    private lateinit var photoUri: Uri
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,7 +152,6 @@ class TambahBarangFragment : Fragment() {
     }
     private fun getDefaultImageUri(): Uri {
         val drawableResourceId = R.drawable.baseline_image_24 // ID gambar default
-        val resources = resources
         return Uri.parse("android.resource://${requireContext().packageName}/$drawableResourceId")
     }
     private fun saveData() {
@@ -295,8 +297,24 @@ class TambahBarangFragment : Fragment() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        binding.edtUkuran.addTextChangedListener(object : TextWatcher {
+            val daftarUkuran = resources.getStringArray(R.array.daftar_ukuran_valid).toSet()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString().trim()
+                if (input.isNotEmpty() && input !in daftarUkuran) {
+                    binding.edtUkuran.error = "Ukuran tidak valid. Gunakan ukuran standar!"
+                } else {
+                    binding.edtUkuran.error = null
+                }
+            }
+        })
     }
     private fun setupSpinners() {
+        val daftarUkuran = resources.getStringArray(R.array.daftar_ukuran_valid).toSet()
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
         binding.spinnerWarna.prompt = "Pilih Warna"
         // Inisialisasi adapter untuk Spinner warna
@@ -319,9 +337,10 @@ class TambahBarangFragment : Fragment() {
                 binding.edtUkuran.error = "Ukuran tidak boleh kosong"
                 return@setOnClickListener
             }
-            val selectedUkuran = selectedUkuranText.toIntOrNull()
-            if (selectedUkuran == null || selectedUkuran !in 1..45) {
-                binding.edtUkuran.error = "Ukuran harus antara 1 - 45"
+            val selectedUkuran = selectedUkuranText.toDoubleOrNull()
+                ?.let { it1 -> FormatAngkaUtils.formatAngka(it1) }
+            if (selectedUkuranText !in daftarUkuran) {
+                binding.edtUkuran.error = "Ukuran tidak valid. Gunakan ukuran standar!"
                 return@setOnClickListener
             }
             if (selectedWarna.equals("kosong", ignoreCase = true)) {
@@ -329,6 +348,7 @@ class TambahBarangFragment : Fragment() {
                 return@setOnClickListener
             }
             // Gabungkan ukuran dan warna
+
             val newEntry = "$selectedUkuran $selectedWarna"
 
             // Ambil teks yang sudah ada di EditText
@@ -386,6 +406,7 @@ class TambahBarangFragment : Fragment() {
         Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik") // 🔥 Debugging
         binding.editKarakterikstik.setText(karakteristik)
     }
+
 
 
     companion object {

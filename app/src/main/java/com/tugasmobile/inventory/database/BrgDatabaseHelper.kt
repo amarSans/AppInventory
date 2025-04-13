@@ -513,7 +513,7 @@ class BrgDatabaseHelper(context: Context) :
         return exists
     }
 
-    fun updateWarna(barangId: String, newColors: List<String>): Int {
+    /*fun updateWarna(barangId: String, newColors: List<String>): Int {
         val db = this.writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_UKURAN_WARNA, newColors.joinToString(","))
@@ -529,7 +529,7 @@ class BrgDatabaseHelper(context: Context) :
 
         db.close()
         return result
-    }
+    }*/
 
     fun deleteBarang(id: String): Int {
         val db = this.writableDatabase

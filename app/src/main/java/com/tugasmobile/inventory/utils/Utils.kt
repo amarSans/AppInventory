@@ -25,40 +25,6 @@ private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
 private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(Date())
 private const val TAG = "CameraImageUtils"
 
-fun getImageUri(context: Context): Uri {
-    var uri: Uri? = null
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.MediaColumns.DISPLAY_NAME, "$timeStamp.jpg")
-            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/InventoryApp/")
-        }
-        uri = context.contentResolver.insert(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            contentValues
-        )
-    }
-    return uri ?: getImageUriForPreQ(context)
-}
-
-private fun getImageUriForPreQ(context: Context): Uri {
-    val filesDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    val imageFile = File(filesDir, "/InventoryApp/$timeStamp.jpg")
-    if (imageFile.parentFile?.exists() == false) imageFile.parentFile?.mkdir()
-    return FileProvider.getUriForFile(
-        context,
-        "${BuildConfig.APPLICATION_ID}.fileprovider",
-        imageFile
-    )
-
-}
-fun getCacheImageUri(context: Context): Uri {
-    val file = File(context.cacheDir, "$timeStamp.jpg") // Buat file di cache
-    return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-}
-
-
-
 
 fun uriToFile(imageUri: Uri, context: Context): File {
     val destFile = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "$timeStamp.jpg")

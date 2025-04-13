@@ -80,7 +80,6 @@
         <!-- Gender -->
         <item>Laki-laki</item>
         <item>Perempuan</item>
-        <item>Unisex</item>
 
         <!-- Jenis Alas Kaki -->
         <item>Sandal Jepit</item>
@@ -90,6 +89,7 @@
         <item>Sandal Kodog</item>
         <item>Sandal Papan</item>
         <item>Sandal Sosok</item>
+
         <item>Sepatu Sandal</item>
         <item>Sepatu Teplet</item>
         <item>Sepatu Slip On</item>
@@ -118,9 +118,6 @@
         <item>Jeans</item>
         <item>Rajut</item>
         <item>Kain</item>
-        <item>Mesh</item>
-        <item>Suede</item>
-        <item>Beludru</item>
 
         <!-- Kegunaan / Karakter Tambahan -->
         <item>Anti Air</item>
@@ -139,52 +136,56 @@
     <string name="belum_diisi">belum disi</string>
 
     <!--bagian button sheet-->
-    <string name="bayi">Bayi</string>
-    <string name="_19">19</string>
-    <string name="_21">21</string>
-    <string name="_22">22</string>
-    <string name="_23">23</string>
-    <string name="_25">25</string>
-    <string name="_26">26</string>
-    <string name="_27">27</string>
-    <string name="_28">28</string>
-    <string name="_29">29</string>
-    <string name="_30">30</string>
-    <string name="_31">31</string>
-    <string name="_32">32</string>
-    <string name="_34">34</string>
-    <string name="_35">35</string>
-    <string name="dewasa">Dewasa</string>
-    <string name="_36">36</string>
-    <string name="_37">37</string>
-    <string name="_38">38</string>
-    <string name="_39">39</string>
-    <string name="_40">40</string>
-    <string name="_41">41</string>
-    <string name="_42">42</string>
-    <string name="_43">43</string>
-    <string name="_44">44</string>
-    <string name="standar_us">Standar US</string>
-    <string name="_6">6</string>
-    <string name="_6_5">6.5</string>
-    <string name="_7">7</string>
-    <string name="_7_5">7.5</string>
-    <string name="_8">8</string>
-    <string name="_8_5">8.5</string>
-    <string name="_9">9</string>
-    <string name="_9_5">9.5</string>
-    <string name="_10">10</string>
-    <string name="_10_5">10.5</string>
-    <string name="_11_5">11.5</string>
-    <string name="_11">11</string>
-    <string name="simpan">Simpan</string>
-    <string name="_33">33</string>
-    <string name="_24">24</string>
-    <string name="anak_anak">Anak-anak</string>
+
+    <string-array name="daftar_ukuran_valid">
+        <item>6</item>
+        <item>6.5</item>
+        <item>7</item>
+        <item>7.5</item>
+        <item>8</item>
+        <item>8.5</item>
+        <item>9</item>
+        <item>9.5</item>
+        <item>10</item>
+        <item>10.5</item>
+        <item>11</item>
+        <item>11.5</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+        <item>32</item>
+        <item>33</item>
+        <item>34</item>
+        <item>35</item>
+        <item>36</item>
+        <item>37</item>
+        <item>38</item>
+        <item>39</item>
+        <item>40</item>
+        <item>41</item>
+        <item>42</item>
+        <item>43</item>
+        <item>44</item>
+        <item>45</item>
+    </string-array>
+
     <string name="_20">20</string>
+    <string name="_40">40</string>
     <string name="_00">00</string>
     <string name="_500000">500000</string>
     <string name="barang_masuk">Barang Masuk</string>
+
+    <string name="simpan">Simpan</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
