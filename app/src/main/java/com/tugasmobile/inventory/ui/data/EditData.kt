@@ -26,6 +26,7 @@ import com.tugasmobile.inventory.ui.camera.CameraActivity
 import com.tugasmobile.inventory.ui.simpleItem.KarakteristikBottomSheetFragment
 import com.tugasmobile.inventory.utils.AnimationHelper
 import com.tugasmobile.inventory.utils.DateUtils
+import com.tugasmobile.inventory.utils.FormatAngkaUtils
 import com.tugasmobile.inventory.utils.HargaUtils
 import com.tugasmobile.inventory.utils.reduceFileImage
 import com.tugasmobile.inventory.utils.uriToFile
@@ -180,8 +181,24 @@ class EditData : AppCompatActivity() {
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        binding.edtUkuranEdit.addTextChangedListener(object : TextWatcher {
+            val daftarUkuran = resources.getStringArray(R.array.daftar_ukuran_valid).toSet()
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val input = s.toString().trim()
+                if (input.isNotEmpty() && input !in daftarUkuran) {
+                    binding.edtUkuranEdit.error = "Ukuran tidak valid. Gunakan ukuran standar!"
+                } else {
+                    binding.edtUkuranEdit.error = null
+                }
+            }
+        })
     }
     private fun setupSpinners() {
+        val daftarUkuran = resources.getStringArray(R.array.daftar_ukuran_valid).toSet()
         val warnaList = resources.getStringArray(R.array.daftar_nama_warna)
 
         // Inisialisasi adapter untuk Spinner warna
@@ -206,9 +223,10 @@ class EditData : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val selectedUkuran = selectedUkuranText.toIntOrNull()
-            if (selectedUkuran == null || selectedUkuran !in 1..45) {
-                binding.edtUkuranEdit.error = "Ukuran harus antara 1 - 45"
+            val selectedUkuran = selectedUkuranText.toDoubleOrNull()
+                ?.let { it1 -> FormatAngkaUtils.formatAngka(it1) }
+            if (selectedUkuranText !in daftarUkuran) {
+                binding.edtUkuranEdit.error = "Ukuran tidak valid. Gunakan ukuran standar!"
                 return@setOnClickListener
             }
             if (selectedWarna.equals("kosong", ignoreCase = true)) {
@@ -255,7 +273,8 @@ class EditData : AppCompatActivity() {
             val currentText = binding.editTextUkuranwarnaEdit.text.toString()
 
             if (currentText.isNotEmpty()) {
-                val listEntries = currentText.split(", ").toMutableList()
+                val listEntries = currentText.split(",").map { it.trim() }.toMutableList()
+
                 listEntries.removeLastOrNull()  // Hapus item terakhir jika ada
 
                 // Set teks baru setelah penghapusan
@@ -354,10 +373,10 @@ class EditData : AppCompatActivity() {
             return
         }
 
-        updatedBarang?.let {
+        /*updatedBarang?.let {
 
             editViewModel.updateWarna(it.id_barang, selectedColors.toList())
-        }
+        }*/
         if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
             editViewModel.updateBarang(updatedBarang, updatedStok, updatedBarangMasuk)
         }

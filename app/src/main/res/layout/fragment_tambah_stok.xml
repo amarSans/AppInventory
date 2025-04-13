@@ -113,7 +113,7 @@
             android:gravity="center"
             android:hint="@string/_00"
             android:inputType="numberDecimal"
-            android:maxLength="3"
+            android:maxLength="4"
             android:textSize="@dimen/text_size_large"
             app:layout_constraintBottom_toTopOf="@id/edit_text_ukuranwarna"
             app:layout_constraintEnd_toStartOf="@id/spinnerWarna"
