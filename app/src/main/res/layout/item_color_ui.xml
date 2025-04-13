@@ -2,7 +2,6 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="90dp"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/textViewColorName"
     android:fontFamily="@font/poppins_semibold"
     android:padding="8dp"

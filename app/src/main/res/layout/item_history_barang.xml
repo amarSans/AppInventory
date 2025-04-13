@@ -5,7 +5,6 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-        <!-- Bubble Chat untuk History -->
         <LinearLayout
             android:id="@+id/chatBubble"
             android:layout_width="wrap_content"
