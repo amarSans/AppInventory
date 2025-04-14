@@ -21,13 +21,27 @@ import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_BARANG_K
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_BARANG_MASUK
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_HISTORY
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_STOK
+import com.muammar.inventory.utils.ZipUtils
 import java.io.File
 
-fun importData(context: Context, database: SQLiteDatabase) {
+fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
     val backupDir = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS,),
         "BackupInventaTa"
     )
+
+
+    val unzipSuccess = ZipUtils.unzipToFolder(context, zipUri, backupDir)
+    if (!unzipSuccess) {
+        Toast.makeText(context, "Gagal mengekstrak file ZIP", Toast.LENGTH_LONG).show()
+        return
+    }
+    try {
+        context.contentResolver.delete(zipUri, null, null)
+        Log.d("IMPORT", "File ZIP dihapus setelah diekstrak")
+    } catch (e: Exception) {
+        Log.e("IMPORT", "Gagal menghapus ZIP: ${e.message}")
+    }
     val imageBackupDir = File(backupDir, "InventoryApp")
     val jsonFile = File(backupDir, "data.json")
 
@@ -142,12 +156,22 @@ fun importData(context: Context, database: SQLiteDatabase) {
 
         database.setTransactionSuccessful()
         Toast.makeText(context, "Import berhasil!", Toast.LENGTH_LONG).show()
-
+        try {
+            context.contentResolver.delete(zipUri, null, null)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     } catch (e: Exception) {
         Toast.makeText(context, "Import gagal: ${e.message}", Toast.LENGTH_LONG).show()
         e.printStackTrace()
     } finally {
         database.endTransaction()
+    }
+    try {
+        backupDir.deleteRecursively()
+        Log.d("IMPORT", "Folder BackupInventaTa berhasil dihapus.")
+    } catch (e: Exception) {
+        Log.e("IMPORT", "Gagal menghapus folder backup: ${e.message}")
     }
 }
 fun addImageToMediaStore(context: Context, imageFile: File): Uri? {

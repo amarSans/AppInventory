@@ -2,6 +2,7 @@ package com.muammar.inventory.ui.setting
 
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,12 +23,12 @@ class SettingViewModel (application: Application, private val dbHelper: BrgDatab
 
     private val database = dbHelper.writableDatabase
 
-    fun exportDatabase(context: Context) {
+    suspend fun exportDatabase(context: Context) {
         exportData(context, database)
     }
 
-    fun importDatabase(context: Context) {
-        importData(context, database)
+    fun importDatabase(context: Context, zipUri: Uri) {
+        importData(context, zipUri,database)
     }
     init {
         loadSetting()

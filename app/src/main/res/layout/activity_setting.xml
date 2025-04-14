@@ -47,13 +47,27 @@
             android:layout_marginBottom="24dp"
             android:padding="8dp">
 
-            <Button
-                android:id="@+id/btnExport"
+            <FrameLayout
+                android:id="@+id/frameExport"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                style="@style/StyleButtonSave"
-                android:layout_height="wrap_content"
-                android:text="Export" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnExport"
+                    style="@style/StyleButtonSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Export" />
+
+                <ProgressBar
+                    android:id="@+id/progressExport"
+                    style="?android:attr/progressBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <Space
                 android:layout_width="16dp"

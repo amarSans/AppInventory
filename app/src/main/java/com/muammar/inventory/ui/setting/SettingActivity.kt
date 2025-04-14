@@ -9,8 +9,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import com.muammar.inventory.databinding.ActivitySettingBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
 import com.muammar.inventory.ui.setting.notifikasi.AlarmScheduler
 import com.muammar.inventory.utils.AnimationHelper
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -40,6 +43,8 @@ class SettingActivity : AppCompatActivity() {
                 Toast.makeText(this, "Izin notifikasi ditolak", Toast.LENGTH_SHORT).show()
             }
         }
+    private lateinit var pickZipFileLauncher: ActivityResultLauncher<Array<String>>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +59,37 @@ class SettingActivity : AppCompatActivity() {
         val txtJamDipilih = binding.txtJamDipilih
 
         binding.btnExport.setOnClickListener {
-            SettingViewModel.exportDatabase(this)
-        }
+            binding.btnExport.isEnabled = false
+            binding.btnExport.text = ""
+            binding.progressExport.visibility = View.VISIBLE
 
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    SettingViewModel.exportDatabase(this@SettingActivity)
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@SettingActivity, "Export selesai!", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: Exception) {
+
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@SettingActivity, "Gagal export: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                } finally {
+                    withContext(Dispatchers.Main) {
+                        binding.progressExport.visibility = View.GONE
+                        binding.btnExport.text = "Export"
+                        binding.btnExport.isEnabled = true
+                    }
+                }
+            }
+        }
+        pickZipFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri?.let {
+                SettingViewModel.importDatabase(this, it)
+            }
+        }
         binding.btnImport.setOnClickListener {
-            SettingViewModel.importDatabase(this)
+            pickZipFileLauncher.launch(arrayOf("application/zip"))
         }
 
         val sharedPreferences = getSharedPreferences("settings", MODE_PRIVATE)

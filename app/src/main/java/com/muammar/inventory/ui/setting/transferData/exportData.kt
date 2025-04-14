@@ -17,13 +17,18 @@ import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_BARANG_K
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_BARANG_MASUK
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_HISTORY
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_STOK
+import com.muammar.inventory.utils.ZipUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
-fun exportData(context: Context, database: SQLiteDatabase) {
+suspend fun exportData(context: Context, database: SQLiteDatabase) {
     val backupDir = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
         "BackupInventaTa"
     )
+    val downloadDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+
     val imageDir = File(backupDir, "InventoryApp")
     if (!imageDir.exists()) imageDir.mkdirs()
 
@@ -133,7 +138,13 @@ fun exportData(context: Context, database: SQLiteDatabase) {
         val jsonFile = File(backupDir, "data.json")
         jsonFile.writeText(jsonData)
 
-        Toast.makeText(context, "Export berhasil ke ${jsonFile.absolutePath}", Toast.LENGTH_LONG).show()
+        val zipFile = File(downloadDir, "BackupInventaTa.zip")
+        ZipUtils.zipFolder(backupDir, zipFile)
+
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Export selesai", Toast.LENGTH_SHORT).show() // ✅ aman
+        }
+        backupDir.deleteRecursively()
 
     } catch (e: Exception) {
         Toast.makeText(context, "Export gagal: ${e.message}", Toast.LENGTH_LONG).show()
