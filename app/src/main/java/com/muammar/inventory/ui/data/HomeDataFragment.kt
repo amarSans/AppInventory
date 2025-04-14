@@ -31,46 +31,29 @@ class HomeDataFragment : Fragment() {
         val btnCekKode = view.findViewById<Button>(R.id.btn_kode)
 
         btnCekKode.setOnClickListener {
-            var kodeBarang = edtKode.text.toString().trim()
-            
-
-            if (kodeBarang.isEmpty()) {
-                generateKodeBarang { kodeUnik ->
-                    kodeBarang = kodeUnik
-                    cekDanPindahFragment(kodeBarang)
-                }
-            } else {
-                cekDanPindahFragment(kodeBarang)
-            }
+            val kodeBarang = edtKode.text.toString().trim()
+            prosesKodeBarang(kodeBarang)
         }
-
         return view
     }
-
-
-    private fun generateKodeBarang(callback: (String) -> Unit) {
-        val kode = "SND" + (1000..9999).random()
-
-        dataViewModel.cekBarangExist(kode)
-        dataViewModel.barangExist.observeOnce(viewLifecycleOwner) { hasilPencarian ->
-
-            if (hasilPencarian) {
-                generateKodeBarang(callback)
-            } else {
-                callback(kode)
-            }
+    private fun prosesKodeBarang(kodeInput: String) {
+        if (kodeInput.isEmpty()) {
+            val kodeUnik = "SND" + (1000..9999).random()
+            // Langsung arahkan ke tambah barang tanpa cek ulang
+            cekDanPindahFragment(kodeUnik)
+        } else {
+            // Cek apakah barang sudah ada
+            cekDanPindahFragment(kodeInput)
         }
     }
 
-
     private fun cekDanPindahFragment(kodeBarang: String) {
-        dataViewModel.cekBarangExist(kodeBarang)
-        dataViewModel.barangExist.observeOnce(viewLifecycleOwner) { hasilPencarian ->
-            dataViewModel.barangExist.removeObservers(viewLifecycleOwner)
+        dataViewModel.cekBarangExist(kodeBarang){ hasilPencarian ->
             if (hasilPencarian) {
                 pindahKeFragment(TambahStokFragment.newInstance(kodeBarang))
             } else {
                 pindahKeFragment(TambahBarangFragment.newInstance(kodeBarang))
+
             }
         }
     }
@@ -83,14 +66,7 @@ class HomeDataFragment : Fragment() {
             .addToBackStack(null)
             .commit()
     }
-    fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
-        observe(lifecycleOwner, object : Observer<T> {
-            override fun onChanged(value: T) {
-                removeObserver(this)
-                observer.onChanged(value)
-            }
-        })
-    }
+
 
 
 }

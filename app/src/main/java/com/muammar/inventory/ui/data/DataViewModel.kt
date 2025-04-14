@@ -64,10 +64,12 @@ class DataViewModel (application: Application, private val dbHelper: BrgDatabase
         _currentStok.value = stok
         _currentBarangIn.value = barangIn
     }
-    fun cekBarangExist(kodeBarang: String) {
+    fun cekBarangExist(kodeBarang: String,  callback: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             val exists = dbHelper.isBarangExist(kodeBarang)
-            _barangExist.postValue(exists)
+            withContext(Dispatchers.Main) {
+                callback(exists)
+            }
         }
     }
     fun updatestok(update: StokUpdate){
