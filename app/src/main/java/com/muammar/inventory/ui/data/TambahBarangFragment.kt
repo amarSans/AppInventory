@@ -7,7 +7,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -41,6 +43,8 @@ import com.muammar.inventory.utils.HargaUtils
 import com.muammar.inventory.utils.PerformClickUtils
 import com.muammar.inventory.utils.reduceFileImage
 import com.muammar.inventory.utils.uriToFile
+import java.io.File
+import java.io.FileOutputStream
 
 private const val ARG_KODE_BARANG = "kodeBarang"
 
@@ -239,7 +243,7 @@ class TambahBarangFragment : Fragment() {
         Toast.makeText(requireContext(), "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         requireActivity().finish()
     }
-    private fun saveImageToStorage(imageUri: Uri): Uri? {
+    /*private fun saveImageToStorage(imageUri: Uri): Uri? {
         val bitmap = BitmapFactory.decodeStream(requireContext().contentResolver.openInputStream(imageUri))
         val fileName = "IMG_${System.currentTimeMillis()}.jpg"
 
@@ -258,7 +262,60 @@ class TambahBarangFragment : Fragment() {
         }
 
         return null
+    }*/
+    private fun saveImageToStorage(imageUri: Uri): Uri? {
+        val bitmap = BitmapFactory.decodeStream(requireContext().contentResolver.openInputStream(imageUri))
+        val fileName = "IMG_${System.currentTimeMillis()}.jpg"
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+            val contentValues = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
+            }
+
+            val uri = requireContext().contentResolver.insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                contentValues
+            )
+
+            uri?.let {
+                requireContext().contentResolver.openOutputStream(it)?.use { outputStream ->
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+                }
+            }
+
+            uri
+        } else {
+
+            val imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() + "/InventoryApp"
+            val file = File(imagesDir)
+            if (!file.exists()) file.mkdirs()
+
+            val imageFile = File(file, fileName)
+            try {
+                val outputStream = FileOutputStream(imageFile)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+                outputStream.flush()
+                outputStream.close()
+
+
+                MediaScannerConnection.scanFile(
+                    requireContext(),
+                    arrayOf(imageFile.absolutePath),
+                    arrayOf("image/jpeg"),
+                    null
+                )
+
+                Uri.fromFile(imageFile)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
     }
+
     private fun setupUI() {
         binding.editTextKodeBarang.setText(kodeBarang)
         binding.buttonAddStok.setOnClickListener { tambahStok() }

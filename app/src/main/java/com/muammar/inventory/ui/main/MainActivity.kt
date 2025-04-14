@@ -58,8 +58,6 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.loadSetting()
 
-
-
         mainViewModel.settingData.observe(this) { setting ->
             if (setting != null) {
                 AlarmScheduler.scheduleNotification(this)
