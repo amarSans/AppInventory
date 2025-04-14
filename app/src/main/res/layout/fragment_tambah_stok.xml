@@ -42,7 +42,7 @@
             app:layout_constraintEnd_toEndOf="@id/tvkodebarang"
             app:layout_constraintStart_toStartOf="@id/tvkodebarang"
             app:layout_constraintTop_toBottomOf="@id/img_tambahstok" />
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextHargaBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_harga_barang"
@@ -151,7 +151,7 @@
             app:layout_constraintEnd_toEndOf="@id/tvukuranwarna"
             app:layout_constraintStart_toEndOf="@id/iconClose"
             app:layout_constraintTop_toTopOf="@id/iconClose" />
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edit_text_ukuranwarna"
             style="@style/CustomEditTextStyle"
             android:hint="input ukuran warna"
@@ -180,7 +180,7 @@
             app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarna"
             app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarna" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edt_nama_tokoEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_nama_toko"

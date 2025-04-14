@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.tugasmobile.inventory.ui.main.home.HomeFragment"
+        android:name="com.muammar.inventory.ui.main.home.HomeFragment"
         android:label="Home" >
         <action
             android:id="@+id/action_homeFragment_to_addFragment"
@@ -24,21 +24,21 @@
 
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.tugasmobile.inventory.ui.main.barang.BarangMasuk"
+        android:name="com.muammar.inventory.ui.main.barang.BarangMasuk"
         android:label="Tambah Barang" />
 
     <fragment
         android:id="@+id/barangKeluarFragment"
-        android:name="com.tugasmobile.inventory.ui.main.barang.BarangKeluar"
+        android:name="com.muammar.inventory.ui.main.barang.BarangKeluar"
         android:label="Barang Keluar" />
 
     <fragment
         android:id="@+id/riwayatFragment"
-        android:name="com.tugasmobile.inventory.ui.main.history.HistoryBarang"
+        android:name="com.muammar.inventory.ui.main.history.HistoryBarang"
         android:label="Riwayat" />
 
     <fragment
         android:id="@+id/daftarBarangFragment"
-        android:name="com.tugasmobile.inventory.ui.main.barang.DaftarBarang"
+        android:name="com.muammar.inventory.ui.main.barang.DaftarBarang"
         android:label="Daftar Barang" />
 </navigation>

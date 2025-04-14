@@ -31,7 +31,7 @@
             app:layout_constraintStart_toStartOf="@id/imgViewBack"
             app:layout_constraintTop_toBottomOf="@+id/imgViewBack" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextKodeBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_kode_barang"
@@ -51,7 +51,7 @@
             app:layout_constraintStart_toStartOf="@id/imgViewBack"
             app:layout_constraintTop_toBottomOf="@id/editTextKodeBarangEdit" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextNamaBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_merek_barang"
@@ -70,7 +70,7 @@
             app:layout_constraintStart_toStartOf="@id/editTextKodeBarangEdit"
             app:layout_constraintTop_toBottomOf="@id/editTextNamaBarangEdit" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextHargaBarangEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_harga_barang"
@@ -225,7 +225,7 @@
             app:layout_constraintStart_toEndOf="@id/iconCloseEdit"
             app:layout_constraintTop_toTopOf="@id/iconCloseEdit" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edit_text_ukuranwarnaEdit"
             style="@style/CustomEditTextStyle"
             android:hint="masukkan ukuran warna"
@@ -253,7 +253,7 @@
             app:layout_constraintStart_toStartOf="@id/edit_text_ukuranwarnaEdit"
             app:layout_constraintTop_toBottomOf="@id/edit_text_ukuranwarnaEdit" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edit_karakterikstikedit"
             style="@style/CustomEditTextStyle"
             android:hint="masukkan_karakteristik"
@@ -281,7 +281,7 @@
             app:layout_constraintStart_toStartOf="@id/edit_karakterikstikedit"
             app:layout_constraintTop_toBottomOf="@id/edit_karakterikstikedit" />
 
-        <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edt_nama_tokoEdit"
             style="@style/CustomEditTextStyle"
             android:hint="@string/masukkan_nama_toko"

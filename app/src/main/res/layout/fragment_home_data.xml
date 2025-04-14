@@ -27,7 +27,7 @@
                 android:text="@string/masukkan_kode_barang"
                 />
 
-            <com.tugasmobile.inventory.ui.simpleItem.CustomEditText
+            <com.muammar.inventory.ui.simpleItem.CustomEditText
                 android:id="@+id/edt_kode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

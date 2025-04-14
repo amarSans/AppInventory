@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.tugasmobile.inventory"
+    namespace = "com.muammar.inventory"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.tugasmobile.inventory"
+        applicationId = "com.muammar.inventory"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -18,10 +18,10 @@ android {
     }
     packaging {
         resources {
-            excludes.add("META-INF/LICENSE.md") // Mengecualikan file LICENSE.md
-            excludes.add("META-INF/LICENSE-notice.md") // Jika ada file lain yang bermasalah
-            excludes.add("META-INF/NOTICE.md") // Mengecualikan file NOTICE.md
-            excludes.add("META-INF/DEPENDENCIES") // Mengecualikan file DEPENDENCIES jika diperlukan
+            excludes.add("META-INF/LICENSE.md")
+            excludes.add("META-INF/LICENSE-notice.md")
+            excludes.add("META-INF/NOTICE.md")
+            excludes.add("META-INF/DEPENDENCIES")
         }
     }
 
@@ -73,6 +73,7 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.core.animation)
+    implementation(libs.androidx.annotation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)

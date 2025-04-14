@@ -38,6 +38,7 @@ cameraLifecycle = "1.4.2"
 cameraCamera2 = "1.4.2"
 gson = "2.10.1"
 coreAnimation = "1.0.0"
+annotation = "1.6.0"
 
 
 
@@ -79,6 +80,7 @@ androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycl
 androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCamera2" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-core-animation = { group = "androidx.core", name = "core-animation", version.ref = "coreAnimation" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 
 
 [plugins]
