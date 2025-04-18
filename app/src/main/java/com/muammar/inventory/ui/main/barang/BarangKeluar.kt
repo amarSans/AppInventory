@@ -124,7 +124,7 @@ class BarangKeluar : Fragment() {
                 return@setOnItemClickListener
             }
             val selectedItem = barangKeluarViewModel.dataBarangAksesList.value?.find {
-                "${it.id} / ${it.namaBarang} " == selectedItemText
+                "${it.id} / ${it.namaBarang} / ${it.nama_toko}" == selectedItemText
             }
             selectedItem?.let {
                 barangKeluarViewModel.setCurrentBarang(it.id)

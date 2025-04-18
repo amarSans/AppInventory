@@ -6,7 +6,6 @@
     <string name="action_settings">Settings</string>
     <string name="menu_home">Home</string>
     <string name="menu_laporan">Laporan</string>
-    <!-- Strings used for fragments for navigation -->
 
     <string-array name="filterOption">
         <item>Terbaru</item>
