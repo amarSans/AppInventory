@@ -59,11 +59,16 @@ class DaftarBarang : Fragment() {
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { allData ->
 
             val filteredData = if (!query.isNullOrEmpty()) {
+                val keywords = query!!.trim().split("\\s+".toRegex())
+                println("Query diterima: $query")
+                println("Keywords dipisah: $keywords")
                 allData.filter { barang ->
-                    barang.id.contains(query!!, ignoreCase = true) ||
-                            barang.karakteristik.contains(query!!, ignoreCase = true) ||
-                            barang.nama_toko.contains(query!!, ignoreCase = true)
-                }
+                    keywords.all{keywords->
+                    barang.id.contains(keywords, ignoreCase = true) ||
+                            barang.namaBarang.contains(keywords, ignoreCase = true)||
+                            barang.karakteristik.contains(keywords, ignoreCase = true) ||
+                            barang.nama_toko.contains(keywords, ignoreCase = true)
+                }}
             } else {
                 allData
             }
