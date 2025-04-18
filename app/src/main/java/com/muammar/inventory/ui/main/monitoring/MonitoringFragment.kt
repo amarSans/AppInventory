@@ -2,12 +2,17 @@ package com.muammar.inventory.ui.main.monitoring
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.muammar.inventory.R
 import com.muammar.inventory.databinding.FragmentMonitoringBinding
@@ -33,6 +38,24 @@ class MonitoringFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = AdapterMonitoring (requireContext(), emptyList())
+        requireActivity().addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
+                menuInflater.inflate(R.menu.menu_main,menu)
+                menu.findItem(R.id.action_filter)?.isVisible=false
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_settings -> {
+
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+        },viewLifecycleOwner, Lifecycle.State.RESUMED)
         binding.rvMonitoring.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMonitoring.adapter = adapter
         filterOptions = resources.getStringArray(R.array.filterOption)
@@ -42,6 +65,7 @@ class MonitoringFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 monitoringViewModel.setFilter(filterOptions[position])
             }
+
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
