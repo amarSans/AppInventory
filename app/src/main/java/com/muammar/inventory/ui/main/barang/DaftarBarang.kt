@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -55,22 +56,39 @@ class DaftarBarang : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val toolbar: Toolbar = requireActivity().findViewById(R.id.toolbar)
 
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { allData ->
 
-            val filteredData = if (!query.isNullOrEmpty()) {
+            var filteredData = allData
+
+            if (!query.isNullOrEmpty()) {
                 val keywords = query!!.trim().split("\\s+".toRegex())
-                println("Query diterima: $query")
-                println("Keywords dipisah: $keywords")
-                allData.filter { barang ->
-                    keywords.all{keywords->
-                    barang.id.contains(keywords, ignoreCase = true) ||
-                            barang.namaBarang.contains(keywords, ignoreCase = true)||
-                            barang.karakteristik.contains(keywords, ignoreCase = true) ||
-                            barang.nama_toko.contains(keywords, ignoreCase = true)
-                }}
-            } else {
+
+                filteredData = filteredData.filter { barang ->
+                    keywords.all { keyword ->
+                        barang.id.contains(keyword, ignoreCase = true) ||
+                                barang.namaBarang.contains(keyword, ignoreCase = true) ||
+                                barang.karakteristik.contains(keyword, ignoreCase = true) ||
+                                barang.nama_toko.contains(keyword, ignoreCase = true)
+                    }
+                }
+            }
+
+            if (!filterStock.isNullOrEmpty()) {
+                filteredData = filteredData.filter { it.stok <= 2 }
+            }else{
                 allData
+            }
+
+            if (!query.isNullOrEmpty()) {
+                toolbar.title = "Hasil Pencarian"
+                toolbar.subtitle = query
+
+            } else if (filterStock != null) {
+                toolbar.title = "Stok Rendah"
+            } else {
+                toolbar.title = "Daftar Barang"
             }
 
             if (filteredData.isEmpty()) {
