@@ -55,7 +55,9 @@ class AdapterMonitoring(
             tvStok.text = "Stok: ${item.stok}"
 
             val days = item.lastUpdate?.let { DateUtils.getDaysSince(it) }
-            val lastUpdateText = if (days != null && days >= 0) {
+            val lastUpdateText = if (days != null && days == 0) {
+                "Terbaru hari ini"
+            }else if(days!! >0){
                 "Terakhir diperbarui $days hari yang lalu"
             } else {
                 "Tanggal tidak valid"

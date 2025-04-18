@@ -70,7 +70,7 @@ class MonitoringFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         monitoringViewModel.filteredList.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list)
+            adapter.submitList(list.reversed())
             binding.tvKosong.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
 
