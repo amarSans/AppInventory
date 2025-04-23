@@ -183,7 +183,6 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
     }
 
-
     fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn) {
         val db = this.writableDatabase
         db.beginTransaction()
@@ -513,8 +512,6 @@ class BrgDatabaseHelper(context: Context) :
         return exists
     }
 
-
-
     fun deleteBarang(id: String): Int {
         val db = this.writableDatabase
 
@@ -703,7 +700,6 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
         return listBarang
     }
-
 
     fun insertHistory(item: History) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -908,6 +904,7 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
         return historyList
     }
+
     fun ambilSemuaUriDariDatabase(): List<String> {
         val uriList = mutableListOf<String>()
         val db = this.readableDatabase

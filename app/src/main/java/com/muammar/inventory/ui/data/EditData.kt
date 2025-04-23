@@ -384,18 +384,7 @@ class EditData : AppCompatActivity() {
         finish()
     }
 
-    private fun deleteImage(context: Context, imageUri: Uri) {
-        try {
-            val rowsDeleted = context.contentResolver.delete(imageUri, null, null)
-            if (rowsDeleted > 0) {
-                Log.d("EditActivity", "Gambar berhasil dihapus: $imageUri")
-            } else {
-                Log.w("EditActivity", "Gagal menghapus gambar atau gambar tidak ditemukan: $imageUri")
-            }
-        } catch (e: Exception) {
-            Log.e("EditActivity", "Error saat menghapus gambar: ${e.message}", e)
-        }
-    }
+
     private fun updateKarakteristikText() {
         val karakteristik = selectedItems.joinToString(", ")
         Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik")

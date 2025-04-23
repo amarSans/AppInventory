@@ -23,7 +23,6 @@ class HistoryViewModel(application: Application, private val dbHelper: BrgDataba
 
                 val history = dbHelper.getAllHistoryItems()
 
-
                 withContext(Dispatchers.Main) {
                     _historyData.value = history
                 }

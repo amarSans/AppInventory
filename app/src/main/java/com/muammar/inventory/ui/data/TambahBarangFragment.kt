@@ -243,26 +243,7 @@ class TambahBarangFragment : Fragment() {
         Toast.makeText(requireContext(), "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         requireActivity().finish()
     }
-    /*private fun saveImageToStorage(imageUri: Uri): Uri? {
-        val bitmap = BitmapFactory.decodeStream(requireContext().contentResolver.openInputStream(imageUri))
-        val fileName = "IMG_${System.currentTimeMillis()}.jpg"
 
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/InventoryApp")
-        }
-
-        val savedUri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-        savedUri?.let { uri ->
-            requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
-            }
-            return uri
-        }
-
-        return null
-    }*/
     private fun saveImageToStorage(imageUri: Uri): Uri? {
         val bitmap = BitmapFactory.decodeStream(requireContext().contentResolver.openInputStream(imageUri))
         val fileName = "IMG_${System.currentTimeMillis()}.jpg"
