@@ -46,7 +46,7 @@
             android:name=".ui.setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.data.EditFragment"
+            android:name=".ui.data.EditData"
             android:exported="false"
             android:theme="@style/Theme.Inventory.NoActionBar" />
 

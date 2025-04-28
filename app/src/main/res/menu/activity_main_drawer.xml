@@ -40,7 +40,7 @@
         </item>
         <item
             android:id="@+id/labels_setting"
-            android:title="setting">
+            android:title="Setting">
             <menu>
                 <group android:checkableBehavior="single">
                     <item

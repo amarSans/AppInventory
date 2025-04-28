@@ -20,6 +20,7 @@
         android:text="tambahkan barang"
         android:padding="10dp"
         android:layout_margin="10dp"
+        android:elevation="6dp"
         android:gravity="center"
         />
     <androidx.recyclerview.widget.RecyclerView
