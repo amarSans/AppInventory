@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.BarangOut
 import com.muammar.inventory.data.DataBarangAkses
 import com.muammar.inventory.data.DataSearch
@@ -33,8 +33,8 @@ class BarangViewModel(application: Application, private val dbHelper: BrgDatabas
     private val _currentStok = MutableLiveData<Stok?>()
     val currentStok: LiveData<Stok?> = _currentStok
 
-    private val _currentBarangIn = MutableLiveData<BarangIn?>()
-    val currentBarangIn: LiveData<BarangIn?> = _currentBarangIn
+    private val _currentBarangMasukItem = MutableLiveData<BarangMasukItem?>()
+    val currentBarangMasukItem: LiveData<BarangMasukItem?> = _currentBarangMasukItem
 
     init {
         loadBarang()
@@ -71,7 +71,7 @@ class BarangViewModel(application: Application, private val dbHelper: BrgDatabas
         val (barang, stok, barangIn) = dbHelper.getBarangById(id)
         _currentBarang.value = barang
         _currentStok.value = stok
-        _currentBarangIn.value = barangIn
+        _currentBarangMasukItem.value = barangIn
     }
     fun insertBarangKeluar(barangOut: BarangOut) {
         viewModelScope.launch(Dispatchers.IO) {

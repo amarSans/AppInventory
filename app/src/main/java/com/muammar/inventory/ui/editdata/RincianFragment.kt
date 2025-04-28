@@ -60,8 +60,8 @@ class RincianFragment : Fragment() {
         rincianViewModel.setCurrentBarang(BarangId)
         rincianViewModel.currentBarang.observe(viewLifecycleOwner){ barang->
             barang?.let{
-                binding.tvNamaBarang.text = it.merek_barang
-                binding.tvKodeBarang.text = it.id_barang
+                binding.tvNamaBarang.text = it.merekBarang
+                binding.tvKodeBarang.text = it.idBarang
                 tampilkanKarakteristik(it.karakteristik)
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
@@ -89,11 +89,11 @@ class RincianFragment : Fragment() {
                 }
             }
         }
-        rincianViewModel.currentBarangIn.observe(viewLifecycleOwner){barangIn->
+        rincianViewModel.currentBarangMasukItem.observe(viewLifecycleOwner){ barangIn->
             barangIn?.let{
-                val formattedHarga = HargaUtils.formatHarga(it.Harga_Modal)
+                val formattedHarga = HargaUtils.formatHarga(it.hargaModal)
                 binding.tvHarga.text = "Rp. $formattedHarga"
-                binding.tvNamaToko.text = it.Nama_Toko
+                binding.tvNamaToko.text = it.namaToko
             }
         }
         return binding.root

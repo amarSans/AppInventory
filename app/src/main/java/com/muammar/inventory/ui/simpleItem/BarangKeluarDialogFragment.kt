@@ -66,8 +66,8 @@ class BarangKeluarDialogFragment : DialogFragment() {
         BarangKeluarViewModel.setCurrentBarang(kodeBarang)
         BarangKeluarViewModel.currentBarang.observe(viewLifecycleOwner) { barang ->
             barang?.let {
-                val kodeBarangid = it.id_barang
-                val namaBarang = it.merek_barang
+                val kodeBarangid = it.idBarang
+                val namaBarang = it.merekBarang
                 val image=it.gambar
 
 
@@ -82,9 +82,9 @@ class BarangKeluarDialogFragment : DialogFragment() {
 
             }
         }
-        BarangKeluarViewModel.currentBarangIn.observe(viewLifecycleOwner) { barang ->
+        BarangKeluarViewModel.currentBarangMasukItem.observe(viewLifecycleOwner) { barang ->
             barang?.let {
-                val hargaBarang = it.Harga_Modal
+                val hargaBarang = it.hargaModal
                 val hargaBarangFormatted = HargaUtils.formatHarga(hargaBarang)
                 binding.ppHargaBarang.text = "Harga: Rp. $hargaBarangFormatted"
 

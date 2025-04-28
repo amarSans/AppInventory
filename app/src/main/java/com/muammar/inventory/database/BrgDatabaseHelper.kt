@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import android.util.Log
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.BarangMonitor
 import com.muammar.inventory.data.BarangOut
 import com.muammar.inventory.data.DataBarangAkses
@@ -183,13 +183,13 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
     }
 
-    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn) {
+    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangMasukItem: BarangMasukItem) {
         val db = this.writableDatabase
         db.beginTransaction()
         return try {
             val valuesBarang = ContentValues().apply {
-                put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_MEREK_BARANG, barang.merek_barang)
+                put(COLUMN_KODE_BARANG, barang.idBarang)
+                put(COLUMN_MEREK_BARANG, barang.merekBarang)
                 put(COLUMN_KARAKTERISTIK, barang.karakteristik)
                 put(COLUMN_GAMBAR, barang.gambar)
             }
@@ -197,7 +197,7 @@ class BrgDatabaseHelper(context: Context) :
             if (barangId == -1L) throw Exception("terjadi kegagalan")
 
             val valuesStok = ContentValues().apply {
-                put(COLUMN_KODE_BARANG, barang.id_barang)
+                put(COLUMN_KODE_BARANG, barang.idBarang)
                 put(COLUMN_UKURAN_WARNA, stok.ukuranwarna)
                 put(COLUMN_STOK, stok.stokBarang)
             }
@@ -205,17 +205,17 @@ class BrgDatabaseHelper(context: Context) :
             if (stokId == -1L) throw Exception("Gagal menyimpan stok")
 
             val valuesBarangMasuk = ContentValues().apply {
-                put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_TANGGAL_MASUK, barangIn.Tgl_Masuk)
-                put(COLUMN_HARGA_JUAL, barangIn.Harga_Modal)
-                put(COLUMN_NAMA_TOKO, barangIn.Nama_Toko)
+                put(COLUMN_KODE_BARANG, barang.idBarang)
+                put(COLUMN_TANGGAL_MASUK, barangMasukItem.tglMasuk)
+                put(COLUMN_HARGA_JUAL, barangMasukItem.hargaModal)
+                put(COLUMN_NAMA_TOKO, barangMasukItem.namaToko)
             }
             val barangMasukId = db.insert(TABLE_BARANG_MASUK, null, valuesBarangMasuk)
             if (barangMasukId == -1L) throw Exception("Gagal menyimpan barang masuk")
             val updateLastUpdate =ContentValues().apply {
-                put(COLUMN_LAST_UPDATE,barangIn.Tgl_Masuk)
+                put(COLUMN_LAST_UPDATE,barangMasukItem.tglMasuk)
             }
-            db.update(TABLE_BARANG, updateLastUpdate, "$COLUMN_KODE_BARANG = ?", arrayOf(barang.id_barang))
+            db.update(TABLE_BARANG, updateLastUpdate, "$COLUMN_KODE_BARANG = ?", arrayOf(barang.idBarang))
 
             db.setTransactionSuccessful()
         } catch (e: Exception) {
@@ -520,14 +520,14 @@ class BrgDatabaseHelper(context: Context) :
         return result
     }
 
-    fun updateBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn): Boolean {
+    fun updateBarang(barang: ItemBarang, stok: Stok, barangMasukItem: BarangMasukItem): Boolean {
         val db = this.writableDatabase
         db.beginTransaction()
         try {
 
             val valuesBarang = ContentValues().apply {
-                put(COLUMN_KODE_BARANG, barang.id_barang)
-                put(COLUMN_MEREK_BARANG, barang.merek_barang)
+                put(COLUMN_KODE_BARANG, barang.idBarang)
+                put(COLUMN_MEREK_BARANG, barang.merekBarang)
                 put(COLUMN_KARAKTERISTIK, barang.karakteristik)
                 put(COLUMN_GAMBAR, barang.gambar)
             }
@@ -535,7 +535,7 @@ class BrgDatabaseHelper(context: Context) :
                 TABLE_BARANG,
                 valuesBarang,
                 "$COLUMN_KODE_BARANG = ?",
-                arrayOf(barang.id_barang)
+                arrayOf(barang.idBarang)
             )
 
             val valuesStok = ContentValues().apply {
@@ -546,18 +546,18 @@ class BrgDatabaseHelper(context: Context) :
                 TABLE_STOK,
                 valuesStok,
                 "$COLUMN_KODE_BARANG = ?",
-                arrayOf(stok.id_barang)
+                arrayOf(stok.idBarangStok)
             )
             val valuesBarangMasuk = ContentValues().apply {
-                put(COLUMN_HARGA_JUAL, barangIn.Harga_Modal)
-                put(COLUMN_TANGGAL_MASUK, barangIn.Tgl_Masuk)
-                put(COLUMN_NAMA_TOKO, barangIn.Nama_Toko)
+                put(COLUMN_HARGA_JUAL, barangMasukItem.hargaModal)
+                put(COLUMN_TANGGAL_MASUK, barangMasukItem.tglMasuk)
+                put(COLUMN_NAMA_TOKO, barangMasukItem.namaToko)
             }
             val resultBarangMasuk = db.update(
                 TABLE_BARANG_MASUK,
                 valuesBarangMasuk,
                 "$COLUMN_KODE_BARANG = ?",
-                arrayOf(barangIn.id_barang)
+                arrayOf(barangMasukItem.idBarangMasuk)
             )
 
             if (resultBarang > 0 && resultStok > 0 && resultBarangMasuk > 0) {
@@ -573,7 +573,7 @@ class BrgDatabaseHelper(context: Context) :
         }
     }
 
-    fun getBarangById(id: String): Triple<ItemBarang?, Stok?, BarangIn?> {
+    fun getBarangById(id: String): Triple<ItemBarang?, Stok?, BarangMasukItem?> {
         val db = this.readableDatabase
         val query = """
             SELECT b.$COLUMN_KODE_BARANG, b.$COLUMN_MEREK_BARANG,b.$COLUMN_KARAKTERISTIK,
@@ -586,7 +586,7 @@ class BrgDatabaseHelper(context: Context) :
         """.trimIndent()
         var itemBarang: ItemBarang? = null
         var stok: Stok? = null
-        var barangIn: BarangIn? = null
+        var barangMasukItem: BarangMasukItem? = null
         val cursor: Cursor? = db.rawQuery(query, arrayOf(id))
 
 
@@ -611,10 +611,10 @@ class BrgDatabaseHelper(context: Context) :
 
                 itemBarang = ItemBarang(idBarang, namaBarang, karakteristik, gambarUri.toString(),lastupdate)
                 stok = Stok(idStok, idBarang,ukuranwarna, stokJumlah )
-                barangIn = BarangIn(idMasuk, idBarang, tanggalMasuk, hargaJual, namaToko)
+                barangMasukItem = BarangMasukItem(idMasuk, idBarang, tanggalMasuk, hargaJual, namaToko)
             }
         }
-        return Triple(itemBarang, stok, barangIn)
+        return Triple(itemBarang, stok, barangMasukItem)
     }
 
     fun saveSetting(setting: SettingData) {

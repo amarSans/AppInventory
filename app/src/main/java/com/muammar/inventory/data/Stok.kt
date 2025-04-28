@@ -2,7 +2,7 @@ package com.muammar.inventory.data
 
 data class Stok(
     val idStok: Long,
-    val id_barang:String,
+    val idBarangStok:String,
     var ukuranwarna: String,
     val stokBarang: Int
 )

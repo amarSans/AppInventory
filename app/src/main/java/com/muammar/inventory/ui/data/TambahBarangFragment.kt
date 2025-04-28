@@ -28,7 +28,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.muammar.inventory.R
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.History
 import com.muammar.inventory.data.ItemBarang
 import com.muammar.inventory.data.Stok
@@ -211,24 +211,24 @@ class TambahBarangFragment : Fragment() {
         val namaToko = if (namaTokoPreview.isEmpty()) "belum ada" else namaTokoPreview
 
         val itemBarang= ItemBarang(
-            id_barang = kodeProduk,
-            merek_barang = merekProduk,
+            idBarang = kodeProduk,
+            merekBarang = merekProduk,
             karakteristik = karakteristik,
             gambar = gambarUri.toString(),
             lastUpdate = DateUtils.getCurrentDate()
         )
         val stok= Stok(
             idStok = 0,
-            id_barang = kodeProduk,
+            idBarangStok = kodeProduk,
             stokBarang = stokBarang,
             ukuranwarna = ukuranWarna,
         )
-        val barangIn = BarangIn(
+        val barangMasukItem = BarangMasukItem(
             IdBrgMasuk = 0,
-            id_barang = kodeProduk,
-            Tgl_Masuk = DateUtils.getCurrentDate(),
-            Harga_Modal = hargaProduk,
-            Nama_Toko =namaToko
+            idBarangMasuk = kodeProduk,
+            tglMasuk = DateUtils.getCurrentDate(),
+            hargaModal = hargaProduk,
+            namaToko =namaToko
         )
 
         val history= History(
@@ -239,7 +239,7 @@ class TambahBarangFragment : Fragment() {
             jenisData = "barangmasuk"
         )
         NewItemViewModel.insertHistory(history)
-        NewItemViewModel.insertInputBarang(itemBarang,stok,barangIn)
+        NewItemViewModel.insertInputBarang(itemBarang,stok,barangMasukItem)
         Toast.makeText(requireContext(), "Data berhasil ditambahkan", Toast.LENGTH_SHORT).show()
         requireActivity().finish()
     }

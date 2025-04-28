@@ -6,7 +6,7 @@ import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
 import com.google.gson.Gson
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.BarangOut
 import com.muammar.inventory.data.History
 import com.muammar.inventory.data.ItemBarang
@@ -57,8 +57,8 @@ suspend fun exportData(context: Context, database: SQLiteDatabase) {
 
             itemList.add(
                 ItemBarang(
-                    id_barang = cursorBarang.getString(0),
-                    merek_barang = cursorBarang.getString(1),
+                    idBarang = cursorBarang.getString(0),
+                    merekBarang = cursorBarang.getString(1),
                     karakteristik = cursorBarang.getString(2),
                     gambar = newImagePath,
                     lastUpdate = cursorBarang.getString(4)
@@ -75,7 +75,7 @@ suspend fun exportData(context: Context, database: SQLiteDatabase) {
             stokList.add(
                 Stok(
                     idStok = cursorStok.getLong(0),
-                    id_barang = cursorStok.getString(1),
+                    idBarangStok = cursorStok.getString(1),
                     ukuranwarna = cursorStok.getString(2),
                     stokBarang = cursorStok.getInt(3)
                 )
@@ -84,16 +84,16 @@ suspend fun exportData(context: Context, database: SQLiteDatabase) {
         cursorStok.close()
         allData["stok"] = stokList
 
-        val masukList = mutableListOf<BarangIn>()
+        val masukList = mutableListOf<BarangMasukItem>()
         val cursorMasuk = database.rawQuery("SELECT * FROM $TABLE_BARANG_MASUK", null)
         while (cursorMasuk.moveToNext()) {
             masukList.add(
-                BarangIn(
+                BarangMasukItem(
                     IdBrgMasuk = cursorMasuk.getLong(0),
-                    id_barang = cursorMasuk.getString(1),
-                    Tgl_Masuk = cursorMasuk.getString(2),
-                    Harga_Modal = cursorMasuk.getInt(3),
-                    Nama_Toko = cursorMasuk.getString(4) ?: ""
+                    idBarangMasuk = cursorMasuk.getString(1),
+                    tglMasuk = cursorMasuk.getString(2),
+                    hargaModal = cursorMasuk.getInt(3),
+                    namaToko = cursorMasuk.getString(4) ?: ""
                 )
             )
         }

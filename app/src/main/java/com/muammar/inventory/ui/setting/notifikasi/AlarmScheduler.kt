@@ -43,14 +43,17 @@ object AlarmScheduler {
                 return
             }
 
+
             if (isWithinSchedule(hariIniIndex, hariMulaiIndex, hariBerakhirIndex)) {
                 val waktuMillis = getNextNotificationTime(jadwal.notifTime)
-                setAlarm(context, waktuMillis)
+
                 if (!isNotificationShownToday(context)) {
+
                     setAlarm(context, waktuMillis)
                 }
             } else {
                 cancelNotification(context)
+                resetDismissedNotificationStatus(context)
             }
 
 
@@ -61,6 +64,7 @@ object AlarmScheduler {
         val editor = prefs.edit()
         editor.remove("dismissed_notification_time")
         editor.apply()
+        Log.d(TAG, "Status dismissed notifikasi direset")
     }
 
     private fun isNotificationShownToday(context: Context): Boolean {
@@ -72,7 +76,6 @@ object AlarmScheduler {
 
         calendar.timeInMillis = lastNotificationTime
         val lastNotificationDay = calendar.get(Calendar.DAY_OF_YEAR)
-
         return today == lastNotificationDay
     }
 
@@ -85,6 +88,10 @@ object AlarmScheduler {
 
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, waktuMillis, pendingIntent)
         Log.d(TAG, "Alarm telah disetel untuk: ${formatMillisToTime(waktuMillis)}")
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putLong(KEY_LAST_NOTIFICATION_TIME, System.currentTimeMillis())
+        editor.apply()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (!alarmManager.canScheduleExactAlarms()) {
@@ -157,4 +164,6 @@ object AlarmScheduler {
         val sdf = SimpleDateFormat("EEEE, HH:mm:ss", Locale.getDefault())
         return sdf.format(millis)
     }
+
+
 }

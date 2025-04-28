@@ -102,7 +102,7 @@ class DetailBarang : AppCompatActivity() {
             val history = History(
                 id = 0,
                 waktu = DateUtils.getCurrentDate(),
-                kodeBarang = itemBarang.id_barang,
+                kodeBarang = itemBarang.idBarang,
                 stok = stok?.stokBarang.toString() ?: "0",
                 jenisData = "barangdihapus"
             )

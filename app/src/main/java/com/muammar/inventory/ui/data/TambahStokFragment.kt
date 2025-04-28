@@ -196,7 +196,7 @@ class TambahStokFragment : Fragment() {
         NewStokViewModel.currentBarang.observe(viewLifecycleOwner) { barang ->
             Log.d("TambahStokFragment", "Data Barang: $barang")
             barang?.let {
-                binding.tvkodebarang.setText(it.id_barang)
+                binding.tvkodebarang.setText(it.idBarang)
                 selectedImageUri = if (it.gambar.isNullOrEmpty()) null else Uri.parse(it.gambar)
                 binding.imgTambahstok.setImageURI(selectedImageUri)
             } ?: run {
@@ -224,11 +224,11 @@ class TambahStokFragment : Fragment() {
                     .show()
             }
         }
-        NewStokViewModel.currentBarangIn.observe(viewLifecycleOwner) { barangIn ->
+        NewStokViewModel.currentBarangMasukItem.observe(viewLifecycleOwner) { barangIn ->
             barangIn?.let {
-                it.Tgl_Masuk=DateUtils.getCurrentDate()
-                binding.editTextHargaBarangEdit.setText(HargaUtils.formatHarga(it.Harga_Modal))
-                binding.edtNamaTokoEdit.setText(it.Nama_Toko)
+                it.tglMasuk=DateUtils.getCurrentDate()
+                binding.editTextHargaBarangEdit.setText(HargaUtils.formatHarga(it.hargaModal))
+                binding.edtNamaTokoEdit.setText(it.namaToko)
             } ?: run {
                 Toast.makeText(
                     requireContext(),
@@ -264,7 +264,7 @@ class TambahStokFragment : Fragment() {
         }
 
         val updatedStok = StokUpdate(
-            kodeBarang = currentStok.id_barang,
+            kodeBarang = currentStok.idBarangStok,
             ukuranWarnaBaru = ukuranWarnaList.joinToString(","),
             hargaJualBaru = hargaBarang,
             tanggalMasukBaru = DateUtils.getCurrentDate(),
@@ -275,7 +275,7 @@ class TambahStokFragment : Fragment() {
         val history= History(
             id = 0,
             waktu = DateUtils.getCurrentDate(),
-            kodeBarang = currentStok.id_barang,
+            kodeBarang = currentStok.idBarangStok,
             stok = stokhistory.toString(),
             jenisData = "stokmasuk"
         )

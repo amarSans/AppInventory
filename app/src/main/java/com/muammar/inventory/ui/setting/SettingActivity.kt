@@ -11,12 +11,15 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.muammar.inventory.data.SettingData
@@ -44,7 +47,10 @@ class SettingActivity : AppCompatActivity() {
             }
         }
     private lateinit var pickZipFileLauncher: ActivityResultLauncher<Array<String>>
-
+    private lateinit var switchNotif: SwitchCompat
+    private lateinit var spinnerHariMulai: Spinner
+    private lateinit var spinnerHariAkhir: Spinner
+    private lateinit var txtJamDipilih: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +58,12 @@ class SettingActivity : AppCompatActivity() {
         setContentView(binding.root)
         AnimationHelper.animateItems(binding.linearLayoutSetting,this)
         val switchmode=binding.switchMode
-        val switchNotif = binding.switchNotif
-        val spinnerHariMulai = binding.spinnerHariMulai
-        val spinnerHariAkhir = binding.spinnerHariAkhir
         val btnPilihJam = binding.btnPilihJam
-        val txtJamDipilih = binding.txtJamDipilih
+         switchNotif = binding.switchNotif
+         spinnerHariMulai = binding.spinnerHariMulai
+         spinnerHariAkhir = binding.spinnerHariAkhir
+         txtJamDipilih = binding.txtJamDipilih
+
 
         binding.btnExport.setOnClickListener {
             binding.btnExport.isEnabled = false
@@ -163,23 +170,7 @@ class SettingActivity : AppCompatActivity() {
             timePickerDialog.show()
         }
         binding.imgViewBackSetting.setOnClickListener{
-            val isNotifEnabled = switchNotif.isChecked
-            val settingData=SettingData(
-                isNotifEnabled = isNotifEnabled,
-                notifTime = txtJamDipilih.text.toString().replace(" ", ""),
-                startDay = spinnerHariMulai.selectedItem.toString(),
-                endDay = spinnerHariAkhir.selectedItem.toString()
-            )
-            SettingViewModel.saveSetting(settingData)
-
-            Toast.makeText(this, "Pengaturan Disimpan", Toast.LENGTH_SHORT).show()
-            if (isNotifEnabled) {
-                AlarmScheduler.rescheduleNotification(this)
-            } else {
-                AlarmScheduler.cancelNotification(this)
-            }
-
-            finish()
+            saveSetting()
         }
         binding.btnSync.setOnClickListener {
             lifecycleScope.launch {
@@ -251,6 +242,28 @@ class SettingActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    private fun saveSetting() {
+        val isNotifEnabled = switchNotif.isChecked
+        val settingData = SettingData(
+            isNotifEnabled = isNotifEnabled,
+            notifTime = txtJamDipilih.text.toString().replace(" ", ""),
+            startDay = spinnerHariMulai.selectedItem.toString(),
+            endDay = spinnerHariAkhir.selectedItem.toString()
+        )
+        SettingViewModel.saveSetting(settingData)
+
+        Toast.makeText(this, "Pengaturan Disimpan", Toast.LENGTH_SHORT).show()
+        if (isNotifEnabled) {
+            AlarmScheduler.rescheduleNotification(this)
+        } else {
+            AlarmScheduler.cancelNotification(this)
+        }
+        finish()
+    }
+    override fun onBackPressed() {
+        saveSetting()
+        super.onBackPressed()
     }
 
 

@@ -11,7 +11,7 @@ import android.util.Log
 import android.widget.Toast
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.BarangOut
 import com.muammar.inventory.data.History
 import com.muammar.inventory.data.ItemBarang
@@ -88,8 +88,8 @@ fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
             val newImagePath = newUri.toString()
 
             val stmt = database.compileStatement("INSERT INTO $TABLE_BARANG VALUES (?, ?, ?, ?, ?)")
-            stmt.bindString(1, item.id_barang)
-            stmt.bindString(2, item.merek_barang)
+            stmt.bindString(1, item.idBarang)
+            stmt.bindString(2, item.merekBarang)
             stmt.bindString(3, item.karakteristik)
             stmt.bindString(4, newImagePath)
             stmt.bindString(5,item.lastUpdate)
@@ -105,23 +105,23 @@ fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
         for (stok in stokList) {
             val stmt = database.compileStatement("INSERT INTO $TABLE_STOK VALUES (?, ?, ?, ?)")
             stmt.bindLong(1, stok.idStok)
-            stmt.bindString(2, stok.id_barang)
+            stmt.bindString(2, stok.idBarangStok)
             stmt.bindString(3, stok.ukuranwarna)
             stmt.bindLong(4, stok.stokBarang.toLong())
             stmt.executeInsert()
         }
 
         val masukJson = gson.toJson(allData["barang_masuk"])
-        val masukListType = object : TypeToken<List<BarangIn>>() {}.type
-        val masukList: List<BarangIn> = gson.fromJson(masukJson, masukListType)
+        val masukListType = object : TypeToken<List<BarangMasukItem>>() {}.type
+        val masukList: List<BarangMasukItem> = gson.fromJson(masukJson, masukListType)
 
         for (brg in masukList) {
             val stmt = database.compileStatement("INSERT INTO $TABLE_BARANG_MASUK VALUES (?, ?, ?, ?, ?)")
             stmt.bindLong(1, brg.IdBrgMasuk)
-            stmt.bindString(2, brg.id_barang)
-            stmt.bindString(3, brg.Tgl_Masuk)
-            stmt.bindLong(4, brg.Harga_Modal.toLong())
-            stmt.bindString(5, brg.Nama_Toko)
+            stmt.bindString(2, brg.idBarangMasuk)
+            stmt.bindString(3, brg.tglMasuk)
+            stmt.bindLong(4, brg.hargaModal.toLong())
+            stmt.bindString(5, brg.namaToko)
             stmt.executeInsert()
         }
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.DataBarangAkses
 import com.muammar.inventory.data.History
 import com.muammar.inventory.data.ItemBarang
@@ -25,8 +25,8 @@ class DetailViewModel (application: Application, private val dbHelper: BrgDataba
     private val _currentStok = MutableLiveData<Stok?>()
     val currentStok: LiveData<Stok?> = _currentStok
 
-    private val _currentBarangIn = MutableLiveData<BarangIn?>()
-    val currentBarangIn: LiveData<BarangIn?> = _currentBarangIn
+    private val _currentBarangMasukItem = MutableLiveData<BarangMasukItem?>()
+    val currentBarangMasukItem: LiveData<BarangMasukItem?> = _currentBarangMasukItem
 
     private val _Data_barangMasukList= MutableLiveData<List<DataBarangAkses>>()
     val dataBarangAksesList: LiveData<List<DataBarangAkses>> = _Data_barangMasukList
@@ -57,7 +57,7 @@ class DetailViewModel (application: Application, private val dbHelper: BrgDataba
         val (barang, stok, barangIn) = dbHelper.getBarangById(id)
         _currentBarang.value = barang
         _currentStok.value = stok
-        _currentBarangIn.value = barangIn
+        _currentBarangMasukItem.value = barangIn
     }
 
     fun deleteBarang(id: String) {

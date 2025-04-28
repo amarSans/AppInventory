@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.muammar.inventory.data.BarangIn
+import com.muammar.inventory.data.BarangMasukItem
 import com.muammar.inventory.data.DataBarangAkses
 import com.muammar.inventory.data.History
 import com.muammar.inventory.data.ItemBarang
@@ -27,8 +27,8 @@ class DataViewModel (application: Application, private val dbHelper: BrgDatabase
     private val _currentStok = MutableLiveData<Stok?>()
     val currentStok: LiveData<Stok?> = _currentStok
 
-    private val _currentBarangIn = MutableLiveData<BarangIn?>()
-    val currentBarangIn: LiveData<BarangIn?> = _currentBarangIn
+    private val _currentBarangMasukItem = MutableLiveData<BarangMasukItem?>()
+    val currentBarangMasukItem: LiveData<BarangMasukItem?> = _currentBarangMasukItem
 
     private val _barangExist = MutableLiveData<Boolean>()
     val barangExist: LiveData<Boolean> get() = _barangExist
@@ -54,15 +54,15 @@ class DataViewModel (application: Application, private val dbHelper: BrgDatabase
             }
         }
     }
-    fun updateBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn){
-        dbHelper.updateBarang(barang,stok,barangIn)
+    fun updateBarang(barang: ItemBarang, stok: Stok, barangMasukItem: BarangMasukItem){
+        dbHelper.updateBarang(barang,stok,barangMasukItem)
         loadBarang()
     }
     fun setCurrentBarang(id: String) {
         val (barang, stok, barangIn) = dbHelper.getBarangById(id)
         _currentBarang.value = barang
         _currentStok.value = stok
-        _currentBarangIn.value = barangIn
+        _currentBarangMasukItem.value = barangIn
     }
     fun cekBarangExist(kodeBarang: String,  callback: (Boolean) -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -83,8 +83,8 @@ class DataViewModel (application: Application, private val dbHelper: BrgDatabase
     fun insertHistory(history: History) {
         dbHelper.insertHistory(history)
     }
-    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangIn: BarangIn){
-        dbHelper.insertInputBarang(barang,stok,barangIn)
+    fun insertInputBarang(barang: ItemBarang, stok: Stok, barangMasukItem: BarangMasukItem){
+        dbHelper.insertInputBarang(barang,stok,barangMasukItem)
         loadBarang()
     }
     private fun saveLowStockCountToSharedPreferences(context: Context, count: Int) {
