@@ -3,42 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_home">
+    app:startDestination="@id/nav_about">
 
-    <!-- Home Fragment -->
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.muammar.inventory.ui.main.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_nav_home_to_nav_barang_masuk"
             app:destination="@id/nav_barang_masuk" />
 
-        <!-- Arahkan ke fragment barang keluar -->
+
         <action
             android:id="@+id/action_nav_home_to_nav_barang_keluar"
             app:destination="@id/nav_barang_keluar" />
 
-        <!-- Arahkan ke history -->
+
         <action
             android:id="@+id/action_nav_home_to_nav_history_barang"
             app:destination="@id/nav_history_barang" />
 
-        <!-- Arahkan ke daftar barang -->
+
         <action
             android:id="@+id/action_nav_home_to_nav_daftar_barang"
             app:destination="@id/nav_daftar_barang" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_monitoring"
+            app:destination="@id/nav_monitoring" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_about"
+            app:destination="@id/nav_about" />
     </fragment>
 
-    <!-- DataBarangAkses Masuk Fragment -->
+
     <fragment
         android:id="@+id/nav_barang_masuk"
         android:name="com.muammar.inventory.ui.main.barang.BarangMasuk"
         android:label="@string/barang_masuk"
         tools:layout="@layout/fragment_barang_masuk" />
 
-    <!-- DataBarangAkses Keluar Fragment -->
+
     <fragment
         android:id="@+id/nav_barang_keluar"
         android:name="com.muammar.inventory.ui.main.barang.BarangKeluar"
@@ -46,14 +52,13 @@
         tools:layout="@layout/fragment_barang_keluar" />
 
 
-    <!-- Laporan Bulanan Fragment -->
     <fragment
         android:id="@+id/nav_daftar_barang"
         android:name="com.muammar.inventory.ui.main.barang.DaftarBarang"
         android:label="Daftar Barang"
         tools:layout="@layout/fragment_daftar_barang" />
 
-    <!-- Laporan Harian Fragment -->
+
     <fragment
         android:id="@+id/nav_history_barang"
         android:name="com.muammar.inventory.ui.main.history.HistoryBarang"
@@ -64,18 +69,12 @@
         android:id="@+id/nav_monitoring"
         android:name="com.muammar.inventory.ui.main.monitoring.MonitoringFragment"
         android:label="Monitorin"
-        tools:layout="@layout/fragment_monitoring"
-        />
-    <!-- Lainnya Fragment -->
-    <!--<fragment
-        android:id="@+id/nav_setting"
-        android:label="Setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_monitoring" />
 
-    &lt;!&ndash; About Fragment &ndash;&gt;
+
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.tugasmobile.inventory.ui.about.AboutFragment"
+        android:name="com.muammar.inventory.ui.AboutFragment"
         android:label="About"
-        tools:layout="@layout/fragment_about" />-->
+        tools:layout="@layout/fragment_about" />
 </navigation>

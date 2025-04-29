@@ -1,5 +1,6 @@
 package com.muammar.inventory.ui.main.monitoring
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.muammar.inventory.R
 import com.muammar.inventory.databinding.FragmentMonitoringBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
+import com.muammar.inventory.ui.setting.SettingActivity
 
 
 class MonitoringFragment : Fragment() {
@@ -47,8 +49,9 @@ class MonitoringFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.action_settings -> {
-
+                    R.id.action_settings->{
+                        val intent = Intent(context, SettingActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     else -> false

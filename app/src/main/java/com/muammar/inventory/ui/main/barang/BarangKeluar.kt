@@ -1,5 +1,6 @@
 package com.muammar.inventory.ui.main.barang
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,6 +23,7 @@ import com.muammar.inventory.adapter.AdafterTransaksiBarangKeluar
 import com.muammar.inventory.data.DaftarBarangKeluar
 import com.muammar.inventory.databinding.FragmentBarangKeluarBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
+import com.muammar.inventory.ui.setting.SettingActivity
 import com.muammar.inventory.ui.simpleItem.BarangKeluarDialogFragment
 import com.muammar.inventory.utils.AnimationHelper
 import com.muammar.inventory.utils.HargaUtils
@@ -56,8 +59,9 @@ class BarangKeluar : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.action_settings -> {
-
+                    R.id.action_settings->{
+                        val intent = Intent(context, SettingActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     else -> false

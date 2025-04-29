@@ -1,5 +1,6 @@
 package com.muammar.inventory.ui.main.barang
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -19,6 +20,7 @@ import com.muammar.inventory.adapter.AdapterDaftarBarang
 import com.muammar.inventory.data.DataBarangAkses
 import com.muammar.inventory.databinding.FragmentDaftarBarangBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
+import com.muammar.inventory.ui.setting.SettingActivity
 
 
 class DaftarBarang : Fragment() {
@@ -117,6 +119,11 @@ class DaftarBarang : Fragment() {
                         }
 
                         showFilterMenu(requireActivity().findViewById(R.id.action_filter))
+                        true
+                    }
+                    R.id.action_settings->{
+                        val intent = Intent(context, SettingActivity::class.java)
+                        startActivity(intent)
                         true
                     }
 

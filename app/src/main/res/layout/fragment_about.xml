@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.AboutFragment">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_empty"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/box" />
+            <TextView
+                android:id="@+id/appNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inventa'Ta"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Versi Aplikasi -->
+            <TextView
+                android:id="@+id/appVersionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Versi 1.0.1"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"/>
+            <TextView
+                android:id="@+id/appDescriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Inventa'Ta adalah aplikasi untuk membantu pedagang sandal mengelola stok barang dengan mudah dan cepat."
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_marginBottom="24dp"/>
+            <TextView
+                android:id="@+id/contactTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hubungi Kami"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+            <TextView
+                android:id="@+id/contactInfoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: amuammar698@gmail.com"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp"/>
+            <TextView
+                android:id="@+id/copyrightTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="© 2025 Muammar"
+                android:textSize="14sp"
+                android:layout_marginTop="24dp"/>
+
+        </LinearLayout>
+
+</FrameLayout>

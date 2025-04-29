@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,6 +19,7 @@ import com.muammar.inventory.adapter.AdapterBarangMasuk
 import com.muammar.inventory.databinding.FragmentBarangMasukBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
 import com.muammar.inventory.ui.data.DataActivity
+import com.muammar.inventory.ui.setting.SettingActivity
 import com.muammar.inventory.utils.AnimationHelper
 import com.muammar.inventory.utils.PerformClickUtils
 
@@ -68,8 +70,9 @@ class BarangMasuk : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.action_settings -> {
-
+                    R.id.action_settings->{
+                        val intent = Intent(context, SettingActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     else -> false

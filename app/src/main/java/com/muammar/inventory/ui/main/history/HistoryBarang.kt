@@ -1,5 +1,6 @@
 package com.muammar.inventory.ui.main.history
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.muammar.inventory.R
 import com.muammar.inventory.adapter.AdapterHistoryBarang
 import com.muammar.inventory.databinding.FragmentHistoryBarangBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
+import com.muammar.inventory.ui.setting.SettingActivity
 
 
 class HistoryBarang : Fragment() {
@@ -56,7 +58,9 @@ class HistoryBarang : Fragment() {
                         showFilterMenu(requireActivity().findViewById(R.id.action_filter))
                         true
                     }
-                    R.id.action_settings -> {
+                    R.id.action_settings->{
+                        val intent = Intent(context, SettingActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     else -> false

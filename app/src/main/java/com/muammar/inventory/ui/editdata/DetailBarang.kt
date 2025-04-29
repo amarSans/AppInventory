@@ -16,6 +16,7 @@ import com.muammar.inventory.data.History
 import com.muammar.inventory.databinding.ActivityDetailBarangBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
 import com.muammar.inventory.ui.data.EditData
+import com.muammar.inventory.ui.setting.SettingActivity
 import com.muammar.inventory.utils.DateUtils
 import com.muammar.inventory.utils.PerformClickUtils
 
@@ -82,6 +83,11 @@ class DetailBarang : AppCompatActivity() {
                     }
                     startActivity(intent)
                 }
+                true
+            }
+            R.id.action_settings->{
+                val intent = Intent(this, SettingActivity::class.java)
+                startActivity(intent)
                 true
             }
 
