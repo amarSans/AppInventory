@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/nav_about"
-        android:name="com.muammar.inventory.ui.AboutFragment"
+        android:name="com.muammar.inventory.ui.main.about.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
 </navigation>

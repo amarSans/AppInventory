@@ -1,5 +1,6 @@
-package com.muammar.inventory.ui
+package com.muammar.inventory.ui.main.about
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import com.muammar.inventory.R
+import com.muammar.inventory.ui.setting.SettingActivity
 
 class AboutFragment : Fragment() {
 
@@ -42,7 +44,9 @@ class AboutFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
-                    R.id.action_settings -> {
+                    R.id.action_settings->{
+                        val intent = Intent(context, SettingActivity::class.java)
+                        startActivity(intent)
                         true
                     }
                     else -> false
