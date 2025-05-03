@@ -5,7 +5,7 @@
     android:id="@+id/homeScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:layout_margin="16dp"
     tools:context=".ui.main.home.HomeFragment">
 
     <LinearLayout
@@ -29,6 +29,8 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:elevation="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:gravity="center_horizontal"
             android:background="@drawable/bg_tanggal_card"
             android:layout_marginBottom="16dp">
@@ -73,6 +75,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="12dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/bg_searchbar"
             android:clickable="true"
@@ -104,6 +108,8 @@
             android:background="@drawable/bg_menu_item"
             android:padding="12dp"
             android:elevation="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp">
 
             <ImageView
@@ -143,7 +149,8 @@
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             android:overScrollMode="never"
-            android:scrollbars="none"/>
+            android:scrollbars="none"
+            />
 
 
         <TextView
@@ -245,7 +252,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/baseline_add_24"/>
+                    android:src="@drawable/baseline_move_to_inbox_24"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -271,7 +278,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/baseline_remove_24_home"/>
+                    android:src="@drawable/baseline_outbox_24"/>
 
                 <TextView
                     android:layout_width="wrap_content"

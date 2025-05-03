@@ -204,30 +204,6 @@ class BarangKeluarDialogFragment : DialogFragment() {
         }
     }
 
-    private fun setupRecyclerViewUkuranWarna(warnaBarang: List<String>) {
-
-        val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
-        val colorValues = resources.getStringArray(R.array.daftar_warna)
-
-        val colorMap =
-            colorNames.indices.associate { index -> colorNames[index] to colorValues[index] }
-
-        val warnaOnly = warnaBarang.map { item ->
-            item.split(" ").last().trim()
-        }
-
-        val selectedColorValues = warnaOnly.mapNotNull { colorMap[it] }
-
-        if (warnaBarang.isNotEmpty() && selectedColorValues.isNotEmpty()) {
-            colorAdapter.updateColors(warnaBarang, selectedColorValues)
-        } else {
-            Toast.makeText(
-                requireContext(),
-                "Tidak ada data warna yang valid",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
 
     private fun updateStock(change: Int) {
         val currentStock = binding.ppedtStokKeluar.text.toString().toInt()

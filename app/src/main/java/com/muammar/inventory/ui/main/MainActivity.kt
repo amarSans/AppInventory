@@ -141,9 +141,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-
-
     private fun checkPermissions() {
         val permissionsNeeded = mutableListOf<String>()
 
