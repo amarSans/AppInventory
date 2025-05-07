@@ -35,6 +35,8 @@ class TambahStokFragment : Fragment() {
     private lateinit var colorAdapter: AdapterColorIn
     private var selectedImageUri: Uri? = null
     private var stokBarang = 0
+    private var ukuranWarnaLama:List<String> = emptyList()
+    private var stokBarangLama= 0
     private var stokhistory =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -206,24 +208,13 @@ class TambahStokFragment : Fragment() {
         }
         NewStokViewModel.currentStok.observe(viewLifecycleOwner) { stok ->
             stok?.let {
-                stokhistory = it.stokBarang
-                if (it.stokBarang == 0) {
-                    binding.editTextUkuranwarna.setText("")
-                    binding.editStokBarang.setText("")
-                } else{
-                binding.editTextUkuranwarna.setText(
-                    it.ukuranwarna
-                        .replace("[", "")
-                        .replace("]", "")
-                        .trim()
-                )
-                binding.editStokBarang.setText(it.stokBarang.toString())}
-                stokBarang = it.stokBarang
-            } ?: run {
-                Toast.makeText(requireContext(), "Data stok tidak ditemukan", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
+                stokBarangLama = it.stokBarang
+                ukuranWarnaLama = it.ukuranwarna
+                    .replace("[", "")
+                    .replace("]", "")
+                    .split(",")
+                    .map { str -> str.trim() }
+        }}
         NewStokViewModel.currentBarangMasukItem.observe(viewLifecycleOwner) { barangIn ->
             barangIn?.let {
                 it.tglMasuk=DateUtils.getCurrentDate()
@@ -241,9 +232,17 @@ class TambahStokFragment : Fragment() {
 
     private fun saveChanges() {
         val stokBarangText = binding.editStokBarang.text.toString().trim()
+        if (stokBarangText.isEmpty()) {
+            binding.editStokBarang.error = "Stok tidak boleh kosong"
+            return
+        }
         val stokBarang = stokBarangText.toIntOrNull() ?: 0
 
         val ukuranWarna = binding.editTextUkuranwarna.text.toString().trim()
+        if (ukuranWarna.isEmpty()) {
+            binding.editTextUkuranwarna.error = "Ukuran dan warna tidak boleh kosong"
+            return
+        }
         val ukuranWarnaList =
             if (ukuranWarna.isEmpty()) emptyList() else ukuranWarna.split(",").map { it.trim() }
         val jumlahKombinasi = ukuranWarnaList.size
@@ -252,6 +251,8 @@ class TambahStokFragment : Fragment() {
                 "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
             return
         }
+        val stoktotal=stokBarangLama + stokBarangText.toInt()
+        val ukuranWarnaGabung= ukuranWarnaLama+ ukuranWarnaList
 
         val hargaBarang =
             binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
@@ -265,11 +266,11 @@ class TambahStokFragment : Fragment() {
 
         val updatedStok = StokUpdate(
             kodeBarang = currentStok.idBarangStok,
-            ukuranWarnaBaru = ukuranWarnaList.joinToString(","),
+            ukuranWarnaBaru = ukuranWarnaGabung.joinToString(","),
             hargaJualBaru = hargaBarang,
             tanggalMasukBaru = DateUtils.getCurrentDate(),
             namaTokoBaru = namaToko,
-            stokBaru = stokBarang
+            stokBaru = stoktotal
         )
         stokhistory= stokBarang-stokhistory
         val history= History(

@@ -163,8 +163,9 @@ class TambahBarangFragment : Fragment() {
         val gambarUri = selectedImageUri ?: getDefaultImageUri()
         val merekProduk = binding.editTextNamaBarang.text.toString().trim()
         if (merekProduk.isEmpty()) {
-            binding.editTextNamaBarang.error = "Nama barang tidak boleh kosong"
-            return
+            binding.inputLayoutKodeBarang.error = "Kode barang tidak boleh kosong"
+        } else {
+            binding.inputLayoutKodeBarang.error = null
         }
         var kodeProduk = binding.editTextKodeBarang.text.toString()
         if (kodeProduk.isBlank()) {
@@ -208,7 +209,7 @@ class TambahBarangFragment : Fragment() {
         }
 
         val namaTokoPreview = binding.edtNamaToko.text.toString().trim()
-        val namaToko = if (namaTokoPreview.isEmpty()) "belum ada" else namaTokoPreview
+        val namaToko = if (namaTokoPreview.isEmpty()) "belum di isi" else namaTokoPreview
 
         val itemBarang= ItemBarang(
             idBarang = kodeProduk,

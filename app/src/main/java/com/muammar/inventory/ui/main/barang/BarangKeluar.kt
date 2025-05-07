@@ -34,6 +34,7 @@ class BarangKeluar : Fragment() {
     private val barangKeluarViewModel: BarangViewModel by viewModels {
         InventoryViewModelFactory.getInstance(requireActivity().application)
     }
+    private var totalHargaSekarang = 0
     private lateinit var autoCompleteAdapter: ArrayAdapter<String>
     private val daftarBarangKeluar = mutableListOf<DaftarBarangKeluar>()
     private lateinit var adapterTransaksi: AdafterTransaksiBarangKeluar
@@ -139,27 +140,35 @@ class BarangKeluar : Fragment() {
     }
 
     private fun setupTotalBayarListener() {
-        adapterTransaksi.onTotalHargaUpdated = { totalBayar ->
-            binding.totalBayar.text = "Rp. ${HargaUtils.formatHarga(totalBayar)}"
-            updateKembalian(totalBayar)
+
+            adapterTransaksi.onTotalHargaUpdated = { totalBayar ->
+                totalHargaSekarang = totalBayar
+                binding.totalBayar.text = "Rp. ${HargaUtils.formatHarga(totalBayar)}"
+                updateKembalian()
+            }
+
+            // Pindahkan TextWatcher ke sini
             binding.uangDibayar.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    updateKembalian(totalBayar)
+                    updateKembalian()
                 }
                 override fun afterTextChanged(s: Editable?) {}
             })
+
+    }
+
+    private fun updateKembalian() {
+        val dibayarText = binding.uangDibayar.text.toString().replace(".", "")
+        val dibayar = dibayarText.toIntOrNull() ?: 0
+        val kembalian = dibayar - totalHargaSekarang
+        binding.kembalian.text = if (totalHargaSekarang == 0 && dibayar == 0) {
+            "00"
+        } else {
+            "Rp. ${HargaUtils.formatHarga(kembalian)}"
         }
     }
 
-    private fun updateKembalian(totalBayar: Int) {
-        val dibayarText = binding.uangDibayar.text.toString().replace(".", "")
-        val dibayar = dibayarText.toIntOrNull() ?: 0
-        val kembalian = dibayar - totalBayar
-
-
-        binding.kembalian.text = "Rp. ${HargaUtils.formatHarga(kembalian)}"
-    }
 
     private fun setupClearButton() {
         binding.autoCompleteBarang.setOnTouchListener { _, event ->
@@ -197,20 +206,15 @@ class BarangKeluar : Fragment() {
         dialog.show(parentFragmentManager, "BarangKeluarDialog")
     }
     private fun resetUI() {
-
         binding.autoCompleteBarang.text.clear()
-
-
         daftarBarangKeluar.clear()
         adapterTransaksi.notifyDataSetChanged()
-
-
-        binding.totalBayar.text = "0"
-        binding.kembalian.text = "0"
-
-
+        totalHargaSekarang = 0
+        binding.totalBayar.text = "00"
         binding.uangDibayar.text.clear()
+        updateKembalian()
     }
+
 
 
     override fun onDestroyView() {

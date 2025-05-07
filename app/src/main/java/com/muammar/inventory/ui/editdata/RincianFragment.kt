@@ -1,6 +1,7 @@
 package com.muammar.inventory.ui.editdata
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.net.Uri
@@ -22,6 +23,7 @@ import com.muammar.inventory.R
 import com.muammar.inventory.adapter.AdapterSizeColorUI
 import com.muammar.inventory.databinding.FragmentRincianBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
+import com.muammar.inventory.ui.data.DataActivity
 import com.muammar.inventory.utils.AnimationHelper
 import com.muammar.inventory.utils.HargaUtils
 
@@ -30,6 +32,8 @@ class RincianFragment : Fragment() {
     private var _binding:FragmentRincianBinding?=null
     private val binding get() = _binding!!
     private var gambarUri: Uri? = null
+    private var isFabOpen = false
+    private var KodeBarang:String=""
     private val rincianViewModel:DetailViewModel  by viewModels {
         InventoryViewModelFactory.getInstance(requireActivity().application)
     }
@@ -41,6 +45,7 @@ class RincianFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRincianBinding.inflate(inflater,container,false)
+
         AnimationHelper.animateItems(binding.linearLayoutRincian,requireContext())
         BarangId = arguments?.getString("ID_BARANG") ?: ""
         val colorNames = resources.getStringArray(R.array.daftar_nama_warna)
@@ -62,6 +67,7 @@ class RincianFragment : Fragment() {
             barang?.let{
                 binding.tvNamaBarang.text = it.merekBarang
                 binding.tvKodeBarang.text = it.idBarang
+                KodeBarang=it.idBarang
                 tampilkanKarakteristik(it.karakteristik)
                 gambarUri = it.gambar.let { Uri.parse(it) }
                 gambarUri?.let { uri ->
@@ -96,8 +102,56 @@ class RincianFragment : Fragment() {
                 binding.tvNamaToko.text = it.namaToko
             }
         }
+
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.fabMain.setOnClickListener {
+            animateFab()
+        }
+
+        binding.fabBarangMasuk.setOnClickListener {
+            val intent = Intent(requireContext(), DataActivity::class.java)
+            intent.putExtra("ID_BARANG", KodeBarang)
+            startActivity(intent)
+
+        }
+
+        binding.fabBarangKeluar.setOnClickListener {
+            Toast.makeText(requireContext(), "Barang Keluar diklik", Toast.LENGTH_SHORT).show()
+
+        }
+
+    }
+
+    private fun animateFab() {
+        if (isFabOpen) {
+            binding.fabBarangMasuk.animate().translationY(0f).alpha(0f).withEndAction {
+                binding.fabBarangMasuk.visibility = View.GONE
+            }
+            binding.fabBarangKeluar.animate().translationY(0f).alpha(0f).withEndAction {
+                binding.fabBarangKeluar.visibility = View.GONE
+            }
+            binding.fabMain.setImageResource(R.drawable.baseline_more_vert_24)
+        } else {
+            binding.fabBarangMasuk.visibility = View.VISIBLE
+            binding.fabBarangKeluar.visibility = View.VISIBLE
+
+            binding.fabBarangMasuk.alpha = 0f
+            binding.fabBarangMasuk.translationY = 0f
+            binding.fabBarangMasuk.animate().translationY(-120f).alpha(1f)
+
+            binding.fabBarangKeluar.alpha = 0f
+            binding.fabBarangKeluar.translationY = 0f
+            binding.fabBarangKeluar.animate().translationY(-240f).alpha(1f)
+
+            binding.fabMain.setImageResource(R.drawable.baseline_close_24)
+        }
+        isFabOpen = !isFabOpen
+    }
+
     private fun tampilkanKarakteristik(karakteristikText: String) {
         val chipGroup = binding.tvrincinkarakteristik
         chipGroup.removeAllViews()

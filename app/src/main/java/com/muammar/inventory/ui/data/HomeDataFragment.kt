@@ -26,7 +26,9 @@ class HomeDataFragment : Fragment() {
             ContextCompat.getColor(requireContext(), R.color.dark_background)
         val edtKode = view.findViewById<EditText>(R.id.edt_kode)
         val btnCekKode = view.findViewById<Button>(R.id.btn_kode)
-
+        val idBarangDariRincian = arguments?.getString("ID_BARANG")
+        idBarangDariRincian?.let { TambahStokFragment.newInstance(it) }
+            ?.let { pindahKeFragment(it) }
         btnCekKode.setOnClickListener {
             val kodeBarang = edtKode.text.toString().trim()
             prosesKodeBarang(kodeBarang)
@@ -60,7 +62,7 @@ class HomeDataFragment : Fragment() {
     private fun pindahKeFragment(fragment: Fragment) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null)
+
             .commit()
     }
 

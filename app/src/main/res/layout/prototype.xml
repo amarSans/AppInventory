@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutKodeBarang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Kode Barang"
+        app:errorEnabled="true">
+
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
+            android:id="@+id/editTextKodeBarang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:hint="@string/masukkan_kode_barang" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

@@ -17,5 +17,17 @@ class DataActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val idBarang = intent.getStringExtra("ID_BARANG")
+
+        if (savedInstanceState == null) {
+            val fragment = HomeDataFragment().apply {
+                arguments = Bundle().apply {
+                    putString("ID_BARANG", idBarang)
+                }
+            }
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+        }
     }
 }

@@ -167,7 +167,6 @@ class BarangKeluarDialogFragment : DialogFragment() {
                         Tgl_Keluar = tanggalKeluar,
                         Hrg_Beli = hargaBeli
                     )
-                    val harga_history = HargaUtils.formatHarga(hargaBeli)
                     val history= History(
                         id = 0,
                         waktu = DateUtils.getCurrentDate(),

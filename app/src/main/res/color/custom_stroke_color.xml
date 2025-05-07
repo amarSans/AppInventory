@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Saat focused -->
+    <item android:color="?attr/colorOnSecondary" android:state_focused="true"/>
+    <!-- Saat enabled (default) -->
+    <item android:color="?attr/colorOnSecondary" android:state_enabled="true"/>
+    <!-- Saat disabled -->
+    <item android:color="?attr/colorOnSecondary" android:state_enabled="false"/>
+</selector>
