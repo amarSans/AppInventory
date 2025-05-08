@@ -139,7 +139,13 @@ class MainActivity : AppCompatActivity() {
             }
             navController.navigate(R.id.nav_daftar_barang,bundle)
         }
-
+        val barangKeluar=intent.getStringExtra("ID_BARANG")
+        if (barangKeluar != null) {
+            val bundle = Bundle().apply {
+                putString("ID_BARANG", barangKeluar)
+            }
+            navController.navigate(R.id.nav_barang_keluar, bundle)
+        }
     }
     private fun checkPermissions() {
         val permissionsNeeded = mutableListOf<String>()

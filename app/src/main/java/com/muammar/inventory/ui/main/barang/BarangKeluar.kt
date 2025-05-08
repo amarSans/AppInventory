@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -12,7 +13,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.view.GravityCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,6 +38,7 @@ class BarangKeluar : Fragment() {
     private lateinit var autoCompleteAdapter: ArrayAdapter<String>
     private val daftarBarangKeluar = mutableListOf<DaftarBarangKeluar>()
     private lateinit var adapterTransaksi: AdafterTransaksiBarangKeluar
+    private var idBarangDariRincian: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +52,8 @@ class BarangKeluar : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AnimationHelper.animateItems(binding.constraintbarangKeluar,requireContext())
+        idBarangDariRincian = arguments?.getString("ID_BARANG").toString()
+        arguments?.remove("ID_BARANG")
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menu.clear()
@@ -134,9 +137,22 @@ class BarangKeluar : Fragment() {
             selectedItem?.let {
                 barangKeluarViewModel.setCurrentBarang(it.id)
                 showBarangKeluarDialog(it.id)
-                binding.autoCompleteBarang.postDelayed({ binding.autoCompleteBarang.text.clear() }, 100)
+                binding.autoCompleteBarang.postDelayed({
+                    binding.autoCompleteBarang.text.clear()
+                }, 100)
             }
         }
+        Log.d("BarangKeluar", "Sebelum dialog, ID_BARANG = '$idBarangDariRincian'")
+
+        if (idBarangDariRincian.isNotEmpty() && idBarangDariRincian != "null") {
+            showBarangKeluarDialog(idBarangDariRincian)
+
+            // 🔁 Kosongkan dan cek kembali
+            idBarangDariRincian = ""
+            Log.d("BarangKeluar", "Setelah dialog, ID_BARANG = '$idBarangDariRincian'")
+
+        }
+
     }
 
     private fun setupTotalBayarListener() {
@@ -203,6 +219,8 @@ class BarangKeluar : Fragment() {
                 adapterTransaksi.notifyDataSetChanged()
             }
         })
+
+
         dialog.show(parentFragmentManager, "BarangKeluarDialog")
     }
     private fun resetUI() {

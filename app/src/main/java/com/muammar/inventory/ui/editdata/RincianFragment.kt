@@ -24,6 +24,7 @@ import com.muammar.inventory.adapter.AdapterSizeColorUI
 import com.muammar.inventory.databinding.FragmentRincianBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
 import com.muammar.inventory.ui.data.DataActivity
+import com.muammar.inventory.ui.main.MainActivity
 import com.muammar.inventory.utils.AnimationHelper
 import com.muammar.inventory.utils.HargaUtils
 
@@ -120,7 +121,9 @@ class RincianFragment : Fragment() {
         }
 
         binding.fabBarangKeluar.setOnClickListener {
-            Toast.makeText(requireContext(), "Barang Keluar diklik", Toast.LENGTH_SHORT).show()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            intent.putExtra("ID_BARANG", KodeBarang)
+            startActivity(intent)
 
         }
 
