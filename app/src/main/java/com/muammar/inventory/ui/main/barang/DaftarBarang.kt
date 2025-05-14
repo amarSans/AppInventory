@@ -26,6 +26,7 @@ import com.muammar.inventory.ui.setting.SettingActivity
 class DaftarBarang : Fragment() {
     private var _binding: FragmentDaftarBarangBinding? = null
     private val binding get() = _binding!!
+    private var isToolbarSet = false
     private lateinit var adapterDaftarBarang: AdapterDaftarBarang
     private val barangViewModel: BarangViewModel by viewModels {
         InventoryViewModelFactory.getInstance(requireActivity().application)
@@ -92,6 +93,7 @@ class DaftarBarang : Fragment() {
             } else {
                 toolbar.title = "Daftar Barang"
             }
+            isToolbarSet = true
 
             if (filteredData.isEmpty()) {
                 emptydata()
@@ -193,6 +195,8 @@ class DaftarBarang : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        val toolbar: Toolbar = requireActivity().findViewById(R.id.toolbar)
         _binding = null
+        toolbar.subtitle = null
     }
 }

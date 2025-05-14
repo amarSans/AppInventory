@@ -39,7 +39,6 @@ class SearchActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Log.d("SearchActivity", "onCreate called")
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -80,8 +79,6 @@ class SearchActivity : AppCompatActivity() {
             }
         })
         binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
-            Log.d("SearchActivity", "Editor Action triggered")
-            Log.d("SearchActivity", "Action ID: $actionId")
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val query = binding.editTextSearch.text.toString().trim()
                 val filterQuery = filterQuery(query)
@@ -97,10 +94,8 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         binding.textInputLayoutSearch.setStartIconOnClickListener {
-            Log.d("SearchActivity", "Start icon clicked")
             val query = binding.editTextSearch.text.toString().trim()
             if (query.isNotEmpty()) {
-                Log.d("SearchActivity", "Ikon search diklik: $query")
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("QUERY_KEY", query)
                 startActivity(intent)

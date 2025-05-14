@@ -142,15 +142,10 @@ class BarangKeluar : Fragment() {
                 }, 100)
             }
         }
-        Log.d("BarangKeluar", "Sebelum dialog, ID_BARANG = '$idBarangDariRincian'")
 
         if (idBarangDariRincian.isNotEmpty() && idBarangDariRincian != "null") {
             showBarangKeluarDialog(idBarangDariRincian)
-
-            // 🔁 Kosongkan dan cek kembali
             idBarangDariRincian = ""
-            Log.d("BarangKeluar", "Setelah dialog, ID_BARANG = '$idBarangDariRincian'")
-
         }
 
     }
@@ -163,7 +158,6 @@ class BarangKeluar : Fragment() {
                 updateKembalian()
             }
 
-            // Pindahkan TextWatcher ke sini
             binding.uangDibayar.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
