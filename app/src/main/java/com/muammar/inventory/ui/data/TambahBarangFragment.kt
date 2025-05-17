@@ -163,9 +163,8 @@ class TambahBarangFragment : Fragment() {
         val gambarUri = selectedImageUri ?: getDefaultImageUri()
         val merekProduk = binding.editTextNamaBarang.text.toString().trim()
         if (merekProduk.isEmpty()) {
-            binding.inputLayoutKodeBarang.error = "Kode barang tidak boleh kosong"
-        } else {
-            binding.inputLayoutKodeBarang.error = null
+            Toast.makeText(context, "merek barang tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            return
         }
         var kodeProduk = binding.editTextKodeBarang.text.toString()
         if (kodeProduk.isBlank()) {
@@ -180,34 +179,32 @@ class TambahBarangFragment : Fragment() {
         }
         val hargaProdukText = binding.editTextHargaBarang.text.toString().replace(".", "").trim()
         if (hargaProdukText.isEmpty()) {
-            binding.editTextHargaBarang.error = "Harga barang tidak boleh kosong"
+            Toast.makeText(context, "harga barang tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
         val hargaProduk = hargaProdukText.toIntOrNull()
         if (hargaProduk == null || hargaProduk <= 0) {
-            binding.editTextHargaBarang.error = "Harga barang harus berupa angka dan lebih dari 0"
+            Toast.makeText(context, "harga diatas 0 dan bukan huruf", Toast.LENGTH_SHORT).show()
             return
         }
 
         val stokBarangText = binding.editStokBarang.text.toString().trim()
-        if (stokBarangText.isEmpty()) {
-            binding.editStokBarang.error = "Stok barang tidak boleh kosong"
+        if (stokBarangText.isEmpty()||stokBarangText=="0") {
+            Toast.makeText(context, "stok barang tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
         val stokBarang = stokBarangText.toIntOrNull() ?: 0
 
         val ukuranWarna = binding.editTextUkuranwarna.text.toString().trim()
         if (ukuranWarna.isEmpty()) {
-            binding.editTextUkuranwarna.error = "Ukuran dan warna tidak boleh kosong"
+            Toast.makeText(context, "ukuran warna tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
-
         val jumlahKombinasi = if (ukuranWarna.isEmpty()) 0 else ukuranWarna.split(",").size
         if (stokBarang != jumlahKombinasi) {
-            binding.editTextUkuranwarna.error = "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
+            Toast.makeText(context, "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)", Toast.LENGTH_SHORT).show()
             return
         }
-
         val namaTokoPreview = binding.edtNamaToko.text.toString().trim()
         val namaToko = if (namaTokoPreview.isEmpty()) "belum di isi" else namaTokoPreview
 

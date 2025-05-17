@@ -133,7 +133,7 @@ class TambahStokFragment : Fragment() {
             val selectedWarna = binding.spinnerWarna.selectedItem as String
 
             if (selectedUkuranText.isEmpty()) {
-                binding.edtUkuran.error = "Ukuran tidak boleh kosong"
+                Toast.makeText(context, "Ukuran tidak boleh kosong", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -233,22 +233,21 @@ class TambahStokFragment : Fragment() {
     private fun saveChanges() {
         val stokBarangText = binding.editStokBarang.text.toString().trim()
         if (stokBarangText.isEmpty()) {
-            binding.editStokBarang.error = "Stok tidak boleh kosong"
+            Toast.makeText(context, "Stok tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
         val stokBarang = stokBarangText.toIntOrNull() ?: 0
 
         val ukuranWarna = binding.editTextUkuranwarna.text.toString().trim()
         if (ukuranWarna.isEmpty()) {
-            binding.editTextUkuranwarna.error = "Ukuran dan warna tidak boleh kosong"
+            Toast.makeText(context, "Ukuran dan warna tidak boleh kosong", Toast.LENGTH_SHORT).show()
             return
         }
         val ukuranWarnaList =
             if (ukuranWarna.isEmpty()) emptyList() else ukuranWarna.split(",").map { it.trim() }
         val jumlahKombinasi = ukuranWarnaList.size
         if (stokBarang != jumlahKombinasi) {
-            binding.editTextUkuranwarna.error =
-                "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
+            Toast.makeText(context, "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)", Toast.LENGTH_SHORT).show()
             return
         }
         val stoktotal=stokBarangLama + stokBarangText.toInt()
@@ -256,6 +255,9 @@ class TambahStokFragment : Fragment() {
 
         val hargaBarang =
             binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
+        if (hargaBarang==0){
+            Toast.makeText(context, "Harga tidak boleh kosong", Toast.LENGTH_SHORT).show()
+        }
         val namaToko = binding.edtNamaTokoEdit.text.toString()
 
         val currentStok = NewStokViewModel.currentStok.value

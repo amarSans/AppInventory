@@ -38,10 +38,8 @@ class HomeDataFragment : Fragment() {
     private fun prosesKodeBarang(kodeInput: String) {
         if (kodeInput.isEmpty()) {
             val kodeUnik = "SND" + (1000..9999).random()
-            // Langsung arahkan ke tambah barang tanpa cek ulang
             cekDanPindahFragment(kodeUnik)
         } else {
-            // Cek apakah barang sudah ada
             cekDanPindahFragment(kodeInput)
         }
     }

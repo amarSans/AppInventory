@@ -344,13 +344,15 @@ class EditData : AppCompatActivity() {
 
 
         if (stokBarang != jumlahKombinasi) {
-            binding.editTextUkuranwarnaEdit.error =
-                "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)"
+            Toast.makeText(this, "Jumlah stok ($stokBarang) harus sama dengan jumlah kombinasi ukuran dan warna ($jumlahKombinasi)", Toast.LENGTH_SHORT).show()
             return
         }
-        val selectedColors = colorAdapter.getSelectedColors().toSet()
         val hargaBarang =
             binding.editTextHargaBarangEdit.text.toString().replace(".", "").toIntOrNull() ?: 0
+        if(hargaBarang==0){
+            Toast.makeText(this, "Harga tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            return
+        }
         val updatedBarang = editViewModel.currentBarang.value?.copy(
             merekBarang = binding.editTextNamaBarangEdit.text.toString(),
             idBarang = kodeupdate,
@@ -375,8 +377,7 @@ class EditData : AppCompatActivity() {
             Toast.makeText(this, "Data barang masuk tidak valid", Toast.LENGTH_SHORT).show()
             return
         }
-
-                if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
+        if (updatedBarang != null && updatedStok != null && updatedBarangMasuk != null) {
             editViewModel.updateBarang(updatedBarang, updatedStok, updatedBarangMasuk)
         }
         editViewModel.loadBarang()
@@ -386,7 +387,6 @@ class EditData : AppCompatActivity() {
 
     private fun updateKarakteristikText() {
         val karakteristik = selectedItems.joinToString(", ")
-        Log.d("KarakteristikFragment", "Karakteristik yang dipilih: $karakteristik")
         binding.editKarakterikstikedit.setText(karakteristik)
     }
     private fun tambahStok() {

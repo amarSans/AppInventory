@@ -46,30 +46,13 @@
             android:id="@+id/tvnmerekBarang"
             style="@style/CustomTextViewStyle"
             android:text="@string/merek_barang"
-            app:layout_constraintBottom_toTopOf="@id/inputLayoutKodeBarang"
+            app:layout_constraintBottom_toTopOf="@id/editTextNamaBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
             app:layout_constraintStart_toStartOf="@id/editTextKodeBarang"
             app:layout_constraintTop_toBottomOf="@id/editTextKodeBarang" />
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/inputLayoutKodeBarang"
-            android:layout_width="0dp"
-            style="@style/CustomTextInputLayoutStyle"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            android:layout_marginEnd="10dp"
-            android:hint="@string/masukkan_kode_barang"
-            app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"
-            app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/tvnmerekBarang"
-            app:layout_constraintTop_toBottomOf="@id/tvnmerekBarang">
 
-            <com.muammar.inventory.ui.simpleItem.CustomEditText
-                android:id="@+id/editTextNamaBarang"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <!--<com.muammar.inventory.ui.simpleItem.CustomEditText
+        <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextNamaBarang"
             style="@style/CustomEditTextStyle"
             android:layout_marginEnd="10dp"
@@ -77,7 +60,7 @@
             app:layout_constraintBottom_toTopOf="@id/tvHargaBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
             app:layout_constraintStart_toStartOf="@id/tvnmerekBarang"
-            app:layout_constraintTop_toBottomOf="@id/tvnmerekBarang" />-->
+            app:layout_constraintTop_toBottomOf="@id/tvnmerekBarang" />
 
         <TextView
             android:id="@+id/tvHargaBarang"
@@ -85,8 +68,8 @@
             android:text="@string/harga_barang"
             app:layout_constraintBottom_toTopOf="@id/editTextHargaBarang"
             app:layout_constraintEnd_toStartOf="@id/imageViewBarang"
-            app:layout_constraintStart_toStartOf="@id/inputLayoutKodeBarang"
-            app:layout_constraintTop_toBottomOf="@id/inputLayoutKodeBarang" />
+            app:layout_constraintStart_toStartOf="@id/editTextNamaBarang"
+            app:layout_constraintTop_toBottomOf="@id/editTextNamaBarang" />
 
         <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/editTextHargaBarang"
@@ -110,7 +93,7 @@
             android:src="@drawable/baseline_image_24"
             app:layout_constraintBottom_toTopOf="@id/buttonCamera"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/inputLayoutKodeBarang"
+            app:layout_constraintStart_toEndOf="@+id/editTextNamaBarang"
             app:layout_constraintTop_toBottomOf="@id/imgViewBack" />
 
         <Button
@@ -283,7 +266,7 @@
         <com.muammar.inventory.ui.simpleItem.CustomEditText
             android:id="@+id/edit_karakterikstik"
             style="@style/CustomEditTextStyle"
-            android:hint="masukkan_karakteristik"
+            android:hint="@string/input_karakteristik"
             android:enabled="false"
             app:layout_constraintBottom_toTopOf="@id/tvnamaToko"
             app:layout_constraintEnd_toStartOf="@id/btncharater"
