@@ -698,7 +698,8 @@ class BrgDatabaseHelper(context: Context) :
                 SearchData(
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KODE_BARANG)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MEREK_BARANG)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK))
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_KARAKTERISTIK)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))
                 )
             )
         }

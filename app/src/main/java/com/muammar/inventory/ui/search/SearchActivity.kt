@@ -145,7 +145,8 @@ class SearchActivity : AppCompatActivity() {
             listOfNotNull(
                 it.id,
                 it.merekBarang,
-                it.karakteristik
+                it.karakteristik,
+                it.ukuranWarna
             ).flatMap { attr ->
                 attr.lowercase().split(" ")
             }
@@ -153,7 +154,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         val filteredWords = keywords.filter { keyword ->
-            recognizedWords.any { it.contains(keyword) || keyword.contains(it) }
+            recognizedWords.all { it.contains(keyword) || keyword.contains(it) }
         }
 
         return filteredWords.joinToString(" ")
