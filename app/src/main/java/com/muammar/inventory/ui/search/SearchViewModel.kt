@@ -18,7 +18,6 @@ class SearchViewModel(application: Application, private val dbHelper: BrgDatabas
 
 
     fun search(keyword: String) {
-
         _searchResults.value = dbHelper.searchFlexible(keyword)
     }
 }

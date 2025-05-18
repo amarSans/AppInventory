@@ -5,7 +5,7 @@ data class DataBarangAkses(
     val namaBarang: String,
     val stok: Int,
     val harga: Int,
-    val ukuranwarna: List<String>,
+    val ukuranwarna: String,
     val waktu: String,
     var nama_toko: String,
     var gambar: String,

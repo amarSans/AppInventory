@@ -73,14 +73,15 @@ class DaftarBarang : Fragment() {
                         barang.id.contains(keyword, ignoreCase = true) ||
                                 barang.namaBarang.contains(keyword, ignoreCase = true) ||
                                 barang.karakteristik.contains(keyword, ignoreCase = true) ||
-                                barang.nama_toko.contains(keyword, ignoreCase = true)
+                                barang.nama_toko.contains(keyword, ignoreCase = true) ||
+                                barang.ukuranwarna.contains(keyword, ignoreCase = true)
                     }
                 }
             }
 
             if (!filterStock.isNullOrEmpty()) {
                 filteredData = filteredData.filter { it.stok <= 2 }
-            }else{
+            } else {
                 allData
             }
 
@@ -112,18 +113,19 @@ class DaftarBarang : Fragment() {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_filter -> {
-                        if(filterStock!=null){
+                        if (filterStock != null) {
                             barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
                                 adapterDaftarBarang.updateLaporanList(listBarang)
                             }
-                            filterStock=null
+                            filterStock = null
                             arguments?.remove("filter_stock")
                         }
 
                         showFilterMenu(requireActivity().findViewById(R.id.action_filter))
                         true
                     }
-                    R.id.action_settings->{
+
+                    R.id.action_settings -> {
                         val intent = Intent(context, SettingActivity::class.java)
                         startActivity(intent)
                         true
@@ -134,26 +136,28 @@ class DaftarBarang : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+
     private fun handleIncomingData() {
         val args = arguments
         filterStock = args?.getString("filter_stock")
         query = args?.getString("QUERY_KEY")
-        if (filterStock != null||query!=null) {
+        if (filterStock != null || query != null) {
             arguments?.remove("QUERY_KEY")
             arguments?.remove("filter_stock")
         }
     }
 
     private fun setupRecyclerView() {
-        adapterDaftarBarang = AdapterDaftarBarang(requireContext(),emptyList())
+        adapterDaftarBarang = AdapterDaftarBarang(requireContext(), emptyList())
         binding.recyclerViewLaporan.apply {
             layoutManager = GridLayoutManager(requireContext(), 2)
             adapter = adapterDaftarBarang
         }
     }
-    private fun emptydata(){
-        binding.lottieEmpty.visibility=View.VISIBLE
-        binding.recyclerViewLaporan.visibility=View.GONE
+
+    private fun emptydata() {
+        binding.lottieEmpty.visibility = View.VISIBLE
+        binding.recyclerViewLaporan.visibility = View.GONE
     }
 
 

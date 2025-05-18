@@ -475,8 +475,7 @@ class BrgDatabaseHelper(context: Context) :
                 val gambar = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GAMBAR)) ?: ""
                 val stok = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_STOK))
                 val ukuranwarna =
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?.split(",")
-                        ?: emptyList()
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UKURAN_WARNA))?: ""
                 val waktu =
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TANGGAL_MASUK)) ?: ""
                 val harga = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_HARGA_JUAL))
@@ -669,7 +668,7 @@ class BrgDatabaseHelper(context: Context) :
         for (word in words) {
             val likeWord = "%$word%"
 
-            conditions.add("LOWER(REPLACE(barang.kode_barang, ' ', '')) LIKE ?")
+            conditions.add("LOWER(REPLACE(barang.$COLUMN_KODE_BARANG, ' ', '')) LIKE ?")
             args.add(likeWord)
 
             conditions.add("LOWER(REPLACE(${COLUMN_MEREK_BARANG}, ' ', '')) LIKE ?")
@@ -678,13 +677,19 @@ class BrgDatabaseHelper(context: Context) :
             conditions.add("LOWER(REPLACE(${COLUMN_KARAKTERISTIK}, ' ', '')) LIKE ?")
             args.add(likeWord)
 
+            conditions.add("LOWER(REPLACE(table_stok.$COLUMN_UKURAN_WARNA, ' ', '')) LIKE ?")
+            args.add(likeWord)
+
         }
 
-        val whereClause = conditions.joinToString(" OR ")
+        val whereClause = conditions.chunked(4).joinToString(" AND ") { group ->
+            group.joinToString(" OR ")
+        }
 
         val query = """
         SELECT * FROM $TABLE_BARANG 
         LEFT JOIN $TABLE_BARANG_MASUK ON $TABLE_BARANG.$COLUMN_KODE_BARANG = $TABLE_BARANG_MASUK.$COLUMN_KODE_BARANG
+        LEFT JOIN $TABLE_STOK ON $TABLE_BARANG.$COLUMN_KODE_BARANG = $TABLE_STOK.$COLUMN_KODE_BARANG
         WHERE $whereClause
     """
         val cursor = db.rawQuery(query, args.toTypedArray())
