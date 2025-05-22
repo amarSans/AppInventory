@@ -1,5 +1,6 @@
 package com.muammar.inventory.ui.editdata
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.muammar.inventory.R
 import com.muammar.inventory.data.History
 import com.muammar.inventory.databinding.ActivityDetailBarangBinding
@@ -92,7 +94,14 @@ class DetailBarang : AppCompatActivity() {
             }
 
             R.id.action_delete -> {
-                deleteBarang()
+                AlertDialog.Builder(this) // atau 'this' jika di Activity
+                    .setTitle("Konfirmasi")
+                    .setMessage("Apakah kamu yakin ingin menghapus data ini?")
+                    .setPositiveButton("Ya") { _, _ ->
+                        deleteBarang()
+                    }
+                    .setNegativeButton("Batal", null)
+                    .show()
                 true
             }
 
