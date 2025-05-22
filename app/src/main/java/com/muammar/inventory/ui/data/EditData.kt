@@ -270,7 +270,6 @@ class EditData : AppCompatActivity() {
 
 
             binding.edtUkuranEdit.setText("")
-            binding.spinnerWarnaEdit.setSelection(0)
         }
         binding.removeUkuranwarna.setOnClickListener {
             val currentText = binding.editTextUkuranwarnaEdit.text.toString()

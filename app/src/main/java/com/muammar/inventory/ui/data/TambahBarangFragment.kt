@@ -412,7 +412,6 @@ class TambahBarangFragment : Fragment() {
 
 
             binding.edtUkuran.setText("")
-            binding.spinnerWarna.setSelection(0)
         }
         binding.removeUkuranwarna.setOnClickListener {
             val currentText = binding.editTextUkuranwarna.text.toString()
