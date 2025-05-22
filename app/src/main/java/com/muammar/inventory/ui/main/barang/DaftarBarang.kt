@@ -2,6 +2,9 @@ package com.muammar.inventory.ui.main.barang
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,7 +12,9 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -95,7 +100,17 @@ class DaftarBarang : Fragment() {
                 toolbar.title = "Daftar Barang"
             }
             isToolbarSet = true
-
+            val subtitleText = toolbar.subtitle
+            if (!subtitleText.isNullOrEmpty()) {
+                val spannable = SpannableString(subtitleText)
+                spannable.setSpan(
+                    ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.backgroundColor)),
+                    0,
+                    subtitleText.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                toolbar.subtitle = spannable
+            }
             if (filteredData.isEmpty()) {
                 emptydata()
             } else {
