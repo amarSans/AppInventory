@@ -11,6 +11,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -83,7 +84,6 @@ class SearchActivity : AppCompatActivity() {
                 val query = binding.editTextSearch.text.toString().trim()
                 val filterQuery = filterQuery(query)
                 if (filterQuery.isNotEmpty()) {
-
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("QUERY_KEY", query)
                     startActivity(intent)
@@ -99,7 +99,6 @@ class SearchActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("QUERY_KEY", query)
                 startActivity(intent)
-
             }
         }
         setupHideKeyboardWhenTouchOutside()
@@ -153,11 +152,11 @@ class SearchActivity : AppCompatActivity() {
         }.distinct()
 
 
-        val filteredWords = keywords.filter { keyword ->
-            recognizedWords.all { it.contains(keyword) || keyword.contains(it) }
+        val filteredWords = keywords.all { keyword ->
+            recognizedWords.any { it.contains(keyword) || keyword.contains(it) }
         }
 
-        return filteredWords.joinToString(" ")
+        return if (filteredWords) query else ""
     }
 
 }

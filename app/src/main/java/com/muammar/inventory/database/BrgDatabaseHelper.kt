@@ -666,7 +666,8 @@ class BrgDatabaseHelper(context: Context) :
         val args = mutableListOf<String>()
 
         for (word in words) {
-            val likeWord = "%$word%"
+            val cleanWord = word.replace(" ", "")
+            val likeWord = "%$cleanWord%"
 
             conditions.add("LOWER(REPLACE(barang.$COLUMN_KODE_BARANG, ' ', '')) LIKE ?")
             args.add(likeWord)
