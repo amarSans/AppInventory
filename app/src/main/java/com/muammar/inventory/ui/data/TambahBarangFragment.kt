@@ -75,6 +75,7 @@ class TambahBarangFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTambahBarangBinding.inflate(inflater, container, false)
+       /* return binding.root*/
         return binding.root
     }
 

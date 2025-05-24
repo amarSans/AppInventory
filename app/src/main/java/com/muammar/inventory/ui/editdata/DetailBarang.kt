@@ -12,7 +12,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.muammar.inventory.R
 import com.muammar.inventory.data.History
 import com.muammar.inventory.databinding.ActivityDetailBarangBinding

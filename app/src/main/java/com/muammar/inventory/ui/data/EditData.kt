@@ -47,6 +47,7 @@ class EditData : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditDataBinding.inflate(layoutInflater)
+        /*setContentView(binding.root)*/
         setContentView(binding.root)
         AnimationHelper.animateItems(binding.constraintEdit,this)
         barangId = intent.getStringExtra("ID_BARANG") ?: ""
