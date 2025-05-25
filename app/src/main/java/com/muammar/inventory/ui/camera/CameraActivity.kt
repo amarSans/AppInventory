@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
+import com.muammar.inventory.R
 import java.io.File
 
 class CameraActivity : AppCompatActivity() {
@@ -37,16 +40,18 @@ class CameraActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        previewView = PreviewView(this)
-        setContentView(previewView)
-
+        setContentView(R.layout.activity_camera)
+        previewView = findViewById(R.id.previewView)
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera()
         } else {
             requestPermission.launch(Manifest.permission.CAMERA)
         }
+        val btnCapture = findViewById<ImageButton>(R.id.btnCapture)
 
-        previewView.setOnClickListener {
+        btnCapture.setOnClickListener {
+            val anim = AnimationUtils.loadAnimation(this, R.anim.click_scale)
+            it.startAnimation(anim)
             takePhoto()
         }
     }
