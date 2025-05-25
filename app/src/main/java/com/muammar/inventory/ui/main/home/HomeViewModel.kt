@@ -18,7 +18,6 @@ class HomeViewModel(application: Application,  private val dbHelper: BrgDatabase
     private val _totalBarang = MutableLiveData<Int>()
     val totalBarang: LiveData<Int> = _totalBarang
 
-
     private val _stokRendah = MutableLiveData<Int>()
     val stokRendah: LiveData<Int> = _stokRendah
 

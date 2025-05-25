@@ -819,7 +819,7 @@ class BrgDatabaseHelper(context: Context) :
 
     fun getTotalBarang(): Int {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT COUNT(*) FROM $TABLE_BARANG", null)
+        val cursor = db.rawQuery("SELECT SUM($COLUMN_STOK) FROM $TABLE_STOK", null)
         var total = 0
         if (cursor.moveToFirst()) {
             total = cursor.getInt(0)
