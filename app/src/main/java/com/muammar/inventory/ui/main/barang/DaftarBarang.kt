@@ -36,6 +36,7 @@ class DaftarBarang : Fragment() {
     private val barangViewModel: BarangViewModel by viewModels {
         InventoryViewModelFactory.getInstance(requireActivity().application)
     }
+
     private var filterStock: String? = null
     private var query: String? = null
     override fun onCreateView(
@@ -47,7 +48,6 @@ class DaftarBarang : Fragment() {
         _binding = FragmentDaftarBarangBinding.inflate(inflater, container, false)
 
         handleIncomingData()
-
         setupRecyclerView()
         barangViewModel.dataBarangAksesList.observe(viewLifecycleOwner) { listBarang ->
 

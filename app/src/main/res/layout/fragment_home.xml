@@ -5,7 +5,7 @@
     android:id="@+id/homeScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
+    android:padding="16dp"
     tools:context=".ui.main.home.HomeFragment">
 
     <LinearLayout
@@ -127,12 +127,30 @@
                 android:text="Stok sandal tertinggi: Swallow Merah (Ukuran 42)"
                 android:textSize="14sp"/>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="⚠️ Barang Hampir Habis:"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="⚠️ Barang Hampir Habis:"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvSelengkapnya"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selengkapnya"
+                android:textStyle="bold"
+                android:layout_gravity="end"
+                android:layout_marginEnd="2dp"/>
+        </LinearLayout>
         <TextView
             android:id="@+id/tvKosongBarangHabis"
             android:layout_width="wrap_content"

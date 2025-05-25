@@ -114,6 +114,12 @@ class HomeFragment : Fragment() {
         binding.menuDaftarBarang.setOnClickListener {
             navigateTo(R.id.action_nav_home_to_nav_daftar_barang)
         }
+        binding.tvSelengkapnya.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("filter_stock", "stok_rendah")
+            }
+            findNavController().navigate(R.id.action_nav_home_to_nav_daftar_barang,bundle)
+        }
     }
 
     private fun observeData() {
