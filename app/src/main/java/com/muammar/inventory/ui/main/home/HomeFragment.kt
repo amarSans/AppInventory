@@ -185,6 +185,13 @@ class HomeFragment : Fragment() {
     private fun navigateTo(destinationId: Int) {
         findNavController().navigate(destinationId)
     }
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.getTotalBarang()
+        homeViewModel.getStokRendah()
+        homeViewModel.getDataTertinggi()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
