@@ -76,6 +76,10 @@
         <item>Dewasa</item>
         <item>Orang Tua</item>
 
+        <item>Ukuran Tanggung</item>
+        <item>Ukuran Kecil</item>
+        <item>Ukuran Besar</item>
+
         <!-- Gender -->
         <item>Laki-laki</item>
         <item>Perempuan</item>
@@ -88,34 +92,25 @@
         <item>Sandal Kodog</item>
         <item>Sandal Papan</item>
         <item>Sandal Sosok</item>
+        <item>Sandal 2 ban</item>
 
         <item>Sepatu Sandal</item>
         <item>Sepatu Teplet</item>
         <item>Sepatu Slip On</item>
-        <item>Sepatu Sneakers</item>
         <item>Sepatu Boots</item>
         <item>Sepatu Formal</item>
-        <item>Sepatu Safety</item>
         <item>Sepatu Pantofel</item>
         <item>Sepatu Lari</item>
-        <item>Sepatu Hiking</item>
         <item>Sepatu Futsal</item>
         <item>Sepatu Sekolah</item>
-        <item>Sepatu Wedges</item>
         <item>Sepatu Hak Tinggi</item>
-        <item>Sepatu Flat</item>
         <item>Sepatu Kulit</item>
-        <item>Slip On Muslimah</item>
 
         <!-- Bahan -->
-        <item>Kulit Asli</item>
-        <item>Kulit Sintetis</item>
+        <item>Kulit</item>
         <item>Plastik</item>
         <item>Karet</item>
         <item>Spon</item>
-        <item>Kanvas</item>
-        <item>Jeans</item>
-        <item>Rajut</item>
         <item>Kain</item>
 
         <!-- Kegunaan / Karakter Tambahan -->
@@ -123,18 +118,9 @@
         <item>Anti Slip</item>
         <item>Ringan</item>
         <item>Nyaman Dipakai</item>
-        <item>Outdoor</item>
-        <item>Indoor</item>
-        <item>Kasual</item>
-        <item>Formal</item>
-        <item>Elegan</item>
-        <item>Sporty</item>
-        <item>Trendy</item>
     </string-array>
 
     <string name="belum_diisi">belum disi</string>
-
-    <!--bagian button sheet-->
 
     <string-array name="daftar_ukuran_valid">
         <item>6</item>
