@@ -27,7 +27,7 @@ class SettingViewModel (application: Application, private val dbHelper: BrgDatab
         exportData(context, database)
     }
 
-    fun importDatabase(context: Context, zipUri: Uri) {
+    suspend fun importDatabase(context: Context, zipUri: Uri) {
         importData(context, zipUri,database)
     }
     init {

@@ -142,7 +142,7 @@ suspend fun exportData(context: Context, database: SQLiteDatabase) {
         ZipUtils.zipFolder(backupDir, zipFile)
 
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Export selesai", Toast.LENGTH_SHORT).show() // ✅ aman
+            Toast.makeText(context, "Export selesai", Toast.LENGTH_SHORT).show()
         }
         backupDir.deleteRecursively()
 

@@ -22,9 +22,11 @@ import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_BARANG_M
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_HISTORY
 import com.muammar.inventory.database.BrgDatabaseHelper.Companion.TABLE_STOK
 import com.muammar.inventory.utils.ZipUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
-fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
+suspend fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
     val backupDir = File(
         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS,),
         "BackupInventaTa"
@@ -33,7 +35,9 @@ fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
 
     val unzipSuccess = ZipUtils.unzipToFolder(context, zipUri, backupDir)
     if (!unzipSuccess) {
-        Toast.makeText(context, "Gagal mengekstrak file ZIP", Toast.LENGTH_LONG).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Gagal mengekstrak file ZIP", Toast.LENGTH_LONG).show()
+        }
         return
     }
     try {
@@ -46,7 +50,9 @@ fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
     val jsonFile = File(backupDir, "data.json")
 
     if (!jsonFile.exists()) {
-        Toast.makeText(context, "File backup tidak ditemukan", Toast.LENGTH_LONG).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "File backup tidak ditemukan", Toast.LENGTH_LONG).show()
+        }
         return
     }
 
@@ -77,10 +83,6 @@ fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
             val fileName = File(oldPath).name
             val srcFile = File(imageBackupDir, fileName)
             val destFile = File(imageTargetDir, fileName)
-            Log.d("IMPORT_GAMBAR", "oldPath: $oldPath")
-            Log.d("IMPORT_GAMBAR", "fileName: $fileName")
-            Log.d("IMPORT_GAMBAR", "srcFile path: ${srcFile.absolutePath}")
-            Log.d("IMPORT_GAMBAR", "srcFile exists: ${srcFile.exists()}")
             if (srcFile.exists()) {
                 srcFile.copyTo(destFile, overwrite = true)
             }
@@ -155,14 +157,18 @@ fun importData(context: Context,zipUri: Uri, database: SQLiteDatabase) {
         }
 
         database.setTransactionSuccessful()
-        Toast.makeText(context, "Import berhasil!", Toast.LENGTH_LONG).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Import berhasil!", Toast.LENGTH_LONG).show()
+        }
         try {
             context.contentResolver.delete(zipUri, null, null)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     } catch (e: Exception) {
-        Toast.makeText(context, "Import gagal: ${e.message}", Toast.LENGTH_LONG).show()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Import gagal: ${e.message}", Toast.LENGTH_LONG).show()
+        }
         e.printStackTrace()
     } finally {
         database.endTransaction()

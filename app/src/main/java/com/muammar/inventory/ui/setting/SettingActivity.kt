@@ -91,11 +91,39 @@ class SettingActivity : AppCompatActivity() {
             }
         }
         pickZipFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-            uri?.let {
-                SettingViewModel.importDatabase(this, it)
+            if (uri == null) {
+                binding.progressImport.visibility = View.GONE
+                binding.btnImport.text = "Import"
+                binding.btnImport.isEnabled = true
+                return@registerForActivityResult
+            }
+            uri.let {
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        SettingViewModel.importDatabase(this@SettingActivity, it)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@SettingActivity, "Import selesai!", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@SettingActivity, "Gagal import: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    } finally {
+                        withContext(Dispatchers.Main) {
+                            binding.progressImport.visibility = View.GONE
+                            binding.btnImport.text = "Import"
+                            binding.btnImport.isEnabled = true
+                        }
+                    }
+                }
             }
         }
+
         binding.btnImport.setOnClickListener {
+            binding.btnImport.isEnabled = false
+            binding.btnImport.text = ""
+            binding.progressImport.visibility = View.VISIBLE
             pickZipFileLauncher.launch(arrayOf("application/zip"))
         }
 
