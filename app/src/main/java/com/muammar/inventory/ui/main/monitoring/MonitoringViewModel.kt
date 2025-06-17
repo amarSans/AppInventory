@@ -38,17 +38,25 @@ class MonitoringViewModel(application: Application, private val dbHelper: BrgDat
 
     fun setFilter(filter: String) {
         val filtered = when (filter) {
-            "Terbaru" -> allBarang.sortedByDescending {
-                it.lastUpdate?.let { date -> DateUtils.getDaysSince(date)<=30 }
+            "Terbaru" -> allBarang.filter {
+                it.lastUpdate?.let { date -> DateUtils.getDaysSince(date) }?.let { days -> days <=30 } == true
+            }.sortedBy {
+                it.lastUpdate?.let { date -> DateUtils.getDaysSince(date) }
             }
             "30 Hari" -> allBarang.filter {
                 it.lastUpdate?.let { d -> DateUtils.getDaysSince(d) in 30..59 } == true
+            }.sortedBy {
+                it.lastUpdate?.let { d -> DateUtils.getDaysSince(d) }
             }
             "60 Hari" -> allBarang.filter {
                 it.lastUpdate?.let { d -> DateUtils.getDaysSince(d) in 60..364 } == true
+            }.sortedBy {
+                it.lastUpdate?.let { d -> DateUtils.getDaysSince(d) }
             }
             "1 Tahun Lebih" -> allBarang.filter {
                 it.lastUpdate?.let { d -> DateUtils.getDaysSince(d) > 365 } == true
+            }.sortedBy {
+                it.lastUpdate?.let { d -> DateUtils.getDaysSince(d) }
             }
             else -> allBarang
         }

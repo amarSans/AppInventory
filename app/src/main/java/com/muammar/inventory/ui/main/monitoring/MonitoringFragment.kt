@@ -68,15 +68,12 @@ class MonitoringFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 monitoringViewModel.setFilter(filterOptions[position])
             }
-
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
         monitoringViewModel.filteredList.observe(viewLifecycleOwner) { list ->
-            adapter.submitList(list.reversed())
+            adapter.submitList(list)
             binding.tvKosong.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
-
         monitoringViewModel.loadBarangTertingal()
     }
     private fun setupSpinner() {
