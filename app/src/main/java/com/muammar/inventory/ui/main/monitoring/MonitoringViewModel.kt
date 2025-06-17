@@ -13,12 +13,7 @@ import kotlinx.coroutines.launch
 
 class MonitoringViewModel(application: Application, private val dbHelper: BrgDatabaseHelper)
     : AndroidViewModel(application) {
-
-    private val _monitoringList = MutableLiveData<List<BarangMonitor>>() // data asli
-    val monitoringList: LiveData<List<BarangMonitor>> get() = _monitoringList
-
-    private val _filterOption = MutableLiveData<String>("Terbaru") // default
-    val filterOption: LiveData<String> get() = _filterOption
+        
 
     private val _filteredList = MutableLiveData<List<BarangMonitor>>() // hasil filter
     val filteredList: LiveData<List<BarangMonitor>> get() = _filteredList
