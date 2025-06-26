@@ -13,9 +13,8 @@ import kotlinx.coroutines.launch
 
 class MonitoringViewModel(application: Application, private val dbHelper: BrgDatabaseHelper)
     : AndroidViewModel(application) {
-        
 
-    private val _filteredList = MutableLiveData<List<BarangMonitor>>() // hasil filter
+    private val _filteredList = MutableLiveData<List<BarangMonitor>>()
     val filteredList: LiveData<List<BarangMonitor>> get() = _filteredList
 
     private var allBarang: List<BarangMonitor> = emptyList()
@@ -27,7 +26,7 @@ class MonitoringViewModel(application: Application, private val dbHelper: BrgDat
         viewModelScope.launch(Dispatchers.IO) {
             val result = dbHelper.getBarangTertinggal(dbHelper.readableDatabase)
             allBarang = result
-            _filteredList.postValue(result) // Default: tampilkan semua
+            _filteredList.postValue(result)
         }
     }
 
