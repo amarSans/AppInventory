@@ -27,8 +27,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inventory.NoActionBar"
         tools:targetApi="31">
-
-
+        <activity
+            android:name=".ui.main.home.homeComposeActivity"
+            android:exported="false"
+            android:label="@string/title_activity_home_compose"
+            android:theme="@style/Theme.Inventory.NoActionBar" />
         <activity
             android:name=".ui.camera.CameraActivity"
             android:exported="false" />

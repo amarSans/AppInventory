@@ -19,6 +19,7 @@ import com.muammar.inventory.data.SearchData
 import com.muammar.inventory.data.SettingData
 import com.muammar.inventory.data.Stok
 import com.muammar.inventory.data.StokUpdate
+import com.muammar.inventory.data.requestBarData
 import com.muammar.inventory.utils.DateUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -964,6 +965,79 @@ class BrgDatabaseHelper(context: Context) :
         cursor.close()
         return list
     }
+    fun getRekapPerBulan(): List<requestBarData> {
+        val db = readableDatabase
+        val listRekap = mutableListOf<requestBarData>()
+        val query = """
+            SELECT 
+                strftime('%m', substr($COLUMN_WAKTU_HISTORY, 7, 4) || '-' ||
+                                 substr($COLUMN_WAKTU_HISTORY, 4, 2) || '-' ||
+                                 substr($COLUMN_WAKTU_HISTORY, 1, 2)) AS month,
+                SUM(
+                    CASE 
+                        WHEN $COLUMN_JENIS_DATA_HISTORY IN ('barangmasuk', 'stokmasuk')
+                        THEN CAST($COLUMN_STOK_HISTORY AS INTEGER)
+                        ELSE 0
+                    END
+                ) AS total_masuk,
+                SUM(
+                    CASE 
+                        WHEN $COLUMN_JENIS_DATA_HISTORY = 'stokkeluar'
+                        THEN CAST($COLUMN_STOK_HISTORY AS INTEGER)
+                        ELSE 0
+                    END
+                ) AS total_keluar,
+                (SUM(
+                    CASE 
+                        WHEN $COLUMN_JENIS_DATA_HISTORY IN ('barangmasuk', 'stokmasuk')
+                        THEN CAST($COLUMN_STOK_HISTORY AS INTEGER)
+                        ELSE 0
+                    END
+                ) - 
+                SUM(
+                    CASE 
+                        WHEN $COLUMN_JENIS_DATA_HISTORY = 'stokkeluar'
+                        THEN CAST($COLUMN_STOK_HISTORY AS INTEGER)
+                        ELSE 0
+                    END
+                )) AS stok_akhir
+            FROM $TABLE_HISTORY
+            GROUP BY month
+            ORDER BY month
+        """.trimIndent()
 
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val monthNumber = cursor.getString(cursor.getColumnIndexOrThrow("month"))
+                val stokAkhir = cursor.getFloat(cursor.getColumnIndexOrThrow("stok_akhir"))
+
+                val namaBulan = when (monthNumber) {
+                    "01" -> "Januari"
+                    "02" -> "Februari"
+                    "03" -> "Maret"
+                    "04" -> "April"
+                    "05" -> "Mei"
+                    "06" -> "Juni"
+                    "07" -> "Juli"
+                    "08" -> "Agustus"
+                    "09" -> "September"
+                    "10" -> "Oktober"
+                    "11" -> "November"
+                    "12" -> "Desember"
+                    else -> "Tidak diketahui"
+                }
+                listRekap.add(requestBarData(namaBulan, stokAkhir))
+                Log.d("HASIL_REKAP", "Bulan $namaBulan stok $stokAkhir")
+
+            } while (cursor.moveToNext())
+        } else {
+            Log.d("HASIL_REKAP", "Tidak ada data.")
+        }
+
+        cursor.close()
+        return listRekap
+    }
 
 }

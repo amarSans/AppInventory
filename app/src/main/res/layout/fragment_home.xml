@@ -103,30 +103,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:orientation="horizontal"
             android:gravity="center"
             android:background="@drawable/bg_menu_item"
-            android:padding="12dp"
-            android:elevation="4dp"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp">
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/layoutBarChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"/>
 
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="12dp"
-                android:src="@drawable/baseline_info_24" />
-
-            <TextView
-                android:id="@+id/stok_tertinggi"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="Stok sandal tertinggi: Swallow Merah (Ukuran 42)"
-                android:textSize="14sp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

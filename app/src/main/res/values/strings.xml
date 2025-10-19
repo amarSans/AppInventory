@@ -198,6 +198,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="input_karakteristik">input karakteristik</string>
+    <string name="title_activity_home_compose">homeComposeActivity</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

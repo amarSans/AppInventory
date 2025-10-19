@@ -4,7 +4,8 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/dark_text</item>
-        <item name="android:statusBarColor">@color/primaryColor</item><!--mengubah semua warna hurf tombol termasuk edttext-->
+        <item name="android:statusBarColor">@color/primaryColor
+        </item><!--mengubah semua warna hurf tombol termasuk edttext-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_button</item>
         <item name="colorSecondaryVariant">@color/light_button</item>
@@ -41,14 +42,16 @@
         <item name="android:textColorSecondary">@color/dark_background</item>
     </style>
 
-    <style name="Theme.Inventory.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="Theme.Inventory.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-  <!-- Base application theme. -->
+    <!-- Base application theme. -->
     <style name="Base.Theme.Inventory" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryColor</item>
-        <item name="colorOnPrimary">@color/dark_text</item><!--mengubah semua warna hurf tombol termasuk edttext-->
-        <item name="android:statusBarColor">@color/primaryColor</item><!--mengubah semua warna hurf tombol termasuk edttext-->
+        <item name="colorOnPrimary">@color/dark_text
+        </item><!--mengubah semua warna hurf tombol termasuk edttext-->
+        <item name="android:statusBarColor">@color/primaryColor
+        </item><!--mengubah semua warna hurf tombol termasuk edttext-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/light_button</item>
         <item name="colorSecondaryVariant">@color/light_button</item>

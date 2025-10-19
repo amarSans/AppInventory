@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlinCompose)
 }
 
 android {
     namespace = "com.muammar.inventory"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.muammar.inventory"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -35,15 +36,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        compose = true
     }
 }
 
@@ -74,6 +76,11 @@ dependencies {
     implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.core.animation)
     implementation(libs.androidx.annotation)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.foundation)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.rules)
     androidTestImplementation(libs.androidx.junit)
@@ -89,7 +96,18 @@ dependencies {
     implementation(libs.google.flexbox)
     implementation(libs.lottie)
     implementation(libs.gson)
-
-
-
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui.tooling.preview)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.compose.ui.tooling)
+    implementation(libs.navigation.compose)
+    implementation(libs.activity.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.charts)
+    implementation(libs.vico.core)
+    implementation(libs.vico.compose)
 }

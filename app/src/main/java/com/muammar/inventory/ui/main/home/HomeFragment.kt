@@ -1,5 +1,6 @@
 package com.muammar.inventory.ui.main.home
 
+import BarChart
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.muammar.inventory.R
 import com.muammar.inventory.adapter.AdapterBarangHampirHabisHome
 import com.muammar.inventory.adapter.AdapterHistoryBarang
+import com.muammar.inventory.data.BarData
 import com.muammar.inventory.databinding.FragmentHomeBinding
 import com.muammar.inventory.ui.InventoryViewModelFactory
 import com.muammar.inventory.ui.search.SearchActivity
@@ -73,6 +75,13 @@ class HomeFragment : Fragment() {
             }
             false
         }
+        val composeView= binding.layoutBarChart
+        homeViewModel.monthlyData.observe(viewLifecycleOwner) { data ->
+            composeView.setContent {
+                BarChart(data)
+            }
+        }
+
     }
 
     private fun setupMenu() {
@@ -131,13 +140,6 @@ class HomeFragment : Fragment() {
             binding.textStokRendahValue.text = total.toString()
         }
 
-        homeViewModel.dataTertinggi.observe(viewLifecycleOwner) { stok ->
-            binding.stokTertinggi.text = if (!stok.isNullOrEmpty()) {
-                "Stok sandal tertinggi: $stok"
-            } else {
-                "Belum ada data stok tersedia"
-            }
-        }
 
         homeViewModel.barangHampirHabis.observe(viewLifecycleOwner) { list ->
             if (list.isNotEmpty()) {

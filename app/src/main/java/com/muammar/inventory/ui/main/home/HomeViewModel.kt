@@ -5,12 +5,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.muammar.inventory.data.BarData
 import com.muammar.inventory.data.DataBarangHampirHabisHome
 import com.muammar.inventory.data.History
 import com.muammar.inventory.data.SearchData
 import com.muammar.inventory.database.BrgDatabaseHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel(application: Application,  private val dbHelper: BrgDatabaseHelper)
     : AndroidViewModel(application) {
@@ -33,6 +35,12 @@ class HomeViewModel(application: Application,  private val dbHelper: BrgDatabase
     private val _searchResults = MutableLiveData<List<SearchData>>()
     val searchResults: LiveData<List<SearchData>> = _searchResults
 
+    private val _monthlyData = MutableLiveData<List<BarData>>()
+    val monthlyData: LiveData<List<BarData>> = _monthlyData
+
+    init {
+        getBarChart()
+    }
     fun loadLastThreeHistory() {
         viewModelScope.launch(Dispatchers.IO) {
             val data = dbHelper.getLastThreeHistories()
@@ -72,4 +80,18 @@ class HomeViewModel(application: Application,  private val dbHelper: BrgDatabase
             _searchResults.postValue(results)
         }
     }
+    private fun getBarChart() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val dataFromDb = dbHelper.getRekapPerBulan()
+            val barDataList = dataFromDb.map {
+                BarData(it.bulan, it.stok.toFloat())
+            }
+
+            withContext(Dispatchers.Main) {
+                _monthlyData.value = barDataList
+            }
+        }
+    }
+
+
 }

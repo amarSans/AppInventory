@@ -1,6 +1,6 @@
 [versions]
-agp = "8.6.1"
-kotlin = "2.0.0"
+agp = "8.12.3"
+kotlin = "2.2.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -39,6 +39,14 @@ cameraCamera2 = "1.4.2"
 gson = "2.10.1"
 coreAnimation = "1.0.0"
 annotation = "1.6.0"
+androidGradlePlugin = "8.9.1"
+composeBom = "2025.10.00"
+navCompose = "2.9.5"
+lifecycleRuntimeKtx = "2.9.4"
+foundation = "1.9.3"
+material3 = "1.4.0"
+runtime = "1.9.3"
+vico = "2.2.1"
 
 
 
@@ -81,8 +89,27 @@ androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.r
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 androidx-core-animation = { group = "androidx.core", name = "core-animation", version.ref = "coreAnimation" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navCompose" }
+activity-compose = { module = "androidx.activity:activity-compose", version = "1.9.2" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version = "2.9.4" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+charts = { module = "com.github.tehras:charts", version = "0.2.4-alpha" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
