@@ -24,7 +24,7 @@ Dengan beberapa pertimbangan, aplikasi dibuat:
 ### Pertimbangan Pembuatan Aplikasi
 - Biaya pajak pasar yang semakin tinggi
 - Suhu pasar yang panas
-- Catatan barang sering hilang atau rusak akibat banjir
+- Catatan barang sering hilang atau rusak
 - Kesulitan melakukan restok karena tidak mengetahui jumlah barang di gudang
 
 ### Solusi yang Diberikan Aplikasi
